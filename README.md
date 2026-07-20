@@ -8,7 +8,11 @@
 
 ## Overview
 
-The Quad Device Dock is a self-built, smart charging station designed to charge up to 4 devices simultaneously from a single wall connection. It features wireless Qi charging zones, a built-in Apple Watch puck, a high-power USB-C laptop output, upright support rails, and a companion mobile app for full customization.
+The Quad Device Dock is a self-built, smart charging station designed to charge up to 4 devices simultaneously from a single wall connection. It features wireless Qi charging zones, a built-in Apple Watch puck, a high-power USB-C laptop output, a USB-A side port for accessories, a continuous WS2812B LED status bar, and a companion mobile app for full customization.
+
+The dock plugs directly into a standard wall outlet via a built-in IEC C13 inlet and an internal 180W AC/DC power supply — no external power brick required.
+
+Available in **Black** and **White** colorways.
 
 ---
 
@@ -16,32 +20,46 @@ The Quad Device Dock is a self-built, smart charging station designed to charge 
 
 | Zone | Device | Method |
 |------|--------|--------|
-| Zone 1 | Phone | Qi Wireless (up to 15W) |
-| Zone 2 | Phone / AirPods | Qi Wireless (up to 15W) |
+| Zone 1 | Phone | Qi Wireless (15W), MagSafe-style alignment magnets |
+| Zone 2 | Phone / AirPods | Qi Wireless (15W) |
 | Zone 3 | Apple Watch | Built-in Watch Puck (wired internally) |
 | Zone 4 | MacBook / Laptop | USB-C PD (up to 100W) |
+| Side port | Accessories / older devices | USB-A 12W (5V/2.4A) |
 
 ---
 
 ## Key Features
-- Single wall cable input
+- Plugs directly into the wall — internal 180W AC/DC PSU, IEC C13 inlet (standard PC/kettle cable)
+- Continuous WS2812B addressable LED bar across the full front edge — color per zone
+- Ambient light sensor (TEMT6000) auto-dims LEDs in dark rooms, brightens in light
 - Smart per-zone power monitoring
 - ESP32-powered intelligence (WiFi + Bluetooth)
 - Companion iOS/Android app (Flutter)
+- Auto device detection — app displays device type icon per zone
+- Theft alert — push notification if device is removed unexpectedly
+- OTA firmware updates via app
+- Weekly charge report in app
+- Voice assistant shortcuts (Siri / Google Assistant)
 - Battery health scheduling (stop at 80%)
 - Priority charging mode
 - Real-time charge % display per device
 - Overcharge and overheat protection
-- Front dark mode button to disable all zone LEDs instantly
 
 ---
 
 ## Physical Features
-- Clear acrylic guide rails on Zones 1 and 2 to guide phones or AirPods onto the Qi coils
-- Compact clear acrylic rails around the watch cradle in Zone 3 to keep the watch centered
-- Tall clear acrylic laptop rails in Zone 4 with soft inner rubber inserts to hold a USB-C laptop upright at a 70–80° angle
-- Frosted diffuser strip along the front edge with one red/green LED status indicator per zone
-- Matte dark enclosure with top-side product branding and a single rear power input
+- **Tiered/stepped enclosure** — front tier is 15mm tall, rear tier rises to 40mm for an architectural, premium look
+- **Aluminum top plate** — passively cools Qi coils; sourced cut-to-size from SendCutSend
+- **ABS base** — raw matte finish, no paint or coating needed
+- **Integrated molded ABS rails** — part of the base; small rails on Zones 1–3, tall 40–50mm rails on Zone 4 for laptop support
+- **Silicone pads** on all charging zones to prevent scratching and improve device grip
+- **Cooling vents** slotted into the base for passive airflow
+- **Removable aluminum top plate** — unscrews with M3 fasteners for DIY repair access
+- **Cable clips** integrated on the rear to route the laptop USB-C cable neatly
+- **IEC C13 power inlet** on rear — uses any standard PC power cable
+- **USB-A port** on the right side for 12W accessory charging
+- **M3 screws** standardized throughout for easy assembly and repair
+- Available in **Black** and **White** colorways
 
 ---
 
@@ -49,10 +67,11 @@ The Quad Device Dock is a self-built, smart charging station designed to charge 
 
 | LED State | Meaning |
 |-----------|---------|
-| Red solid | Device actively charging |
-| Green solid | Device fully charged |
-| Off | No device detected |
-| Dark mode enabled | All LEDs forced off regardless of charging state |
+| Red segment | Device actively charging on that zone |
+| Green segment | Device fully charged on that zone |
+| Off segment | No device detected on that zone |
+| Full bar pulses green | All four zones simultaneously at 100% |
+| LEDs off | Dark mode active (set via app or ambient sensor) |
 
 ---
 
@@ -60,9 +79,8 @@ The Quad Device Dock is a self-built, smart charging station designed to charge 
 
 | Version | Price |
 |---------|-------|
-| Starter (no app) | $149–$179 |
-| Standard (full smart + app) | $199–$249 |
-| Premium (bundled power brick) | $279–$329 |
+| Standard (Black or White) | $249–$279 |
+| Premium (bundled accessories) | $299–$349 |
 
 ---
 
@@ -77,8 +95,8 @@ The Quad Device Dock is a self-built, smart charging station designed to charge 
 ---
 
 ## Target Build Cost
-- **Per unit (self-built, 20–50 qty):** ~$95–$110
-- **Per unit (self-built, 50+ qty):** ~$80–$95
+- **Per unit (self-built, 20–50 qty):** ~$74–$104
+- **Per unit (self-built, 50+ qty):** ~$62–$90
 
 ---
 
