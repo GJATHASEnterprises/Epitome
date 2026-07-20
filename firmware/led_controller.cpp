@@ -62,7 +62,7 @@ void LedController::update() {
     if (allZonesFull() && !darkMode_) {
         if (now - lastPulseMs_ >= kPulseStepMs) {
             lastPulseMs_ = now;
-            pulseTheta_ += 3u;  // Full cycle ~1.7 s at 20 ms steps (256 / 3 * 20 ms)
+            pulseTheta_ += 3u;  // Full cycle ~1.71 s at 20 ms steps ((256 / 3) * 20 ms)
             applyColors();
         }
     }

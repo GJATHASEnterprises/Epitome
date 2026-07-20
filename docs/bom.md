@@ -2,6 +2,8 @@
 
 **Target per-unit cost:** ~$74–$104 (self-built, 20–50 unit quantities)
 
+The cost reduction versus earlier estimates is achieved through: (1) switching to JLCPCB PCBA assembly (machine soldering reduces labor and rework costs); (2) downgrading from a 4-layer to a 2-layer PCB saving ~$4–$10; (3) replacing 3× INA219 with 1× INA3221 saving ~$4–$8; (4) building the 180W PSU internally (~$18–$28) instead of bundling an external GaN brick (~$60–$120); and (5) sourcing all components from LCSC, reducing per-part costs by 15–30% vs. retail distributors.
+
 All components sourced from **LCSC** where possible. PCB assembled via **JLCPCB PCBA service** — JLCPCB sources and machine-solders all components, reducing hand-assembly cost and improving consistency.
 
 ---
@@ -22,7 +24,7 @@ All components sourced from **LCSC** where possible. PCB assembled via **JLCPCB 
 | 10 | USB-A Charging IC | SY6280 or equiv., 5V/2.4A (12W) | 1 | $0.50–$1 | $0.50–$1 | LCSC |
 | 11 | USB-A Connector | Type-A, through-hole or SMD | 1 | $0.30–$0.60 | $0.30–$0.60 | LCSC |
 | 12 | N52 Neodymium Ring Magnet | Ring, fits 50mm Qi coil, Zone 1 | 1 | $1–$2 | $1–$2 | LCSC / Vetted Alibaba |
-| 13 | Internal AC/DC PSU Module | 180W, 100–240V AC in, 20V DC out | 1 | $18–$28 | $18–$28 | LCSC / Mouser (e.g., Mean Well RS-150-20 equiv.) |
+| 13 | Internal AC/DC PSU Module | 180W, 100–240V AC in, 20V DC out | 1 | $18–$28 | $18–$28 | LCSC / Mouser (e.g., Mean Well RS-200-20 or equiv.) |
 | 14 | IEC C13 Power Inlet | Panel mount, with fuse holder | 1 | $2–$4 | $2–$4 | LCSC |
 | 15 | E-marker USB-C Cable | 100W, 1m | 1 | $4–$8 | $4–$8 | LCSC / Vetted Alibaba |
 | 16 | Thermistors | NTC 10K, per coil zone | 3 | $0.20–$0.40 | $0.60–$1.20 | LCSC (JLCPCB basic) |

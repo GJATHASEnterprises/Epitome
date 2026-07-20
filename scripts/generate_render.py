@@ -40,6 +40,9 @@ VARIANTS = [
         "rubber_fill": (40, 48, 58, 200),
         "led_bar_bg": "#0f1218",
         "text_muted": "#9ba5b2",
+        "silicone_pad_outline": "#556677",
+        "brand_text_color": TEXT_PRIMARY,
+        "description_text_color": TEXT_MUTED,
     },
     {
         "label": "White",
@@ -54,6 +57,9 @@ VARIANTS = [
         "rubber_fill": (130, 140, 150, 200),
         "led_bar_bg": "#b0b5bc",
         "text_muted": "#505870",
+        "silicone_pad_outline": "#8899aa",
+        "brand_text_color": "#303848",
+        "description_text_color": "#606878",
     },
 ]
 
@@ -224,7 +230,7 @@ def draw_variant(image: Image.Image, v: dict, fonts: dict) -> None:
     # --- Silicone pads on charging zone surfaces ---
     for box in zone_boxes[:3]:
         pad_box = (box[0] + 16, box[1] + 62, box[2] - 16, box[3] - 16)
-        draw.rounded_rectangle(pad_box, radius=10, fill=None, outline="#556677" if v["label"] == "Black" else "#8899aa", width=1)
+        draw.rounded_rectangle(pad_box, radius=10, fill=None, outline=v["silicone_pad_outline"], width=1)
 
     # --- Qi coils (Zones 1 and 2) ---
     draw_qi_coil(draw, (ox + 165, 340), 68)
@@ -285,10 +291,9 @@ def draw_variant(image: Image.Image, v: dict, fonts: dict) -> None:
     draw.text((ox + 360, 840), "Cable clips", font=fonts["tiny"], fill=v["text_muted"])
 
     # --- Variant label ---
-    draw_centered_text(draw, (ox + 415, 900), f"Quad Device Dock — {v['label']}", fonts["brand"],
-                       TEXT_PRIMARY if v["label"] == "Black" else "#303848")
+    draw_centered_text(draw, (ox + 415, 900), f"Quad Device Dock — {v['label']}", fonts["brand"], v["brand_text_color"])
     draw_centered_text(draw, (ox + 415, 930), "Internal 180W PSU · IEC C13 · WS2812B LED bar · MagSafe magnets · USB-A",
-                       fonts["tiny"], TEXT_MUTED if v["label"] == "Black" else "#606878")
+                       fonts["tiny"], v["description_text_color"])
 
 
 def main() -> None:

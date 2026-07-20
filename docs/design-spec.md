@@ -30,7 +30,7 @@ Quad Device Dock
 
 The dock uses a **tiered/stepped two-piece enclosure**: a front tier at 15mm height and a rear tier that rises to 40mm. The Watch zone (Zone 3) sits elevated on the back tier. The Laptop zone (Zone 4) is at the far right with a tall rear wall for upright laptop support.
 
-- **Top plate:** 1.5mm brushed aluminum (Black anodized or natural finish depending on color variant) — sourced cut-to-size from **SendCutSend**. The aluminum top passively cools the Qi coils underneath without thermal pads. The plate is fastened with M3 screws and is fully **removable** for DIY repair access.
+- **Top plate:** 1.5mm brushed aluminum (Black anodized or natural finish depending on color variant) — sourced cut-to-size from **SendCutSend**. The aluminum top plate sits directly against the Qi coil housings and acts as a passive heat spreader, conducting heat away from the coils without the need for additional thermal pads. The plate is fastened with M3 screws and is fully **removable** for DIY repair access.
 - **Base:** Molded ABS in a **2-piece enclosure** (top plate + base). Raw matte finish — no paint or coating needed. Available in black or white.
 - **Rails:** Integrated molded-in ABS rails (same piece as the base — no separate acrylic parts):
   - Zones 1–3: small low-profile rails to guide devices onto charging zones

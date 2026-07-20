@@ -26,7 +26,9 @@ struct _CFastLEDStub {
 extern _CFastLEDStub FastLED;
 
 // sin8: maps 0–255 input angle to 0–255 sinusoidal output.
-// Stub uses a triangular approximation sufficient for unit tests.
+// NOTE: This stub uses a linear triangular approximation for non-Arduino (unit test) builds
+// only. It produces a linear ramp rather than a smooth sine curve. Production code compiles
+// against the real FastLED sin8(), which provides the correct smooth sinusoidal easing.
 inline uint8_t sin8(uint8_t theta) {
     return theta < 128u
         ? static_cast<uint8_t>(theta * 2u)
