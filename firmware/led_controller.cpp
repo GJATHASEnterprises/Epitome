@@ -81,20 +81,20 @@ void LedController::pollButton() {
 void LedController::updateLEDs() {
     for (uint8_t index = 0; index < kZoneCount; ++index) {
         if (darkMode_) {
-            applyZoneColor(index, false, false);
+            setZoneLEDs(index, false, false);
             continue;
         }
 
         switch (zoneStatuses_[index]) {
             case ZoneStatus::CHARGING:
-                applyZoneColor(index, true, false);
+                setZoneLEDs(index, true, false);
                 break;
             case ZoneStatus::FULL:
-                applyZoneColor(index, false, true);
+                setZoneLEDs(index, false, true);
                 break;
             case ZoneStatus::NO_DEVICE:
             default:
-                applyZoneColor(index, false, false);
+                setZoneLEDs(index, false, false);
                 break;
         }
     }
@@ -114,7 +114,7 @@ void IRAM_ATTR LedController::handleDarkModeButtonISR() {
     buttonInterruptFlag_ = true;
 }
 
-void LedController::applyZoneColor(uint8_t zoneIndex, bool redOn, bool greenOn) {
+void LedController::setZoneLEDs(uint8_t zoneIndex, bool redOn, bool greenOn) {
     digitalWrite(kRedPins[zoneIndex], redOn ? HIGH : LOW);
     digitalWrite(kGreenPins[zoneIndex], greenOn ? HIGH : LOW);
 }

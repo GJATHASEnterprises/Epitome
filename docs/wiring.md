@@ -63,6 +63,8 @@
 | GPIO 32 | Thermistor Zone 3 (ADC) |
 | GPIO 33 | Thermistor Zone 4 (ADC) |
 
+GPIO 27 is used for the dark mode button because it is a stable digital-capable GPIO that does not conflict with the four LED outputs or the reserved ADC inputs already allocated for per-zone thermistors.
+
 ---
 
 ## LED Hardware

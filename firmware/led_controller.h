@@ -43,6 +43,7 @@ public:
     LedController();
 
     void begin();
+    // Public zone numbering is 1-4 to match the user-facing zone labels in the dock docs and app.
     void setZoneStatus(int zone, ZoneStatus status);
     ZoneStatus getZoneStatus(int zone) const;
     void toggleDarkMode();
@@ -62,5 +63,5 @@ private:
     bool darkMode_;
     ZoneStatus zoneStatuses_[kZoneCount];
 
-    void applyZoneColor(uint8_t zoneIndex, bool redOn, bool greenOn);
+    void setZoneLEDs(uint8_t zoneIndex, bool redOn, bool greenOn);
 };

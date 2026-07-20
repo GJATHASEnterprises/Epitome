@@ -75,7 +75,7 @@ class ImageColor:
     @staticmethod
     def getrgb(color: str) -> tuple[int, int, int]:
         color = color.lstrip("#")
-        return tuple(int(color[index:index + 2], 16) for index in (0, 2, 4))
+        return tuple(int(color[offset:offset + 2], 16) for offset in (0, 2, 4))
 
 
 def main() -> None:
