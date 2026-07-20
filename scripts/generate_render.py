@@ -65,8 +65,8 @@ def draw_qi_coil(draw: ImageDraw.ImageDraw, center: tuple[int, int], radius: int
 def draw_glow(base: Image.Image, center: tuple[int, int], color: str, radius: int) -> None:
     glow = Image.new("RGBA", base.size, (0, 0, 0, 0))
     gdraw = ImageDraw.Draw(glow)
-    rgba = ImageColor.getrgb(color) + (160,)
-    gdraw.ellipse((center[0] - radius, center[1] - radius, center[0] + radius, center[1] + radius), fill=rgba)
+    rgba_with_alpha = ImageColor.getrgb(color) + (160,)
+    gdraw.ellipse((center[0] - radius, center[1] - radius, center[0] + radius, center[1] + radius), fill=rgba_with_alpha)
     glow = glow.filter(ImageFilter.GaussianBlur(radius=18))
     base.alpha_composite(glow)
 
