@@ -11,20 +11,20 @@
      |
 [USB-C PD Input] --> [PD Trigger IC (CH224K)] --> [Main Power Rail: 12V or 20V]
                                                         |
-               +----------------------------------------+
-               |              |              |              |
-        [Qi TX 1]      [Qi TX 2]     [Watch Puck]   [USB-C PD Out]
-        Zone 1          Zone 2        Zone 3          Zone 4
-          |               |               |               |
-       [INA219]        [INA219]       [INA219]        [INA219]
-          |               |               |               |
-          +---------------+---------------+---------------+
+               +----------------------------------------+-------------------+
+               |              |              |              |               |
+        [Qi TX 1]      [Qi TX 2]     [Watch Puck]   [USB-C PD Out]   [LED/Button IO]
+        Zone 1          Zone 2        Zone 3          Zone 4          Status + Control
+          |               |               |               |               |
+       [INA219]        [INA219]       [INA219]        [INA219]      [GPIO Resistors]
+          |               |               |               |               |
+          +---------------+---------------+---------------+---------------+
                                   |
                             [ESP32 I2C Bus]
                                   |
                     [ESP32-WROOM-32 Microcontroller]
-                         |              |
-                    [WiFi/BT]       [GPIO LEDs x4]
+                         |               |              |
+                    [WiFi/BT]      [Zone LEDs x8]   [Dark Mode Button]
                          |
                    [Mobile App]
 ```
@@ -39,7 +39,7 @@
 | Qi coil supply | 12V | Wireless TX modules |
 | Watch puck | 5V | Apple Watch module |
 | USB-C PD out | 5V–20V (negotiated) | Laptop/tablet |
-| ESP32 + logic | 3.3V | MCU, sensors, LEDs |
+| ESP32 + logic | 3.3V | MCU, sensors, LEDs, button input |
 
 ---
 
@@ -49,17 +49,49 @@
 |----------|----------|
 | GPIO 21 | I2C SDA (power monitors) |
 | GPIO 22 | I2C SCL (power monitors) |
-| GPIO 2 | Zone 1 LED |
-| GPIO 4 | Zone 2 LED |
-| GPIO 5 | Zone 3 LED |
-| GPIO 18 | Zone 4 LED |
+| GPIO 2 | Zone 1 red LED |
+| GPIO 4 | Zone 1 green LED |
+| GPIO 5 | Zone 2 red LED |
+| GPIO 18 | Zone 2 green LED |
+| GPIO 19 | Zone 3 red LED |
+| GPIO 23 | Zone 3 green LED |
+| GPIO 25 | Zone 4 red LED |
+| GPIO 26 | Zone 4 green LED |
+| GPIO 27 | Dark mode button input |
 | GPIO 34 | Thermistor Zone 1 (ADC) |
 | GPIO 35 | Thermistor Zone 2 (ADC) |
 | GPIO 32 | Thermistor Zone 3 (ADC) |
-| GPIO 19 | Zone 1 Qi enable/disable |
-| GPIO 23 | Zone 2 Qi enable/disable |
-| GPIO 25 | Zone 3 Watch enable/disable |
-| GPIO 26 | Zone 4 USB-C PD enable/disable |
+| GPIO 33 | Thermistor Zone 4 (ADC) |
+
+GPIO 27 is used for the dark mode button because it is a stable digital-capable GPIO that does not conflict with the eight LED outputs or the reserved ADC inputs already allocated for per-zone thermistors.
+
+---
+
+## LED Hardware
+- Use either compact RGB LEDs configured only for red/green states or paired red/green LEDs per zone.
+- Mount each LED pair underneath a **frosted diffuser strip** at the front edge of the corresponding zone.
+- Add current-limiting resistors sized for 3.3V GPIO drive and desired brightness.
+- Route LED grounds back to the logic ground plane to avoid noise coupling into the INA219 sense paths.
+- Dark mode button should pull the GPIO low when pressed, using the ESP32 internal pull-up and firmware debounce.
+
+---
+
+## LED Behavior Logic
+- **Red solid:** Device is charging.
+- **Green solid:** Device is full.
+- **Off:** No device detected.
+- **Dark mode:** All zone LEDs are forced off until the button or app toggles them back on.
+
+The firmware implementation for this behavior lives in:
+- `firmware/led_controller.h`
+- `firmware/led_controller.cpp`
+
+The controller exposes:
+- `setZoneStatus(int zone, ZoneStatus status)`
+- `toggleDarkMode()`
+- `isDarkMode()`
+- `updateLEDs()`
+- ISR-driven dark mode button handling with debounce
 
 ---
 

@@ -23,6 +23,7 @@ Quad Dock
 - Real-time charge % per zone (pulled from INA219 data via ESP32)
 - Device icons per zone (auto-detect or user-assigned)
 - Per-zone status indicator (charging / full / idle / error)
+- Per-zone LED color display that mirrors the physical red/green/off hardware state
 - Total power draw display (watts)
 
 ### Zone Controls
@@ -30,6 +31,7 @@ Quad Dock
 - Set max charge % per zone (e.g. stop at 80% for battery health)
 - Priority mode — boost one zone to max wattage
 - Rename each zone (e.g. "My iPhone", "Kids Watch")
+- Dark mode LED toggle so the user can disable all dock LEDs from the app
 
 ### Scheduling
 - Set charging schedule per zone (e.g. only charge 11pm–7am)
@@ -66,7 +68,8 @@ Flutter App
     |       |
     |       +-- Connect to ESP32
     |       +-- Read zone power data (GATT characteristics)
-    |       +-- Send control commands
+    |       +-- Read LED state + dark mode state
+    |       +-- Send zone control and LED control commands
     |
     +-- UI Screens
     |       |
@@ -95,6 +98,8 @@ Flutter App
 | Zone 4 Power | Read/Notify | Voltage, current, watts (JSON) |
 | Zone Control | Write | Enable/disable, max %, priority (JSON) |
 | Device Temp | Read/Notify | Per-zone temp in °C |
+| LED Status | Read/Notify | Per-zone red/green/off state + dark mode flag |
+| LED Control | Write | Toggle dark mode, restore normal LED behavior |
 | System Status | Read/Notify | Overall dock status |
 
 ---
@@ -116,7 +121,7 @@ Flutter App
 | Phase | Target | Description |
 |-------|--------|-------------|
 | Phase 1 | Week 1–2 | ESP32 BLE server + basic Flutter BLE connection |
-| Phase 2 | Week 3–4 | Dashboard with live power data |
-| Phase 3 | Week 5–6 | Zone controls + scheduling |
+| Phase 2 | Week 3–4 | Dashboard with live power + LED status data |
+| Phase 3 | Week 5–6 | Zone controls, dark mode toggle, and scheduling |
 | Phase 4 | Week 7–8 | Notifications + history |
 | Phase 5 | Week 9–10 | Polish, testing, app store prep |

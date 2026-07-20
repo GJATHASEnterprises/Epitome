@@ -1,12 +1,14 @@
 # Quad Device Dock
 
+![Quad Device Dock Render](images/quad-dock-render.png)
+
 **A smart, app-controlled 4-zone charging dock for Apple devices and laptops.**
 
 ---
 
 ## Overview
 
-The Quad Device Dock is a self-built, smart charging station designed to charge up to 4 devices simultaneously from a single wall connection. It features wireless Qi charging zones, a built-in Apple Watch puck, a high-power USB-C laptop output, and a companion mobile app for full customization.
+The Quad Device Dock is a self-built, smart charging station designed to charge up to 4 devices simultaneously from a single wall connection. It features wireless Qi charging zones, a built-in Apple Watch puck, a high-power USB-C laptop output, upright support rails, and a companion mobile app for full customization.
 
 ---
 
@@ -30,6 +32,27 @@ The Quad Device Dock is a self-built, smart charging station designed to charge 
 - Priority charging mode
 - Real-time charge % display per device
 - Overcharge and overheat protection
+- Front dark mode button to disable all zone LEDs instantly
+
+---
+
+## Physical Features
+- Clear acrylic guide rails on Zones 1 and 2 to guide phones or AirPods onto the Qi coils
+- Compact clear acrylic rails around the watch cradle in Zone 3 to keep the watch centered
+- Tall clear acrylic laptop rails in Zone 4 with soft inner rubber inserts to hold a USB-C laptop upright at a 70–80° angle
+- Frosted diffuser strip along the front edge with one red/green LED status indicator per zone
+- Matte dark enclosure with top-side product branding and a single rear power input
+
+---
+
+## LED Status System
+
+| LED State | Meaning |
+|-----------|---------|
+| Red solid | Device actively charging |
+| Green solid | Device fully charged |
+| Off | No device detected |
+| Dark mode enabled | All LEDs forced off regardless of charging state |
 
 ---
 
