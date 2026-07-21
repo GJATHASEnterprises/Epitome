@@ -32,8 +32,10 @@ jobs:
 
       - name: Install generation dependencies
         run: |
-          # Install core dependencies, tolerating optional package failures.
-          pip install matplotlib Pillow numpy trimesh pygltflib scipy ezdxf numpy-stl || echo "::warning::Some core dependency installs failed; continuing because generation scripts handle optional features."
+          # Install from the pinned requirements file first.
+          pip install -r scripts/requirements.txt || echo "::warning::requirements.txt install had failures; retrying with fallback package installs."
+          # Fallback installs for environments where optional/compiled deps fail.
+          pip install matplotlib Pillow numpy trimesh pygltflib scipy ezdxf numpy-stl || echo "::warning::Some fallback dependency installs failed; continuing because scripts handle optional features."
           pip install cadquery || echo "::warning::cadquery install failed; continuing because CAD exports have graceful fallbacks."
 
       - name: Create asset directories
@@ -48,9 +50,12 @@ jobs:
         run: python scripts/generate_image.py
 
       - name: Commit and push regenerated assets
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          if [ "${GITHUB_REF_NAME}" != "main" ]; then
+            echo "This workflow is configured to commit generated assets back to main only."
+            exit 1
+          fi
+
           # Only commit when generated assets actually changed.
           if git diff --quiet -- assets/; then
             echo "No asset changes detected."
@@ -61,7 +66,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: regenerate assets [skip ci]"
-          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
+          git push origin HEAD:main
 
       - name: Summarize generated assets
         if: always()
