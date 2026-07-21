@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+generate_render.py — Photorealistic Blender render of Quad-Device Dock.
+
+Complete spec-accurate rewrite.  Run with:
+    blender --background --python scripts/generate_render.py
+Output: assets/quad-dock-render.png
+"""
 from __future__ import annotations
 
 import math
@@ -10,352 +17,471 @@ from mathutils import Euler, Vector
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = ROOT / "assets" / "quad-dock-render.png"
 
-MM = 0.001
-LENGTH = 300 * MM
-FRONT_W = 110 * MM
-REAR_W = 140 * MM
-BASE_FRONT_H = 12 * MM
-BASE_REAR_H = 22 * MM
-TOP_THICKNESS = 2 * MM
-LED_TOTAL_LENGTH_MM = 290.0
-LED_SECTION_GAP_MM = 2.0
+# ---------------------------------------------------------------------------
+# Unit conversions & body constants
+# ---------------------------------------------------------------------------
+MM = 0.001  # 1 mm expressed in Blender's metre units
 
-COLOR_ABS = "#1A1A1A"
-COLOR_ALUMINUM = "#2C2C2C"
-COLOR_SILICONE = "#2A2A2A"
-COLOR_RUBBER = "#0D0D0D"
-COLOR_ETCHED = "#222222"
-COLOR_LED = "#FFE4B5"
-COLOR_GROUND = "#F5F5F5"
-COLOR_WORLD = "#FFFFFF"
-COLOR_KEY_LIGHT = "#FFF2E0"
-COLOR_FILL_LIGHT = "#EAF4FF"
-COLOR_RIM_LIGHT = "#FFFFFF"
+# Enclosure body (front = Y=0, rear = Y=LENGTH)
+LENGTH    = 300 * MM
+FRONT_W   = 110 * MM   # width at front
+REAR_W    = 140 * MM   # width at rear
+FRONT_H   =  12 * MM   # base height at front edge
+REAR_H    =  22 * MM   # base height at rear edge
+TOP_T     = 1.5 * MM   # top aluminium plate thickness
 
-BRUSH_MAPPING_SCALE = (220.0, 1.2, 1.2)
-BRUSH_NOISE_SCALE = 340.0
-BRUSH_NOISE_DETAIL = 2.0
-BRUSH_NOISE_ROUGHNESS = 0.3
-BRUSH_RAMP_POSITIONS = (0.35, 0.7)
+# Plan-view corner rounding — baked into mesh geometry, NOT a modifier
+CORNER_R    = 20 * MM
+CORNER_SEGS =  8        # arc segments per corner
+
+# Zone 1 — Phone Qi dish (front-left)
+Z1_Y_MM         = 60.0
+Z1_FROM_LEFT_MM = 35.0
+Z1_W_MM         = 80.0   # X extent
+Z1_H_MM         = 55.0   # Y extent
+Z1_CORNER_MM    = 10.0
+Z1_DEPTH_MM     =  2.5
+
+# Zone 2 — Buds Qi dish (front-centre)
+Z2_Y_MM      = 60.0
+Z2_W_MM      = 65.0
+Z2_H_MM      = 55.0
+Z2_CORNER_MM = 10.0
+Z2_DEPTH_MM  =  2.5
+
+# Zone 3 — Watch cradle (rear-left)
+Z3_Y_MM         = 220.0
+Z3_FROM_LEFT_MM =  35.0
+Z3_DIAM_MM      =  50.0
+Z3_HEIGHT_MM    =  18.0
+Z3_TILT_DEG     =  30.0
+
+# Zone 4 — Laptop groove (rear-right)
+Z4_W_MM            = 22.0
+Z4_GROOVE_DEPTH_MM = 12.0
+Z4_FROM_RIGHT_MM   = 30.0
+
+# LED bar — runs along underside of front lip
+LED_SPAN_MM  = 290.0
+LED_SECTIONS =   4
+LED_GAP_MM   =   2.0
+LED_W_MM     =   8.0
+LED_H_MM     =   3.0
+
+# Rubber feet
+FOOT_R_MM     =  7.5   # radius (15 mm diameter)
+FOOT_H_MM     =  3.0
+FOOT_INSET_MM = 15.0
+
+# ---------------------------------------------------------------------------
+# Exact material colours from design-spec.md
+# ---------------------------------------------------------------------------
+_C_ABS      = (0.102, 0.102, 0.102, 1.0)  # #1A1A1A  matte black ABS
+_C_ALUM     = (0.172, 0.172, 0.172, 1.0)  # #2C2C2C  brushed gunmetal aluminium
+_C_SILICONE = (0.165, 0.165, 0.165, 1.0)  # #2A2A2A  dark grey silicone
+_C_RUBBER   = (0.051, 0.051, 0.051, 1.0)  # #0D0D0D  near-black rubber
+_C_LED      = (1.000, 0.894, 0.710, 1.0)  # #FFE4B5  warm-white emissive
+_C_ETCHED   = (0.133, 0.133, 0.133, 1.0)  # #222222  laser-etched text
+_C_GROUND   = (0.960, 0.960, 0.960, 1.0)  # studio white ground
+
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+
+def log(msg: str) -> None:
+    print(f"[quad-dock-render] {msg}")
+
+# ---------------------------------------------------------------------------
+# Coordinate helpers
+# ---------------------------------------------------------------------------
+
+def _lerp(a: float, b: float, t: float) -> float:
+    return a + (b - a) * t
 
 
-# -----------------------------------------------------------------------------
-# Helpers
-# -----------------------------------------------------------------------------
-
-def log(message: str) -> None:
-    print(f"[quad-dock-render] {message}")
+def width_at_y(y: float) -> float:
+    """Dock width in metres at Y-depth y (metres)."""
+    return _lerp(FRONT_W, REAR_W, y / LENGTH)
 
 
-def hex_color(hex_code: str, alpha: float = 1.0) -> tuple[float, float, float, float]:
-    code = hex_code.lstrip("#")
-    r = int(code[0:2], 16) / 255.0
-    g = int(code[2:4], 16) / 255.0
-    b = int(code[4:6], 16) / 255.0
-    return (r, g, b, alpha)
+def height_at_y(y: float) -> float:
+    """Base-top Z in metres at Y-depth y (metres)."""
+    return _lerp(FRONT_H, REAR_H, y / LENGTH)
 
 
-def width_at_y(y_m: float) -> float:
-    y_ratio = y_m / LENGTH
-    return FRONT_W + (REAR_W - FRONT_W) * y_ratio
+def x_from_left(y: float, dist_mm: float) -> float:
+    return -width_at_y(y) / 2.0 + dist_mm * MM
 
 
-def top_height_at_y(y_m: float) -> float:
-    y_ratio = y_m / LENGTH
-    return BASE_FRONT_H + (BASE_REAR_H - BASE_FRONT_H) * y_ratio
-
-
-def x_from_left(y_m: float, distance_from_left_mm: float) -> float:
-    width = width_at_y(y_m)
-    left = -width / 2.0
-    return left + distance_from_left_mm * MM
-
-
-def x_from_right(y_m: float, distance_from_right_mm: float) -> float:
-    width = width_at_y(y_m)
-    right = width / 2.0
-    return right - distance_from_right_mm * MM
+def x_from_right(y: float, dist_mm: float) -> float:
+    return width_at_y(y) / 2.0 - dist_mm * MM
 
 
 def look_at(obj: bpy.types.Object, target: Vector) -> None:
-    direction = target - obj.location
+    direction = target - Vector(obj.location)
     obj.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
 
+# ---------------------------------------------------------------------------
+# Mesh helpers
+# ---------------------------------------------------------------------------
+
+def _norm2(dx: float, dy: float) -> tuple[float, float]:
+    L = math.sqrt(dx * dx + dy * dy)
+    return (dx / L, dy / L) if L > 1e-10 else (0.0, 1.0)
+
+
+def rounded_polygon_outline(
+    corners: list[tuple[float, float]],
+    radius: float,
+    n_segs: int,
+) -> list[tuple[float, float]]:
+    """
+    2-D CCW outline of a convex polygon with rounded corners.
+
+    Each corner is replaced by a circular arc of (n_segs+1) points
+    (both tangent endpoints included).  Between consecutive arcs the
+    polygon edge is the straight section of the original side.
+
+    Total vertices = len(corners) * (n_segs + 1).
+    """
+    n = len(corners)
+    pts: list[tuple[float, float]] = []
+
+    for i in range(n):
+        A = corners[(i - 1) % n]
+        B = corners[i]
+        C = corners[(i + 1) % n]
+
+        d1 = _norm2(B[0] - A[0], B[1] - A[1])   # incoming edge direction
+        d2 = _norm2(C[0] - B[0], C[1] - B[1])   # outgoing edge direction
+
+        # Inward normals for a CCW polygon: rotate 90° CCW → (−dy, dx)
+        n1 = (-d1[1], d1[0])
+        n2 = (-d2[1], d2[0])
+
+        # Arc centre = intersection of the two offset lines
+        # L1: B + R·n1 + t·d1
+        # L2: B + R·n2 + s·d2
+        # → t·d1 − s·d2 = R·(n2 − n1)
+        rx = radius * (n2[0] - n1[0])
+        ry = radius * (n2[1] - n1[1])
+        det = d1[0] * (-d2[1]) + d2[0] * d1[1]   # det of [d1 | -d2]
+
+        if abs(det) < 1e-9:          # nearly parallel edges – keep sharp corner
+            pts.append(B)
+            continue
+
+        t = (rx * (-d2[1]) + d2[0] * ry) / det   # Cramer
+
+        cx_arc = B[0] + radius * n1[0] + t * d1[0]
+        cy_arc = B[1] + radius * n1[1] + t * d1[1]
+
+        # Tangent points on the two edges
+        ts_x = cx_arc - radius * n1[0];  ts_y = cy_arc - radius * n1[1]
+        te_x = cx_arc - radius * n2[0];  te_y = cy_arc - radius * n2[1]
+
+        a0 = math.atan2(ts_y - cy_arc, ts_x - cx_arc)
+        a1 = math.atan2(te_y - cy_arc, te_x - cx_arc)
+
+        # Arc sweeps CCW (positive Δθ) for a convex corner on a CCW polygon
+        da = a1 - a0
+        if da < 0.0:
+            da += 2.0 * math.pi
+
+        for k in range(n_segs + 1):          # include both tangent endpoints
+            a = a0 + da * k / n_segs
+            pts.append((cx_arc + radius * math.cos(a),
+                        cy_arc + radius * math.sin(a)))
+
+    return pts
+
+
+def _rrect_pts(
+    w: float, h: float, r: float, n_segs: int = 8,
+) -> list[tuple[float, float]]:
+    """CCW 2-D rounded-rectangle outline centred at the origin."""
+    hw, hh = w / 2.0, h / 2.0
+    pts: list[tuple[float, float]] = []
+    for cx_a, cy_a, a_s, a_e in (
+        ( hw - r, -hh + r, -math.pi / 2,  0.0           ),
+        ( hw - r,  hh - r,  0.0,           math.pi / 2  ),
+        (-hw + r,  hh - r,  math.pi / 2,   math.pi      ),
+        (-hw + r, -hh + r,  math.pi,    3 * math.pi / 2  ),
+    ):
+        for k in range(n_segs + 1):
+            a = a_s + (a_e - a_s) * k / n_segs
+            pts.append((cx_a + r * math.cos(a), cy_a + r * math.sin(a)))
+    return pts
+
+
+def _build_prism(
+    name: str,
+    outline: list[tuple[float, float]],
+    z_bot_fn,
+    z_top_fn,
+) -> bpy.types.Object:
+    """
+    Build a closed prism from a 2-D CCW outline.
+
+    z_bot_fn(y) and z_top_fn(y) return the Z coordinate for the bottom
+    and top ring respectively.  Face normals are outward (−Z bottom,
+    +Z top, outward sides).
+    """
+    N = len(outline)
+    verts: list[tuple] = []
+    for x, y in outline:                           # ring 0 = bottom
+        verts.append((x, y, z_bot_fn(y)))
+    for x, y in outline:                           # ring 1 = top
+        verts.append((x, y, z_top_fn(y)))
+
+    faces: list[list[int]] = []
+    faces.append(list(range(N - 1, -1, -1)))       # bottom: CW from above → −Z normal
+    faces.append(list(range(N, 2 * N)))            # top:    CCW from above → +Z normal
+    for i in range(N):                             # sides:  outward normals
+        j = (i + 1) % N
+        faces.append([i, j, N + j, N + i])
+
+    mesh = bpy.data.meshes.new(name)
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    mesh.from_pydata(verts, [], faces)
+    mesh.validate(verbose=False)
+    mesh.update()
+    return obj
+
+
+def _rrect_prism(
+    name: str,
+    cx: float, cy: float,
+    w: float, h: float, r: float,
+    z_bot: float, z_top: float,
+    n_segs: int = 8,
+) -> bpy.types.Object:
+    """Flat-topped rounded-rectangle prism, centred at (cx, cy)."""
+    pts = [(cx + px, cy + py) for px, py in _rrect_pts(w, h, r, n_segs)]
+    return _build_prism(name, pts, lambda _: z_bot, lambda _: z_top)
+
+
+def _bool_diff(target: bpy.types.Object, cutter: bpy.types.Object) -> None:
+    """Apply Boolean Difference (EXACT solver) and remove the cutter object."""
+    cutter.hide_viewport = False
+    cutter.hide_render = True
+    mod = target.modifiers.new(f"Bool_{cutter.name}", "BOOLEAN")
+    mod.operation = "DIFFERENCE"
+    mod.solver = "EXACT"
+    mod.object = cutter
+    bpy.context.view_layer.objects.active = target
+    try:
+        bpy.ops.object.modifier_apply(modifier=mod.name)
+    except RuntimeError as exc:
+        log(f"Boolean apply warning ({cutter.name}): {exc}")
+    bpy.data.objects.remove(cutter, do_unlink=True)
+
+
+def _add_bevel(obj: bpy.types.Object, width_mm: float, segs: int) -> None:
+    """Small angle-limited bevel for outer-edge smoothing only."""
+    mod = obj.modifiers.new("Bevel", "BEVEL")
+    mod.limit_method = "ANGLE"
+    mod.angle_limit = math.radians(45.0)
+    mod.width = width_mm * MM
+    mod.segments = segs
+    mod.profile = 0.7
+
+
+def _assign_mat(obj: bpy.types.Object, mat: bpy.types.Material) -> None:
+    if obj.data.materials:
+        obj.data.materials[0] = mat
+    else:
+        obj.data.materials.append(mat)
+
+# ---------------------------------------------------------------------------
+# Scene / render setup
+# ---------------------------------------------------------------------------
 
 def clear_scene() -> None:
     log("Clearing existing scene")
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
-
-    for datablock in (bpy.data.meshes, bpy.data.materials, bpy.data.lights, bpy.data.curves, bpy.data.cameras):
-        for block in list(datablock):
-            if block.users == 0:
-                datablock.remove(block)
+    for db in (bpy.data.meshes, bpy.data.materials, bpy.data.lights,
+               bpy.data.curves, bpy.data.cameras):
+        for blk in list(db):
+            if blk.users == 0:
+                db.remove(blk)
 
 
 def setup_cycles() -> None:
     log("Configuring Cycles render settings")
     scene = bpy.context.scene
     scene.render.engine = "CYCLES"
-    scene.cycles.samples = 256
+    scene.cycles.samples = 128
 
-    # Disable denoising — OIDN is not available in the apt/snap Blender 4.0 build.
-    # The render still looks great at 256 samples without it.
+    # Denoising disabled — OIDN not available in apt Blender 4.0
     scene.cycles.use_denoising = False
-    log("Denoising disabled (OIDN not available in this Blender build)")
+    try:
+        scene.cycles.denoiser = "NONE"
+    except (AttributeError, TypeError):
+        pass
 
     scene.render.resolution_x = 2400
     scene.render.resolution_y = 1600
     scene.render.image_settings.file_format = "PNG"
     scene.render.filepath = str(OUTPUT_PATH)
-
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 1.0
 
-    cycles_addon = bpy.context.preferences.addons.get("cycles")
-    if not cycles_addon:
-        scene.cycles.device = "CPU"
-        log("Cycles addon preferences unavailable; falling back to CPU")
-        return
-
-    prefs = cycles_addon.preferences
-    gpu_types = ["CUDA", "OPTIX", "HIP", "METAL", "ONEAPI"]
-    selected_gpu = None
-
-    for device_type in gpu_types:
-        try:
-            prefs.compute_device_type = device_type
-            prefs.get_devices()
-            has_enabled = False
-            for device in prefs.devices:
-                if device.type != "CPU":
-                    device.use = True
-                    has_enabled = True
-            if has_enabled:
-                selected_gpu = device_type
-                scene.cycles.device = "GPU"
-                break
-        except Exception:
-            continue
-
-    if selected_gpu:
-        log(f"Using GPU device type: {selected_gpu}")
-    else:
+    # Attempt GPU selection
+    cp = bpy.context.preferences.addons.get("cycles")
+    if cp is None:
         scene.cycles.device = "CPU"
         log("No GPU backend available; falling back to CPU")
+        return
+    prefs = cp.preferences
+    for dtype in ("CUDA", "OPTIX", "HIP", "METAL", "ONEAPI"):
+        try:
+            prefs.compute_device_type = dtype
+            prefs.get_devices()
+            if any(d.type != "CPU" for d in prefs.devices):
+                for d in prefs.devices:
+                    if d.type != "CPU":
+                        d.use = True
+                scene.cycles.device = "GPU"
+                log(f"Using GPU device type: {dtype}")
+                return
+        except Exception:
+            continue
+    scene.cycles.device = "CPU"
+    log("No GPU backend available; falling back to CPU")
 
+# ---------------------------------------------------------------------------
+# Materials
+# ---------------------------------------------------------------------------
 
-def build_trapezoid_mesh(name: str, z0_front: float, z0_rear: float, z1_front: float, z1_rear: float) -> bpy.types.Object:
-    mesh = bpy.data.meshes.new(name)
-    obj = bpy.data.objects.new(name, mesh)
-    bpy.context.collection.objects.link(obj)
-
-    y0 = 0.0
-    y1 = LENGTH
-    xf0 = FRONT_W / 2.0
-    xr1 = REAR_W / 2.0
-
-    verts = [
-        (-xf0, y0, z0_front),
-        ( xf0, y0, z0_front),
-        ( xr1, y1, z0_rear),
-        (-xr1, y1, z0_rear),
-        (-xf0, y0, z1_front),
-        ( xf0, y0, z1_front),
-        ( xr1, y1, z1_rear),
-        (-xr1, y1, z1_rear),
-    ]
-
-    faces = [
-        (0, 1, 2, 3),
-        (4, 7, 6, 5),
-        (0, 4, 5, 1),
-        (1, 5, 6, 2),
-        (2, 6, 7, 3),
-        (3, 7, 4, 0),
-    ]
-
-    mesh.from_pydata(verts, [], faces)
-    mesh.update()
-    return obj
-
-
-def add_bevel_modifier(obj: bpy.types.Object, radius_mm: float, segments: int) -> None:
-    mod = obj.modifiers.new(name="Bevel", type="BEVEL")
-    mod.limit_method = "ANGLE"
-    mod.width = radius_mm * MM
-    mod.segments = segments
-    mod.profile = 0.7
-
-
-def add_boolean_difference(target: bpy.types.Object, cutter: bpy.types.Object) -> None:
-    mod = target.modifiers.new(name=f"Bool_{cutter.name}", type="BOOLEAN")
-    mod.operation = "DIFFERENCE"
-    mod.solver = "FAST"
-    mod.object = cutter
-    bpy.context.view_layer.objects.active = target
-    bpy.ops.object.modifier_apply(modifier=mod.name)
-    bpy.data.objects.remove(cutter, do_unlink=True)
-
-
-def create_material_abs_black() -> bpy.types.Material:
-    mat = bpy.data.materials.new("ABS_Matte_Black")
+def _pbsdf(name: str) -> tuple[bpy.types.Material,
+                                bpy.types.ShaderNodeBsdfPrincipled]:
+    mat = bpy.data.materials.new(name)
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ABS)
-    bsdf.inputs["Roughness"].default_value = 0.9
-    bsdf.inputs["Metallic"].default_value = 0.0
+    return mat, bsdf
+
+
+def _mat_abs() -> bpy.types.Material:
+    mat, b = _pbsdf("ABS_Matte_Black")
+    b.inputs["Base Color"].default_value = _C_ABS
+    b.inputs["Roughness"].default_value = 0.9
+    b.inputs["Metallic"].default_value = 0.0
     return mat
 
 
-def create_material_aluminum() -> bpy.types.Material:
-    mat = bpy.data.materials.new("Aluminum_Brushed")
-    mat.use_nodes = True
+def _mat_aluminum() -> bpy.types.Material:
+    mat, b = _pbsdf("Aluminum_Brushed")
+    b.inputs["Base Color"].default_value = _C_ALUM
+    b.inputs["Metallic"].default_value = 0.95
+    b.inputs["Roughness"].default_value = 0.15
+    b.inputs["Anisotropic"].default_value = 0.6
+
     nt = mat.node_tree
-    nodes = nt.nodes
-    links = nt.links
-
-    bsdf = nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ALUMINUM)
-    bsdf.inputs["Metallic"].default_value = 0.95
-    bsdf.inputs["Roughness"].default_value = 0.15
-    bsdf.inputs["Anisotropic"].default_value = 0.6
-
-    texcoord = nodes.new("ShaderNodeTexCoord")
-    mapping = nodes.new("ShaderNodeMapping")
-    noise = nodes.new("ShaderNodeTexNoise")
-    ramp = nodes.new("ShaderNodeValToRGB")
-
-    texcoord.location = (-800, 200)
-    mapping.location = (-620, 200)
-    noise.location = (-440, 200)
-    ramp.location = (-250, 200)
-
-    mapping.inputs["Scale"].default_value = BRUSH_MAPPING_SCALE
-    noise.inputs["Scale"].default_value = BRUSH_NOISE_SCALE
-    noise.inputs["Detail"].default_value = BRUSH_NOISE_DETAIL
-    noise.inputs["Roughness"].default_value = BRUSH_NOISE_ROUGHNESS
-    ramp.color_ramp.elements[0].position = BRUSH_RAMP_POSITIONS[0]
-    ramp.color_ramp.elements[1].position = BRUSH_RAMP_POSITIONS[1]
-
-    links.new(texcoord.outputs["Object"], mapping.inputs["Vector"])
-    links.new(mapping.outputs["Vector"], noise.inputs["Vector"])
-    links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
-    links.new(ramp.outputs["Color"], bsdf.inputs["Roughness"])
-
+    tc   = nt.nodes.new("ShaderNodeTexCoord");  tc.location   = (-800, 200)
+    mp   = nt.nodes.new("ShaderNodeMapping");   mp.location   = (-620, 200)
+    ns   = nt.nodes.new("ShaderNodeTexNoise");  ns.location   = (-440, 200)
+    ramp = nt.nodes.new("ShaderNodeValToRGB");  ramp.location = (-250, 200)
+    mp.inputs["Scale"].default_value = (220.0, 1.2, 1.2)
+    ns.inputs["Scale"].default_value = 340.0
+    ns.inputs["Detail"].default_value = 2.0
+    ns.inputs["Roughness"].default_value = 0.3
+    ramp.color_ramp.elements[0].position = 0.35
+    ramp.color_ramp.elements[1].position = 0.70
+    nt.links.new(tc.outputs["Object"],   mp.inputs["Vector"])
+    nt.links.new(mp.outputs["Vector"],   ns.inputs["Vector"])
+    nt.links.new(ns.outputs["Fac"],      ramp.inputs["Fac"])
+    nt.links.new(ramp.outputs["Color"],  b.inputs["Roughness"])
     return mat
 
 
-def create_material_silicone() -> bpy.types.Material:
-    mat = bpy.data.materials.new("Silicone_Dark")
-    mat.use_nodes = True
-    bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_SILICONE)
-    bsdf.inputs["Roughness"].default_value = 0.95
-    bsdf.inputs["Metallic"].default_value = 0.0
+def _mat_silicone() -> bpy.types.Material:
+    mat, b = _pbsdf("Silicone_Dark")
+    b.inputs["Base Color"].default_value = _C_SILICONE
+    b.inputs["Roughness"].default_value = 0.95
+    b.inputs["Metallic"].default_value = 0.0
     return mat
 
 
-def create_material_rubber() -> bpy.types.Material:
-    mat = bpy.data.materials.new("Rubber_Black")
-    mat.use_nodes = True
-    bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_RUBBER)
-    bsdf.inputs["Roughness"].default_value = 1.0
+def _mat_rubber() -> bpy.types.Material:
+    mat, b = _pbsdf("Rubber_Black")
+    b.inputs["Base Color"].default_value = _C_RUBBER
+    b.inputs["Roughness"].default_value = 1.0
     return mat
 
 
-def create_material_etched() -> bpy.types.Material:
-    mat = bpy.data.materials.new("Etched_Text")
-    mat.use_nodes = True
-    bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ETCHED)
-    bsdf.inputs["Roughness"].default_value = 0.3
-    bsdf.inputs["Metallic"].default_value = 0.7
+def _mat_led() -> bpy.types.Material:
+    mat, b = _pbsdf("LED_Diffuser")
+    b.inputs["Base Color"].default_value = _C_LED
+    b.inputs["Roughness"].default_value = 0.45
+    b.inputs["Emission Color"].default_value = _C_LED
+    b.inputs["Emission Strength"].default_value = 4.0
     return mat
 
 
-def create_material_led() -> bpy.types.Material:
-    mat = bpy.data.materials.new("LED_Diffuser")
-    mat.use_nodes = True
-    nt = mat.node_tree
-    nodes = nt.nodes
-
-    bsdf = nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_LED)
-    bsdf.inputs["Roughness"].default_value = 0.45
-    bsdf.inputs["Emission Color"].default_value = hex_color(COLOR_LED)
-    bsdf.inputs["Emission Strength"].default_value = 3.0
-
+def _mat_etched() -> bpy.types.Material:
+    mat, b = _pbsdf("Etched_Text")
+    b.inputs["Base Color"].default_value = _C_ETCHED
+    b.inputs["Roughness"].default_value = 0.3
+    b.inputs["Metallic"].default_value = 0.5
     return mat
 
 
-def create_material_ground() -> bpy.types.Material:
-    mat = bpy.data.materials.new("Ground_Studio")
-    mat.use_nodes = True
-    bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_GROUND)
-    bsdf.inputs["Roughness"].default_value = 0.12
+def _mat_ground() -> bpy.types.Material:
+    mat, b = _pbsdf("Studio_Ground")
+    b.inputs["Base Color"].default_value = _C_GROUND
+    b.inputs["Roughness"].default_value = 0.12
     return mat
 
+# ---------------------------------------------------------------------------
+# Lighting
+# ---------------------------------------------------------------------------
 
-def assign_material(obj: bpy.types.Object, material: bpy.types.Material) -> None:
-    if obj.data.materials:
-        obj.data.materials[0] = material
-    else:
-        obj.data.materials.append(material)
-
-
-def create_cylinder(name: str, radius_mm: float, depth_mm: float, location: tuple[float, float, float], vertices: int = 96) -> bpy.types.Object:
-    bpy.ops.mesh.primitive_cylinder_add(
-        vertices=vertices,
-        radius=radius_mm * MM,
-        depth=depth_mm * MM,
-        location=location,
-    )
-    obj = bpy.context.active_object
-    obj.name = name
-    return obj
-
-
-def create_zone_text(label: str, location: tuple[float, float, float], rotation: tuple[float, float, float], size_mm: float, material: bpy.types.Material) -> None:
-    bpy.ops.object.text_add(location=location, rotation=rotation)
-    text_obj = bpy.context.active_object
-    text_obj.data.body = label
-    text_obj.data.size = size_mm * MM
-    text_obj.data.extrude = 0.3 * MM
-    text_obj.data.bevel_depth = 0.02 * MM
-
-    bpy.ops.object.convert(target="MESH")
-    text_mesh = bpy.context.active_object
-    text_mesh.name = f"Text_{label}"
-
-    text_mesh.location.z -= 0.3 * MM
-    assign_material(text_mesh, material)
-
-
-def add_area_light(
+def _area_light(
     name: str,
-    location: tuple[float, float, float],
-    rotation: tuple[float, float, float],
+    location: tuple,
+    rotation: tuple,
     size_x: float,
     size_y: float,
     energy: float,
-    color: str,
-) -> bpy.types.Object:
+    color: tuple,
+) -> None:
     data = bpy.data.lights.new(name=name, type="AREA")
     data.shape = "RECTANGLE"
-    data.size = size_x
+    data.size   = size_x
     data.size_y = size_y
     data.energy = energy
-    data.color = hex_color(color)[:3]
+    data.color  = color[:3]
+    obj = bpy.data.objects.new(name=name, object_data=data)
+    bpy.context.collection.objects.link(obj)
+    obj.location       = location
+    obj.rotation_euler = Euler(rotation, "XYZ")
 
-    light = bpy.data.objects.new(name=name, object_data=data)
-    bpy.context.collection.objects.link(light)
-    light.location = location
-    light.rotation_euler = Euler(rotation, "XYZ")
-    return light
+# ---------------------------------------------------------------------------
+# Text labels
+# ---------------------------------------------------------------------------
 
+def _zone_label(
+    label: str,
+    location: tuple,
+    size_mm: float,
+    mat: bpy.types.Material,
+) -> None:
+    bpy.ops.object.text_add(location=location)
+    t = bpy.context.active_object
+    t.data.body    = label
+    t.data.size    = size_mm * MM
+    t.data.extrude = 0.2 * MM
+    bpy.ops.object.convert(target="MESH")
+    m = bpy.context.active_object
+    m.name = f"Text_{label}"
+    _assign_mat(m, mat)
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 
 def main() -> None:
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -364,223 +490,316 @@ def main() -> None:
     setup_cycles()
 
     log("Creating materials")
-    mat_abs = create_material_abs_black()
-    mat_al = create_material_aluminum()
-    mat_silicone = create_material_silicone()
-    mat_rubber = create_material_rubber()
-    mat_etched = create_material_etched()
-    mat_led = create_material_led()
-    mat_ground = create_material_ground()
+    m_abs  = _mat_abs()
+    m_al   = _mat_aluminum()
+    m_sil  = _mat_silicone()
+    m_rub  = _mat_rubber()
+    m_led  = _mat_led()
+    m_eth  = _mat_etched()
+    m_gnd  = _mat_ground()
 
+    # ── Shared rounded-trapezoid XY outline ──────────────────────────────────
+    # Corners in CCW order (front-left → front-right → rear-right → rear-left)
+    trap_corners = [
+        (-FRONT_W / 2, 0.0),
+        ( FRONT_W / 2, 0.0),
+        ( REAR_W  / 2, LENGTH),
+        (-REAR_W  / 2, LENGTH),
+    ]
+    outline = rounded_polygon_outline(trap_corners, CORNER_R, CORNER_SEGS)
+
+    # ── Base — proper trapezoid prism, NO large bevel modifier ───────────────
     log("Building base trapezoidal wedge")
-    base = build_trapezoid_mesh(
+    base = _build_prism(
         "Base_ABS",
-        z0_front=0.0,
-        z0_rear=0.0,
-        z1_front=BASE_FRONT_H,
-        z1_rear=BASE_REAR_H,
+        outline,
+        z_bot_fn=lambda y: 0.0,
+        z_top_fn=lambda y: height_at_y(y),
     )
-    add_bevel_modifier(base, radius_mm=20.0, segments=8)
-    assign_material(base, mat_abs)
+    _assign_mat(base, m_abs)
 
-    log("Building top aluminum plate")
-    top_plate = build_trapezoid_mesh(
-        "Top_Plate",
-        z0_front=BASE_FRONT_H,
-        z0_rear=BASE_REAR_H,
-        z1_front=BASE_FRONT_H + TOP_THICKNESS,
-        z1_rear=BASE_REAR_H + TOP_THICKNESS,
-    )
-    add_bevel_modifier(top_plate, radius_mm=1.0, segments=4)
-    assign_material(top_plate, mat_al)
-
-    log("Cutting Zone 1 recessed dish")
-    z1_y = 55 * MM
-    z1_x = x_from_left(z1_y, 35.0)
-    z1_top = top_height_at_y(z1_y) + TOP_THICKNESS
-    zone1_cut = create_cylinder(
-        "Zone1_Cutter",
-        radius_mm=40.0,
-        depth_mm=2.5,
-        location=(z1_x, z1_y, z1_top - (2.5 * MM / 2.0)),
-    )
-    add_boolean_difference(top_plate, zone1_cut)
-
-    zone1_lining = create_cylinder(
-        "Zone1_Silicone",
-        radius_mm=39.0,
-        depth_mm=2.3,
-        location=(z1_x, z1_y, z1_top - (2.3 * MM / 2.0) - 0.05 * MM),
-    )
-    assign_material(zone1_lining, mat_silicone)
-
-    log("Cutting Zone 2 recessed dish")
-    z2_y = 55 * MM
-    z2_x = 0.0
-    z2_top = top_height_at_y(z2_y) + TOP_THICKNESS
-    zone2_cut = create_cylinder(
-        "Zone2_Cutter",
-        radius_mm=30.0,
-        depth_mm=2.5,
-        location=(z2_x, z2_y, z2_top - (2.5 * MM / 2.0)),
-    )
-    add_boolean_difference(top_plate, zone2_cut)
-
-    zone2_lining = create_cylinder(
-        "Zone2_Silicone",
-        radius_mm=29.0,
-        depth_mm=2.3,
-        location=(z2_x, z2_y, z2_top - (2.3 * MM / 2.0) - 0.05 * MM),
-    )
-    assign_material(zone2_lining, mat_silicone)
-
-    log("Building Zone 3 watch cradle pod")
-    z3_y = 220 * MM
-    z3_x = x_from_left(z3_y, 35.0)
-    z3_top = top_height_at_y(z3_y) + TOP_THICKNESS
-    watch_pod = create_cylinder(
-        "Zone3_Watch_Pod",
-        radius_mm=25.0,
-        depth_mm=8.0,
-        location=(z3_x, z3_y, z3_top + (8 * MM / 2.0)),
-    )
-    watch_pod.rotation_euler = Euler((math.radians(30.0), 0.0, 0.0), "XYZ")
-    assign_material(watch_pod, mat_abs)
-
+    # ── Zone 4 — laptop groove (rear-right, cut into base rear wall) ─────────
     log("Cutting Zone 4 laptop groove")
-    z4_y = LENGTH - (12 * MM / 2.0)
-    z4_x = x_from_right(LENGTH, 30.0 + 11.0)
-    z4_z = (BASE_REAR_H + TOP_THICKNESS) / 2.0
-    bpy.ops.mesh.primitive_cube_add(
-        size=1.0,
-        location=(z4_x, z4_y, z4_z),
-        scale=(22 * MM / 2.0, 12 * MM / 2.0, (BASE_REAR_H + TOP_THICKNESS) / 2.0),
+    z4_x_right = REAR_W / 2 - Z4_FROM_RIGHT_MM * MM   # right edge of groove
+    z4_x_left  = z4_x_right - Z4_W_MM * MM             # left edge
+    z4_cx      = (z4_x_left + z4_x_right) / 2.0
+    # Cutter spans from (LENGTH − groove_depth) to slightly past rear face
+    z4_cutter_cy = LENGTH - Z4_GROOVE_DEPTH_MM * MM / 2.0 + 0.5 * MM
+    z4_cutter_hy = (Z4_GROOVE_DEPTH_MM + 1.0) * MM
+
+    zone4_cut = _rrect_prism(
+        "Zone4_Cutter",
+        z4_cx, z4_cutter_cy,
+        Z4_W_MM * MM, z4_cutter_hy,
+        0.5 * MM,
+        z_bot=-0.5 * MM, z_top=REAR_H + 0.5 * MM,
     )
-    zone4_cut_base = bpy.context.active_object
-    zone4_cut_base.name = "Zone4_Groove_Cutter_Base"
-    add_boolean_difference(base, zone4_cut_base)
+    _bool_diff(base, zone4_cut)
 
-    bpy.ops.mesh.primitive_cube_add(
-        size=1.0,
-        location=(z4_x, z4_y, z4_z),
-        scale=(22 * MM / 2.0, 12 * MM / 2.0, (BASE_REAR_H + TOP_THICKNESS) / 2.0),
+    # Zone 4 silicone lining inside groove (1 mm thick on 3 sides)
+    z4_sil = _rrect_prism(
+        "Zone4_Silicone",
+        z4_cx, LENGTH - Z4_GROOVE_DEPTH_MM * MM / 2.0,
+        (Z4_W_MM - 2.0) * MM, Z4_GROOVE_DEPTH_MM * MM,
+        0.3 * MM,
+        z_bot=0.5 * MM, z_top=REAR_H - 0.5 * MM,
     )
-    zone4_cut_top = bpy.context.active_object
-    zone4_cut_top.name = "Zone4_Groove_Cutter_Top"
-    add_boolean_difference(top_plate, zone4_cut_top)
+    _assign_mat(z4_sil, m_sil)
 
-    bpy.ops.mesh.primitive_cube_add(
-        size=1.0,
-        location=(z4_x, z4_y - 0.2 * MM, z4_z),
-        scale=(20 * MM / 2.0, 10 * MM / 2.0, (BASE_REAR_H + TOP_THICKNESS - 0.8 * MM) / 2.0),
+    # Small bevel on base outer edges only
+    _add_bevel(base, 1.5, 4)
+
+    # ── Top aluminium plate ───────────────────────────────────────────────────
+    log("Building top aluminium plate")
+    top_plate = _build_prism(
+        "Top_Plate",
+        outline,
+        z_bot_fn=lambda y: height_at_y(y),
+        z_top_fn=lambda y: height_at_y(y) + TOP_T,
     )
-    groove_lining = bpy.context.active_object
-    groove_lining.name = "Zone4_Silicone"
-    assign_material(groove_lining, mat_silicone)
+    _assign_mat(top_plate, m_al)
 
-    log("Adding LED bar underside (4 sections)")
-    section_len_mm = (LED_TOTAL_LENGTH_MM - (3.0 * LED_SECTION_GAP_MM)) / 4.0
-    start_x = -(LED_TOTAL_LENGTH_MM / 2.0)
-    led_y = 4.0
-    led_z = 3.5
-    for idx in range(4):
-        section_center_x_mm = start_x + section_len_mm / 2.0 + idx * (section_len_mm + LED_SECTION_GAP_MM)
-        bpy.ops.mesh.primitive_cube_add(
-            size=1.0,
-            location=(section_center_x_mm * MM, led_y * MM, led_z * MM),
-            scale=(section_len_mm * MM / 2.0, 8 * MM / 2.0, 1.2 * MM / 2.0),
-        )
-        led_section = bpy.context.active_object
-        led_section.name = f"LED_Section_{idx + 1}"
-        assign_material(led_section, mat_led)
+    # ── Zone 1 — Phone Qi dish (front-left, rounded rectangle) ───────────────
+    log("Cutting Zone 1 phone dish")
+    z1_y    = Z1_Y_MM * MM
+    z1_cx   = x_from_left(z1_y, Z1_FROM_LEFT_MM)
+    z1_ztop = height_at_y(z1_y) + TOP_T
 
+    z1_cut = _rrect_prism(
+        "Zone1_Cutter",
+        z1_cx, z1_y,
+        Z1_W_MM * MM, Z1_H_MM * MM,
+        Z1_CORNER_MM * MM,
+        z_bot=z1_ztop - Z1_DEPTH_MM * MM,
+        z_top=z1_ztop + 0.5 * MM,
+    )
+    _bool_diff(top_plate, z1_cut)
+
+    # Zone 1 silicone lining (1 mm inset, thin pad at dish floor)
+    z1_sil = _rrect_prism(
+        "Zone1_Silicone",
+        z1_cx, z1_y,
+        (Z1_W_MM - 2.0) * MM, (Z1_H_MM - 2.0) * MM,
+        max((Z1_CORNER_MM - 1.0) * MM, 0.5 * MM),
+        z_bot=z1_ztop - Z1_DEPTH_MM * MM,
+        z_top=z1_ztop - Z1_DEPTH_MM * MM + 0.3 * MM,
+    )
+    _assign_mat(z1_sil, m_sil)
+
+    # ── Zone 2 — Buds Qi dish (front-centre, rounded rectangle) ─────────────
+    log("Cutting Zone 2 buds dish")
+    z2_y    = Z2_Y_MM * MM
+    z2_cx   = 0.0   # centred on X
+    z2_ztop = height_at_y(z2_y) + TOP_T
+
+    z2_cut = _rrect_prism(
+        "Zone2_Cutter",
+        z2_cx, z2_y,
+        Z2_W_MM * MM, Z2_H_MM * MM,
+        Z2_CORNER_MM * MM,
+        z_bot=z2_ztop - Z2_DEPTH_MM * MM,
+        z_top=z2_ztop + 0.5 * MM,
+    )
+    _bool_diff(top_plate, z2_cut)
+
+    z2_sil = _rrect_prism(
+        "Zone2_Silicone",
+        z2_cx, z2_y,
+        (Z2_W_MM - 2.0) * MM, (Z2_H_MM - 2.0) * MM,
+        max((Z2_CORNER_MM - 1.0) * MM, 0.5 * MM),
+        z_bot=z2_ztop - Z2_DEPTH_MM * MM,
+        z_top=z2_ztop - Z2_DEPTH_MM * MM + 0.3 * MM,
+    )
+    _assign_mat(z2_sil, m_sil)
+
+    # Small bevel on top plate (applied after all Boolean cuts)
+    _add_bevel(top_plate, 0.5, 3)
+
+    # ── Zone 3 — Watch cradle pod (teardrop: cylinder + cone) ────────────────
+    log("Building Zone 3 watch cradle")
+    z3_y      = Z3_Y_MM * MM
+    z3_cx     = x_from_left(z3_y, Z3_FROM_LEFT_MM)
+    z3_base_z = height_at_y(z3_y) + TOP_T
+
+    total_h = Z3_HEIGHT_MM * MM
+    cyl_h   = total_h * 0.65
+    cone_h  = total_h * 0.35
+    cyl_r   = Z3_DIAM_MM / 2.0 * MM
+
+    bpy.ops.mesh.primitive_cylinder_add(
+        vertices=48, radius=cyl_r, depth=cyl_h,
+        location=(z3_cx, z3_y, z3_base_z + cyl_h / 2),
+    )
+    cyl_obj = bpy.context.active_object
+    cyl_obj.name = "_Z3_Cyl"
+
+    bpy.ops.mesh.primitive_cone_add(
+        vertices=48, radius1=cyl_r, radius2=0.0, depth=cone_h,
+        location=(z3_cx, z3_y, z3_base_z + cyl_h + cone_h / 2),
+    )
+    cone_obj = bpy.context.active_object
+    cone_obj.name = "_Z3_Cone"
+
+    bpy.ops.object.select_all(action="DESELECT")
+    cyl_obj.select_set(True)
+    cone_obj.select_set(True)
+    bpy.context.view_layer.objects.active = cyl_obj
+    bpy.ops.object.join()
+    pod = bpy.context.active_object
+    pod.name = "Zone3_Watch_Pod"
+
+    # Pivot at pod base, then tilt 30° toward front
+    # Positive X-axis rotation → top of pod leans toward −Y (front)
+    bpy.context.scene.cursor.location = (z3_cx, z3_y, z3_base_z)
+    bpy.ops.object.origin_set(type="ORIGIN_CURSOR")
+    pod.rotation_euler = Euler((math.radians(Z3_TILT_DEG), 0.0, 0.0), "XYZ")
+    _assign_mat(pod, m_abs)
+
+    # ── LED bar — 4 sections along underside of front lip ────────────────────
+    log("Adding LED bar (4 sections)")
+    section_len_mm = (LED_SPAN_MM - (LED_SECTIONS - 1) * LED_GAP_MM) / LED_SECTIONS
+    x_start_mm     = -LED_SPAN_MM / 2.0 + section_len_mm / 2.0
+
+    led_y = -2.0 * MM   # peeking out from under the front lip
+    led_z =  LED_H_MM / 2.0 * MM   # Z centroid (0 → 3 mm range)
+
+    for idx in range(LED_SECTIONS):
+        sec_cx = (x_start_mm + idx * (section_len_mm + LED_GAP_MM)) * MM
+        bpy.ops.mesh.primitive_cube_add(size=1.0,
+                                        location=(sec_cx, led_y, led_z))
+        sec = bpy.context.active_object
+        sec.name = f"LED_Section_{idx + 1}"
+        sec.scale = (section_len_mm * MM,
+                     LED_W_MM * MM,
+                     LED_H_MM * MM)
+        bpy.ops.object.transform_apply(scale=True)
+        _assign_mat(sec, m_led)
+
+    # ── Rubber feet (4 × at corners, 15 mm inset) ────────────────────────────
     log("Adding rubber feet")
+    inset_y_front = FOOT_INSET_MM * MM
+    inset_y_rear  = LENGTH - FOOT_INSET_MM * MM
     foot_positions = [
-        (x_from_left(10 * MM, 10.0), 10 * MM),
-        (x_from_right(10 * MM, 10.0), 10 * MM),
-        (x_from_left((300 - 10) * MM, 10.0), (300 - 10) * MM),
-        (x_from_right((300 - 10) * MM, 10.0), (300 - 10) * MM),
+        (x_from_left (inset_y_front, FOOT_INSET_MM), inset_y_front),
+        (x_from_right(inset_y_front, FOOT_INSET_MM), inset_y_front),
+        (x_from_left (inset_y_rear,  FOOT_INSET_MM), inset_y_rear),
+        (x_from_right(inset_y_rear,  FOOT_INSET_MM), inset_y_rear),
     ]
     for idx, (fx, fy) in enumerate(foot_positions, start=1):
-        foot = create_cylinder(
-            f"Foot_{idx}",
-            radius_mm=7.5,
-            depth_mm=3.0,
-            location=(fx, fy, -1.5 * MM),
+        bpy.ops.mesh.primitive_cylinder_add(
             vertices=48,
+            radius=FOOT_R_MM * MM,
+            depth=FOOT_H_MM * MM,
+            location=(fx, fy, -FOOT_H_MM * MM / 2.0),
         )
-        assign_material(foot, mat_rubber)
+        foot = bpy.context.active_object
+        foot.name = f"Foot_{idx}"
+        _assign_mat(foot, m_rub)
 
+    # ── Zone labels (laser-etched text on top plate) ──────────────────────────
     log("Adding zone labels and wordmark")
-    text_rot = (0.0, 0.0, 0.0)
-    create_zone_text("PHONE", (z1_x - 8 * MM, z1_y + 52 * MM, z1_top + 0.15 * MM), text_rot, 8.0, mat_etched)
-    create_zone_text("BUDS", (z2_x - 9 * MM, z2_y + 52 * MM, z2_top + 0.15 * MM), text_rot, 8.0, mat_etched)
-    create_zone_text("WATCH", (z3_x - 12 * MM, z3_y - 40 * MM, z3_top + 0.15 * MM), text_rot, 8.0, mat_etched)
+    dz = 0.15 * MM   # Z offset above top-plate surface
 
-    z4_text_y = 235 * MM
-    z4_text_x = x_from_right(z4_text_y, 45.0)
-    z4_top = top_height_at_y(z4_text_y) + TOP_THICKNESS
-    create_zone_text("LAPTOP", (z4_text_x - 14 * MM, z4_text_y, z4_top + 0.15 * MM), text_rot, 8.0, mat_etched)
+    _zone_label(
+        "PHONE",
+        (z1_cx - 12 * MM,
+         z1_y + Z1_H_MM * MM / 2 + 4 * MM,
+         z1_ztop + dz),
+        6.0, m_eth,
+    )
+    _zone_label(
+        "BUDS",
+        (z2_cx - 10 * MM,
+         z2_y + Z2_H_MM * MM / 2 + 4 * MM,
+         z2_ztop + dz),
+        6.0, m_eth,
+    )
 
-    wordmark_y = 270 * MM
-    wordmark_x = -20 * MM
-    wordmark_z = top_height_at_y(wordmark_y) + TOP_THICKNESS + 0.15 * MM
-    create_zone_text("Quad-Dock", (wordmark_x, wordmark_y, wordmark_z), text_rot, 9.0, mat_etched)
+    z3_top_z = height_at_y(z3_y) + TOP_T + dz
+    _zone_label(
+        "WATCH",
+        (z3_cx - 12 * MM, z3_y - 30 * MM, z3_top_z),
+        6.0, m_eth,
+    )
 
+    z4_label_y = 240 * MM
+    z4_label_x = x_from_right(z4_label_y, 48.0)
+    z4_label_z = height_at_y(z4_label_y) + TOP_T + dz
+    _zone_label(
+        "LAPTOP",
+        (z4_label_x, z4_label_y, z4_label_z),
+        6.0, m_eth,
+    )
+
+    wm_y = 270 * MM
+    wm_z = height_at_y(wm_y) + TOP_T + dz
+    _zone_label("Quad-Dock", (-22 * MM, wm_y, wm_z), 8.0, m_eth)
+
+    # ── Studio ground ─────────────────────────────────────────────────────────
     log("Building studio ground and background")
-    bpy.ops.mesh.primitive_plane_add(size=8.0, location=(0.0, 0.15, 0.0))
-    ground = bpy.context.active_object
-    ground.name = "Studio_Ground"
-    assign_material(ground, mat_ground)
+    bpy.ops.mesh.primitive_plane_add(size=8.0,
+                                     location=(0.0, LENGTH / 2, 0.0))
+    gnd = bpy.context.active_object
+    gnd.name = "Studio_Ground"
+    _assign_mat(gnd, m_gnd)
 
     world = bpy.data.worlds["World"]
     world.use_nodes = True
     bg = world.node_tree.nodes["Background"]
-    bg.inputs["Color"].default_value = hex_color(COLOR_WORLD)
-    bg.inputs["Strength"].default_value = 1.0
+    bg.inputs["Color"].default_value    = (1.0, 1.0, 1.0, 1.0)
+    bg.inputs["Strength"].default_value = 0.8
 
+    # ── Three-point studio lighting ───────────────────────────────────────────
     log("Setting up studio lights")
-    add_area_light(
-        name="Key_Light",
-        location=(-0.45, -0.18, 0.42),
+    _area_light(
+        "Key_Light",
+        location=(-0.6, -0.5, 0.7),
         rotation=(math.radians(58), math.radians(8), math.radians(-30)),
-        size_x=1.2,
-        size_y=1.2,
-        energy=8.0,
-        color=COLOR_KEY_LIGHT,
+        size_x=1.5, size_y=1.5, energy=600.0,
+        color=(1.000, 0.961, 0.902),    # warm white #FFF5E6
     )
-    add_area_light(
-        name="Fill_Light",
-        location=(0.48, -0.05, 0.30),
+    _area_light(
+        "Fill_Light",
+        location=(0.7, 0.1, 0.4),
         rotation=(math.radians(70), math.radians(-5), math.radians(38)),
-        size_x=1.2,
-        size_y=1.2,
-        energy=3.0,
-        color=COLOR_FILL_LIGHT,
+        size_x=1.2, size_y=1.2, energy=200.0,
+        color=(0.918, 0.957, 1.000),    # cool white #EAF4FF
     )
-    add_area_light(
-        name="Rim_Light",
-        location=(0.0, 0.58, 0.23),
+    _area_light(
+        "Rim_Light",
+        location=(0.0, 0.7, 0.5),
         rotation=(math.radians(120), 0.0, math.radians(180)),
-        size_x=0.35,
-        size_y=0.35,
-        energy=5.0,
-        color=COLOR_RIM_LIGHT,
+        size_x=0.4, size_y=0.4, energy=150.0,
+        color=(1.0, 1.0, 1.0),
     )
+
+    # ── Camera ────────────────────────────────────────────────────────────────
     log("Configuring camera")
-    bpy.ops.object.camera_add(location=(-0.38, -0.36, 0.24))
-    camera = bpy.context.active_object
-    camera.name = "Product_Camera"
-    camera.data.lens = 85.0
+    bpy.ops.object.camera_add(location=(-0.25, -0.30, 0.22))
+    cam = bpy.context.active_object
+    cam.name = "Product_Camera"
+    cam.data.lens = 85.0
+    look_at(cam, Vector((0.0, 0.13, 0.015)))
+    bpy.context.scene.camera = cam
 
-    target = Vector((0.0, LENGTH * 0.55, 0.02))
-    look_at(camera, target)
-    bpy.context.scene.camera = camera
-
+    # ── Render ────────────────────────────────────────────────────────────────
     log(f"Rendering to {OUTPUT_PATH}")
-    bpy.ops.render.render(write_still=True)
-    log("Render complete")
-    log(f"Output saved: {OUTPUT_PATH}")
+    try:
+        result = bpy.ops.render.render(write_still=True)
+        if "FINISHED" in result:
+            log("Render complete")
+            log(f"Output saved: {OUTPUT_PATH}")
+        else:
+            log(f"Render returned: {result}")
+    except Exception as exc:
+        log(f"Render raised exception: {exc!r}")
+        ri = bpy.data.images.get("Render Result")
+        if ri is not None:
+            log("Attempting to save partial render result…")
+            ri.save_render(str(OUTPUT_PATH))
+            log(f"Output saved: {OUTPUT_PATH}")
+        else:
+            raise
 
 
 if __name__ == "__main__":
