@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 180.0 340.0"
+     width="180.0mm" height="340.0mm">
+
+<defs>
+  <style>
+    .outline     { fill:none; stroke:#000000; stroke-width:0.5 }
+    .zone_pocket { fill:none; stroke:#0000ff; stroke-width:0.35 }
+    .cutout      { fill:none; stroke:#ff0000; stroke-width:0.35 }
+    .screw_hole  { fill:none; stroke:#008000; stroke-width:0.35 }
+    .led_channel { fill:none; stroke:#ffa500; stroke-width:0.25; stroke-dasharray:2,2 }
+    .centerline  { fill:none; stroke:#aaaaaa; stroke-width:0.2; stroke-dasharray:4,2 }
+    .label       { font-family:sans-serif; font-size:3.5px; fill:#333333 }
+    .title       { font-family:sans-serif; font-size:5px; font-weight:bold; fill:#000000 }
+  </style>
+</defs>
+
+<!-- QUAD-DOCK TOP PLATE — 2D LASER CUT PROFILE — ALL DIMENSIONS IN mm -->
+
+<!-- Outer outline -->
+  <polygon points="20.000,20.000 130.000,20.000 160.000,320.000 20.000,320.000" class="outline" />
+<!-- Zone 1: Phone Qi pocket ∅80 mm -->
+  <circle cx="55.000" cy="75.000" r="40.000" class="zone_pocket" />
+  <text x="96.000" y="75.000" class="label">Z1 PHONE ∅80</text>
+<!-- Zone 2: Buds Qi pocket ∅60 mm -->
+  <circle cx="77.750" cy="75.000" r="30.000" class="zone_pocket" />
+  <text x="108.750" y="75.000" class="label">Z2 BUDS ∅60</text>
+<!-- Zone 3: Watch cradle ∅50 mm -->
+  <circle cx="55.000" cy="240.000" r="25.000" class="zone_pocket" />
+  <text x="81.000" y="240.000" class="label">Z3 WATCH ∅50</text>
+<!-- Zone 4: Laptop groove 22×12 mm -->
+  <rect x="108.000" y="308.000" width="22.000" height="12.000" class="cutout" />
+  <text x="78.000" y="314.000" class="label">Z4 LAPTOP 22×12</text>
+<!-- IEC C13 inlet 28×20 mm — rear wall centre -->
+  <rect x="76.000" y="317.000" width="28.000" height="3.000" class="cutout" />
+  <text x="76.000" y="327.000" class="label">IEC C13 28×20</text>
+<!-- M3 screw holes ∅3.2 mm -->
+  <circle cx="40.000" cy="170.000" r="1.600" class="screw_hole" />
+  <circle cx="125.000" cy="170.000" r="1.600" class="screw_hole" />
+<!-- LED channel 290×8 mm — front lip -->
+  <rect x="25.000" y="20.000" width="290.000" height="8.000" class="led_channel" />
+<!-- Centreline -->
+  <line x1="90.000" y1="20.000" x2="90.000" y2="320.000" class="centerline" />
+  <text x="20.000" y="12.000" class="title">QUAD-DOCK TOP PLATE  |  Material: 2 mm 6061 Aluminium  |  Units: mm</text>
+</svg>
