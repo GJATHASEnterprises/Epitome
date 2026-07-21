@@ -58,7 +58,7 @@ Prove demand. Sell enough to recoup the $1,500 investment and fund the injection
 | 17 | $3,213 | $1,500 | $1,713 |
 | 19 | $3,591 | $1,500 | $2,091 |
 
-*Note: Break-even is roughly at 13 units when amortising the $1,500 investment across all 17–19 units (≈ $88/unit investment). At 13 units sold the total revenue ($2,457) covers the $1,500 investment with ~$957 to spare.*
+*Note: Break-even is roughly at 13 units when amortizing the $1,500 investment across all 17–19 units (≈ $88/unit investment). At 13 units sold the total revenue ($2,457) covers the $1,500 investment with ~$957 to spare.*
 
 ---
 

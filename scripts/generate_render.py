@@ -292,7 +292,7 @@ def draw_variant(image: Image.Image, v: dict, fonts: dict) -> None:
 
     # --- Variant label ---
     draw_centered_text(draw, (ox + 415, 900), f"Quad-Dock — {v['label']}", fonts["brand"], v["brand_text_color"])
-    draw_centered_text(draw, (ox + 415, 930), "Internal 180W PSU · IEC C13 · WS2812B LED bar · MagSafe magnets · USB-A",
+    draw_centered_text(draw, (ox + 415, 930), "Internal 180W PSU · IEC C13 · WS2812B LED bar · MagSafe magnets · USB-C PD 100W",
                        fonts["tiny"], v["description_text_color"])
 
 
