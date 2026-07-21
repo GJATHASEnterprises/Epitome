@@ -1,102 +1,102 @@
-# Quad Device Dock
+# Quad-Dock
 
-![Quad Device Dock Render](images/quad-dock-render.png)
+![Quad-Dock Render](images/quad-dock-render.png)
 
-**A smart, app-controlled 4-zone charging dock for Apple devices and laptops.**
+**A smart, app-controlled 4-zone charging dock for phones, Apple Watch, AirPods, and laptops.**
 
 ---
 
 ## Overview
 
-The Quad Device Dock is a self-built, smart charging station designed to charge up to 4 devices simultaneously from a single wall connection. It features wireless Qi charging zones, a built-in Apple Watch puck, a high-power USB-C laptop output, a USB-A side port for accessories, a continuous WS2812B LED status bar, and a companion mobile app for full customization.
+Quad-Dock is a self-built, smart charging station that charges up to 4 devices simultaneously from a single wall outlet. It features a brushed aluminum top plate in the "Arc" enclosure — a smooth curved wedge with zero sharp corners — dual 15W Qi wireless coils, a built-in Apple Watch puck, 100W USB-C PD for any modern laptop, a WS2812B LED status bar with laser-etched zone icons, and a companion iOS app with theft alerts, ambient light dimming, and weekly charge reports.
 
-The dock plugs directly into a standard wall outlet via a built-in IEC C13 inlet and an internal 180W AC/DC power supply — no external power brick required.
+Plugs directly into the wall via a built-in IEC C13 inlet and internal 180W AC/DC power supply — no external power brick required.
 
-Available in **Black** and **White** colorways.
+Available in **Black** and **White**.
 
 ---
 
-## Zones
+## 4-Zone Layout
 
-| Zone | Device | Method |
-|------|--------|--------|
-| Zone 1 | Phone | Qi Wireless (15W), MagSafe-style alignment magnets |
-| Zone 2 | Phone / AirPods | Qi Wireless (15W) |
-| Zone 3 | Apple Watch | Built-in Watch Puck (wired internally) |
-| Zone 4 | MacBook / Laptop | USB-C PD (up to 100W) |
-| Side port | Accessories / older devices | USB-A 12W (5V/2.4A) |
+```
++-----------------------------------------------------------+
+|  REAR                                                     |
+|  ┌─────────────────────────────────────────────────────┐  |
+|  │  [⌚ ZONE 3 — Watch]      [💻 ZONE 4 — Laptop]      │  |
+|  │  Teardrop cradle           Vertical spine groove    │  |
+|  │  30° tilt, rear-left        rear-right, 22×12mm     │  |
+|  └─────────────────────────────────────────────────────┘  |
+|  ┌─────────────────────────────────────────────────────┐  |
+|  │  [📱 ZONE 1 — Phone]       [🎧 ZONE 2 — Buds]       │  |
+|  │  15W Qi + magnets          15W Qi, phones/AirPods   │  |
+|  └─────────────────────────────────────────────────────┘  |
+|  [■■■■ PHONE ■■■■|■■■■ BUDS ■■■■|■■■■ WATCH ■■■■|■■ LAPTOP ■■] LED bar
++-----------------------------------------------------------+
+  FRONT                              IEC C13 inlet (rear)
+```
 
 ---
 
 ## Key Features
-- Plugs directly into the wall — internal 180W AC/DC PSU, IEC C13 inlet (standard PC/kettle cable)
-- Continuous WS2812B addressable LED bar across the full front edge — color per zone
-- Ambient light sensor (TEMT6000) auto-dims LEDs in dark rooms, brightens in light
-- Smart per-zone power monitoring
-- ESP32-powered intelligence (WiFi + Bluetooth)
-- Companion iOS/Android app (Flutter)
-- Auto device detection — app displays device type icon per zone
-- Theft alert — push notification if device is removed unexpectedly
-- OTA firmware updates via app
-- Weekly charge report in app
-- Voice assistant shortcuts (Siri / Google Assistant)
-- Battery health scheduling (stop at 80%)
-- Priority charging mode
-- Real-time charge % display per device
-- Overcharge and overheat protection
+
+- **4 devices at once** — 3 phones simultaneously, Apple Watch, and any modern laptop
+- **100W USB-C PD** on Zone 4 — works with any USB-C laptop from the last 6 years
+- **Dual 15W Qi** on Zones 1 + 2 — fast wireless charging for phones and AirPods
+- **Apple Watch puck** built-in on Zone 3 — no adapter needed
+- **Arc enclosure** — smooth curved wedge, brushed aluminum top, soft-touch ABS base, zero sharp corners
+- **WS2812B LED bar** with frosted diffuser and laser-etched zone icons (📱 PHONE, 🎧 BUDS, ⌚ WATCH, 💻 LAPTOP)
+- **LED states:** Red = charging, Green = full, Off = empty
+- **Companion iOS app** — theft alerts, ambient auto-dim, BLE proximity, weekly charge reports, home screen widget
+- **ESP32-C3 Mini** MCU — WiFi + BLE, flashed via onboard USB
+- **Internal 180W PSU** — no external power brick
+- **No physical buttons** — all control via app
 
 ---
 
-## Physical Features
-- **Tiered/stepped enclosure** — front tier is 15mm tall, rear tier rises to 40mm for an architectural, premium look
-- **Aluminum top plate** — passively cools Qi coils; sourced cut-to-size from SendCutSend
-- **ABS base** — raw matte finish, no paint or coating needed
-- **Integrated molded ABS rails** — part of the base; small rails on Zones 1–3, tall 40–50mm rails on Zone 4 for laptop support
-- **Silicone pads** on all charging zones to prevent scratching and improve device grip
-- **Cooling vents** slotted into the base for passive airflow
-- **Removable aluminum top plate** — unscrews with M3 fasteners for DIY repair access
-- **Cable clips** integrated on the rear to route the laptop USB-C cable neatly
-- **IEC C13 power inlet** on rear — uses any standard PC power cable
-- **USB-A port** on the right side for 12W accessory charging
-- **M3 screws** standardized throughout for easy assembly and repair
-- Available in **Black** and **White** colorways
+## Compatibility
+
+See [docs/compatibility.md](docs/compatibility.md) for the full list. Quick summary:
+
+- **Phones:** iPhone (any Qi-capable), Android (any Qi), Zone 4 USB-C for any phone
+- **Laptops:** MacBook Air, MacBook Pro, Dell XPS, HP Spectre, Lenovo ThinkPad/IdeaPad, ASUS, Acer, Surface Pro, Samsung Galaxy Book, any USB-C laptop (2018+)
+- **Apple Watch:** Series 1–9, SE, Ultra
+- **AirPods:** Pro (1st/2nd gen), 3rd gen, AirPods 4 (Qi case)
+- **iPad:** iPad Pro, Air, mini (USB-C models via Zone 4)
 
 ---
 
-## LED Status System
+## Pricing
 
-| LED State | Meaning |
-|-----------|---------|
-| Red segment | Device actively charging on that zone |
-| Green segment | Device fully charged on that zone |
-| Off segment | No device detected on that zone |
-| Full bar pulses green | All four zones simultaneously at 100% |
-| LEDs off | Dark mode active (set via app or ambient sensor) |
-
----
-
-## Target Pricing
-
-| Version | Price |
-|---------|-------|
-| Standard (Black or White) | $249–$279 |
-| Premium (bundled accessories) | $299–$349 |
+| Color | Price |
+|-------|-------|
+| Black | $189 |
+| White | $189 |
 
 ---
 
 ## Documentation
 
-- [Design Spec](docs/design-spec.md)
-- [Bill of Materials](docs/bom.md)
-- [Wiring & Schematic Notes](docs/wiring.md)
-- [App Feature Spec](docs/app-spec.md)
-- [Layout Diagram](docs/layout-diagram.md)
+| Doc | Contents |
+|-----|----------|
+| [Enclosure Spec](docs/enclosure.md) | Arc design, dimensions, materials, zones, LED system |
+| [Electronics Spec](docs/electronics.md) | ESP32-C3, all ICs, power architecture, sensors |
+| [App Spec](docs/app-spec.md) | iOS app features, theft alerts, BLE, notifications |
+| [Bill of Materials](docs/bom.md) | Prototype + production BOM, cost breakdown |
+| [Compatibility](docs/compatibility.md) | All supported devices and charge speeds |
+| [Production Roadmap](docs/production-roadmap.md) | Batch 1 laser cut → batch 2 mold → batch 3+ |
+| [Prototype Guide](docs/prototype-guide.md) | 4-week build plan, tools, checklist |
+| [Marketability](docs/marketability.md) | Selling points, target markets, pricing rationale |
+| [Wiring Notes](docs/wiring.md) | Schematic notes, pin assignments, PCB notes |
 
 ---
 
 ## Target Build Cost
-- **Per unit (self-built, 20–50 qty):** ~$74–$104
-- **Per unit (self-built, 50+ qty):** ~$62–$90
+
+| Quantity | Target BOM |
+|----------|-----------|
+| 20–50 units | ~$75–$85 (laser cut batch) |
+| 50 units | ~$67 (with bulk sourcing) |
+| 100+ units | ~$64 |
 
 ---
 

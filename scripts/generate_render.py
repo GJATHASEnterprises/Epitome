@@ -291,8 +291,8 @@ def draw_variant(image: Image.Image, v: dict, fonts: dict) -> None:
     draw.text((ox + 360, 840), "Cable clips", font=fonts["tiny"], fill=v["text_muted"])
 
     # --- Variant label ---
-    draw_centered_text(draw, (ox + 415, 900), f"Quad Device Dock — {v['label']}", fonts["brand"], v["brand_text_color"])
-    draw_centered_text(draw, (ox + 415, 930), "Internal 180W PSU · IEC C13 · WS2812B LED bar · MagSafe magnets · USB-A",
+    draw_centered_text(draw, (ox + 415, 900), f"Quad-Dock — {v['label']}", fonts["brand"], v["brand_text_color"])
+    draw_centered_text(draw, (ox + 415, 930), "Internal 180W PSU · IEC C13 · WS2812B LED bar · MagSafe magnets · USB-C PD 100W",
                        fonts["tiny"], v["description_text_color"])
 
 
@@ -312,7 +312,7 @@ def main() -> None:
         "tiny": load_font(13, bold=False),
     }
 
-    draw_centered_text(draw, (CANVAS_SIZE[0] / 2, 44), "Quad Device Dock — Rendered Product Visualization", fonts["title"], "#36414f")
+    draw_centered_text(draw, (CANVAS_SIZE[0] / 2, 44), "Quad-Dock — Rendered Product Visualization", fonts["title"], "#36414f")
     draw_centered_text(draw, (CANVAS_SIZE[0] / 2, 76), "Available in Black and White · Tiered enclosure · Internal 180W PSU", fonts["label"], "#607080")
 
     for v in VARIANTS:
