@@ -68,7 +68,7 @@ BODY_WALL_T  =   3.00   # wall thickness
 CORNER_R     =  20.00   # plan-view corner radius (representational in STL)
 
 # --- Aluminium top plate ---
-TOP_THICK    =   1.50   # plate thickness (spec: 1.50 mm, 6061 Al)
+TOP_THICK    =   1.50   # plate thickness (spec: 1.50 mm, 6061 Al; previous incorrect value was 2.0 mm)
 
 # --- Zone 1 — Phone Qi pocket (front-left, rounded rectangle) ---
 Z1_CX        =  35.00   # centre X from left edge
