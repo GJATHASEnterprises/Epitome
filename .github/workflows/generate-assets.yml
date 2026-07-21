@@ -36,7 +36,10 @@ jobs:
           if ! pip install -r scripts/requirements.txt; then
             echo "::warning::requirements.txt install had failures; attempting fallback package installs."
             # Fallback installs for environments where optional/compiled deps fail.
-            pip install matplotlib Pillow numpy trimesh pygltflib scipy ezdxf numpy-stl || echo "::warning::Some fallback dependency installs failed; continuing because scripts handle optional features."
+            pip install matplotlib Pillow numpy trimesh pygltflib scipy ezdxf numpy-stl || {
+              echo "::error::Fallback install for core generation dependencies failed."
+              exit 1
+            }
           fi
           pip install cadquery || echo "::warning::cadquery install failed; continuing because CAD exports have graceful fallbacks."
 
@@ -53,11 +56,6 @@ jobs:
 
       - name: Commit and push regenerated assets
         run: |
-          if [ "${GITHUB_REF_NAME}" != "main" ]; then
-            echo "This workflow is configured to commit generated assets back to main only."
-            exit 1
-          fi
-
           # Only commit when generated assets actually changed.
           if git diff --quiet -- assets/; then
             echo "No asset changes detected."
