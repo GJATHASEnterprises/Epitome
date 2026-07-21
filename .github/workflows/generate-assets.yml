@@ -7,7 +7,6 @@ on:
     # Regenerate assets automatically when generator inputs change.
     paths:
       - scripts/generate_3d_model.py
-      - scripts/generate_image.py
       - scripts/generate_render.py
       - scripts/requirements.txt
       - docs/**
@@ -54,7 +53,9 @@ jobs:
       - name: Generate image assets
         continue-on-error: false
         run: |
-          sudo snap install blender --classic
+          if ! command -v blender >/dev/null 2>&1; then
+            sudo snap install blender --classic
+          fi
           blender --background --python scripts/generate_render.py
 
       - name: Verify generated asset files exist

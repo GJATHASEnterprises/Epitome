@@ -17,6 +17,26 @@ REAR_W = 140 * MM
 BASE_FRONT_H = 12 * MM
 BASE_REAR_H = 22 * MM
 TOP_THICKNESS = 2 * MM
+LED_TOTAL_LENGTH_MM = 290.0
+LED_SECTION_GAP_MM = 2.0
+
+COLOR_ABS = "#1A1A1A"
+COLOR_ALUMINUM = "#2C2C2C"
+COLOR_SILICONE = "#2A2A2A"
+COLOR_RUBBER = "#0D0D0D"
+COLOR_ETCHED = "#222222"
+COLOR_LED = "#FFE4B5"
+COLOR_GROUND = "#F5F5F5"
+COLOR_WORLD = "#FFFFFF"
+COLOR_KEY_LIGHT = "#FFF2E0"
+COLOR_FILL_LIGHT = "#EAF4FF"
+COLOR_RIM_LIGHT = "#FFFFFF"
+
+BRUSH_MAPPING_SCALE = (220.0, 1.2, 1.2)
+BRUSH_NOISE_SCALE = 340.0
+BRUSH_NOISE_DETAIL = 2.0
+BRUSH_NOISE_ROUGHNESS = 0.3
+BRUSH_RAMP_POSITIONS = (0.35, 0.7)
 
 
 # -----------------------------------------------------------------------------
@@ -36,15 +56,13 @@ def hex_color(hex_code: str, alpha: float = 1.0) -> tuple[float, float, float, f
 
 
 def width_at_y(y_m: float) -> float:
-    y_mm = y_m / MM
-    width_mm = 110.0 + (140.0 - 110.0) * (y_mm / 300.0)
-    return width_mm * MM
+    y_ratio = y_m / LENGTH
+    return FRONT_W + (REAR_W - FRONT_W) * y_ratio
 
 
 def top_height_at_y(y_m: float) -> float:
-    y_mm = y_m / MM
-    height_mm = 12.0 + (22.0 - 12.0) * (y_mm / 300.0)
-    return height_mm * MM
+    y_ratio = y_m / LENGTH
+    return BASE_FRONT_H + (BASE_REAR_H - BASE_FRONT_H) * y_ratio
 
 
 def x_from_left(y_m: float, distance_from_left_mm: float) -> float:
@@ -87,9 +105,16 @@ def setup_cycles() -> None:
     scene.render.filepath = str(OUTPUT_PATH)
 
     scene.unit_settings.system = "METRIC"
+    # Keep Blender units in meters; all geometry dimensions are scaled via MM.
     scene.unit_settings.scale_length = 1.0
 
-    prefs = bpy.context.preferences.addons["cycles"].preferences
+    cycles_addon = bpy.context.preferences.addons.get("cycles")
+    if not cycles_addon:
+        scene.cycles.device = "CPU"
+        log("Cycles addon preferences unavailable; falling back to CPU")
+        return
+
+    prefs = cycles_addon.preferences
     gpu_types = ["CUDA", "OPTIX", "HIP", "METAL", "ONEAPI"]
     selected_gpu = None
 
@@ -173,7 +198,7 @@ def create_material_abs_black() -> bpy.types.Material:
     mat = bpy.data.materials.new("ABS_Matte_Black")
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color("#1A1A1A")
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ABS)
     bsdf.inputs["Roughness"].default_value = 0.9
     bsdf.inputs["Metallic"].default_value = 0.0
     return mat
@@ -187,7 +212,7 @@ def create_material_aluminum() -> bpy.types.Material:
     links = nt.links
 
     bsdf = nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color("#2C2C2C")
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ALUMINUM)
     bsdf.inputs["Metallic"].default_value = 0.95
     bsdf.inputs["Roughness"].default_value = 0.15
     bsdf.inputs["Anisotropic"].default_value = 0.6
@@ -202,12 +227,12 @@ def create_material_aluminum() -> bpy.types.Material:
     noise.location = (-440, 200)
     ramp.location = (-250, 200)
 
-    mapping.inputs["Scale"].default_value = (220.0, 1.2, 1.2)
-    noise.inputs["Scale"].default_value = 340.0
-    noise.inputs["Detail"].default_value = 2.0
-    noise.inputs["Roughness"].default_value = 0.3
-    ramp.color_ramp.elements[0].position = 0.35
-    ramp.color_ramp.elements[1].position = 0.7
+    mapping.inputs["Scale"].default_value = BRUSH_MAPPING_SCALE
+    noise.inputs["Scale"].default_value = BRUSH_NOISE_SCALE
+    noise.inputs["Detail"].default_value = BRUSH_NOISE_DETAIL
+    noise.inputs["Roughness"].default_value = BRUSH_NOISE_ROUGHNESS
+    ramp.color_ramp.elements[0].position = BRUSH_RAMP_POSITIONS[0]
+    ramp.color_ramp.elements[1].position = BRUSH_RAMP_POSITIONS[1]
 
     links.new(texcoord.outputs["Object"], mapping.inputs["Vector"])
     links.new(mapping.outputs["Vector"], noise.inputs["Vector"])
@@ -221,7 +246,7 @@ def create_material_silicone() -> bpy.types.Material:
     mat = bpy.data.materials.new("Silicone_Dark")
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color("#2A2A2A")
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_SILICONE)
     bsdf.inputs["Roughness"].default_value = 0.95
     bsdf.inputs["Metallic"].default_value = 0.0
     return mat
@@ -231,7 +256,7 @@ def create_material_rubber() -> bpy.types.Material:
     mat = bpy.data.materials.new("Rubber_Black")
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color("#0D0D0D")
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_RUBBER)
     bsdf.inputs["Roughness"].default_value = 1.0
     return mat
 
@@ -240,7 +265,7 @@ def create_material_etched() -> bpy.types.Material:
     mat = bpy.data.materials.new("Etched_Text")
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color("#222222")
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ETCHED)
     bsdf.inputs["Roughness"].default_value = 0.3
     bsdf.inputs["Metallic"].default_value = 0.7
     return mat
@@ -253,10 +278,10 @@ def create_material_led() -> bpy.types.Material:
     nodes = nt.nodes
 
     bsdf = nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color("#FFE4B5")
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_LED)
     bsdf.inputs["Roughness"].default_value = 0.45
     bsdf.inputs["Transmission Weight"].default_value = 0.22
-    bsdf.inputs["Emission Color"].default_value = hex_color("#FFE4B5")
+    bsdf.inputs["Emission Color"].default_value = hex_color(COLOR_LED)
     bsdf.inputs["Emission Strength"].default_value = 3.0
 
     return mat
@@ -266,7 +291,7 @@ def create_material_ground() -> bpy.types.Material:
     mat = bpy.data.materials.new("Ground_Studio")
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes["Principled BSDF"]
-    bsdf.inputs["Base Color"].default_value = hex_color("#F5F5F5")
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_GROUND)
     bsdf.inputs["Roughness"].default_value = 0.12
     bsdf.inputs["Specular IOR Level"].default_value = 0.35
     return mat
@@ -305,6 +330,29 @@ def create_zone_text(label: str, location: tuple[float, float, float], rotation:
 
     text_mesh.location.z -= 0.3 * MM
     assign_material(text_mesh, material)
+
+
+def add_area_light(
+    name: str,
+    location: tuple[float, float, float],
+    rotation: tuple[float, float, float],
+    size_x: float,
+    size_y: float,
+    energy: float,
+    color: str,
+) -> bpy.types.Object:
+    data = bpy.data.lights.new(name=name, type="AREA")
+    data.shape = "RECTANGLE"
+    data.size = size_x
+    data.size_y = size_y
+    data.energy = energy
+    data.color = hex_color(color)[:3]
+
+    light = bpy.data.objects.new(name=name, object_data=data)
+    bpy.context.collection.objects.link(light)
+    light.location = location
+    light.rotation_euler = Euler(rotation, "XYZ")
+    return light
 
 
 def main() -> None:
@@ -429,12 +477,12 @@ def main() -> None:
     assign_material(groove_lining, mat_silicone)
 
     log("Adding LED bar underside (4 sections)")
-    section_len_mm = (290.0 - (3.0 * 2.0)) / 4.0
-    start_x = -145.0
+    section_len_mm = (LED_TOTAL_LENGTH_MM - (3.0 * LED_SECTION_GAP_MM)) / 4.0
+    start_x = -(LED_TOTAL_LENGTH_MM / 2.0)
     led_y = 4.0
     led_z = 3.5
     for idx in range(4):
-        section_center_x_mm = start_x + section_len_mm / 2.0 + idx * (section_len_mm + 2.0)
+        section_center_x_mm = start_x + section_len_mm / 2.0 + idx * (section_len_mm + LED_SECTION_GAP_MM)
         bpy.ops.mesh.primitive_cube_add(
             size=1.0,
             location=(section_center_x_mm * MM, led_y * MM, led_z * MM),
@@ -486,39 +534,37 @@ def main() -> None:
     world = bpy.data.worlds["World"]
     world.use_nodes = True
     bg = world.node_tree.nodes["Background"]
-    bg.inputs["Color"].default_value = hex_color("#FFFFFF")
+    bg.inputs["Color"].default_value = hex_color(COLOR_WORLD)
     bg.inputs["Strength"].default_value = 1.0
 
     log("Setting up studio lights")
-    key = add_area_light(
+    add_area_light(
         name="Key_Light",
         location=(-0.45, -0.18, 0.42),
         rotation=(math.radians(58), math.radians(8), math.radians(-30)),
         size_x=1.2,
         size_y=1.2,
         energy=8.0,
-        color="#FFF2E0",
+        color=COLOR_KEY_LIGHT,
     )
-    fill = add_area_light(
+    add_area_light(
         name="Fill_Light",
         location=(0.48, -0.05, 0.30),
         rotation=(math.radians(70), math.radians(-5), math.radians(38)),
         size_x=1.2,
         size_y=1.2,
         energy=3.0,
-        color="#EAF4FF",
+        color=COLOR_FILL_LIGHT,
     )
-    rim = add_area_light(
+    add_area_light(
         name="Rim_Light",
         location=(0.0, 0.58, 0.23),
         rotation=(math.radians(120), 0.0, math.radians(180)),
         size_x=0.35,
         size_y=0.35,
         energy=5.0,
-        color="#FFFFFF",
+        color=COLOR_RIM_LIGHT,
     )
-    _ = (key, fill, rim)
-
     log("Configuring camera")
     bpy.ops.object.camera_add(location=(-0.38, -0.36, 0.24))
     camera = bpy.context.active_object
@@ -532,29 +578,6 @@ def main() -> None:
     log(f"Rendering to {OUTPUT_PATH}")
     bpy.ops.render.render(write_still=True)
     log("Render complete")
-
-
-def add_area_light(
-    name: str,
-    location: tuple[float, float, float],
-    rotation: tuple[float, float, float],
-    size_x: float,
-    size_y: float,
-    energy: float,
-    color: str,
-) -> bpy.types.Object:
-    data = bpy.data.lights.new(name=name, type="AREA")
-    data.shape = "RECTANGLE"
-    data.size = size_x
-    data.size_y = size_y
-    data.energy = energy
-    data.color = hex_color(color)[:3]
-
-    light = bpy.data.objects.new(name=name, object_data=data)
-    bpy.context.collection.objects.link(light)
-    light.location = location
-    light.rotation_euler = Euler(rotation, "XYZ")
-    return light
 
 
 if __name__ == "__main__":

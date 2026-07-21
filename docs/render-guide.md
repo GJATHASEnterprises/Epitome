@@ -4,7 +4,9 @@
 Blender 4.0+ (free) — https://www.blender.org/download/
 
 ## Run
+```bash
 blender --background --python scripts/generate_render.py
+```
 
 ## Output
 assets/quad-dock-render.png — 2400x1600px photorealistic render
