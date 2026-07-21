@@ -98,14 +98,18 @@ def setup_cycles() -> None:
     scene = bpy.context.scene
     scene.render.engine = "CYCLES"
     scene.cycles.samples = 256
-    scene.cycles.use_denoising = True
+
+    # Disable denoising — OIDN is not available in the apt/snap Blender 4.0 build.
+    # The render still looks great at 256 samples without it.
+    scene.cycles.use_denoising = False
+    log("Denoising disabled (OIDN not available in this Blender build)")
+
     scene.render.resolution_x = 2400
     scene.render.resolution_y = 1600
     scene.render.image_settings.file_format = "PNG"
     scene.render.filepath = str(OUTPUT_PATH)
 
     scene.unit_settings.system = "METRIC"
-    # Keep Blender units in meters; all geometry dimensions are scaled via MM.
     scene.unit_settings.scale_length = 1.0
 
     cycles_addon = bpy.context.preferences.addons.get("cycles")
@@ -280,7 +284,6 @@ def create_material_led() -> bpy.types.Material:
     bsdf = nodes["Principled BSDF"]
     bsdf.inputs["Base Color"].default_value = hex_color(COLOR_LED)
     bsdf.inputs["Roughness"].default_value = 0.45
-    bsdf.inputs["Transmission Weight"].default_value = 0.22
     bsdf.inputs["Emission Color"].default_value = hex_color(COLOR_LED)
     bsdf.inputs["Emission Strength"].default_value = 3.0
 
@@ -293,7 +296,6 @@ def create_material_ground() -> bpy.types.Material:
     bsdf = mat.node_tree.nodes["Principled BSDF"]
     bsdf.inputs["Base Color"].default_value = hex_color(COLOR_GROUND)
     bsdf.inputs["Roughness"].default_value = 0.12
-    bsdf.inputs["Specular IOR Level"].default_value = 0.35
     return mat
 
 
@@ -578,6 +580,7 @@ def main() -> None:
     log(f"Rendering to {OUTPUT_PATH}")
     bpy.ops.render.render(write_still=True)
     log("Render complete")
+    log(f"Output saved: {OUTPUT_PATH}")
 
 
 if __name__ == "__main__":
