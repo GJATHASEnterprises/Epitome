@@ -74,7 +74,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: regenerate assets [skip ci]"
           for attempt in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && break
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              break
+            fi
             git rebase --abort || true
             if [ "$attempt" -eq 3 ]; then
               echo "::error::Failed to push regenerated assets after 3 attempts."
