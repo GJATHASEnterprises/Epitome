@@ -3,7 +3,7 @@
 ## Product Render
 ![Quad-Dock Render](assets/quad-dock-render.png)
 
-> Pre-generated. Regenerate at any time by running `python scripts/generate_image.py`.
+> Pre-generated. Regenerate at any time by running `blender --background --python scripts/generate_render.py`.
 
 ## 3D Model
 Open [`assets/quad-dock-model.glb`](assets/quad-dock-model.glb) to view the interactive 3D model in GitHub — rotate, zoom, and inspect from any angle. Always reflects the latest design.

@@ -1,327 +1,583 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
-try:
-    from PIL import Image, ImageDraw, ImageFilter, ImageFont
-except ImportError as exc:  # pragma: no cover - runtime guard for environments without Pillow
-    raise SystemExit(
-        "Pillow is required to generate the dock render. Install it with `python -m pip install pillow`."
-    ) from exc
+import bpy
+from mathutils import Euler, Vector
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATHS = [
-    ROOT / "images" / "quad-dock-render.png",
-    ROOT / "docs" / "images" / "quad-dock-render.png",
-]
+OUTPUT_PATH = ROOT / "assets" / "quad-dock-render.png"
 
-# Canvas holds both black and white variants side by side.
-CANVAS_SIZE = (1700, 960)
-BACKGROUND = "#d8dce2"
-TEXT_PRIMARY = "#f7f8fa"
-TEXT_MUTED = "#b7bec8"
-ACCENT = "#73d6ff"
-LED_RED = "#ff4f4f"
-LED_GREEN = "#5fe087"
-LED_OFF = "#3a3f47"
+MM = 0.001
+LENGTH = 300 * MM
+FRONT_W = 110 * MM
+REAR_W = 140 * MM
+BASE_FRONT_H = 12 * MM
+BASE_REAR_H = 22 * MM
+TOP_THICKNESS = 2 * MM
+LED_TOTAL_LENGTH_MM = 290.0
+LED_SECTION_GAP_MM = 2.0
 
-VARIANTS = [
-    {
-        "label": "Black",
-        "offset_x": 20,
-        "dock_color": "#171b21",
-        "dock_edge": "#2a313b",
-        "top_plate": "#1a1e24",
-        "top_edge": "#3a4250",
-        "zone_fill": "#202732",
-        "zone_outline": "#4a5462",
-        "rail_fill": (60, 70, 80, 120),
-        "rubber_fill": (40, 48, 58, 200),
-        "led_bar_bg": "#0f1218",
-        "text_muted": "#9ba5b2",
-        "silicone_pad_outline": "#556677",
-        "brand_text_color": TEXT_PRIMARY,
-        "description_text_color": TEXT_MUTED,
-    },
-    {
-        "label": "White",
-        "offset_x": 870,
-        "dock_color": "#e8eaed",
-        "dock_edge": "#c8ccd4",
-        "top_plate": "#f0f2f4",
-        "top_edge": "#b0b8c4",
-        "zone_fill": "#d0d4da",
-        "zone_outline": "#a0a8b2",
-        "rail_fill": (180, 190, 200, 120),
-        "rubber_fill": (130, 140, 150, 200),
-        "led_bar_bg": "#b0b5bc",
-        "text_muted": "#505870",
-        "silicone_pad_outline": "#8899aa",
-        "brand_text_color": "#303848",
-        "description_text_color": "#606878",
-    },
-]
+COLOR_ABS = "#1A1A1A"
+COLOR_ALUMINUM = "#2C2C2C"
+COLOR_SILICONE = "#2A2A2A"
+COLOR_RUBBER = "#0D0D0D"
+COLOR_ETCHED = "#222222"
+COLOR_LED = "#FFE4B5"
+COLOR_GROUND = "#F5F5F5"
+COLOR_WORLD = "#FFFFFF"
+COLOR_KEY_LIGHT = "#FFF2E0"
+COLOR_FILL_LIGHT = "#EAF4FF"
+COLOR_RIM_LIGHT = "#FFFFFF"
+
+BRUSH_MAPPING_SCALE = (220.0, 1.2, 1.2)
+BRUSH_NOISE_SCALE = 340.0
+BRUSH_NOISE_DETAIL = 2.0
+BRUSH_NOISE_ROUGHNESS = 0.3
+BRUSH_RAMP_POSITIONS = (0.35, 0.7)
 
 
-def load_font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
-    font_names = [
-        "DejaVuSans-Bold.ttf" if bold else "DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    ]
-    for font_name in font_names:
+# -----------------------------------------------------------------------------
+# Helpers
+# -----------------------------------------------------------------------------
+
+def log(message: str) -> None:
+    print(f"[quad-dock-render] {message}")
+
+
+def hex_color(hex_code: str, alpha: float = 1.0) -> tuple[float, float, float, float]:
+    code = hex_code.lstrip("#")
+    r = int(code[0:2], 16) / 255.0
+    g = int(code[2:4], 16) / 255.0
+    b = int(code[4:6], 16) / 255.0
+    return (r, g, b, alpha)
+
+
+def width_at_y(y_m: float) -> float:
+    y_ratio = y_m / LENGTH
+    return FRONT_W + (REAR_W - FRONT_W) * y_ratio
+
+
+def top_height_at_y(y_m: float) -> float:
+    y_ratio = y_m / LENGTH
+    return BASE_FRONT_H + (BASE_REAR_H - BASE_FRONT_H) * y_ratio
+
+
+def x_from_left(y_m: float, distance_from_left_mm: float) -> float:
+    width = width_at_y(y_m)
+    left = -width / 2.0
+    return left + distance_from_left_mm * MM
+
+
+def x_from_right(y_m: float, distance_from_right_mm: float) -> float:
+    width = width_at_y(y_m)
+    right = width / 2.0
+    return right - distance_from_right_mm * MM
+
+
+def look_at(obj: bpy.types.Object, target: Vector) -> None:
+    direction = target - obj.location
+    obj.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
+
+
+def clear_scene() -> None:
+    log("Clearing existing scene")
+    bpy.ops.object.select_all(action="SELECT")
+    bpy.ops.object.delete(use_global=False)
+
+    for datablock in (bpy.data.meshes, bpy.data.materials, bpy.data.lights, bpy.data.curves, bpy.data.cameras):
+        for block in list(datablock):
+            if block.users == 0:
+                datablock.remove(block)
+
+
+def setup_cycles() -> None:
+    log("Configuring Cycles render settings")
+    scene = bpy.context.scene
+    scene.render.engine = "CYCLES"
+    scene.cycles.samples = 256
+    scene.cycles.use_denoising = True
+    scene.render.resolution_x = 2400
+    scene.render.resolution_y = 1600
+    scene.render.image_settings.file_format = "PNG"
+    scene.render.filepath = str(OUTPUT_PATH)
+
+    scene.unit_settings.system = "METRIC"
+    # Keep Blender units in meters; all geometry dimensions are scaled via MM.
+    scene.unit_settings.scale_length = 1.0
+
+    cycles_addon = bpy.context.preferences.addons.get("cycles")
+    if not cycles_addon:
+        scene.cycles.device = "CPU"
+        log("Cycles addon preferences unavailable; falling back to CPU")
+        return
+
+    prefs = cycles_addon.preferences
+    gpu_types = ["CUDA", "OPTIX", "HIP", "METAL", "ONEAPI"]
+    selected_gpu = None
+
+    for device_type in gpu_types:
         try:
-            return ImageFont.truetype(font_name, size)
-        except OSError:
+            prefs.compute_device_type = device_type
+            prefs.get_devices()
+            has_enabled = False
+            for device in prefs.devices:
+                if device.type != "CPU":
+                    device.use = True
+                    has_enabled = True
+            if has_enabled:
+                selected_gpu = device_type
+                scene.cycles.device = "GPU"
+                break
+        except Exception:
             continue
-    return ImageFont.load_default()
+
+    if selected_gpu:
+        log(f"Using GPU device type: {selected_gpu}")
+    else:
+        scene.cycles.device = "CPU"
+        log("No GPU backend available; falling back to CPU")
 
 
-def draw_centered_text(
-    draw: ImageDraw.ImageDraw,
-    xy: tuple[float, float],
-    text: str,
-    font,
-    fill: str,
-) -> None:
-    bbox = draw.textbbox((0, 0), text, font=font)
-    w = bbox[2] - bbox[0]
-    h = bbox[3] - bbox[1]
-    draw.text((xy[0] - w / 2, xy[1] - h / 2), text, font=font, fill=fill)
+def build_trapezoid_mesh(name: str, z0_front: float, z0_rear: float, z1_front: float, z1_rear: float) -> bpy.types.Object:
+    mesh = bpy.data.meshes.new(name)
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
 
+    y0 = 0.0
+    y1 = LENGTH
+    xf0 = FRONT_W / 2.0
+    xr1 = REAR_W / 2.0
 
-def draw_qi_coil(draw: ImageDraw.ImageDraw, center: tuple[int, int], radius: int) -> None:
-    for offset in range(0, 22, 7):
-        draw.ellipse(
-            (
-                center[0] - radius + offset,
-                center[1] - radius + offset,
-                center[0] + radius - offset,
-                center[1] + radius - offset,
-            ),
-            outline=ACCENT,
-            width=3,
-        )
-    draw.line((center[0] - radius - 18, center[1], center[0] - radius + 8, center[1]), fill=ACCENT, width=3)
-    draw.line((center[0] + radius - 8, center[1], center[0] + radius + 18, center[1]), fill=ACCENT, width=3)
-
-
-def draw_glow(base: Image.Image, center: tuple[int, int], color_hex: str, radius: int) -> None:
-    glow = Image.new("RGBA", base.size, (0, 0, 0, 0))
-    gdraw = ImageDraw.Draw(glow)
-    r, g, b = hex_to_rgb(color_hex)
-    gdraw.ellipse(
-        (center[0] - radius, center[1] - radius, center[0] + radius, center[1] + radius),
-        fill=(r, g, b, 160),
-    )
-    glow = glow.filter(ImageFilter.GaussianBlur(radius=18))
-    base.alpha_composite(glow)
-
-
-def hex_to_rgb(color: str) -> tuple[int, int, int]:
-    color = color.lstrip("#")
-    return int(color[0:2], 16), int(color[2:4], 16), int(color[4:6], 16)
-
-
-def draw_ws2812b_bar(
-    image: Image.Image,
-    draw: ImageDraw.ImageDraw,
-    bar_box: tuple[int, int, int, int],
-    bg_color: str,
-    led_states: list[str],  # 16 hex color strings (4 per zone)
-) -> None:
-    """Draw the continuous WS2812B LED strip across the full front edge."""
-    bx1, by1, bx2, by2 = bar_box
-    draw.rounded_rectangle(bar_box, radius=10, fill=bg_color, outline="#2a2f38", width=2)
-    bar_w = bx2 - bx1
-    led_spacing = bar_w / len(led_states)
-    for idx, color in enumerate(led_states):
-        cx = int(bx1 + (idx + 0.5) * led_spacing)
-        cy = (by1 + by2) // 2
-        if color != LED_OFF:
-            draw_glow(image, (cx, cy), color, 14)
-            draw = ImageDraw.Draw(image)
-        draw.ellipse((cx - 8, cy - 8, cx + 8, cy + 8), fill=color)
-
-
-def draw_variant(image: Image.Image, v: dict, fonts: dict) -> None:
-    draw = ImageDraw.Draw(image)
-    ox = v["offset_x"]
-
-    # --- Dock body shadow ---
-    shadow = Image.new("RGBA", image.size, (0, 0, 0, 0))
-    sdraw = ImageDraw.Draw(shadow)
-    dock_box = (ox + 20, 80, ox + 810, 840)
-    sdraw.rounded_rectangle(
-        (dock_box[0] + 12, dock_box[1] + 18, dock_box[2] + 16, dock_box[3] + 24),
-        radius=40,
-        fill=(0, 0, 0, 110),
-    )
-    shadow = shadow.filter(ImageFilter.GaussianBlur(radius=18))
-    image.alpha_composite(shadow)
-
-    # --- Dock base (ABS, rear tier height visible as full body) ---
-    draw = ImageDraw.Draw(image)
-    draw.rounded_rectangle(dock_box, radius=36, fill=v["dock_color"], outline=v["dock_edge"], width=3)
-
-    # --- Aluminum top plate (covers rear + front tier top surface) ---
-    top_plate_box = (ox + 40, 120, ox + 790, 650)
-    draw.rounded_rectangle(top_plate_box, radius=24, fill=v["top_plate"], outline=v["top_edge"], width=3)
-
-    # --- Tier step: raised rear section (Zones 3 and 4) ---
-    rear_tier_box = (ox + 430, 140, ox + 780, 620)
-    draw.rounded_rectangle(
-        rear_tier_box, radius=18, fill=v["dock_color"], outline=v["dock_edge"], width=2
-    )
-    # Rear tier top surface (aluminum plate continues over it)
-    rear_top = (ox + 440, 150, ox + 770, 610)
-    draw.rounded_rectangle(rear_top, radius=14, fill=v["top_plate"], outline=v["top_edge"], width=2)
-
-    # Step edge highlight (the visible front face of the rear tier rise)
-    draw.rectangle((ox + 430, 510, ox + 780, 540), fill=v["dock_edge"])
-
-    # --- Zone boxes ---
-    # Front tier: Zones 1 and 2
-    zone_boxes = [
-        (ox + 60, 170, ox + 270, 490),   # Zone 1 — phone Qi
-        (ox + 300, 170, ox + 410, 490),  # Zone 2 — phone/AirPods Qi
-        (ox + 455, 165, ox + 610, 490),  # Zone 3 — Watch (on rear tier)
-        (ox + 640, 165, ox + 760, 530),  # Zone 4 — Laptop (on rear tier)
+    verts = [
+        (-xf0, y0, z0_front),
+        ( xf0, y0, z0_front),
+        ( xr1, y1, z0_rear),
+        (-xr1, y1, z0_rear),
+        (-xf0, y0, z1_front),
+        ( xf0, y0, z1_front),
+        ( xr1, y1, z1_rear),
+        (-xr1, y1, z1_rear),
     ]
-    zone_titles = [
-        ("Zone 1", "Phone Qi"),
-        ("Zone 2", "Phone/Buds"),
-        ("Zone 3", "Watch"),
-        ("Zone 4", "USB-C"),
+
+    faces = [
+        (0, 1, 2, 3),
+        (4, 7, 6, 5),
+        (0, 4, 5, 1),
+        (1, 5, 6, 2),
+        (2, 6, 7, 3),
+        (3, 7, 4, 0),
     ]
-    for idx, box in enumerate(zone_boxes):
-        draw.rounded_rectangle(box, radius=18, fill=v["zone_fill"], outline=v["zone_outline"], width=2)
-        cx = (box[0] + box[2]) / 2
-        draw_centered_text(draw, (cx, box[1] + 22), zone_titles[idx][0], fonts["zone"], v["text_muted"])
-        draw_centered_text(draw, (cx, box[1] + 46), zone_titles[idx][1], fonts["small"], v["text_muted"])
 
-    # --- Integrated ABS rail overlays (Zones 1–3 small, Zone 4 tall) ---
-    overlay = Image.new("RGBA", image.size, (0, 0, 0, 0))
-    odraw = ImageDraw.Draw(overlay)
-    rf = v["rail_fill"]
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    return obj
 
-    # Zone 1 rails
-    for lx, rx in [(ox + 62, ox + 76), (ox + 256, ox + 270)]:
-        odraw.polygon([(lx, 220), (lx + 12, 232), (lx + 12, 475), (lx, 487)], fill=rf)
-        odraw.polygon([(rx, 220), (rx - 12, 232), (rx - 12, 475), (rx, 487)], fill=rf)
-    # Zone 2 rails
-    for lx, rx in [(ox + 302, ox + 314), (ox + 398, ox + 410)]:
-        odraw.polygon([(lx, 220), (lx + 12, 232), (lx + 12, 475), (lx, 487)], fill=rf)
-        odraw.polygon([(rx, 220), (rx - 12, 232), (rx - 12, 475), (rx, 487)], fill=rf)
-    # Zone 3 rails (small, on rear tier)
-    for lx, rx in [(ox + 457, ox + 467), (ox + 600, ox + 610)]:
-        odraw.polygon([(lx, 210), (lx + 8, 220), (lx + 8, 473), (lx, 483)], fill=rf)
-        odraw.polygon([(rx, 210), (rx - 8, 220), (rx - 8, 473), (rx, 483)], fill=rf)
-    # Zone 4 tall rails (40–50mm, with rubber inner pads)
-    rub = v["rubber_fill"]
-    for lx, rx in [(ox + 642, ox + 655), (ox + 747, ox + 760)]:
-        odraw.polygon([(lx, 175), (lx + 16, 190), (lx + 16, 520), (lx, 535)], fill=rf)
-        odraw.polygon([(rx, 175), (rx - 16, 190), (rx - 16, 520), (rx, 535)], fill=rf)
-        odraw.rectangle((lx + 4, 196, lx + 12, 514), fill=rub)
-        odraw.rectangle((rx - 12, 196, rx - 4, 514), fill=rub)
-    image.alpha_composite(overlay)
-    draw = ImageDraw.Draw(image)
 
-    # --- Silicone pads on charging zone surfaces ---
-    for box in zone_boxes[:3]:
-        pad_box = (box[0] + 16, box[1] + 62, box[2] - 16, box[3] - 16)
-        draw.rounded_rectangle(pad_box, radius=10, fill=None, outline=v["silicone_pad_outline"], width=1)
+def add_bevel_modifier(obj: bpy.types.Object, radius_mm: float, segments: int) -> None:
+    mod = obj.modifiers.new(name="Bevel", type="BEVEL")
+    mod.limit_method = "ANGLE"
+    mod.width = radius_mm * MM
+    mod.segments = segments
+    mod.profile = 0.7
 
-    # --- Qi coils (Zones 1 and 2) ---
-    draw_qi_coil(draw, (ox + 165, 340), 68)
-    draw_qi_coil(draw, (ox + 355, 340), 50)
 
-    # --- MagSafe ring magnet indicator below Zone 1 coil ---
-    draw.ellipse((ox + 125, 420, ox + 205, 460), outline=ACCENT, width=2)
-    draw.text((ox + 90, 467), "N52 magnet", font=fonts["tiny"], fill=v["text_muted"])
+def add_boolean_difference(target: bpy.types.Object, cutter: bpy.types.Object) -> None:
+    mod = target.modifiers.new(name=f"Bool_{cutter.name}", type="BOOLEAN")
+    mod.operation = "DIFFERENCE"
+    mod.solver = "FAST"
+    mod.object = cutter
+    bpy.context.view_layer.objects.active = target
+    bpy.ops.object.modifier_apply(modifier=mod.name)
+    bpy.data.objects.remove(cutter, do_unlink=True)
 
-    # --- Watch cradle (Zone 3) ---
-    draw.rounded_rectangle((ox + 486, 220, ox + 578, 390), radius=34, outline="#cfd7df", width=5)
-    draw.arc((ox + 504, 238, ox + 560, 294), start=205, end=335, fill="#cfd7df", width=6)
-    draw.rounded_rectangle((ox + 520, 310, ox + 544, 372), radius=12, fill="#95a5b4")
-    draw.text((ox + 462, 398), "Watch cradle", font=fonts["tiny"], fill=v["text_muted"])
 
-    # --- Laptop placeholder (Zone 4) ---
-    draw.rounded_rectangle((ox + 660, 195, ox + 742, 430), radius=16, fill=v["zone_fill"], outline="#697382", width=2)
-    draw.line((ox + 701, 432, ox + 701, 490), fill="#d7dde6", width=6)
-    draw.rounded_rectangle((ox + 676, 483, ox + 726, 498), radius=6, fill="#d7dde6")
-    draw.text((ox + 645, 502), "USB-C 100W", font=fonts["tiny"], fill=v["text_muted"])
+def create_material_abs_black() -> bpy.types.Material:
+    mat = bpy.data.materials.new("ABS_Matte_Black")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ABS)
+    bsdf.inputs["Roughness"].default_value = 0.9
+    bsdf.inputs["Metallic"].default_value = 0.0
+    return mat
 
-    # --- WS2812B LED bar (full front edge) ---
-    led_bar_box = (ox + 45, 665, ox + 780, 700)
-    # LED states: 4 per zone (charging=red, full=green, off=LED_OFF)
-    led_states = (
-        [LED_RED] * 4   # Zone 1 — charging
-        + [LED_GREEN] * 4  # Zone 2 — full
-        + [LED_OFF] * 4    # Zone 3 — no device
-        + [LED_RED] * 4    # Zone 4 — charging
+
+def create_material_aluminum() -> bpy.types.Material:
+    mat = bpy.data.materials.new("Aluminum_Brushed")
+    mat.use_nodes = True
+    nt = mat.node_tree
+    nodes = nt.nodes
+    links = nt.links
+
+    bsdf = nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ALUMINUM)
+    bsdf.inputs["Metallic"].default_value = 0.95
+    bsdf.inputs["Roughness"].default_value = 0.15
+    bsdf.inputs["Anisotropic"].default_value = 0.6
+
+    texcoord = nodes.new("ShaderNodeTexCoord")
+    mapping = nodes.new("ShaderNodeMapping")
+    noise = nodes.new("ShaderNodeTexNoise")
+    ramp = nodes.new("ShaderNodeValToRGB")
+
+    texcoord.location = (-800, 200)
+    mapping.location = (-620, 200)
+    noise.location = (-440, 200)
+    ramp.location = (-250, 200)
+
+    mapping.inputs["Scale"].default_value = BRUSH_MAPPING_SCALE
+    noise.inputs["Scale"].default_value = BRUSH_NOISE_SCALE
+    noise.inputs["Detail"].default_value = BRUSH_NOISE_DETAIL
+    noise.inputs["Roughness"].default_value = BRUSH_NOISE_ROUGHNESS
+    ramp.color_ramp.elements[0].position = BRUSH_RAMP_POSITIONS[0]
+    ramp.color_ramp.elements[1].position = BRUSH_RAMP_POSITIONS[1]
+
+    links.new(texcoord.outputs["Object"], mapping.inputs["Vector"])
+    links.new(mapping.outputs["Vector"], noise.inputs["Vector"])
+    links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
+    links.new(ramp.outputs["Color"], bsdf.inputs["Roughness"])
+
+    return mat
+
+
+def create_material_silicone() -> bpy.types.Material:
+    mat = bpy.data.materials.new("Silicone_Dark")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_SILICONE)
+    bsdf.inputs["Roughness"].default_value = 0.95
+    bsdf.inputs["Metallic"].default_value = 0.0
+    return mat
+
+
+def create_material_rubber() -> bpy.types.Material:
+    mat = bpy.data.materials.new("Rubber_Black")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_RUBBER)
+    bsdf.inputs["Roughness"].default_value = 1.0
+    return mat
+
+
+def create_material_etched() -> bpy.types.Material:
+    mat = bpy.data.materials.new("Etched_Text")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_ETCHED)
+    bsdf.inputs["Roughness"].default_value = 0.3
+    bsdf.inputs["Metallic"].default_value = 0.7
+    return mat
+
+
+def create_material_led() -> bpy.types.Material:
+    mat = bpy.data.materials.new("LED_Diffuser")
+    mat.use_nodes = True
+    nt = mat.node_tree
+    nodes = nt.nodes
+
+    bsdf = nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_LED)
+    bsdf.inputs["Roughness"].default_value = 0.45
+    bsdf.inputs["Transmission Weight"].default_value = 0.22
+    bsdf.inputs["Emission Color"].default_value = hex_color(COLOR_LED)
+    bsdf.inputs["Emission Strength"].default_value = 3.0
+
+    return mat
+
+
+def create_material_ground() -> bpy.types.Material:
+    mat = bpy.data.materials.new("Ground_Studio")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = hex_color(COLOR_GROUND)
+    bsdf.inputs["Roughness"].default_value = 0.12
+    bsdf.inputs["Specular IOR Level"].default_value = 0.35
+    return mat
+
+
+def assign_material(obj: bpy.types.Object, material: bpy.types.Material) -> None:
+    if obj.data.materials:
+        obj.data.materials[0] = material
+    else:
+        obj.data.materials.append(material)
+
+
+def create_cylinder(name: str, radius_mm: float, depth_mm: float, location: tuple[float, float, float], vertices: int = 96) -> bpy.types.Object:
+    bpy.ops.mesh.primitive_cylinder_add(
+        vertices=vertices,
+        radius=radius_mm * MM,
+        depth=depth_mm * MM,
+        location=location,
     )
-    draw_ws2812b_bar(image, draw, led_bar_box, v["led_bar_bg"], led_states)
-    draw = ImageDraw.Draw(image)
-    draw_centered_text(draw, ((led_bar_box[0] + led_bar_box[2]) / 2, led_bar_box[3] + 14),
-                       "WS2812B LED strip — full front edge", fonts["tiny"], v["text_muted"])
+    obj = bpy.context.active_object
+    obj.name = name
+    return obj
 
-    # --- IEC C13 inlet (rear left) ---
-    iec_box = (ox + 45, 742, ox + 155, 784)
-    draw.rounded_rectangle(iec_box, radius=8, fill="#0f1319", outline="#5c6674", width=2)
-    draw.rounded_rectangle((ox + 58, 750, ox + 143, 776), radius=5, fill="#1a2030", outline="#5c6674", width=1)
-    draw_centered_text(draw, ((iec_box[0] + iec_box[2]) / 2, iec_box[3] + 12), "IEC C13 in", fonts["tiny"], v["text_muted"])
 
-    # --- Cooling vents in base ---
-    for vi in range(6):
-        vx = ox + 200 + vi * 80
-        draw.rectangle((vx, 752, vx + 50, 762), fill=v["dock_edge"])
+def create_zone_text(label: str, location: tuple[float, float, float], rotation: tuple[float, float, float], size_mm: float, material: bpy.types.Material) -> None:
+    bpy.ops.object.text_add(location=location, rotation=rotation)
+    text_obj = bpy.context.active_object
+    text_obj.data.body = label
+    text_obj.data.size = size_mm * MM
+    text_obj.data.extrude = 0.3 * MM
+    text_obj.data.bevel_depth = 0.02 * MM
 
-    # --- USB-A port on right side ---
-    usba_box = (ox + 790, 420, ox + 820, 480)
-    draw.rounded_rectangle(usba_box, radius=4, fill="#1a2030", outline="#5c6674", width=2)
-    draw.rectangle((ox + 798, 432, ox + 812, 468), fill="#0f1319")
-    draw.text((ox + 790, 488), "USB-A", font=fonts["tiny"], fill=v["text_muted"])
-    draw.text((ox + 790, 504), "12W", font=fonts["tiny"], fill=v["text_muted"])
+    bpy.ops.object.convert(target="MESH")
+    text_mesh = bpy.context.active_object
+    text_mesh.name = f"Text_{label}"
 
-    # --- Cable clips on rear ---
-    for ci in range(3):
-        cx2 = ox + 400 + ci * 100
-        draw.arc((cx2, 795, cx2 + 28, 830), start=0, end=180, fill=v["dock_edge"], width=4)
-    draw.text((ox + 360, 840), "Cable clips", font=fonts["tiny"], fill=v["text_muted"])
+    text_mesh.location.z -= 0.3 * MM
+    assign_material(text_mesh, material)
 
-    # --- Variant label ---
-    draw_centered_text(draw, (ox + 415, 900), f"Quad-Dock — {v['label']}", fonts["brand"], v["brand_text_color"])
-    draw_centered_text(draw, (ox + 415, 930), "Internal 180W PSU · IEC C13 · WS2812B LED bar · MagSafe magnets · USB-C PD 100W",
-                       fonts["tiny"], v["description_text_color"])
+
+def add_area_light(
+    name: str,
+    location: tuple[float, float, float],
+    rotation: tuple[float, float, float],
+    size_x: float,
+    size_y: float,
+    energy: float,
+    color: str,
+) -> bpy.types.Object:
+    data = bpy.data.lights.new(name=name, type="AREA")
+    data.shape = "RECTANGLE"
+    data.size = size_x
+    data.size_y = size_y
+    data.energy = energy
+    data.color = hex_color(color)[:3]
+
+    light = bpy.data.objects.new(name=name, object_data=data)
+    bpy.context.collection.objects.link(light)
+    light.location = location
+    light.rotation_euler = Euler(rotation, "XYZ")
+    return light
 
 
 def main() -> None:
-    for output_path in OUTPUT_PATHS:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    image = Image.new("RGBA", CANVAS_SIZE, BACKGROUND)
-    draw = ImageDraw.Draw(image)
+    clear_scene()
+    setup_cycles()
 
-    fonts = {
-        "title": load_font(36, bold=True),
-        "zone": load_font(20, bold=True),
-        "label": load_font(18, bold=False),
-        "brand": load_font(26, bold=True),
-        "small": load_font(16, bold=False),
-        "tiny": load_font(13, bold=False),
-    }
+    log("Creating materials")
+    mat_abs = create_material_abs_black()
+    mat_al = create_material_aluminum()
+    mat_silicone = create_material_silicone()
+    mat_rubber = create_material_rubber()
+    mat_etched = create_material_etched()
+    mat_led = create_material_led()
+    mat_ground = create_material_ground()
 
-    draw_centered_text(draw, (CANVAS_SIZE[0] / 2, 44), "Quad-Dock — Rendered Product Visualization", fonts["title"], "#36414f")
-    draw_centered_text(draw, (CANVAS_SIZE[0] / 2, 76), "Available in Black and White · Tiered enclosure · Internal 180W PSU", fonts["label"], "#607080")
+    log("Building base trapezoidal wedge")
+    base = build_trapezoid_mesh(
+        "Base_ABS",
+        z0_front=0.0,
+        z0_rear=0.0,
+        z1_front=BASE_FRONT_H,
+        z1_rear=BASE_REAR_H,
+    )
+    add_bevel_modifier(base, radius_mm=20.0, segments=8)
+    assign_material(base, mat_abs)
 
-    for v in VARIANTS:
-        draw_variant(image, v, fonts)
+    log("Building top aluminum plate")
+    top_plate = build_trapezoid_mesh(
+        "Top_Plate",
+        z0_front=BASE_FRONT_H,
+        z0_rear=BASE_REAR_H,
+        z1_front=BASE_FRONT_H + TOP_THICKNESS,
+        z1_rear=BASE_REAR_H + TOP_THICKNESS,
+    )
+    add_bevel_modifier(top_plate, radius_mm=1.0, segments=4)
+    assign_material(top_plate, mat_al)
 
-    image = image.convert("RGB")
-    for output_path in OUTPUT_PATHS:
-        image.save(output_path)
-        print(f"Saved render to {output_path}")
+    log("Cutting Zone 1 recessed dish")
+    z1_y = 55 * MM
+    z1_x = x_from_left(z1_y, 35.0)
+    z1_top = top_height_at_y(z1_y) + TOP_THICKNESS
+    zone1_cut = create_cylinder(
+        "Zone1_Cutter",
+        radius_mm=40.0,
+        depth_mm=2.5,
+        location=(z1_x, z1_y, z1_top - (2.5 * MM / 2.0)),
+    )
+    add_boolean_difference(top_plate, zone1_cut)
+
+    zone1_lining = create_cylinder(
+        "Zone1_Silicone",
+        radius_mm=39.0,
+        depth_mm=2.3,
+        location=(z1_x, z1_y, z1_top - (2.3 * MM / 2.0) - 0.05 * MM),
+    )
+    assign_material(zone1_lining, mat_silicone)
+
+    log("Cutting Zone 2 recessed dish")
+    z2_y = 55 * MM
+    z2_x = 0.0
+    z2_top = top_height_at_y(z2_y) + TOP_THICKNESS
+    zone2_cut = create_cylinder(
+        "Zone2_Cutter",
+        radius_mm=30.0,
+        depth_mm=2.5,
+        location=(z2_x, z2_y, z2_top - (2.5 * MM / 2.0)),
+    )
+    add_boolean_difference(top_plate, zone2_cut)
+
+    zone2_lining = create_cylinder(
+        "Zone2_Silicone",
+        radius_mm=29.0,
+        depth_mm=2.3,
+        location=(z2_x, z2_y, z2_top - (2.3 * MM / 2.0) - 0.05 * MM),
+    )
+    assign_material(zone2_lining, mat_silicone)
+
+    log("Building Zone 3 watch cradle pod")
+    z3_y = 220 * MM
+    z3_x = x_from_left(z3_y, 35.0)
+    z3_top = top_height_at_y(z3_y) + TOP_THICKNESS
+    watch_pod = create_cylinder(
+        "Zone3_Watch_Pod",
+        radius_mm=25.0,
+        depth_mm=8.0,
+        location=(z3_x, z3_y, z3_top + (8 * MM / 2.0)),
+    )
+    watch_pod.rotation_euler = Euler((math.radians(30.0), 0.0, 0.0), "XYZ")
+    assign_material(watch_pod, mat_abs)
+
+    log("Cutting Zone 4 laptop groove")
+    z4_y = LENGTH - (12 * MM / 2.0)
+    z4_x = x_from_right(LENGTH, 30.0 + 11.0)
+    z4_z = (BASE_REAR_H + TOP_THICKNESS) / 2.0
+    bpy.ops.mesh.primitive_cube_add(
+        size=1.0,
+        location=(z4_x, z4_y, z4_z),
+        scale=(22 * MM / 2.0, 12 * MM / 2.0, (BASE_REAR_H + TOP_THICKNESS) / 2.0),
+    )
+    zone4_cut_base = bpy.context.active_object
+    zone4_cut_base.name = "Zone4_Groove_Cutter_Base"
+    add_boolean_difference(base, zone4_cut_base)
+
+    bpy.ops.mesh.primitive_cube_add(
+        size=1.0,
+        location=(z4_x, z4_y, z4_z),
+        scale=(22 * MM / 2.0, 12 * MM / 2.0, (BASE_REAR_H + TOP_THICKNESS) / 2.0),
+    )
+    zone4_cut_top = bpy.context.active_object
+    zone4_cut_top.name = "Zone4_Groove_Cutter_Top"
+    add_boolean_difference(top_plate, zone4_cut_top)
+
+    bpy.ops.mesh.primitive_cube_add(
+        size=1.0,
+        location=(z4_x, z4_y - 0.2 * MM, z4_z),
+        scale=(20 * MM / 2.0, 10 * MM / 2.0, (BASE_REAR_H + TOP_THICKNESS - 0.8 * MM) / 2.0),
+    )
+    groove_lining = bpy.context.active_object
+    groove_lining.name = "Zone4_Silicone"
+    assign_material(groove_lining, mat_silicone)
+
+    log("Adding LED bar underside (4 sections)")
+    section_len_mm = (LED_TOTAL_LENGTH_MM - (3.0 * LED_SECTION_GAP_MM)) / 4.0
+    start_x = -(LED_TOTAL_LENGTH_MM / 2.0)
+    led_y = 4.0
+    led_z = 3.5
+    for idx in range(4):
+        section_center_x_mm = start_x + section_len_mm / 2.0 + idx * (section_len_mm + LED_SECTION_GAP_MM)
+        bpy.ops.mesh.primitive_cube_add(
+            size=1.0,
+            location=(section_center_x_mm * MM, led_y * MM, led_z * MM),
+            scale=(section_len_mm * MM / 2.0, 8 * MM / 2.0, 1.2 * MM / 2.0),
+        )
+        led_section = bpy.context.active_object
+        led_section.name = f"LED_Section_{idx + 1}"
+        assign_material(led_section, mat_led)
+
+    log("Adding rubber feet")
+    foot_positions = [
+        (x_from_left(10 * MM, 10.0), 10 * MM),
+        (x_from_right(10 * MM, 10.0), 10 * MM),
+        (x_from_left((300 - 10) * MM, 10.0), (300 - 10) * MM),
+        (x_from_right((300 - 10) * MM, 10.0), (300 - 10) * MM),
+    ]
+    for idx, (fx, fy) in enumerate(foot_positions, start=1):
+        foot = create_cylinder(
+            f"Foot_{idx}",
+            radius_mm=7.5,
+            depth_mm=3.0,
+            location=(fx, fy, -1.5 * MM),
+            vertices=48,
+        )
+        assign_material(foot, mat_rubber)
+
+    log("Adding zone labels and wordmark")
+    text_rot = (0.0, 0.0, 0.0)
+    create_zone_text("PHONE", (z1_x - 8 * MM, z1_y + 52 * MM, z1_top + 0.15 * MM), text_rot, 8.0, mat_etched)
+    create_zone_text("BUDS", (z2_x - 9 * MM, z2_y + 52 * MM, z2_top + 0.15 * MM), text_rot, 8.0, mat_etched)
+    create_zone_text("WATCH", (z3_x - 12 * MM, z3_y - 40 * MM, z3_top + 0.15 * MM), text_rot, 8.0, mat_etched)
+
+    z4_text_y = 235 * MM
+    z4_text_x = x_from_right(z4_text_y, 45.0)
+    z4_top = top_height_at_y(z4_text_y) + TOP_THICKNESS
+    create_zone_text("LAPTOP", (z4_text_x - 14 * MM, z4_text_y, z4_top + 0.15 * MM), text_rot, 8.0, mat_etched)
+
+    wordmark_y = 270 * MM
+    wordmark_x = -20 * MM
+    wordmark_z = top_height_at_y(wordmark_y) + TOP_THICKNESS + 0.15 * MM
+    create_zone_text("Quad-Dock", (wordmark_x, wordmark_y, wordmark_z), text_rot, 9.0, mat_etched)
+
+    log("Building studio ground and background")
+    bpy.ops.mesh.primitive_plane_add(size=8.0, location=(0.0, 0.15, 0.0))
+    ground = bpy.context.active_object
+    ground.name = "Studio_Ground"
+    assign_material(ground, mat_ground)
+
+    world = bpy.data.worlds["World"]
+    world.use_nodes = True
+    bg = world.node_tree.nodes["Background"]
+    bg.inputs["Color"].default_value = hex_color(COLOR_WORLD)
+    bg.inputs["Strength"].default_value = 1.0
+
+    log("Setting up studio lights")
+    add_area_light(
+        name="Key_Light",
+        location=(-0.45, -0.18, 0.42),
+        rotation=(math.radians(58), math.radians(8), math.radians(-30)),
+        size_x=1.2,
+        size_y=1.2,
+        energy=8.0,
+        color=COLOR_KEY_LIGHT,
+    )
+    add_area_light(
+        name="Fill_Light",
+        location=(0.48, -0.05, 0.30),
+        rotation=(math.radians(70), math.radians(-5), math.radians(38)),
+        size_x=1.2,
+        size_y=1.2,
+        energy=3.0,
+        color=COLOR_FILL_LIGHT,
+    )
+    add_area_light(
+        name="Rim_Light",
+        location=(0.0, 0.58, 0.23),
+        rotation=(math.radians(120), 0.0, math.radians(180)),
+        size_x=0.35,
+        size_y=0.35,
+        energy=5.0,
+        color=COLOR_RIM_LIGHT,
+    )
+    log("Configuring camera")
+    bpy.ops.object.camera_add(location=(-0.38, -0.36, 0.24))
+    camera = bpy.context.active_object
+    camera.name = "Product_Camera"
+    camera.data.lens = 85.0
+
+    target = Vector((0.0, LENGTH * 0.55, 0.02))
+    look_at(camera, target)
+    bpy.context.scene.camera = camera
+
+    log(f"Rendering to {OUTPUT_PATH}")
+    bpy.ops.render.render(write_still=True)
+    log("Render complete")
 
 
 if __name__ == "__main__":
