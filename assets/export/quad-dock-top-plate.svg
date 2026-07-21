@@ -5,42 +5,45 @@
 
 <defs>
   <style>
-    .outline     { fill:none; stroke:#000000; stroke-width:0.5 }
-    .zone_pocket { fill:none; stroke:#0000ff; stroke-width:0.35 }
-    .cutout      { fill:none; stroke:#ff0000; stroke-width:0.35 }
-    .screw_hole  { fill:none; stroke:#008000; stroke-width:0.35 }
-    .led_channel { fill:none; stroke:#ffa500; stroke-width:0.25; stroke-dasharray:2,2 }
-    .centerline  { fill:none; stroke:#aaaaaa; stroke-width:0.2; stroke-dasharray:4,2 }
-    .label       { font-family:sans-serif; font-size:3.5px; fill:#333333 }
+    .outline     { fill:none; stroke:#000000; stroke-width:0.6 }
+    .pocket      { fill:none; stroke:#0000cc; stroke-width:0.4 }
+    .cutout      { fill:none; stroke:#cc0000; stroke-width:0.4 }
+    .hole        { fill:none; stroke:#008800; stroke-width:0.4 }
+    .dashed      { fill:none; stroke:#cc6600; stroke-width:0.3; stroke-dasharray:2,1.5 }
+    .centerline  { fill:none; stroke:#888888; stroke-width:0.2; stroke-dasharray:5,2,1,2 }
+    .label       { font-family:sans-serif; font-size:3.5px; fill:#444444 }
     .title       { font-family:sans-serif; font-size:5px; font-weight:bold; fill:#000000 }
   </style>
 </defs>
 
-<!-- QUAD-DOCK TOP PLATE — 2D LASER CUT PROFILE — ALL DIMENSIONS IN mm -->
+<!-- QUAD-DOCK TOP PLATE — 1.5 mm 6061 Al — ALL DIMS IN mm -->
 
 <!-- Outer outline -->
   <polygon points="20.000,20.000 130.000,20.000 160.000,320.000 20.000,320.000" class="outline" />
-<!-- Zone 1: Phone Qi pocket ∅80 mm -->
-  <circle cx="55.000" cy="75.000" r="40.000" class="zone_pocket" />
-  <text x="96.000" y="75.000" class="label">Z1 PHONE ∅80</text>
-<!-- Zone 2: Buds Qi pocket ∅60 mm -->
-  <circle cx="77.750" cy="75.000" r="30.000" class="zone_pocket" />
-  <text x="108.750" y="75.000" class="label">Z2 BUDS ∅60</text>
-<!-- Zone 3: Watch cradle ∅50 mm -->
-  <circle cx="55.000" cy="240.000" r="25.000" class="zone_pocket" />
-  <text x="81.000" y="240.000" class="label">Z3 WATCH ∅50</text>
-<!-- Zone 4: Laptop groove 22×12 mm -->
+<!-- Zone 1: Phone Qi pocket 80×55mm R10 -->
+  <rect x="15.000" y="50.000" width="80.000" height="55.000" rx="10.000" ry="10.000" class="pocket" />
+  <text x="97.000" y="77.500" class="label">Z1 PHONE 80×55 R10</text>
+<!-- Zone 2: Buds Qi pocket 65×55mm R10 -->
+  <rect x="45.375" y="50.000" width="65.000" height="55.000" rx="10.000" ry="10.000" class="pocket" />
+  <text x="112.375" y="77.500" class="label">Z2 BUDS 65×55 R10</text>
+<!-- Zone 3: Watch cradle ∅50mm hole -->
+  <circle cx="55.000" cy="240.000" r="25.000" class="hole" />
+  <text x="82.000" y="240.000" class="label">Z3 WATCH ∅50</text>
+<!-- Zone 4: Laptop groove 22×12mm -->
   <rect x="108.000" y="308.000" width="22.000" height="12.000" class="cutout" />
-  <text x="78.000" y="314.000" class="label">Z4 LAPTOP 22×12</text>
-<!-- IEC C13 inlet 28×20 mm — rear wall centre -->
+  <text x="73.000" y="314.000" class="label">Z4 LAPTOP 22.0×12.0mm</text>
+<!-- IEC C13 inlet 28×20mm -->
   <rect x="76.000" y="317.000" width="28.000" height="3.000" class="cutout" />
-  <text x="76.000" y="327.000" class="label">IEC C13 28×20</text>
-<!-- M3 screw holes ∅3.2 mm -->
-  <circle cx="40.000" cy="170.000" r="1.600" class="screw_hole" />
-  <circle cx="125.000" cy="170.000" r="1.600" class="screw_hole" />
-<!-- LED channel 290×8 mm — front lip -->
-  <rect x="25.000" y="20.000" width="290.000" height="8.000" class="led_channel" />
+  <text x="76.000" y="327.000" class="label">IEC C13 28.0×20.0mm</text>
+<!-- M3 screw holes ∅3.2mm -->
+  <circle cx="40.000" cy="170.000" r="1.600" class="hole" />
+  <text x="42.600" y="170.000" class="label">M3 (L)</text>
+  <circle cx="125.000" cy="170.000" r="1.600" class="hole" />
+  <text x="127.600" y="170.000" class="label">M3 (R)</text>
+<!-- LED channel 290×8mm (reference) -->
+  <rect x="25.000" y="20.000" width="290.000" height="8.000" class="dashed" />
+  <text x="25.000" y="33.000" class="label">LED 290.0×8.0mm</text>
 <!-- Centreline -->
-  <line x1="90.000" y1="20.000" x2="90.000" y2="320.000" class="centerline" />
-  <text x="20.000" y="12.000" class="title">QUAD-DOCK TOP PLATE  |  Material: 2 mm 6061 Aluminium  |  Units: mm</text>
+  <line x1="75.000" y1="20.000" x2="90.000" y2="320.000" class="centerline" />
+  <text x="20.000" y="11.000" class="title">QUAD-DOCK TOP PLATE  |  1.5mm 6061 Aluminium  |  All dims in mm</text>
 </svg>
