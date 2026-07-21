@@ -1,0 +1,7 @@
+matplotlib>=3.5
+Pillow>=9.0
+numpy>=1.21
+trimesh>=3.15
+pygltflib>=1.15
+scipy>=1.7
+networkx>=2.7
