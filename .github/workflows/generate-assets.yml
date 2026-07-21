@@ -54,6 +54,13 @@ jobs:
         continue-on-error: false
         run: python scripts/generate_image.py
 
+      - name: Verify generated asset files exist
+        run: |
+          if ! find assets -type f | grep -q .; then
+            echo "::error::No generated files were found under assets/."
+            exit 1
+          fi
+
       - name: Commit and push regenerated assets
         run: |
           # Stage generated assets, then only commit when there are staged changes.
@@ -66,8 +73,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: regenerate assets [skip ci]"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && break
+            git rebase --abort || true
+            if [ "$attempt" -eq 3 ]; then
+              echo "::error::Failed to push regenerated assets after 3 attempts."
+              exit 1
+            fi
+            sleep $((attempt * 5))
+          done
 
       - name: Summarize generated assets
         if: always()
