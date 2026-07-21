@@ -489,7 +489,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461243.6462037037
+2461243.699085648
   9
 $TDUCREATE
  40
@@ -497,7 +497,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461243.6462037037
+2461243.699085648
   9
 $TDUUPDATE
  40
@@ -549,7 +549,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-42
+5F
   9
 $SURFTAB1
  70
@@ -929,11 +929,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{C9AB1984-2B10-499C-923F-D6D6EFC078C2}
+{0332B846-969B-489B-BCA2-E553E2971149}
   9
 $VERSIONGUID
   2
-{6138D84B-ED1F-4791-BA5D-FE450C29C71E}
+{0C18B5CF-E88A-4F80-A405-AFB1268657AF}
   9
 $EXTNAMES
 290
@@ -1323,9 +1323,9 @@ ISM
   0
 CLASS
   1
-LAYOUT
+ACDBPLACEHOLDER
   2
-AcDbLayout
+AcDbPlaceHolder
   3
 ObjectDBX Classes
  90
@@ -1339,9 +1339,9 @@ ObjectDBX Classes
   0
 CLASS
   1
-ACDBPLACEHOLDER
+LAYOUT
   2
-AcDbPlaceHolder
+AcDbLayout
   3
 ObjectDBX Classes
  90
@@ -1549,7 +1549,7 @@ LAYER
 100
 AcDbSymbolTable
  70
-2
+9
   0
 LAYER
   5
@@ -1594,6 +1594,174 @@ Defpoints
 Continuous
 290
 0
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+2F
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+OUTLINE
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+30
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+POCKETS
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+31
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+CUTOUTS
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+32
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+HOLES
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+33
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+DASHED
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+34
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+ANNOTATIONS
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+35
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+CENTERLINES
+ 70
+0
+ 62
+7
+  6
+Continuous
 370
 -3
 390
@@ -1701,7 +1869,7 @@ ACAD
   0
 APPID
   5
-3F
+5C
 330
 3
 100
@@ -1715,7 +1883,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-40
+5D
 330
 3
 100
@@ -2025,7 +2193,7 @@ ENTITIES
   0
 LWPOLYLINE
   5
-2F
+36
 330
 17
 100
@@ -2061,29 +2229,9 @@ AcDbPolyline
  20
 0.0
   0
-CIRCLE
-  5
-30
-330
-17
-100
-AcDbEntity
-  8
-ZONE_POCKETS
-100
-AcDbCircle
- 10
-35.0
- 20
-55.0
- 30
-0.0
- 40
-40.0
-  0
 TEXT
   5
-31
+37
 330
 17
 100
@@ -2093,47 +2241,227 @@ ANNOTATIONS
 100
 AcDbText
  10
-77.0
+0.0
  20
-55.0
+-14.0
  30
 0.0
  40
-4.0
+5.0
   1
-Z1 PHONE (∅80)
+QUAD-DOCK TOP PLATE  |  1.5mm 6061 Aluminium  |  All dims in mm
  11
-77.0
+0.0
  21
-55.0
+-14.0
  31
 0.0
 100
 AcDbText
   0
-CIRCLE
+LINE
   5
-32
+38
 330
 17
 100
 AcDbEntity
   8
-ZONE_POCKETS
+POCKETS
 100
-AcDbCircle
+AcDbLine
  10
-57.75
+5.0
  20
-55.0
- 30
-0.0
- 40
 30.0
+ 30
+0.0
+ 11
+65.0
+ 21
+30.0
+ 31
+0.0
+  0
+LINE
+  5
+39
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbLine
+ 10
+75.0
+ 20
+40.0
+ 30
+0.0
+ 11
+75.0
+ 21
+75.0
+ 31
+0.0
+  0
+LINE
+  5
+3A
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbLine
+ 10
+65.0
+ 20
+85.0
+ 30
+0.0
+ 11
+5.0
+ 21
+85.0
+ 31
+0.0
+  0
+LINE
+  5
+3B
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbLine
+ 10
+-5.0
+ 20
+75.0
+ 30
+0.0
+ 11
+-5.0
+ 21
+40.0
+ 31
+0.0
+  0
+ARC
+  5
+3C
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbCircle
+ 10
+65.0
+ 20
+40.0
+ 30
+0.0
+ 40
+10.0
+100
+AcDbArc
+ 50
+270.0
+ 51
+0.0
+  0
+ARC
+  5
+3D
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbCircle
+ 10
+65.0
+ 20
+75.0
+ 30
+0.0
+ 40
+10.0
+100
+AcDbArc
+ 50
+0.0
+ 51
+90.0
+  0
+ARC
+  5
+3E
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbCircle
+ 10
+5.0
+ 20
+75.0
+ 30
+0.0
+ 40
+10.0
+100
+AcDbArc
+ 50
+90.0
+ 51
+180.0
+  0
+ARC
+  5
+3F
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbCircle
+ 10
+5.0
+ 20
+40.0
+ 30
+0.0
+ 40
+10.0
+100
+AcDbArc
+ 50
+180.0
+ 51
+270.0
   0
 TEXT
   5
-33
+40
 330
 17
 100
@@ -2143,19 +2471,249 @@ ANNOTATIONS
 100
 AcDbText
  10
-89.75
+78.0
  20
-55.0
+57.5
  30
 0.0
  40
-4.0
+3.5
   1
-Z2 BUDS (∅60)
+Z1 PHONE  80×55mm R10  depth 2.5mm
  11
-89.75
+78.0
  21
-55.0
+57.5
+ 31
+0.0
+100
+AcDbText
+  0
+LINE
+  5
+41
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbLine
+ 10
+35.375
+ 20
+30.0
+ 30
+0.0
+ 11
+80.375
+ 21
+30.0
+ 31
+0.0
+  0
+LINE
+  5
+42
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbLine
+ 10
+90.375
+ 20
+40.0
+ 30
+0.0
+ 11
+90.375
+ 21
+75.0
+ 31
+0.0
+  0
+LINE
+  5
+43
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbLine
+ 10
+80.375
+ 20
+85.0
+ 30
+0.0
+ 11
+35.375
+ 21
+85.0
+ 31
+0.0
+  0
+LINE
+  5
+44
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbLine
+ 10
+25.375
+ 20
+75.0
+ 30
+0.0
+ 11
+25.375
+ 21
+40.0
+ 31
+0.0
+  0
+ARC
+  5
+45
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbCircle
+ 10
+80.375
+ 20
+40.0
+ 30
+0.0
+ 40
+10.0
+100
+AcDbArc
+ 50
+270.0
+ 51
+0.0
+  0
+ARC
+  5
+46
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbCircle
+ 10
+80.375
+ 20
+75.0
+ 30
+0.0
+ 40
+10.0
+100
+AcDbArc
+ 50
+0.0
+ 51
+90.0
+  0
+ARC
+  5
+47
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbCircle
+ 10
+35.375
+ 20
+75.0
+ 30
+0.0
+ 40
+10.0
+100
+AcDbArc
+ 50
+90.0
+ 51
+180.0
+  0
+ARC
+  5
+48
+330
+17
+100
+AcDbEntity
+  8
+POCKETS
+100
+AcDbCircle
+ 10
+35.375
+ 20
+40.0
+ 30
+0.0
+ 40
+10.0
+100
+AcDbArc
+ 50
+180.0
+ 51
+270.0
+  0
+TEXT
+  5
+49
+330
+17
+100
+AcDbEntity
+  8
+ANNOTATIONS
+100
+AcDbText
+ 10
+93.375
+ 20
+57.5
+ 30
+0.0
+ 40
+3.5
+  1
+Z2 BUDS  65×55mm R10  depth 2.5mm
+ 11
+93.375
+ 21
+57.5
  31
 0.0
 100
@@ -2163,13 +2721,13 @@ AcDbText
   0
 CIRCLE
   5
-34
+4A
 330
 17
 100
 AcDbEntity
   8
-ZONE_POCKETS
+HOLES
 100
 AcDbCircle
  10
@@ -2183,7 +2741,7 @@ AcDbCircle
   0
 TEXT
   5
-35
+4B
 330
 17
 100
@@ -2193,17 +2751,17 @@ ANNOTATIONS
 100
 AcDbText
  10
-62.0
+63.0
  20
 220.0
  30
 0.0
  40
-4.0
+3.5
   1
-Z3 WATCH (∅50)
+Z3 WATCH CRADLE  ∅50mm (mounting hole)
  11
-62.0
+63.0
  21
 220.0
  31
@@ -2213,13 +2771,13 @@ AcDbText
   0
 LWPOLYLINE
   5
-36
+4C
 330
 17
 100
 AcDbEntity
   8
-ZONE_POCKETS
+CUTOUTS
 100
 AcDbPolyline
  90
@@ -2249,7 +2807,7 @@ AcDbPolyline
   0
 TEXT
   5
-37
+4D
 330
 17
 100
@@ -2259,17 +2817,17 @@ ANNOTATIONS
 100
 AcDbText
  10
-43.0
+38.0
  20
 294.0
  30
 0.0
  40
-4.0
+3.5
   1
-Z4 LAPTOP (22×12)
+Z4 LAPTOP GROOVE  22.0×12.0mm
  11
-43.0
+38.0
  21
 294.0
  31
@@ -2279,7 +2837,7 @@ AcDbText
   0
 LWPOLYLINE
   5
-38
+4E
 330
 17
 100
@@ -2315,7 +2873,7 @@ AcDbPolyline
   0
 TEXT
   5
-39
+4F
 330
 17
 100
@@ -2327,17 +2885,17 @@ AcDbText
  10
 56.0
  20
-291.0
+289.0
  30
 0.0
  40
-4.0
+3.5
   1
-IEC C13 (28×20)
+IEC C13 INLET  28.0×20.0mm
  11
 56.0
  21
-291.0
+289.0
  31
 0.0
 100
@@ -2345,13 +2903,13 @@ AcDbText
   0
 CIRCLE
   5
-3A
+50
 330
 17
 100
 AcDbEntity
   8
-SCREW_HOLES
+HOLES
 100
 AcDbCircle
  10
@@ -2363,15 +2921,45 @@ AcDbCircle
  40
 1.6
   0
-CIRCLE
+TEXT
   5
-3B
+51
 330
 17
 100
 AcDbEntity
   8
-SCREW_HOLES
+ANNOTATIONS
+100
+AcDbText
+ 10
+22.6
+ 20
+150.0
+ 30
+0.0
+ 40
+3.0
+  1
+M3 CL ∅3.2 (L)
+ 11
+22.6
+ 21
+150.0
+ 31
+0.0
+100
+AcDbText
+  0
+CIRCLE
+  5
+52
+330
+17
+100
+AcDbEntity
+  8
+HOLES
 100
 AcDbCircle
  10
@@ -2383,16 +2971,44 @@ AcDbCircle
  40
 1.6
   0
-LWPOLYLINE
+TEXT
   5
-3C
+53
 330
 17
 100
 AcDbEntity
   8
-LED_CHANNEL
-  6
+ANNOTATIONS
+100
+AcDbText
+ 10
+107.6
+ 20
+150.0
+ 30
+0.0
+ 40
+3.0
+  1
+M3 CL ∅3.2 (R)
+ 11
+107.6
+ 21
+150.0
+ 31
+0.0
+100
+AcDbText
+  0
+LWPOLYLINE
+  5
+54
+330
+17
+100
+AcDbEntity
+  8
 DASHED
 100
 AcDbPolyline
@@ -2421,21 +3037,49 @@ AcDbPolyline
  20
 0.0
   0
+TEXT
+  5
+55
+330
+17
+100
+AcDbEntity
+  8
+ANNOTATIONS
+100
+AcDbText
+ 10
+5.0
+ 20
+12.0
+ 30
+0.0
+ 40
+3.5
+  1
+LED CHANNEL  290.0×8.0mm  [dashed = reference only]
+ 11
+5.0
+ 21
+12.0
+ 31
+0.0
+100
+AcDbText
+  0
 LINE
   5
-3D
+56
 330
 17
 100
 AcDbEntity
   8
 CENTERLINES
-  6
-CENTER
 100
 AcDbLine
  10
-70.0
+55.0
  20
 0.0
  30
@@ -2449,29 +3093,149 @@ AcDbLine
   0
 TEXT
   5
-3E
+57
 330
 17
 100
 AcDbEntity
   8
-TITLE
+ANNOTATIONS
 100
 AcDbText
  10
-0.0
+73.0
  20
--12.0
+150.0
  30
 0.0
  40
-5.0
+3.5
   1
-QUAD-DOCK TOP PLATE  |  Material: 2mm 6061 Aluminium  |  Units: mm
+CL
  11
-0.0
+73.0
  21
--12.0
+150.0
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+58
+330
+17
+100
+AcDbEntity
+  8
+ANNOTATIONS
+100
+AcDbText
+ 10
+55.0
+ 20
+-8.0
+ 30
+0.0
+ 40
+3.5
+  1
+<-- 110 mm -->
+ 11
+55.0
+ 21
+-8.0
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+59
+330
+17
+100
+AcDbEntity
+  8
+ANNOTATIONS
+100
+AcDbText
+ 10
+70.0
+ 20
+306.0
+ 30
+0.0
+ 40
+3.5
+  1
+<-- 140 mm -->
+ 11
+70.0
+ 21
+306.0
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+5A
+330
+17
+100
+AcDbEntity
+  8
+ANNOTATIONS
+100
+AcDbText
+ 10
+-15.0
+ 20
+150.0
+ 30
+0.0
+ 40
+3.5
+  1
+300 mm
+ 11
+-15.0
+ 21
+150.0
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+5B
+330
+17
+100
+AcDbEntity
+  8
+ANNOTATIONS
+100
+AcDbText
+ 10
+145.0
+ 20
+150.0
+ 30
+0.0
+ 40
+3.5
+  1
+H: 12->22 mm (side profile)
+ 11
+145.0
+ 21
+150.0
  31
 0.0
 100
@@ -3467,7 +4231,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-41
+5E
   0
 DICTIONARYVAR
   5
@@ -3479,11 +4243,11 @@ DictionaryVariables
 280
 0
   1
-1.4.4 @ 2026-07-21T15:30:32.742362+00:00
+1.4.4 @ 2026-07-21T16:46:41.996895+00:00
   0
 DICTIONARYVAR
   5
-41
+5E
 330
 2D
 100
@@ -3491,7 +4255,7 @@ DictionaryVariables
 280
 0
   1
-1.4.4 @ 2026-07-21T15:30:32.743758+00:00
+1.4.4 @ 2026-07-21T16:46:41.999224+00:00
   0
 ENDSEC
   0
