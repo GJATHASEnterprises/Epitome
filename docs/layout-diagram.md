@@ -1,142 +1,131 @@
-# Quad Device Dock — Layout Diagram
+# Quad-Dock — Layout Diagram
 
-![Quad Device Dock Render](images/quad-dock-render.png)
+> **Note:** Full enclosure specification is in [enclosure.md](enclosure.md). This file shows the physical layout diagrams for reference.
 
 ---
 
 ## Top View (Surface Layout)
 
 ```
-+============================================================================+
-|                                                                            |
-|   QUAD DEVICE DOCK                                            [LOGO]       |
-|                                                                            |
-|  ┌─────────────────────────────────────────────────────────────────────┐  |
-|  │  REAR TIER (40mm high)                                              │  |
-|  │  /+--------+\                            /+--------------+\         │  |
-|  │  || ZONE 3 ||                            ||   ZONE 4     ||         │  |
-|  │  || Watch  ||                            || USB-C Laptop ||         │  |
-|  │  || cradle ||                            || upright slot ||         │  |
-|  │  \+--------+/                            \+--------------+/         │  |
-|  └─────────────────────────────────────────────────────────────────────┘  |
-|  ┌─────────────────────────────────────────────────────────────────────┐  |
-|  │  FRONT TIER (15mm high)                                             │  |
-|  │  /+----------+\  /+----------+\                                     │  |
-|  │  || ZONE 1   ||  || ZONE 2   ||                                     │  |
-|  │  || Phone Qi ||  || Phone /  ||                                     │  |
-|  │  ||  (coil)  ||  || AirPods  ||                                     │  |
-|  │  \+----------+/  \+----------+/                                     │  |
-|  └─────────────────────────────────────────────────────────────────────┘  |
-|  [========= WS2812B LED BAR — full front edge (16 LEDs) ================] |
-+======= [IEC C13 in (rear left)] =============================[USB-A side]=+
+                    ← 300mm long →
++============================================================+  ← rear edge (140mm wide, 22mm high)
+|                                                            |
+|   [⌚ ZONE 3 — Watch]        [💻 ZONE 4 — Laptop]          |
+|   Teardrop pod                Vertical spine groove        |
+|   30° tilt, rear-left         22mm × 12mm, rear-right      |
+|                                                            |
++------------------------------------------------------------+  ← arc taper (R20mm all edges)
+|                                                            |
+|   [📱 ZONE 1 — Phone]        [🎧 ZONE 2 — Buds]            |
+|   15W Qi + N52 magnets         15W Qi                      |
+|   Silicone dish pocket          Silicone dish pocket        |
+|                                                            |
++---[■■ PHONE ■■|■■ BUDS ■■|■■ WATCH ■■|■■ LAPTOP ■■]-------+
+← front edge (110mm wide, 12mm high) ←  IEC C13 inlet (rear)
+```
+
+Zone icons laser-etched on aluminum top plate above each LED section:
+- Zone 1: 📱 + "PHONE"
+- Zone 2: 🎧 + "BUDS"
+- Zone 3: ⌚ + "WATCH"
+- Zone 4: 💻 + "LAPTOP"
+
+---
+
+## Side Profile View (Arc Taper)
+
+```
+Rear (22mm high)                            Front (12mm high)
+     |                                            |
+     |  [Watch Zone 3]   [Laptop Zone 4]          |
+     |  teardrop pod     spine groove             |
+     |                                            |
++====+============================================+====+
+|    Internal PSU | PCB | Qi coil 1 | Qi coil 2       |
+|    INA3221/INA219      ESP32-C3 Mini  BH1750         |
++=========================================================+
+       |                                          |
+  IEC C13 inlet (rear)       [WS2812B LED — front lip, indirect]
 ```
 
 ---
 
-## Side Profile View
-
-```
-Rear (40mm)             Step             Front (15mm)
-                          |
-[Watch Zone 3]            |    [Phone Zone 1]  [Phone/Buds Zone 2]
-[Laptop Zone 4]           |           |               |
-        |                 |      ABS rails        ABS rails
-        |              ===|===================================
-+-------+---(rear tier)===+===(front tier)------------------+
-|  Internal PSU  |  PCB  | [Qi coil 1] | [Qi coil 2] | PCB |
-| INA3221 INA219 |  ESP32 |  [INA3221]  |  [INA3221]  |     |
-+----------------+--------+-------------+-------------+-----+
-     |___ IEC C13 inlet (rear) ___| |___ USB-A port (right side) ___|
-                                  |
-          [WS2812B LED strip — front edge, full width]
-```
-
----
-
-## Internal Component Layout (Top-Down PCB View)
+## Internal Component Layout (Top-Down)
 
 ```
 +========================================================================+
 | [IEC C13 Inlet] → [180W AC/DC PSU Module] → [Main 20V Rail]           |
 |                                       |                                |
 |    +----------------------------------+                                |
-|    |            |            |             |            |              |
-| [Qi TX 1]   [Qi TX 2]   [Watch Mod]   [USB-C PD Out]  [SY6280]        |
-| (15W, Z1)   (15W, Z2)   (5W, Z3)      (100W, Z4)     (12W USB-A)      |
+|    |            |            |             |                           |
+| [Qi TX 1]   [Qi TX 2]   [Watch Puck]   [USB-C PD Board]               |
+| (15W, Z1)   (15W, Z2)   (5W, Z3)       (100W, Z4)                     |
 |    |            |            |             |                           |
 | [INA3221 ch1] [INA3221 ch2] [INA3221 ch3] [INA219]                    |
 |    |            |            |             |                           |
 |    +------+-----+------------+-------------+                           |
 |           |                                                            |
-|        [I2C Bus: GPIO 21/22]                                           |
+|        [I2C Bus: GPIO 8/9]                                             |
 |           |                                                            |
-|      [ESP32-WROOM-32]                                                  |
+|      [ESP32-C3 Mini]                                                   |
 |           |               |               |                            |
-|    [BLE / WiFi]    [GPIO 12 → WS2812B]   [ADC: GPIO 36 (ambient)]     |
-|                                           [ADC: GPIO 34/35/32/33 (NTC)]|
+|    [BLE / WiFi]  [GPIO 4 → WS2812B]   [I2C: GPIO 8/9 (BH1750)]        |
 |                                                                        |
-| [WS2812B LED strip — 16 LEDs — front edge full width]                  |
+| [WS2812B LED strip — 16 LEDs — under front lip overhang]               |
 | [Zone 1: LEDs 0–3] [Zone 2: LEDs 4–7] [Zone 3: LEDs 8–11] [Z4: 12–15] |
+| [Frosted diffuser strip over LED bar]                                  |
 +========================================================================+
 ```
 
 ---
 
-## Guide Rail Dimensions
-
-| Zone | Rail Material | Height | Notes |
-|------|---------------|--------|-------|
-| Zone 1 | Integrated molded ABS | Small | Centers phone on Qi coil; silicone pad on surface |
-| Zone 2 | Integrated molded ABS | Small | Works for phone or AirPods case; silicone pad |
-| Zone 3 | Integrated molded ABS | Small | Lower profile to avoid interfering with watch band; silicone pad; elevated on rear tier |
-| Zone 4 | Integrated molded ABS + silicone inserts | 40–50mm | Supports laptop upright at ~75° from horizontal; silicone inner pads protect laptop edges |
-
----
-
-## Enclosure Dimensions (Target)
+## Enclosure Dimensions
 
 ```
-          320mm
+             ← 300mm →
 +------------------------+
-|                        |  Rear tier: 40mm
-|     [Z3]     [Z4]      |  ← elevated / stepped up
-+------------------------+  ← step (30mm rise over 20mm depth)
-|  [Z1]   [Z2]           |  Front tier: 15mm
-|  [LED BAR — full width]|
-+------------------------+  ← bottom
-  130mm width
+|                        |  Rear: 22mm high, 140mm wide
+|     [Z3]     [Z4]      |
++------arc taper---------+
+|  [Z1]   [Z2]           |  Front: 12mm high, 110mm wide
+|  [LED BAR — front lip] |
++------------------------+
+  R20mm radius all corners
 ```
 
 ---
 
-## Zone Spacing (Center-to-Center)
+## Zone Pocket Dimensions
 
-| Zones | Center-to-Center Distance |
-|-------|---------------------------|
-| Z1 to Z2 | 70mm |
-| Z2 to Z3 | 65mm |
-| Z3 to Z4 | 75mm |
+| Zone | Type | Depth | Silicone | Special |
+|------|------|-------|----------|---------|
+| Zone 1 — Phone | Recessed dish | 2–3mm | Yes | N52 ring magnets beneath |
+| Zone 2 — Buds | Recessed dish | 2–3mm | Yes | — |
+| Zone 3 — Watch | Teardrop pod | Elevated | Yes | 30° tilt, rear-left |
+| Zone 4 — Laptop | Groove slot | 12mm deep | Yes (lining) | 22mm wide, rear-right |
 
 ---
 
 ## LED Strip Key
 
-| State | LED Segment Color | Meaning |
-|-------|-------------------|---------|
-| Charging | Red | Device is actively charging on that zone |
-| Full | Green | Device is fully charged on that zone |
-| No device | Off | No device detected on that zone |
-| All zones full | Full bar pulses green (breathing) | All 4 zones simultaneously at 100% |
-| Dark mode | All off | App has forced LEDs off |
+| State | LED Color | Meaning |
+|-------|-----------|---------|
+| Charging | Red | Device actively charging |
+| Full | Green | Device fully charged |
+| Empty | Off | No device detected |
 
 ---
 
 ## Notes
-- Guide rails on Zones 1–3 are integrated ABS (same piece as the base) — clean look, no separate acrylic parts to break or misplace
-- Zone 3 watch cradle is recessed and sits elevated on the rear tier for clean visual separation
-- Zone 4 USB-C cable exits from the front-right edge or terminates in a flush USB-C port depending on enclosure revision
-- The WS2812B LED strip runs the full front width behind a frosted diffuser for a soft, continuous glow
-- Rubber feet (×4) on underside and cooling vent slots in base provide grip and passive airflow
-- IEC C13 inlet is on the rear left; USB-A port is on the right side panel
-- Aluminum top plate is secured with M3 screws and is removable for DIY repair access
-- Available in Black and White colorways (same enclosure design)
+- Arc enclosure: smooth curved wedge, zero sharp corners, R20mm all edges
+- No guide rails — zone pockets are silicone-lined recessed dishes
+- Laptop groove is in rear-right; laptop stands vertically on its spine
+- Watch cradle teardrop pod is in rear-left at 30° tilt toward user
+- WS2812B LED strip is hidden under front lip with frosted diffuser (indirect glow)
+- LED bar divided into 4 sections by recessed divider lines
+- Zone icons laser-etched directly on aluminum top plate above each LED section
+- Quad-Dock wordmark laser-etched on rear of aluminum top plate
+- Rubber feet ×4 on underside with Quad-Dock logo embossed
+- Aluminum top plate is removable (snap-fit + 2× M3 screws)
+- IEC C13 inlet is on the rear centre
+- No USB-A port
