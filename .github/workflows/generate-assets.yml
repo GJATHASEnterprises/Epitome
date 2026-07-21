@@ -33,9 +33,11 @@ jobs:
       - name: Install generation dependencies
         run: |
           # Install from the pinned requirements file first.
-          pip install -r scripts/requirements.txt || echo "::warning::requirements.txt install had failures; retrying with fallback package installs."
-          # Fallback installs for environments where optional/compiled deps fail.
-          pip install matplotlib Pillow numpy trimesh pygltflib scipy ezdxf numpy-stl || echo "::warning::Some fallback dependency installs failed; continuing because scripts handle optional features."
+          if ! pip install -r scripts/requirements.txt; then
+            echo "::warning::requirements.txt install had failures; attempting fallback package installs."
+            # Fallback installs for environments where optional/compiled deps fail.
+            pip install matplotlib Pillow numpy trimesh pygltflib scipy ezdxf numpy-stl || echo "::warning::Some fallback dependency installs failed; continuing because scripts handle optional features."
+          fi
           pip install cadquery || echo "::warning::cadquery install failed; continuing because CAD exports have graceful fallbacks."
 
       - name: Create asset directories
