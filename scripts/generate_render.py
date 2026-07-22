@@ -46,6 +46,21 @@ TEXT_ITEMS = [
 
 LED_SECTION_W = 71.0
 LED_SECTION_POSITIONS = [-109.5, -36.5, 36.5, 109.5]
+LED_Y = -3.0
+LED_Z = 1.5
+LED_D = 8.0
+LED_H = 3.0
+LED_DIFFUSER_W = 292.0
+LED_DIFFUSER_D = 9.0
+LED_DIFFUSER_H = 2.0
+LED_DIFFUSER_Z = 2.0
+
+GROUND_CX = 0.0
+GROUND_CY = 350.0
+GROUND_CZ = -3.0
+GROUND_W = 4000.0
+GROUND_D = 4000.0
+GROUND_H = 1.0
 
 FEET = [(-39.17, 15.0), (39.17, 15.0), (-53.50, 285.0), (53.50, 285.0)]
 
@@ -121,19 +136,19 @@ def make_cyl(cx_mm, cy_mm, cz_mm, r_mm, h_mm, verts=48, name: str | None = None)
 
 def _rrect_pts(width, depth, corner_r, segments=16):
     hw, hd = width / 2.0, depth / 2.0
-    r = max(0.0, min(corner_r, hw, hd))
+    clamped_r = max(0.0, min(corner_r, hw, hd))
     pts = []
     corners = [
-        (hw - r, -hd + r, -math.pi / 2, 0),
-        (hw - r, hd - r, 0, math.pi / 2),
-        (-hw + r, hd - r, math.pi / 2, math.pi),
-        (-hw + r, -hd + r, math.pi, 3 * math.pi / 2),
+        (hw - clamped_r, -hd + clamped_r, -math.pi / 2, 0),
+        (hw - clamped_r, hd - clamped_r, 0, math.pi / 2),
+        (-hw + clamped_r, hd - clamped_r, math.pi / 2, math.pi),
+        (-hw + clamped_r, -hd + clamped_r, math.pi, 3 * math.pi / 2),
     ]
     for cx, cy, a0, a1 in corners:
         for i in range(segments):
             t = i / max(1, segments - 1)
             a = a0 + (a1 - a0) * t
-            pts.append((cx + r * math.cos(a), cy + r * math.sin(a)))
+            pts.append((cx + clamped_r * math.cos(a), cy + clamped_r * math.sin(a)))
     return pts
 
 
@@ -364,10 +379,10 @@ def main() -> None:
     apply_mat(magnet_ring, m_abs)
 
     for i, cx in enumerate(LED_SECTION_POSITIONS, start=1):
-        led = make_box(cx, -3.0, 1.5, LED_SECTION_W, 8.0, 3.0, name=f"LED_{i}")
+        led = make_box(cx, LED_Y, LED_Z, LED_SECTION_W, LED_D, LED_H, name=f"LED_{i}")
         apply_mat(led, m_led)
 
-    diffuser = make_box(0.0, -3.0, 2.0, 292.0, 9.0, 2.0, name="LED_Diffuser")
+    diffuser = make_box(0.0, LED_Y, LED_DIFFUSER_Z, LED_DIFFUSER_W, LED_DIFFUSER_D, LED_DIFFUSER_H, name="LED_Diffuser")
     apply_mat(diffuser, m_sil)
 
     for txt, x, y, size in TEXT_ITEMS:
@@ -380,7 +395,7 @@ def main() -> None:
         foot = make_cyl(x, y, -1.5, 7.5, 3.0, verts=48, name=f"Foot_{i}")
         apply_mat(foot, m_rub)
 
-    ground = make_box(0.0, 350.0, -3.0, 4000.0, 4000.0, 1.0, name="Ground")
+    ground = make_box(GROUND_CX, GROUND_CY, GROUND_CZ, GROUND_W, GROUND_D, GROUND_H, name="Ground")
     apply_mat(ground, m_ground)
 
     curve = bpy.data.curves.new("PowerCordCurve", type="CURVE")
