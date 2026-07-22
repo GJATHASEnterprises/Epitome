@@ -64,6 +64,19 @@ GROUND_H = 1.0
 
 FEET = [(-39.17, 15.0), (39.17, 15.0), (-53.50, 285.0), (53.50, 285.0)]
 
+PAD_INSET = 2.0
+PAD_RADIUS_INSET = 1.0
+BORDER_Z_OFFSET = 0.3
+BORDER_HEIGHT = 0.6
+LABEL_RAISE_HEIGHT = 0.2
+LABEL_EXTRUDE_DEPTH = 0.15
+WATCH_PUCK_RADIUS = 17.0
+WATCH_PUCK_HEIGHT = 5.0
+WATCH_PUCK_Z_OFFSET = -1.0
+MAGNET_RING_RADIUS = 27.0
+MAGNET_RING_HEIGHT = 2.0
+MAGNET_RING_Z_OFFSET = -1.0
+
 
 def h(y_mm: float) -> float:
     """Top surface height in mm at y_mm."""
@@ -138,6 +151,7 @@ def make_cyl(cx_mm, cy_mm, cz_mm, r_mm, h_mm, verts=48, name: str | None = None)
 
 def _rrect_pts(width, depth, corner_r, segments=16):
     hw, hd = width / 2.0, depth / 2.0
+    # Clamp to avoid self-intersection when requested radius exceeds box extents.
     clamped_r = max(0.0, min(corner_r, hw, hd))
     pts = []
     corners = [
@@ -238,22 +252,31 @@ def build_prism(name, outline, z0_fn, z1_fn):
 def add_zone_dish(name, cx_mm, cy_mm, w_mm, d_mm, r_mm, depth_mm, mat_sil, mat_border):
     """Add a visible charging dish: recessed silicone pad + thin border frame."""
     z_top_mm = h(cy_mm) + TOP_T
-    pad = make_rrect_box(cx_mm, cy_mm, z_top_mm - depth_mm / 2.0, w_mm - 2.0, d_mm - 2.0, max(0.0, r_mm - 1.0), depth_mm, name=f"{name}_Silicone")
+    pad = make_rrect_box(
+        cx_mm,
+        cy_mm,
+        z_top_mm - depth_mm / 2.0,
+        w_mm - PAD_INSET,
+        d_mm - PAD_INSET,
+        max(0.0, r_mm - PAD_RADIUS_INSET),
+        depth_mm,
+        name=f"{name}_Silicone",
+    )
     apply_mat(pad, mat_sil)
 
-    border = make_rrect_box(cx_mm, cy_mm, z_top_mm + 0.3, w_mm, d_mm, r_mm, 0.6, name=f"{name}_Border")
+    border = make_rrect_box(cx_mm, cy_mm, z_top_mm + BORDER_Z_OFFSET, w_mm, d_mm, r_mm, BORDER_HEIGHT, name=f"{name}_Border")
     apply_mat(border, mat_border)
 
 
 def add_label(name, text, x_mm, y_mm, size_mm, mat):
     """Add a raised 3D text label slightly above the top plate."""
-    z_mm = h(y_mm) + TOP_T + 0.2
+    z_mm = h(y_mm) + TOP_T + LABEL_RAISE_HEIGHT
     bpy.ops.object.text_add(location=(x_mm * MM, y_mm * MM, z_mm * MM))
     obj = bpy.context.active_object
     obj.name = name
     obj.data.body = text
     obj.data.size = size_mm * MM
-    obj.data.extrude = 0.15 * MM
+    obj.data.extrude = LABEL_EXTRUDE_DEPTH * MM
     obj.data.align_x = "CENTER"
     obj.data.align_y = "CENTER"
     bpy.ops.object.convert(target="MESH")
@@ -376,14 +399,30 @@ def main() -> None:
     bpy.ops.object.origin_set(type="ORIGIN_CURSOR")
     pod.rotation_euler = (math.radians(WATCH_TILT), 0.0, 0.0)
 
-    puck = make_cyl(WATCH_BASE_MM[0], WATCH_BASE_MM[1], WATCH_BASE_MM[2] + WATCH_CYL_H + WATCH_CONE_H - 1.0, 17.0, 5.0, verts=48, name="WatchPuck")
+    puck = make_cyl(
+        WATCH_BASE_MM[0],
+        WATCH_BASE_MM[1],
+        WATCH_BASE_MM[2] + WATCH_CYL_H + WATCH_CONE_H + WATCH_PUCK_Z_OFFSET,
+        WATCH_PUCK_RADIUS,
+        WATCH_PUCK_HEIGHT,
+        verts=48,
+        name="WatchPuck",
+    )
     apply_mat(puck, m_watch)
     puck.rotation_euler = pod.rotation_euler
 
     add_laptop_groove(m_sil, m_usbc)
     add_iec_inlet(m_usbc)
 
-    magnet_ring = make_cyl(-20.0, 70.0, h(70.0) + TOP_T - 1.0, 27.0, 2.0, verts=64, name="Zone1_MagnetRing")
+    magnet_ring = make_cyl(
+        Z1["cx"],
+        Z1["cy"],
+        h(Z1["cy"]) + TOP_T + MAGNET_RING_Z_OFFSET,
+        MAGNET_RING_RADIUS,
+        MAGNET_RING_HEIGHT,
+        verts=64,
+        name="Zone1_MagnetRing",
+    )
     apply_mat(magnet_ring, m_abs)
 
     for i, cx in enumerate(LED_SECTION_POSITIONS, start=1):
