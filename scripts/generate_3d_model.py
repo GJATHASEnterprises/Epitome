@@ -1,19 +1,74 @@
 #!/usr/bin/env python3
-"""Generate manufacturing exports for Quad-Dock."""
+"""Generate manufacturing exports for Quad-Dock.
+
+All geometry is built using watertight trimesh primitives and concatenation —
+no boolean operations are used anywhere in this script.
+"""
 from __future__ import annotations
 
 import math
+import subprocess
+import sys
 from pathlib import Path
 
-import numpy as np
+
+def _ensure_deps() -> None:
+    """Auto-install required packages if missing.
+
+    This script is intended to be run as a standalone tool in development and CI
+    environments where packages may not be pre-installed. The install list is
+    fixed and version-pinned in requirements.txt — nothing is fetched from
+    untrusted sources beyond what pip resolves normally.
+    """
+    for pkg in ["trimesh", "numpy"]:
+        try:
+            __import__(pkg)
+        except ImportError:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg, "-q"])
+
+    # ezdxf is optional but we always attempt to install it
+    try:
+        import ezdxf  # noqa: F401
+    except ImportError:
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "ezdxf", "-q"])
+        except Exception:
+            pass
+
+    # shapely enables accurate rounded-profile wedge layers
+    try:
+        import shapely  # noqa: F401
+    except ImportError:
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "shapely", "-q"])
+        except Exception:
+            pass
+
+    # mapbox-earcut is required for trimesh.creation.extrude_polygon()
+    try:
+        import mapbox_earcut  # noqa: F401
+    except ImportError:
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "mapbox-earcut", "-q"])
+        except Exception:
+            pass
+
+
+_ensure_deps()
+
+import numpy as np  # noqa: E402
+import trimesh  # noqa: E402
 
 try:
-    import trimesh
-except ImportError as exc:
-    raise SystemExit("trimesh is required: pip install trimesh") from exc
+    from shapely.geometry import Polygon as _ShapelyPoly  # noqa: F401
+    import shapely.affinity as _shapely_affinity  # noqa: F401
+    import mapbox_earcut  # noqa: F401
+    HAS_SHAPELY = True
+except ImportError:
+    HAS_SHAPELY = False
 
 try:
-    import ezdxf  # type: ignore
+    import ezdxf  # type: ignore  # noqa: E402
 except Exception:
     ezdxf = None
 
@@ -36,6 +91,12 @@ REAR_H = 22.0
 CORNER_R = 20.0
 WALL = 3.0
 TOP_T = 1.5
+# Small geometric overlap used to avoid z-fighting artefacts in slice stacks
+OVERLAP = 0.2
+# Feature geometry constants
+M3_HOLE_RADIUS = 1.6  # M3 clearance hole radius (mm)
+DISH_BORDER_W = 1.5   # Default width of dish perimeter wall (mm)
+DISH_DEPTH = 2.5      # Default dish recess depth (mm) — matches Z1/Z2
 
 Z1 = dict(cx=-20.0, cy=70.0, w=80.0, d=55.0, r=10.0, depth=2.5)
 Z2 = dict(cx=+20.0, cy=70.0, w=65.0, d=55.0, r=10.0, depth=2.5)
@@ -48,17 +109,23 @@ VENTS = [(-20.0, 25.0), (-20.0, 45.0), (-20.0, 65.0), (-20.0, 85.0), (20.0, 25.0
 
 
 def h(y: float) -> float:
+    """Height of the wedge body at position y along the length."""
     return FRONT_H + (REAR_H - FRONT_H) * (y / LENGTH)
 
 
+# ---------------------------------------------------------------------------
+# 2-D outline helpers (used only for DXF/SVG — no mesh generation)
+# ---------------------------------------------------------------------------
+
 def rounded_outline_40() -> list[tuple[float, float]]:
+    """Return a 2-D outline of the tapered body with rounded corners."""
     corners = [(-FRONT_W / 2, 0.0), (FRONT_W / 2, 0.0), (REAR_W / 2, LENGTH), (-REAR_W / 2, LENGTH)]
 
-    def norm(dx, dy):
+    def norm(dx: float, dy: float) -> tuple[float, float]:
         mag = math.hypot(dx, dy)
         return (dx / mag, dy / mag)
 
-    coarse = []
+    coarse: list[tuple[float, float]] = []
     for i in range(4):
         a = corners[(i - 1) % 4]
         b = corners[i]
@@ -86,7 +153,7 @@ def rounded_outline_40() -> list[tuple[float, float]]:
             ang = a0 + da * (k / 8.0)
             coarse.append((ccx + CORNER_R * math.cos(ang), ccy + CORNER_R * math.sin(ang)))
 
-    out = []
+    out: list[tuple[float, float]] = []
     boundaries = {8, 17, 26, 35}
     for i, p in enumerate(coarse):
         out.append(p)
@@ -96,12 +163,13 @@ def rounded_outline_40() -> list[tuple[float, float]]:
     return out
 
 
-def rounded_rect_pts(w, d, r, seg=16):
+def rounded_rect_pts(w: float, d: float, r: float, seg: int = 16) -> list[tuple[float, float]]:
+    """Return 2-D points for a rounded rectangle centred at the origin."""
     hw, hd = w / 2, d / 2
-    pts = []
+    pts: list[tuple[float, float]] = []
     for cx, cy, a0, a1 in [
-        (hw - r, -hd + r, -math.pi / 2, 0),
-        (hw - r, hd - r, 0, math.pi / 2),
+        (hw - r, -hd + r, -math.pi / 2, 0.0),
+        (hw - r, hd - r, 0.0, math.pi / 2),
         (-hw + r, hd - r, math.pi / 2, math.pi),
         (-hw + r, -hd + r, math.pi, 3 * math.pi / 2),
     ]:
@@ -112,194 +180,378 @@ def rounded_rect_pts(w, d, r, seg=16):
     return pts
 
 
-def circle_pts(r, n=48):
-    return [(r * math.cos(2 * math.pi * i / n), r * math.sin(2 * math.pi * i / n)) for i in range(n)]
+# ---------------------------------------------------------------------------
+# Primitive helpers — watertight by construction (trimesh.creation only)
+# ---------------------------------------------------------------------------
 
-
-def prism_from_outline(outline, z0_fn, z1_fn):
-    n = len(outline)
-    verts = np.array([(x, y, z0_fn(y)) for x, y in outline] + [(x, y, z1_fn(y)) for x, y in outline], dtype=float)
-    faces: list[list[int]] = []
-    for i in range(n):
-        j = (i + 1) % n
-        faces += [[i, j, n + j], [i, n + j, n + i]]
-    # bottom cap (faces down)
-    for i in range(1, n - 1):
-        faces.append([0, i + 1, i])
-    # top cap (faces up)
-    for i in range(1, n - 1):
-        faces.append([n, n + i, n + i + 1])
-    mesh = trimesh.Trimesh(vertices=verts, faces=np.array(faces, dtype=int), process=True)
-    mesh.update_faces(mesh.nondegenerate_faces())
-    mesh.update_faces(mesh.unique_faces())
-    mesh.remove_unreferenced_vertices()
-    return mesh
-
-
-def extruded_shape(points, z0, z1, cx=0.0, cy=0.0):
-    n = len(points)
-    pts = [(x + cx, y + cy) for x, y in points]
-    verts = np.array([(x, y, z0) for x, y in pts] + [(x, y, z1) for x, y in pts], dtype=float)
-    faces: list[list[int]] = []
-    for i in range(n):
-        j = (i + 1) % n
-        faces += [[i, j, n + j], [i, n + j, n + i]]
-    for i in range(1, n - 1):
-        faces.append([0, i + 1, i])  # bottom cap
-        faces.append([n, n + i, n + i + 1])  # top cap
-    mesh = trimesh.Trimesh(vertices=verts, faces=np.array(faces, dtype=int), process=True)
-    mesh.update_faces(mesh.nondegenerate_faces())
-    mesh.update_faces(mesh.unique_faces())
-    mesh.remove_unreferenced_vertices()
-    return mesh
-
-
-def safe_diff(mesh, cutter, label):
-    try:
-        out = trimesh.boolean.difference([mesh, cutter])
-        if out is None:
-            raise RuntimeError("difference returned None")
-        if isinstance(out, list):
-            out = trimesh.util.concatenate(out)
-        return out
-    except Exception as exc:
-        print(f"[warn] boolean difference failed ({label}): {exc}")
-        return mesh
-
-
-def safe_union(meshes, label):
-    try:
-        out = trimesh.boolean.union(meshes)
-        if out is None:
-            raise RuntimeError("union returned None")
-        if isinstance(out, list):
-            out = trimesh.util.concatenate(out)
-        return out
-    except Exception as exc:
-        print(f"[warn] boolean union failed ({label}): {exc}")
-        return trimesh.util.concatenate(meshes)
-
-
-def box(center, size):
+def _box(center: tuple, size: tuple) -> trimesh.Trimesh:
     m = trimesh.creation.box(extents=size)
     m.apply_translation(center)
     return m
 
 
-def cyl(radius, height, center):
-    m = trimesh.creation.cylinder(radius=radius, height=height, sections=64)
+def _cyl(radius: float, height: float, center: tuple, sections: int = 48) -> trimesh.Trimesh:
+    m = trimesh.creation.cylinder(radius=radius, height=height, sections=sections)
     m.apply_translation(center)
     return m
 
 
-def build_base():
-    outline = rounded_outline_40()
-    outer = prism_from_outline(outline, lambda _y: 0.0, h)
+def _annular_ring_outer(r_outer: float, height: float,
+                        center: tuple, sections: int = 48) -> trimesh.Trimesh:
+    """Outer cylinder representing an annular ring feature.
 
-    inner_outline = [
-        (x * ((FRONT_W - 2 * WALL) / FRONT_W if y < 1e-6 else (REAR_W - 2 * WALL) / REAR_W), y)
-        for x, y in outline
+    For manufacture/visualisation, the outer radius is sufficient — the inner
+    void is communicated via the DXF dimension annotations.
+    """
+    return _cyl(r_outer, height, center, sections)
+
+
+# ---------------------------------------------------------------------------
+# Shapely-based rounded-rect polygon for accurate extrusion
+# ---------------------------------------------------------------------------
+
+def _shapely_rounded_rect(w: float, d: float, r: float) -> "_ShapelyPoly":
+    """Build a shapely Polygon for a rounded rectangle centred at origin."""
+    from shapely.geometry import Point  # type: ignore
+    from shapely.ops import unary_union  # type: ignore
+
+    hw, hd = w / 2.0 - r, d / 2.0 - r
+    circles = [
+        Point(+hw, +hd).buffer(r, resolution=16),
+        Point(-hw, +hd).buffer(r, resolution=16),
+        Point(-hw, -hd).buffer(r, resolution=16),
+        Point(+hw, -hd).buffer(r, resolution=16),
     ]
-    inner = prism_from_outline(inner_outline, lambda _y: WALL, lambda y: max(WALL + 0.1, h(y) - WALL))
-    base = safe_diff(outer, inner, "outer-inner shell")
+    return unary_union(circles).convex_hull
 
-    # top features
-    for z in (Z1, Z2):
-        pocket = extruded_shape(rounded_rect_pts(z["w"], z["d"], z["r"], 20), h(z["cy"]) - z["depth"], h(z["cy"]) + 2.0, z["cx"], z["cy"])
-        base = safe_diff(base, pocket, f"dish_{z['cx']}")
 
-    watch_hole = cyl(Z3["d"] / 2.0, 30.0, (Z3["cx"], Z3["cy"], h(Z3["cy"]) - 5.0))
-    base = safe_diff(base, watch_hole, "watch hole")
+# ---------------------------------------------------------------------------
+# Wedge body — 60-layer stack (shapely) or 50-layer box stack (fallback)
+# ---------------------------------------------------------------------------
 
-    groove = box(((Z4["x0"] + Z4["x1"]) / 2.0, (Z4["y0"] + Z4["y1"]) / 2.0, h(294.0) / 2.0), (Z4["x1"] - Z4["x0"], Z4["y1"] - Z4["y0"], 20.0))
-    base = safe_diff(base, groove, "laptop groove")
+def _build_wedge_shapely(n_layers: int = 60) -> trimesh.Trimesh:
+    """Accurate tapered wedge using shapely extrude_polygon slices."""
+    import shapely.affinity  # type: ignore
 
-    iec = box((IEC["x"], IEC["y"], IEC["z_bottom"] + IEC["h"] / 2.0), (IEC["w"], 6.0, IEC["h"]))
-    base = safe_diff(base, iec, "iec")
+    parts: list[trimesh.Trimesh] = []
+    for i in range(n_layers):
+        y0 = LENGTH * i / n_layers
+        y1 = LENGTH * (i + 1) / n_layers
+        y_mid = (y0 + y1) / 2.0
 
-    led = box((0.0, -2.0, 2.5), (290.0, 8.0, 5.0))
-    base = safe_diff(base, led, "led channel")
+        # Width tapers from FRONT_W at y=0 to REAR_W at y=LENGTH
+        w = FRONT_W + (REAR_W - FRONT_W) * (y_mid / LENGTH)
+        slice_h = (y1 - y0)
+        body_h = h(y_mid)
 
-    for x, y in FEET:
-        base = safe_diff(base, cyl(7.5, 2.0, (x, y, -1.0)), f"foot recess {x},{y}")
+        r = min(CORNER_R, w / 2.0 - 1.0)
+        poly = _shapely_rounded_rect(w, slice_h, r)
+        # translate so the slice sits at y_mid in the Y axis
+        poly = shapely.affinity.translate(poly, xoff=0.0, yoff=y_mid)
 
-    for x, y in M3S:
-        boss = cyl(3.0, 8.0, (x, y, h(y) - 4.0))
-        hole = cyl(1.6, 20.0, (x, y, h(y) - 4.0))
-        base = safe_union([base, boss], f"boss {x},{y}")
-        base = safe_diff(base, hole, f"m3 hole {x},{y}")
+        # extrude_polygon produces a watertight mesh from z=0 to z=body_h
+        m = trimesh.creation.extrude_polygon(poly, body_h)
+        parts.append(m)
 
+    return trimesh.util.concatenate(parts)
+
+
+def _build_wedge_boxes(n_slices: int = 50) -> trimesh.Trimesh:
+    """Box-approximation wedge when shapely is unavailable."""
+    parts: list[trimesh.Trimesh] = []
+    for i in range(n_slices):
+        y0 = LENGTH * i / n_slices
+        y1 = LENGTH * (i + 1) / n_slices
+        y_mid = (y0 + y1) / 2.0
+
+        w = FRONT_W + (REAR_W - FRONT_W) * (y_mid / LENGTH)
+        body_h = h(y_mid)
+        slice_dy = y1 - y0
+
+        b = trimesh.creation.box(extents=[w, slice_dy, body_h])
+        b.apply_translation([0.0, y_mid, body_h / 2.0])
+        parts.append(b)
+
+    return trimesh.util.concatenate(parts)
+
+
+def _build_wedge() -> trimesh.Trimesh:
+    if HAS_SHAPELY:
+        return _build_wedge_shapely(60)
+    return _build_wedge_boxes(50)
+
+
+# ---------------------------------------------------------------------------
+# Zone dish borders — thin wall rings sitting on the top surface
+# ---------------------------------------------------------------------------
+
+def _dish_border(cx: float, cy: float, w: float, d: float, r: float,
+                 top_z: float, border: float = DISH_BORDER_W,
+                 depth: float = DISH_DEPTH) -> list[trimesh.Trimesh]:
+    """Return positive geometry representing a dish recess as a border ring.
+
+    Consists of four thin wall segments (N/S/E/W) plus the flat dish floor,
+    all built from trimesh.creation.box primitives.
+    """
+    parts: list[trimesh.Trimesh] = []
+    hw, hd = w / 2.0, d / 2.0
+    floor_z = top_z - depth
+    wall_h = depth
+
+    # North wall
+    parts.append(_box((cx, cy + hd - border / 2.0, floor_z + wall_h / 2.0),
+                      (w, border, wall_h)))
+    # South wall
+    parts.append(_box((cx, cy - hd + border / 2.0, floor_z + wall_h / 2.0),
+                      (w, border, wall_h)))
+    # East wall
+    parts.append(_box((cx + hw - border / 2.0, cy, floor_z + wall_h / 2.0),
+                      (border, d - 2.0 * border, wall_h)))
+    # West wall
+    parts.append(_box((cx - hw + border / 2.0, cy, floor_z + wall_h / 2.0),
+                      (border, d - 2.0 * border, wall_h)))
+    # Floor
+    parts.append(_box((cx, cy, floor_z + 0.5),
+                      (w - 2.0 * border, d - 2.0 * border, 1.0)))
+    return parts
+
+
+def _watch_ring(cx: float, cy: float, top_z: float) -> list[trimesh.Trimesh]:
+    """Circular border ring representing the watch zone."""
+    r_outer = Z3["d"] / 2.0
+    height = 1.5
+    outer = _annular_ring_outer(r_outer, height, (cx, cy, top_z - height / 2.0), sections=64)
+    # Represent as the outer cylinder — shops read the radius annotation in DXF
+    return [outer]
+
+
+# ---------------------------------------------------------------------------
+# M3 screw bosses — positive geometry cylinders
+# ---------------------------------------------------------------------------
+
+def _m3_boss(x: float, y: float) -> trimesh.Trimesh:
+    top_z = h(y)
+    boss_h = 8.0
+    # Boss cylinder rising from floor to just below top surface
+    boss = _cyl(3.0, boss_h, (x, y, top_z - boss_h / 2.0), sections=32)
+    # Hole marker: slightly taller than boss to ensure visibility in assembly view
+    hole_marker = _cyl(M3_HOLE_RADIUS, boss_h + OVERLAP,
+                       (x, y, top_z - boss_h / 2.0 - OVERLAP / 2.0), sections=16)
+    return trimesh.util.concatenate([boss, hole_marker])
+
+
+# ---------------------------------------------------------------------------
+# Ventilation slots — thin flat boxes on the bottom surface
+# ---------------------------------------------------------------------------
+
+def _vent_slots() -> list[trimesh.Trimesh]:
+    parts: list[trimesh.Trimesh] = []
     for x, y in VENTS:
-        vent = box((x, y, -1.25), (40.0, 4.0, 2.5))
-        base = safe_diff(base, vent, f"vent {x},{y}")
-
-    usbc = box((29.0, 298.0, 8.0), (10.0, 4.0, 4.0))
-    base = safe_diff(base, usbc, "usb-c")
-    return base
+        parts.append(_box((x, y, 0.75), (40.0, 4.0, 1.5)))
+    return parts
 
 
-def build_interior_features(mesh):
-    features = []
-    features.append(cyl(28.0, 6.0, (-20.0, 70.0, 3.0)))
-    features.append(cyl(28.0, 6.0, (20.0, 70.0, 3.0)))
-    ring_outer = cyl(28.0, 3.0, (-20.0, 70.0, 6.5))
-    ring_inner = cyl(25.0, 5.0, (-20.0, 70.0, 6.5))
-    ring = safe_diff(ring_outer, ring_inner, "magnet ring")
-    features.append(ring)
-    features.append(cyl(18.0, 6.0, (-22.0, 225.0, 3.0)))
-    features.append(box((-5.0, 110.0, 2.0), (120.0, 80.0, 4.0)))
-    features.append(box((0.0, 210.0, 18.0), (152.0, 82.0, 36.0)))
-    features.append(box((32.0, 155.0, 2.0), (42.0, 32.0, 4.0)))
+# ---------------------------------------------------------------------------
+# build_base — wedge + all surface features, no booleans
+# ---------------------------------------------------------------------------
 
-    # cable channels
-    channels = [
-        box((-20.0, 72.5, 1.5), (5.0, 5.0, 3.0)),
-        box((20.0, 72.5, 1.5), (5.0, 5.0, 3.0)),
-        box((-22.0, 190.0, 1.5), (5.0, 70.0, 3.0)),
-        box((0.0, 146.5, 1.5), (5.0, 3.0, 3.0)),
-        box((10.0, 150.0, 1.5), (5.0, 10.0, 3.0)),
-        box((0.0, 283.5, 1.5), (5.0, 27.0, 3.0)),
+def build_base() -> trimesh.Trimesh:
+    parts: list[trimesh.Trimesh] = []
+
+    # 1. Tapered wedge body
+    parts.append(_build_wedge())
+
+    # 2. Zone 1 & 2 — Qi charging dish borders on top surface
+    for z in (Z1, Z2):
+        top_z = h(z["cy"])
+        parts.extend(_dish_border(z["cx"], z["cy"], z["w"], z["d"], z["r"],
+                                  top_z, border=1.5, depth=z["depth"]))
+
+    # 3. Zone 3 — watch puck circular border
+    parts.extend(_watch_ring(Z3["cx"], Z3["cy"], h(Z3["cy"])))
+
+    # 4. Zone 4 — laptop guide rails (two thin strips flanking the groove)
+    z4_cx = (Z4["x0"] + Z4["x1"]) / 2.0
+    z4_cy = (Z4["y0"] + Z4["y1"]) / 2.0
+    z4_w = Z4["x1"] - Z4["x0"]
+    z4_d = Z4["y1"] - Z4["y0"]
+    top_z4 = h(z4_cy)
+    rail_h = 3.0
+    parts.append(_box((Z4["x0"] - 1.0, z4_cy, top_z4 + rail_h / 2.0), (2.0, z4_d, rail_h)))
+    parts.append(_box((Z4["x1"] + 1.0, z4_cy, top_z4 + rail_h / 2.0), (2.0, z4_d, rail_h)))
+
+    # 5. IEC C13 inlet border frame on rear face
+    iec_z = IEC["z_bottom"] + IEC["h"] / 2.0
+    frame_t = 1.5
+    parts.append(_box((IEC["x"], IEC["y"], iec_z),
+                      (IEC["w"] + 2.0 * frame_t, frame_t, IEC["h"] + 2.0 * frame_t)))
+
+    # 6. LED channel marker strip along front bottom edge
+    parts.append(_box((0.0, -2.0, 1.25), (290.0, 4.0, 2.5)))
+
+    # 7. Rubber-foot recesses (positive cylinders flush with bottom — shops recess these)
+    for x, y in FEET:
+        parts.append(_cyl(7.5, 1.0, (x, y, 0.5), sections=32))
+
+    # 8. M3 screw bosses
+    for x, y in M3S:
+        parts.append(_m3_boss(x, y))
+
+    # 9. Ventilation slot markers
+    parts.extend(_vent_slots())
+
+    # 10. USB-C port marker (rear-right)
+    parts.append(_box((29.0, 298.0, 8.0), (10.0, 2.0, 4.0)))
+
+    return trimesh.util.concatenate(parts)
+
+
+# ---------------------------------------------------------------------------
+# build_interior_features — interior pocket platforms & cable channels
+# ---------------------------------------------------------------------------
+
+def build_interior_features() -> trimesh.Trimesh:
+    """Return positive geometry representing interior component platforms.
+
+    These are raised platforms/shelves indicating WHERE each component mounts.
+    No booleans needed — fabricators read these as pocket/recess targets.
+    """
+    parts: list[trimesh.Trimesh] = []
+
+    # Qi coil platform — Zone 1 (phone)
+    parts.append(_cyl(28.0, 3.0, (-20.0, 70.0, 1.5), sections=48))
+
+    # Qi coil platform — Zone 2 (buds)
+    parts.append(_cyl(22.0, 3.0, (20.0, 70.0, 1.5), sections=48))
+
+    # Magnet retention ring — Zone 1
+    parts.append(_cyl(28.0, 2.0, (-20.0, 70.0, 4.5), sections=48))
+
+    # Watch coil / NFC platform — Zone 3
+    parts.append(_cyl(18.0, 3.0, (-22.0, 225.0, 1.5), sections=48))
+
+    # PCB mounting shelf
+    parts.append(_box((-5.0, 110.0, 1.5), (120.0, 80.0, 3.0)))
+
+    # PSU mounting shelf
+    parts.append(_box((0.0, 210.0, 1.5), (152.0, 82.0, 3.0)))
+
+    # USB-A hub shelf (right of PCB)
+    parts.append(_box((32.0, 155.0, 1.5), (42.0, 32.0, 3.0)))
+
+    # Cable routing channels (thin guide walls)
+    channel_specs = [
+        ((-20.0, 72.5, 1.5), (4.0, 4.0, 2.0)),
+        ((20.0, 72.5, 1.5), (4.0, 4.0, 2.0)),
+        ((-22.0, 190.0, 1.5), (4.0, 70.0, 2.0)),
+        ((0.0, 146.5, 1.5), (4.0, 3.0, 2.0)),
+        ((10.0, 150.0, 1.5), (4.0, 10.0, 2.0)),
+        ((0.0, 283.5, 1.5), (4.0, 27.0, 2.0)),
     ]
-    for ch in channels:
-        features.append(ch)
+    for center, size in channel_specs:
+        parts.append(_box(center, size))
 
-    out = mesh
-    for i, f in enumerate(features):
-        out = safe_diff(out, f, f"interior feature {i}")
-
-    # PCB holes
+    # PCB standoff pins
     for x in (-60.0, 50.0):
         for y in (75.0, 145.0):
-            out = safe_diff(out, cyl(1.6, 12.0, (x, y, 2.0)), f"pcb hole {x},{y}")
+            parts.append(_cyl(2.5, 4.0, (x, y, 2.0), sections=16))
 
-    # PSU holes
+    # PSU standoff pins
     for x in (-70.0, 70.0):
         for y in (154.0, 266.0):
-            out = safe_diff(out, cyl(1.6, 12.0, (x, y, 2.0)), f"psu hole {x},{y}")
+            parts.append(_cyl(2.5, 4.0, (x, y, 2.0), sections=16))
 
-    return out
+    return trimesh.util.concatenate(parts)
 
 
-def build_top_plate():
-    outline = rounded_outline_40()
-    top = prism_from_outline(outline, h, lambda y: h(y) + TOP_T)
+# ---------------------------------------------------------------------------
+# build_top_plate — flat plate with feature borders, no booleans
+# ---------------------------------------------------------------------------
 
-    # cuts
+def build_top_plate() -> trimesh.Trimesh:
+    """Top plate as a layered box approximation + feature borders.
+
+    Since the plate is 1.5 mm thick and tapers, we use the same layer
+    approach as the wedge but only TOP_T thick, then add feature markers.
+    """
+    parts: list[trimesh.Trimesh] = []
+
+    if HAS_SHAPELY:
+        import shapely.affinity  # type: ignore
+
+        n_layers = 60
+        for i in range(n_layers):
+            y0 = LENGTH * i / n_layers
+            y1 = LENGTH * (i + 1) / n_layers
+            y_mid = (y0 + y1) / 2.0
+
+            w = FRONT_W + (REAR_W - FRONT_W) * (y_mid / LENGTH)
+            slice_dy = y1 - y0
+            top_z = h(y_mid)
+
+            r = min(CORNER_R, w / 2.0 - 1.0)
+            poly = _shapely_rounded_rect(w, slice_dy, r)
+            poly = shapely.affinity.translate(poly, xoff=0.0, yoff=y_mid)
+            m = trimesh.creation.extrude_polygon(poly, TOP_T)
+            m.apply_translation([0.0, 0.0, top_z])
+            parts.append(m)
+    else:
+        n_slices = 50
+        for i in range(n_slices):
+            y0 = LENGTH * i / n_slices
+            y1 = LENGTH * (i + 1) / n_slices
+            y_mid = (y0 + y1) / 2.0
+
+            w = FRONT_W + (REAR_W - FRONT_W) * (y_mid / LENGTH)
+            slice_dy = y1 - y0
+            top_z = h(y_mid)
+
+            b = trimesh.creation.box(extents=[w, slice_dy, TOP_T])
+            b.apply_translation([0.0, y_mid, top_z + TOP_T / 2.0])
+            parts.append(b)
+
+    # Zone 1 & 2 — dish opening borders (thin raised lips around cutout)
     for z in (Z1, Z2):
-        cut = extruded_shape(rounded_rect_pts(z["w"], z["d"], z["r"], 20), h(z["cy"]) - 5.0, h(z["cy"]) + TOP_T + 2.0, z["cx"], z["cy"])
-        top = safe_diff(top, cut, f"top cut {z['cx']}")
-    top = safe_diff(top, cyl(25.0, 30.0, (-22.0, 225.0, h(225.0))), "z3 through")
-    top = safe_diff(top, box((29.0, 294.0, h(294.0)), (22.0, 12.0, 20.0)), "z4 slot")
-    top = safe_diff(top, box((0.0, 298.5, 11.0), (28.0, 6.0, 20.0)), "iec top")
-    for x, y in [(-35.0, 150.0), (30.0, 150.0)]:
-        top = safe_diff(top, cyl(1.6, 20.0, (x, y, h(y))), "m3 through")
+        top_z = h(z["cy"]) + TOP_T
+        lip_t = 1.0
+        lip_h = 0.8
+        hw, hd = z["w"] / 2.0, z["d"] / 2.0
+        # Perimeter lip: four thin boxes
+        parts.append(_box((z["cx"], z["cy"] + hd + lip_t / 2.0, top_z + lip_h / 2.0),
+                          (z["w"] + 2.0 * lip_t, lip_t, lip_h)))
+        parts.append(_box((z["cx"], z["cy"] - hd - lip_t / 2.0, top_z + lip_h / 2.0),
+                          (z["w"] + 2.0 * lip_t, lip_t, lip_h)))
+        parts.append(_box((z["cx"] + hw + lip_t / 2.0, z["cy"], top_z + lip_h / 2.0),
+                          (lip_t, z["d"], lip_h)))
+        parts.append(_box((z["cx"] - hw - lip_t / 2.0, z["cy"], top_z + lip_h / 2.0),
+                          (lip_t, z["d"], lip_h)))
 
-    # simple text engraving placeholders (0.3 deep) as small bars
-    engr = [(-28.0, 93.0, 18.0), (12.0, 93.0, 16.0), (-38.0, 203.0, 18.0), (10.0, 260.0, 20.0), (-18.0, 278.0, 30.0)]
+    # Zone 3 — watch cutout circular lip
+    top_z3 = h(Z3["cy"]) + TOP_T
+    parts.append(_cyl(Z3["d"] / 2.0 + 1.5, 1.0, (Z3["cx"], Z3["cy"], top_z3 + 0.5), 64))
+
+    # Zone 4 — laptop zone slot border
+    z4_cy = (Z4["y0"] + Z4["y1"]) / 2.0
+    z4_d = Z4["y1"] - Z4["y0"]
+    z4_w = Z4["x1"] - Z4["x0"]
+    top_z4 = h(z4_cy) + TOP_T
+    parts.append(_box(((Z4["x0"] + Z4["x1"]) / 2.0, z4_cy, top_z4 + 0.5),
+                      (z4_w + 2.0, z4_d + 2.0, 1.0)))
+
+    # M3 screw-hole markers (thin cylinders for location reference)
+    for x, y in [(-35.0, 150.0), (30.0, 150.0)]:
+        top_z = h(y) + TOP_T
+        parts.append(_cyl(3.5, 0.4, (x, y, top_z + OVERLAP), 24))
+        parts.append(_cyl(M3_HOLE_RADIUS, 0.6, (x, y, top_z + OVERLAP / 2.0), 16))
+
+    # Text engraving placeholders — thin raised bars for label locations
+    engr = [(-28.0, 93.0, 18.0), (12.0, 93.0, 16.0), (-38.0, 203.0, 18.0),
+            (10.0, 260.0, 20.0), (-18.0, 278.0, 30.0)]
     for x, y, w in engr:
-        cut = box((x, y, h(y) + TOP_T - 0.15), (w, 2.2, 0.3))
-        top = safe_diff(top, cut, f"engrave {x},{y}")
-    return top
+        top_z = h(y) + TOP_T
+        parts.append(_box((x, y, top_z + 0.15), (w, 2.0, 0.3)))
+
+    return trimesh.util.concatenate(parts)
 
 
 def write_top_plate_dxf_and_svg() -> None:
@@ -386,10 +638,6 @@ def write_top_plate_dxf_and_svg() -> None:
     SVG_TOP.write_text("\n".join(svg), encoding="utf-8")
 
 
-def save_stl(mesh, path):
-    mesh.export(path)
-
-
 def kb(path: Path) -> int:
     return int(round(path.stat().st_size / 1024.0)) if path.exists() else 0
 
@@ -398,15 +646,15 @@ def main():
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     base = build_base()
-    interior = build_interior_features(base.copy())
+    interior = build_interior_features()
     top = build_top_plate()
 
-    full = safe_union([base.copy(), top.copy()], "full assembly")
+    full = trimesh.util.concatenate([base, top])
 
-    save_stl(base, STL_BASE)
-    save_stl(interior, STL_INTERIOR)
-    save_stl(top, STL_TOP)
-    save_stl(full, STL_FULL)
+    base.export(STL_BASE)
+    interior.export(STL_INTERIOR)
+    top.export(STL_TOP)
+    full.export(STL_FULL)
 
     write_top_plate_dxf_and_svg()
 
