@@ -10,13 +10,13 @@ import math
 from pathlib import Path
 
 import bpy
-from mathutils import Euler, Vector
+from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = ROOT / "assets" / "quad-dock-render.png"
 MM = 0.001
 
-# Envelope
+# Envelope (mm)
 FRONT_W = 110.0
 REAR_W = 140.0
 LENGTH = 300.0
@@ -25,23 +25,16 @@ REAR_H = 22.0
 CORNER_R = 20.0
 TOP_T = 1.5
 
-# Zones (mm, table-locked)
-Z1 = dict(cx=-20.0, cy=70.0, w=80.0, d=55.0, r=10.0, cut=2.5, sil_w=78.0, sil_d=53.0, sil_r=9.0, sil_t=2.2)
-Z2 = dict(cx=+20.0, cy=70.0, w=65.0, d=55.0, r=10.0, cut=2.5, sil_w=63.0, sil_d=53.0, sil_r=9.0, sil_t=2.2)
+# Zones (mm)
+Z1 = dict(cx=-20.0, cy=70.0, w=80.0, d=55.0, r=10.0, depth=2.2)
+Z2 = dict(cx=+20.0, cy=70.0, w=65.0, d=55.0, r=10.0, depth=2.2)
 
-WATCH_BASE = Vector((-22.0 * MM, 225.0 * MM, 21.0 * MM))
+WATCH_BASE_MM = (-22.0, 225.0, 21.0)
 WATCH_DIAM = 50.0
 WATCH_CYL_H = 12.0
 WATCH_CONE_H = 6.0
 WATCH_TIP_D = 8.0
 WATCH_TILT = 30.0
-
-GROOVE = dict(x0=18.0, x1=40.0, y0=288.0, y1=300.0, h=20.0)
-
-IEC = dict(w=28.0, h=20.0, x=0.0, y=298.5, bottom=1.0)
-USB_C = dict(x=29.0, y=297.0, z=8.0, w=10.0, h=4.0, d=3.0)
-
-LED_CENTERS = [-108.75, -35.25, 38.25, 111.75]
 
 TEXT_ITEMS = [
     ("PHONE", -28.0, 93.0, 6.0),
@@ -51,17 +44,21 @@ TEXT_ITEMS = [
     ("Quad-Dock", -18.0, 278.0, 8.0),
 ]
 
+LED_SECTION_W = 71.0
+LED_SECTION_POSITIONS = [-109.5, -36.5, 36.5, 109.5]
+
 FEET = [(-39.17, 15.0), (39.17, 15.0), (-53.50, 285.0), (53.50, 285.0)]
 
 
 def h(y_mm: float) -> float:
+    """Top surface height in mm at y_mm."""
     return FRONT_H + (REAR_H - FRONT_H) * (y_mm / LENGTH)
 
 
 def clear_scene() -> None:
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
-    for datablock in (bpy.data.meshes, bpy.data.materials, bpy.data.images, bpy.data.curves):
+    for datablock in (bpy.data.meshes, bpy.data.materials, bpy.data.images, bpy.data.curves, bpy.data.cameras, bpy.data.lights, bpy.data.worlds):
         for item in list(datablock):
             if item.users == 0:
                 datablock.remove(item)
@@ -104,53 +101,60 @@ def apply_mat(obj, mat):
     obj.data.materials.append(mat)
 
 
+def make_box(cx_mm, cy_mm, cz_mm, w_mm, d_mm, h_mm, name: str | None = None):
+    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(cx_mm * MM, cy_mm * MM, cz_mm * MM))
+    obj = bpy.context.active_object
+    if name:
+        obj.name = name
+    obj.scale = (w_mm * MM / 2.0, d_mm * MM / 2.0, h_mm * MM / 2.0)
+    bpy.ops.object.transform_apply(scale=True)
+    return obj
+
+
+def make_cyl(cx_mm, cy_mm, cz_mm, r_mm, h_mm, verts=48, name: str | None = None):
+    bpy.ops.mesh.primitive_cylinder_add(vertices=verts, radius=r_mm * MM, depth=h_mm * MM, location=(cx_mm * MM, cy_mm * MM, cz_mm * MM))
+    obj = bpy.context.active_object
+    if name:
+        obj.name = name
+    return obj
+
+
 def _rrect_pts(width, depth, corner_r, segments=16):
     hw, hd = width / 2.0, depth / 2.0
+    r = max(0.0, min(corner_r, hw, hd))
     pts = []
     corners = [
-        (hw - corner_r, -hd + corner_r, -math.pi / 2, 0),
-        (hw - corner_r, hd - corner_r, 0, math.pi / 2),
-        (-hw + corner_r, hd - corner_r, math.pi / 2, math.pi),
-        (-hw + corner_r, -hd + corner_r, math.pi, 3 * math.pi / 2),
+        (hw - r, -hd + r, -math.pi / 2, 0),
+        (hw - r, hd - r, 0, math.pi / 2),
+        (-hw + r, hd - r, math.pi / 2, math.pi),
+        (-hw + r, -hd + r, math.pi, 3 * math.pi / 2),
     ]
     for cx, cy, a0, a1 in corners:
         for i in range(segments):
             t = i / max(1, segments - 1)
             a = a0 + (a1 - a0) * t
-            pts.append((cx + corner_r * math.cos(a), cy + corner_r * math.sin(a)))
+            pts.append((cx + r * math.cos(a), cy + r * math.sin(a)))
     return pts
 
 
-def make_rounded_rect_cutter(name, cx, cy, cz, width, depth, corner_r, height, segments=16):
-    pts = _rrect_pts(width, depth, corner_r, segments)
+def make_rrect_box(cx_mm, cy_mm, cz_mm, w_mm, d_mm, r_mm, h_mm, name: str | None = None):
+    pts = _rrect_pts(w_mm, d_mm, r_mm, segments=16)
     n = len(pts)
-    verts = [(x * MM, y * MM, (cz - height / 2.0) * MM) for x, y in pts] + [
-        (x * MM, y * MM, (cz + height / 2.0) * MM) for x, y in pts
+    z0 = (cz_mm - h_mm / 2.0) * MM
+    z1 = (cz_mm + h_mm / 2.0) * MM
+    verts = [(cx_mm * MM + x * MM, cy_mm * MM + y * MM, z0) for x, y in pts] + [
+        (cx_mm * MM + x * MM, cy_mm * MM + y * MM, z1) for x, y in pts
     ]
     faces = [list(range(n - 1, -1, -1)), list(range(n, 2 * n))]
     for i in range(n):
         j = (i + 1) % n
         faces.append([i, j, n + j, n + i])
-    mesh = bpy.data.meshes.new(name)
-    obj = bpy.data.objects.new(name, mesh)
+    mesh = bpy.data.meshes.new(name or "RRectBox")
+    obj = bpy.data.objects.new(name or "RRectBox", mesh)
     bpy.context.collection.objects.link(obj)
     mesh.from_pydata(verts, [], faces)
     mesh.update()
-    obj.location = (cx * MM, cy * MM, 0.0)
     return obj
-
-
-def safe_boolean_difference(target, cutter, label):
-    try:
-        mod = target.modifiers.new(name=f"bool_{label}", type="BOOLEAN")
-        mod.operation = "DIFFERENCE"
-        mod.solver = "FAST"
-        mod.object = cutter
-        bpy.context.view_layer.objects.active = target
-        bpy.ops.object.modifier_apply(modifier=mod.name)
-        bpy.data.objects.remove(cutter, do_unlink=True)
-    except Exception as exc:
-        print(f"[warn] boolean '{label}' failed: {exc}")
 
 
 def rounded_trapezoid_footprint_40() -> list[tuple[float, float]]:
@@ -160,7 +164,6 @@ def rounded_trapezoid_footprint_40() -> list[tuple[float, float]]:
         mag = math.hypot(dx, dy)
         return (dx / mag, dy / mag)
 
-    # 9 points per corner from generic fillet builder
     coarse = []
     for i in range(4):
         a = corners[(i - 1) % 4]
@@ -189,7 +192,6 @@ def rounded_trapezoid_footprint_40() -> list[tuple[float, float]]:
             ang = a0 + da * (k / 8.0)
             coarse.append((ccx + CORNER_R * math.cos(ang), ccy + CORNER_R * math.sin(ang)))
 
-    # Insert one midpoint on each straight transition: 36 -> 40 vertices
     out = []
     boundaries = {8, 17, 26, 35}
     for i, p in enumerate(coarse):
@@ -215,21 +217,61 @@ def build_prism(name, outline, z0_fn, z1_fn):
     return obj
 
 
-def add_text_etch(target, label, x, y, size_mm):
-    z = h(y) + TOP_T + 0.1
-    bpy.ops.object.text_add(location=(x * MM, y * MM, z * MM))
-    txt = bpy.context.active_object
-    txt.data.body = label
-    txt.data.size = size_mm * MM
-    txt.data.extrude = 0.35 * MM
-    txt.data.align_x = "CENTER"
-    txt.data.align_y = "CENTER"
-    txt.rotation_euler = Euler((0.0, 0.0, 0.0), "XYZ")
+def add_zone_dish(name, cx_mm, cy_mm, w_mm, d_mm, r_mm, depth_mm, mat_sil, mat_border):
+    z_top_mm = h(cy_mm) + TOP_T
+    pad = make_rrect_box(cx_mm, cy_mm, z_top_mm - depth_mm / 2.0, w_mm - 2.0, d_mm - 2.0, max(0.0, r_mm - 1.0), depth_mm, name=f"{name}_Silicone")
+    apply_mat(pad, mat_sil)
+
+    border = make_rrect_box(cx_mm, cy_mm, z_top_mm + 0.3, w_mm, d_mm, r_mm, 0.6, name=f"{name}_Border")
+    apply_mat(border, mat_border)
+
+
+def add_label(name, text, x_mm, y_mm, size_mm, mat):
+    z_mm = h(y_mm) + TOP_T + 0.2
+    bpy.ops.object.text_add(location=(x_mm * MM, y_mm * MM, z_mm * MM))
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.body = text
+    obj.data.size = size_mm * MM
+    obj.data.extrude = 0.15 * MM
+    obj.data.align_x = "CENTER"
+    obj.data.align_y = "CENTER"
     bpy.ops.object.convert(target="MESH")
-    safe_boolean_difference(target, txt, f"etch_{label}")
+    mesh_obj = bpy.context.active_object
+    mesh_obj.name = name
+    apply_mat(mesh_obj, mat)
 
 
-def add_area_light(name, location, size_xy, energy, color):
+def add_laptop_groove(mat_sil, mat_usbc):
+    x0, x1 = 18.0, 40.0
+    y0, y1 = 288.0, 300.0
+    groove_h = 20.0
+    cx = (x0 + x1) / 2.0
+    cy = (y0 + y1) / 2.0
+    z_base = h(cy)
+
+    back = make_box(cx, y1 - 0.5, z_base + groove_h / 2.0, x1 - x0, 1.0, groove_h, name="Zone4_GrooveWalls_Back")
+    apply_mat(back, mat_sil)
+    left = make_box(x0 + 0.5, cy, z_base + groove_h / 2.0, 1.0, y1 - y0, groove_h, name="Zone4_GrooveWalls_Left")
+    apply_mat(left, mat_sil)
+    right = make_box(x1 - 0.5, cy, z_base + groove_h / 2.0, 1.0, y1 - y0, groove_h, name="Zone4_GrooveWalls_Right")
+    apply_mat(right, mat_sil)
+
+    usbc = make_box(cx, y1 - 1.5, z_base + 8.0, 10.0, 3.0, 4.0, name="Zone4_USBC")
+    apply_mat(usbc, mat_usbc)
+
+
+def add_iec_inlet(mat_usbc):
+    iec = make_box(0.0, 299.5, 11.0, 28.0, 1.0, 20.0, name="IEC_Housing")
+    apply_mat(iec, mat_usbc)
+
+
+def look_at(obj, target):
+    direction = Vector(target) - Vector(obj.location)
+    obj.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
+
+
+def add_area_light(name, location, size_xy, energy, color, target):
     ldata = bpy.data.lights.new(name=name, type="AREA")
     ldata.energy = energy
     ldata.color = color
@@ -239,14 +281,13 @@ def add_area_light(name, location, size_xy, energy, color):
     obj = bpy.data.objects.new(name, ldata)
     bpy.context.collection.objects.link(obj)
     obj.location = location
-    obj.rotation_euler = (math.radians(55), 0, math.radians(30))
+    look_at(obj, target)
     return obj
 
 
 def main() -> None:
     clear_scene()
 
-    # Render engine
     scene = bpy.context.scene
     scene.render.engine = "CYCLES"
     scene.cycles.samples = 512
@@ -256,15 +297,15 @@ def main() -> None:
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_depth = "16"
     scene.render.filepath = str(OUTPUT_PATH)
+    scene.unit_settings.system = "METRIC"
+    scene.unit_settings.scale_length = 1.0
 
-    # World
     scene.world = bpy.data.worlds.new("World")
     scene.world.use_nodes = True
     wbg = scene.world.node_tree.nodes["Background"]
     wbg.inputs["Color"].default_value = (1, 1, 1, 1)
     wbg.inputs["Strength"].default_value = 1.2
 
-    # Materials
     m_abs = make_mat("ABS", base=(0.08, 0.08, 0.08, 1), roughness=0.88)
     m_al = make_aluminum("ALUM")
     m_sil = make_mat("SILICONE", base=(0.18, 0.18, 0.18, 1), roughness=0.92)
@@ -276,43 +317,29 @@ def main() -> None:
     m_cord = make_mat("CORD", base=(0.12, 0.12, 0.12, 1), roughness=0.7)
     m_watch = make_mat("WATCH_PUCK", base=(0.15, 0.15, 0.15, 1), metallic=0.3, roughness=0.5)
 
-    # Body wedge: explicit rounded trapezoid prism, top tapered by H(Y)
     outline = rounded_trapezoid_footprint_40()
+
     body = build_prism("Body", outline, lambda _y: 0.0, h)
     apply_mat(body, m_abs)
 
-    # slight floor edge softening only
     bev = body.modifiers.new("FloorBevel", type="BEVEL")
     bev.width = 0.5 * MM
     bev.segments = 2
     bev.limit_method = "ANGLE"
     bpy.context.view_layer.objects.active = body
-    try:
-        bpy.ops.object.modifier_apply(modifier=bev.name)
-    except Exception as exc:
-        print(f"[warn] floor bevel apply failed: {exc}")
+    bpy.ops.object.modifier_apply(modifier=bev.name)
 
-    # Top plate: separate object
     top = build_prism("TopPlate", outline, h, lambda y: h(y) + TOP_T)
     apply_mat(top, m_al)
 
-    # Zone dishes
-    for tag, z in (("z1", Z1), ("z2", Z2)):
-        cy = z["cy"]
-        top_z = h(cy) + TOP_T
-        cutter = make_rounded_rect_cutter(f"{tag}_dish", z["cx"], cy, top_z - z["cut"] / 2.0, z["w"], z["d"], z["r"], z["cut"] + 2.0, segments=16)
-        safe_boolean_difference(top, cutter, f"dish_{tag}")
+    add_zone_dish("Zone1", Z1["cx"], Z1["cy"], Z1["w"], Z1["d"], Z1["r"], Z1["depth"], m_sil, m_al)
+    add_zone_dish("Zone2", Z2["cx"], Z2["cy"], Z2["w"], Z2["d"], Z2["r"], Z2["depth"], m_sil, m_al)
 
-        sil_h = z["sil_t"]
-        sil_z = h(cy) + TOP_T - sil_h / 2.0
-        sil = make_rounded_rect_cutter(f"{tag}_sil", z["cx"], cy, sil_z, z["sil_w"], z["sil_d"], z["sil_r"], sil_h, segments=16)
-        apply_mat(sil, m_sil)
-
-    # Watch cradle: cylinder + cone, tilt 30 toward front around pod base pivot
+    watch_base = Vector((WATCH_BASE_MM[0] * MM, WATCH_BASE_MM[1] * MM, WATCH_BASE_MM[2] * MM))
     cyl_r = WATCH_DIAM * 0.5 * MM
-    bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=cyl_r, depth=WATCH_CYL_H * MM, location=(WATCH_BASE.x, WATCH_BASE.y, WATCH_BASE.z + (WATCH_CYL_H * MM) / 2.0))
+    bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=cyl_r, depth=WATCH_CYL_H * MM, location=(watch_base.x, watch_base.y, watch_base.z + (WATCH_CYL_H * MM) / 2.0))
     c1 = bpy.context.active_object
-    bpy.ops.mesh.primitive_cone_add(vertices=64, radius1=cyl_r, radius2=(WATCH_TIP_D * 0.5) * MM, depth=WATCH_CONE_H * MM, location=(WATCH_BASE.x, WATCH_BASE.y, WATCH_BASE.z + WATCH_CYL_H * MM + (WATCH_CONE_H * MM) / 2.0))
+    bpy.ops.mesh.primitive_cone_add(vertices=64, radius1=cyl_r, radius2=(WATCH_TIP_D * 0.5) * MM, depth=WATCH_CONE_H * MM, location=(watch_base.x, watch_base.y, watch_base.z + WATCH_CYL_H * MM + (WATCH_CONE_H * MM) / 2.0))
     c2 = bpy.context.active_object
     bpy.ops.object.select_all(action="DESELECT")
     c1.select_set(True)
@@ -322,78 +349,41 @@ def main() -> None:
     pod = bpy.context.active_object
     pod.name = "WatchPod"
     apply_mat(pod, m_abs)
-    bpy.context.scene.cursor.location = WATCH_BASE
+    bpy.context.scene.cursor.location = watch_base
     bpy.ops.object.origin_set(type="ORIGIN_CURSOR")
-    pod.rotation_euler = Euler((math.radians(WATCH_TILT), 0, 0), "XYZ")
+    pod.rotation_euler = (math.radians(WATCH_TILT), 0.0, 0.0)
 
-    # Visible watch puck on top
-    bpy.ops.mesh.primitive_cylinder_add(vertices=48, radius=17.0 * MM, depth=5.0 * MM, location=(WATCH_BASE.x, WATCH_BASE.y, WATCH_BASE.z + (WATCH_CYL_H + WATCH_CONE_H - 1.0) * MM))
-    puck = bpy.context.active_object
+    puck = make_cyl(WATCH_BASE_MM[0], WATCH_BASE_MM[1], WATCH_BASE_MM[2] + WATCH_CYL_H + WATCH_CONE_H - 1.0, 17.0, 5.0, verts=48, name="WatchPuck")
     apply_mat(puck, m_watch)
     puck.rotation_euler = pod.rotation_euler
 
-    # Zone 4 groove cut in rear wall
-    gx = ((GROOVE["x0"] + GROOVE["x1"]) / 2.0) * MM
-    gy = ((GROOVE["y0"] + GROOVE["y1"]) / 2.0) * MM
-    gz = (h(294.0) / 2.0) * MM
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(gx, gy, gz))
-    groove_cut = bpy.context.active_object
-    groove_cut.scale = (((GROOVE["x1"] - GROOVE["x0"]) / 2.0) * MM, ((GROOVE["y1"] - GROOVE["y0"]) / 2.0) * MM, (GROOVE["h"] / 2.0) * MM)
-    safe_boolean_difference(body, groove_cut, "zone4_groove")
+    add_laptop_groove(m_sil, m_usbc)
+    add_iec_inlet(m_usbc)
 
-    # Groove silicone lining (1 mm, 3 walls)
-    wall_t = 1.0 * MM
-    for loc, scl in [
-        ((GROOVE["x0"] + 0.5, gy / MM, gz / MM), (0.5, (GROOVE["y1"] - GROOVE["y0"]) / 2.0, GROOVE["h"] / 2.0)),
-        ((GROOVE["x1"] - 0.5, gy / MM, gz / MM), (0.5, (GROOVE["y1"] - GROOVE["y0"]) / 2.0, GROOVE["h"] / 2.0)),
-        (((GROOVE["x0"] + GROOVE["x1"]) / 2.0, GROOVE["y0"] + 0.5, gz / MM), ((GROOVE["x1"] - GROOVE["x0"]) / 2.0, 0.5, GROOVE["h"] / 2.0)),
-    ]:
-        bpy.ops.mesh.primitive_cube_add(size=1.0, location=(loc[0] * MM, loc[1] * MM, loc[2] * MM))
-        w = bpy.context.active_object
-        w.scale = (scl[0] * MM, scl[1] * MM, scl[2] * MM)
-        apply_mat(w, m_sil)
+    magnet_ring = make_cyl(-20.0, 70.0, h(70.0) + TOP_T - 1.0, 27.0, 2.0, verts=64, name="Zone1_MagnetRing")
+    apply_mat(magnet_ring, m_abs)
 
-    # USB-C visible object
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(USB_C["x"] * MM, USB_C["y"] * MM, USB_C["z"] * MM))
-    usb = bpy.context.active_object
-    usb.scale = (USB_C["w"] * MM / 2.0, USB_C["d"] * MM / 2.0, USB_C["h"] * MM / 2.0)
-    apply_mat(usb, m_usbc)
+    for i, cx in enumerate(LED_SECTION_POSITIONS, start=1):
+        led = make_box(cx, -3.0, 1.5, LED_SECTION_W, 8.0, 3.0, name=f"LED_{i}")
+        apply_mat(led, m_led)
 
-    # IEC inlet cutout
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(IEC["x"] * MM, IEC["y"] * MM, (IEC["bottom"] + IEC["h"] / 2.0) * MM))
-    iec_cut = bpy.context.active_object
-    iec_cut.scale = ((IEC["w"] / 2.0) * MM, 2.0 * MM, (IEC["h"] / 2.0) * MM)
-    safe_boolean_difference(body, iec_cut, "iec")
-
-    # LED diffuser strip and 4 emissive segments
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(0.0, -2.0 * MM, 1.5 * MM))
-    diffuser = bpy.context.active_object
-    diffuser.scale = (145.0 * MM, 4.0 * MM, 1.5 * MM)
+    diffuser = make_box(0.0, -3.0, 2.0, 292.0, 9.0, 2.0, name="LED_Diffuser")
     apply_mat(diffuser, m_sil)
-    for i, cx in enumerate(LED_CENTERS, start=1):
-        bpy.ops.mesh.primitive_cube_add(size=1.0, location=(cx * MM, -2.0 * MM, 1.5 * MM))
-        sec = bpy.context.active_object
-        sec.name = f"LED_{i}"
-        sec.scale = (35.5 * MM, 4.0 * MM, 1.5 * MM)
-        apply_mat(sec, m_led)
 
-    # Etched text labels
     for txt, x, y, size in TEXT_ITEMS:
-        add_text_etch(top, txt, x, y, size)
+        if txt == "Quad-Dock":
+            add_label("Label_QuadDock", txt, x, y, size, m_etched)
+        else:
+            add_label(f"Label_{txt}", txt, x, y, size, m_etched)
 
-    # Rubber feet
-    for x, y in FEET:
-        bpy.ops.mesh.primitive_cylinder_add(vertices=48, radius=7.5 * MM, depth=3.0 * MM, location=(x * MM, y * MM, -1.5 * MM))
-        ft = bpy.context.active_object
-        apply_mat(ft, m_rub)
+    for i, (x, y) in enumerate(FEET, start=1):
+        foot = make_cyl(x, y, -1.5, 7.5, 3.0, verts=48, name=f"Foot_{i}")
+        apply_mat(foot, m_rub)
 
-    # Ground plane
-    bpy.ops.mesh.primitive_plane_add(size=4.0, location=(0.0, 0.35, -0.003))
-    ground = bpy.context.active_object
+    ground = make_box(0.0, 350.0, -3.0, 4000.0, 4000.0, 1.0, name="Ground")
     apply_mat(ground, m_ground)
 
-    # Coiled power cord behind dock (2-turn loop, radius 60 mm)
-    curve = bpy.data.curves.new("PowerCord", type="CURVE")
+    curve = bpy.data.curves.new("PowerCordCurve", type="CURVE")
     curve.dimensions = "3D"
     spline = curve.splines.new("POLY")
     turns = 2
@@ -416,21 +406,20 @@ def main() -> None:
     else:
         cord.data.materials.append(m_cord)
 
-    # Camera (zoomed out, full product visible)
     cam_data = bpy.data.cameras.new("Camera")
     cam = bpy.data.objects.new("Camera", cam_data)
     bpy.context.collection.objects.link(cam)
-    cam.location = Vector((-0.65, -0.65, 0.55))
-    target = Vector((0.0, 0.16, 0.018))
-    cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
-    cam_data.lens = 65.0
+    cam.location = Vector((-0.55, -0.55, 0.42))
+    cam_target = Vector((0.0, 0.18, 0.015))
+    look_at(cam, cam_target)
+    cam_data.lens = 58.0
     scene.camera = cam
 
-    # Lighting (Apple-style)
-    add_area_light("Key_Light", (-1.0, -0.8, 1.2), (2.5, 2.5), 1500.0, (1.0, 0.96, 0.90))
-    add_area_light("Fill_Light", (1.2, 0.3, 0.7), (2.0, 2.0), 500.0, (0.92, 0.96, 1.0))
-    add_area_light("Rim_Light", (0.0, 1.0, 0.8), (0.6, 0.6), 300.0, (1.0, 1.0, 1.0))
-    add_area_light("Top_Bounce", (0.0, 0.16, 1.8), (4.0, 3.0), 200.0, (1.0, 1.0, 1.0))
+    light_target = (0.0, 0.16, 0.012)
+    add_area_light("Key_Light", (-1.0, -0.8, 1.2), (2.5, 2.5), 1500.0, (1.0, 0.96, 0.90), light_target)
+    add_area_light("Fill_Light", (1.2, 0.3, 0.7), (2.0, 2.0), 500.0, (0.92, 0.96, 1.0), light_target)
+    add_area_light("Rim_Light", (0.0, 1.0, 0.8), (0.6, 0.6), 300.0, (1.0, 1.0, 1.0), light_target)
+    add_area_light("Top_Bounce", (0.0, 0.16, 1.8), (4.0, 3.0), 200.0, (1.0, 1.0, 1.0), light_target)
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     bpy.ops.render.render(write_still=True)
