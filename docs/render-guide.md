@@ -25,8 +25,8 @@ The render includes all exterior production features:
 - Zone 3 tilted watch cradle pod + visible watch puck
 - Zone 4 laptop groove with silicone lining + USB-C port
 - Front LED diffuser + 4 warm-white emissive LED sections
-- Etched labels and rear Quad-Dock wordmark
-- Rear IEC C13 inlet cutout
+- Raised dark labels and rear Quad-Dock wordmark mesh
+- Rear IEC C13 inlet housing mesh
 - Coiled/stowed power cord behind dock
 - Rubber feet visible under the body
 
