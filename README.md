@@ -26,6 +26,13 @@ Available in **Black** and **White**.
 
 ## 4-Zone Layout
 
+Definitive coordinates for every exterior/interior feature are in
+[`docs/component-positions.md`](docs/component-positions.md):
+- Zone 1 (Phone): `X=-20.00, Y=70.00`
+- Zone 2 (Buds): `X=+20.00, Y=70.00`
+- Zone 3 (Watch cradle base): `X=-22.00, Y=225.00`
+- Zone 4 (Laptop groove center): `X=+29.00, Y=294.00`
+
 ```
 +-----------------------------------------------------------+
 |  REAR                                                     |
@@ -88,6 +95,7 @@ See [docs/compatibility.md](docs/compatibility.md) for the full list. Quick summ
 |-----|----------|
 | [Enclosure Spec](docs/enclosure.md) | Arc design, dimensions, materials, zones, LED system |
 | [Electronics Spec](docs/electronics.md) | ESP32-C3, all ICs, power architecture, sensors |
+| [Component Positions](docs/component-positions.md) | Definitive 0.01mm X/Y/Z coordinates (exterior + interior) |
 | [App Spec](docs/app-spec.md) | iOS app features, theft alerts, BLE, notifications |
 | [Bill of Materials](docs/bom.md) | Prototype + production BOM, cost breakdown |
 | [Compatibility](docs/compatibility.md) | All supported devices and charge speeds |
