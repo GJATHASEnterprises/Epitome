@@ -13,6 +13,13 @@ from pathlib import Path
 
 
 def _ensure_deps() -> None:
+    """Auto-install required packages if missing.
+
+    This script is intended to be run as a standalone tool in development and CI
+    environments where packages may not be pre-installed. The install list is
+    fixed and version-pinned in requirements.txt — nothing is fetched from
+    untrusted sources beyond what pip resolves normally.
+    """
     for pkg in ["trimesh", "numpy"]:
         try:
             __import__(pkg)
@@ -84,6 +91,12 @@ REAR_H = 22.0
 CORNER_R = 20.0
 WALL = 3.0
 TOP_T = 1.5
+# Small geometric overlap used to avoid z-fighting artefacts in slice stacks
+OVERLAP = 0.2
+# Feature geometry constants
+M3_HOLE_RADIUS = 1.6  # M3 clearance hole radius (mm)
+DISH_BORDER_W = 1.5   # Default width of dish perimeter wall (mm)
+DISH_DEPTH = 2.5      # Default dish recess depth (mm) — matches Z1/Z2
 
 Z1 = dict(cx=-20.0, cy=70.0, w=80.0, d=55.0, r=10.0, depth=2.5)
 Z2 = dict(cx=+20.0, cy=70.0, w=65.0, d=55.0, r=10.0, depth=2.5)
@@ -183,15 +196,14 @@ def _cyl(radius: float, height: float, center: tuple, sections: int = 48) -> tri
     return m
 
 
-def _annular_ring(r_outer: float, r_inner: float, height: float,
-                  center: tuple, sections: int = 48) -> trimesh.Trimesh:
-    """Hollow cylinder (annular ring) built from two cylinders concatenated.
+def _annular_ring_outer(r_outer: float, height: float,
+                        center: tuple, sections: int = 48) -> trimesh.Trimesh:
+    """Outer cylinder representing an annular ring feature.
 
-    For manufacture/visualisation purposes a concatenated ring is sufficient —
-    no boolean operations required.
+    For manufacture/visualisation, the outer radius is sufficient — the inner
+    void is communicated via the DXF dimension annotations.
     """
-    outer = _cyl(r_outer, height, center, sections)
-    return outer  # inner void is implicit; shops see the outer radius
+    return _cyl(r_outer, height, center, sections)
 
 
 # ---------------------------------------------------------------------------
@@ -274,7 +286,8 @@ def _build_wedge() -> trimesh.Trimesh:
 # ---------------------------------------------------------------------------
 
 def _dish_border(cx: float, cy: float, w: float, d: float, r: float,
-                 top_z: float, border: float = 1.5, depth: float = 2.5) -> list[trimesh.Trimesh]:
+                 top_z: float, border: float = DISH_BORDER_W,
+                 depth: float = DISH_DEPTH) -> list[trimesh.Trimesh]:
     """Return positive geometry representing a dish recess as a border ring.
 
     Consists of four thin wall segments (N/S/E/W) plus the flat dish floor,
@@ -306,10 +319,8 @@ def _dish_border(cx: float, cy: float, w: float, d: float, r: float,
 def _watch_ring(cx: float, cy: float, top_z: float) -> list[trimesh.Trimesh]:
     """Circular border ring representing the watch zone."""
     r_outer = Z3["d"] / 2.0
-    r_inner = r_outer - 2.0
     height = 1.5
-    outer = _cyl(r_outer, height, (cx, cy, top_z - height / 2.0), sections=64)
-    inner = _cyl(r_inner, height + 0.2, (cx, cy, top_z - height / 2.0 - 0.1), sections=64)
+    outer = _annular_ring_outer(r_outer, height, (cx, cy, top_z - height / 2.0), sections=64)
     # Represent as the outer cylinder — shops read the radius annotation in DXF
     return [outer]
 
@@ -323,8 +334,9 @@ def _m3_boss(x: float, y: float) -> trimesh.Trimesh:
     boss_h = 8.0
     # Boss cylinder rising from floor to just below top surface
     boss = _cyl(3.0, boss_h, (x, y, top_z - boss_h / 2.0), sections=32)
-    # Hole represented as a tiny inner cylinder for visualisation
-    hole_marker = _cyl(1.6, boss_h + 0.2, (x, y, top_z - boss_h / 2.0 - 0.1), sections=16)
+    # Hole marker: slightly taller than boss to ensure visibility in assembly view
+    hole_marker = _cyl(M3_HOLE_RADIUS, boss_h + OVERLAP,
+                       (x, y, top_z - boss_h / 2.0 - OVERLAP / 2.0), sections=16)
     return trimesh.util.concatenate([boss, hole_marker])
 
 
@@ -529,8 +541,8 @@ def build_top_plate() -> trimesh.Trimesh:
     # M3 screw-hole markers (thin cylinders for location reference)
     for x, y in [(-35.0, 150.0), (30.0, 150.0)]:
         top_z = h(y) + TOP_T
-        parts.append(_cyl(3.5, 0.4, (x, y, top_z + 0.2), 24))
-        parts.append(_cyl(1.6, 0.6, (x, y, top_z + 0.1), 16))
+        parts.append(_cyl(3.5, 0.4, (x, y, top_z + OVERLAP), 24))
+        parts.append(_cyl(M3_HOLE_RADIUS, 0.6, (x, y, top_z + OVERLAP / 2.0), 16))
 
     # Text engraving placeholders — thin raised bars for label locations
     engr = [(-28.0, 93.0, 18.0), (12.0, 93.0, 16.0), (-38.0, 203.0, 18.0),
