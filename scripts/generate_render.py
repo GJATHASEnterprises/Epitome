@@ -117,6 +117,7 @@ def apply_mat(obj, mat):
 
 
 def make_box(cx_mm, cy_mm, cz_mm, w_mm, d_mm, h_mm, name: str | None = None):
+    """Create a centered box mesh from millimeter coordinates and dimensions."""
     bpy.ops.mesh.primitive_cube_add(size=1.0, location=(cx_mm * MM, cy_mm * MM, cz_mm * MM))
     obj = bpy.context.active_object
     if name:
@@ -127,6 +128,7 @@ def make_box(cx_mm, cy_mm, cz_mm, w_mm, d_mm, h_mm, name: str | None = None):
 
 
 def make_cyl(cx_mm, cy_mm, cz_mm, r_mm, h_mm, verts=48, name: str | None = None):
+    """Create a centered cylinder mesh from millimeter coordinates."""
     bpy.ops.mesh.primitive_cylinder_add(vertices=verts, radius=r_mm * MM, depth=h_mm * MM, location=(cx_mm * MM, cy_mm * MM, cz_mm * MM))
     obj = bpy.context.active_object
     if name:
@@ -153,6 +155,7 @@ def _rrect_pts(width, depth, corner_r, segments=16):
 
 
 def make_rrect_box(cx_mm, cy_mm, cz_mm, w_mm, d_mm, r_mm, h_mm, name: str | None = None):
+    """Create a rounded-rectangle prism mesh in millimeter units."""
     pts = _rrect_pts(w_mm, d_mm, r_mm, segments=16)
     n = len(pts)
     z0 = (cz_mm - h_mm / 2.0) * MM
@@ -233,6 +236,7 @@ def build_prism(name, outline, z0_fn, z1_fn):
 
 
 def add_zone_dish(name, cx_mm, cy_mm, w_mm, d_mm, r_mm, depth_mm, mat_sil, mat_border):
+    """Add a visible charging dish: recessed silicone pad + thin border frame."""
     z_top_mm = h(cy_mm) + TOP_T
     pad = make_rrect_box(cx_mm, cy_mm, z_top_mm - depth_mm / 2.0, w_mm - 2.0, d_mm - 2.0, max(0.0, r_mm - 1.0), depth_mm, name=f"{name}_Silicone")
     apply_mat(pad, mat_sil)
@@ -242,6 +246,7 @@ def add_zone_dish(name, cx_mm, cy_mm, w_mm, d_mm, r_mm, depth_mm, mat_sil, mat_b
 
 
 def add_label(name, text, x_mm, y_mm, size_mm, mat):
+    """Add a raised 3D text label slightly above the top plate."""
     z_mm = h(y_mm) + TOP_T + 0.2
     bpy.ops.object.text_add(location=(x_mm * MM, y_mm * MM, z_mm * MM))
     obj = bpy.context.active_object
@@ -258,6 +263,7 @@ def add_label(name, text, x_mm, y_mm, size_mm, mat):
 
 
 def add_laptop_groove(mat_sil, mat_usbc):
+    """Build the rear-right laptop groove using visible silicone wall meshes."""
     x0, x1 = 18.0, 40.0
     y0, y1 = 288.0, 300.0
     groove_h = 20.0
@@ -277,11 +283,13 @@ def add_laptop_groove(mat_sil, mat_usbc):
 
 
 def add_iec_inlet(mat_usbc):
+    """Add the IEC C13 rear housing as a visible mesh object."""
     iec = make_box(0.0, 299.5, 11.0, 28.0, 1.0, 20.0, name="IEC_Housing")
     apply_mat(iec, mat_usbc)
 
 
 def look_at(obj, target):
+    """Rotate object so its local -Z axis points at target position."""
     direction = Vector(target) - Vector(obj.location)
     obj.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
 
