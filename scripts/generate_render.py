@@ -86,6 +86,8 @@ def h(y_mm: float) -> float:
 def clear_scene() -> None:
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
+    for scn in bpy.data.scenes:
+        scn.world = None
     for datablock in (bpy.data.meshes, bpy.data.materials, bpy.data.images, bpy.data.curves, bpy.data.cameras, bpy.data.lights, bpy.data.worlds):
         for item in list(datablock):
             if item.users == 0:
@@ -153,6 +155,8 @@ def _rrect_pts(width, depth, corner_r, segments=16):
     hw, hd = width / 2.0, depth / 2.0
     # Clamp to avoid self-intersection when requested radius exceeds box extents.
     clamped_r = max(0.0, min(corner_r, hw, hd))
+    if abs(clamped_r - corner_r) > 1e-9:
+        print(f"[warn] rounded-rect corner radius clamped from {corner_r} to {clamped_r}")
     pts = []
     corners = [
         (hw - clamped_r, -hd + clamped_r, -math.pi / 2, 0),
