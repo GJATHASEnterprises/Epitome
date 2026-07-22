@@ -3,6 +3,7 @@
 > **Note:** This file provides a summary of the product spec. For detailed specifications see:
 > - [Enclosure Specification](enclosure.md) — Arc design, dimensions, materials, zone layout, LED system
 > - [Electronics Specification](electronics.md) — ESP32-C3, all ICs, power architecture, sensors
+> - [Definitive Component Positions](component-positions.md) — exact X/Y/Z coordinates for all exterior/interior features
 
 ---
 
@@ -45,6 +46,12 @@ Smooth curved wedge — wide at rear, slightly narrower at front. Zero sharp cor
 ---
 
 ## Zone Layout
+
+Exact zone anchors:
+- Zone 1: `X=-20.00, Y=70.00`
+- Zone 2: `X=+20.00, Y=70.00`
+- Zone 3: `X=-22.00, Y=225.00`
+- Zone 4: `X=+29.00, Y=294.00` (`X:+18..+40, Y:288..300`)
 
 ```
          ← 300mm →

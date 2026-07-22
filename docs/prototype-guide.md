@@ -13,6 +13,9 @@ Not a sellable unit — a functional proof of concept to verify:
 - ✅ Arc shape feels right in hand and on desk
 - ✅ Laptop groove holds laptop securely
 
+Definitive placement coordinates for prototyping and fixtures are in
+[component-positions.md](component-positions.md).
+
 ---
 
 ## Budget: $500
@@ -102,10 +105,10 @@ You will have ~$60–$150 remaining for unexpected costs.
 3. Cut a 22mm × 12mm slot in the rear-right for the laptop groove
 4. Cut a rough teardrop shape in the rear-left for the watch cradle
 5. Place all 4 devices on the cardboard mock:
-   - Phone on Zone 1 (rear-left front area)
-   - AirPods on Zone 2 (right of Zone 1)
-   - Apple Watch in the teardrop cradle (rear-left)
-   - Laptop in the spine groove (rear-right)
+   - Phone on Zone 1 at `(-20,70)`
+   - AirPods/phone on Zone 2 at `(+20,70)`
+   - Apple Watch cradle zone at `(-22,225)`
+   - Laptop groove zone at `(+29,294)` / `X:+18..+40, Y:288..300`
 6. Sit at your desk — does it feel right? Is the watch angle comfortable? Does the laptop feel stable?
 7. **Adjust dimensions in your 3D model** before the print arrives if anything feels off
 
