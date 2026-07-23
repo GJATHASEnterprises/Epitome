@@ -147,21 +147,28 @@ def _callout(ax: plt.Axes, xy: tuple, xytext: tuple, label: str,
 #  VIEW 1 — TOP-DOWN VIEW
 # ════════════════════════════════════════════════════════════════════════════
 def draw_top_view(ax: plt.Axes) -> None:
-    ax.set_xlim(-110, 130)
+    # Illustration uses wider body so zones fit comfortably (illustration only, not physical spec)
+    ILL_FHW = 100.0   # illustration front half-width (200mm total front)
+    ILL_RHW = 120.0   # illustration rear half-width (240mm total rear)
+
+    def ill_hw(y: float) -> float:
+        return ILL_FHW + (ILL_RHW - ILL_FHW) * (y / 300.0)
+
+    ill_pts = np.array([[-ILL_FHW, 0], [ILL_FHW, 0], [ILL_RHW, 300], [-ILL_RHW, 300]], dtype=float)
+
+    ax.set_xlim(-170, 200)
     ax.set_ylim(-35, 360)
     ax.set_aspect("equal")
     ax.axis("off")
     _panel_box(ax, "TOP VIEW — 1:3 SCALE")
 
-    pts = _trapezoid_pts()
-
     # ── Dock body fill ──
-    body = PathPatch(rounded_trapezoid_path(pts, radius=CR),
+    body = PathPatch(rounded_trapezoid_path(ill_pts, radius=CR),
                      facecolor="#252535", edgecolor="#4a4a6a", linewidth=1.5, zorder=2)
     ax.add_patch(body)
 
     # ── Top plate (1.5mm aluminium) — same outline, slightly lighter ──
-    plate = PathPatch(rounded_trapezoid_path(pts, radius=CR),
+    plate = PathPatch(rounded_trapezoid_path(ill_pts, radius=CR),
                       facecolor="#2e3040", edgecolor=GOLD, linewidth=0.8,
                       alpha=0.35, zorder=3)
     ax.add_patch(plate)
@@ -171,117 +178,112 @@ def draw_top_view(ax: plt.Axes) -> None:
             linestyle="--", dashes=(4, 4), zorder=2, alpha=0.5)
 
     # ── Y grid lines at zone centres ──
-    for yg, col in [(60, Z1_BLUE), (88, Z2_PURPLE), (150, TEXT_DIM), (225, Z3_GREEN), (294, Z4_ORANGE)]:
-        xw = hw(yg)
+    for yg, col in [(70, TEXT_DIM), (150, TEXT_DIM), (225, Z3_GREEN), (294, Z4_ORANGE)]:
+        xw = ill_hw(yg)
         ax.plot([-xw, xw], [yg, yg], color=col, linewidth=0.4,
                 linestyle="--", dashes=(3, 5), alpha=0.3, zorder=2)
 
-    # LED bar — sits at front edge inside dock body (Y=1 to Y=7)
-    # Full diffuser strip background
-    ax.add_patch(Rectangle((-55, 1), 110, 6, facecolor="#221800", edgecolor="#443300", linewidth=0.8, zorder=4))
-
-    # 4 LED segments clipped to front edge width (±55mm)
-    led_sections_x = [-108.75, -35.25, 38.25, 111.75]
-    led_zone_cols = [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE]
-    for lx, lc in zip(led_sections_x, led_zone_cols):
-        seg_left = max(lx - 35.5, -55)
-        seg_right = min(lx + 35.5, 55)
-        if seg_right > seg_left:
-            ax.add_patch(Rectangle((seg_left, 1.5), seg_right - seg_left, 5,
-                                    facecolor=lc, alpha=0.85, linewidth=0, zorder=5))
-
-    # Divider lines between segments (at X positions inside ±55)
-    for div_x in [-71.5, 1.75, 75.0]:
-        clipped = max(min(div_x, 54), -54)
-        ax.plot([clipped, clipped], [1, 7], color="#111122", linewidth=1.0, zorder=6)
-
-    # LED glow line
-    ax.plot([-54, 54], [4, 4], color="#ffb347", linewidth=2.0, alpha=0.7, zorder=6)
+    # LED bar — inside front edge, full width clipped to illustration front edge
+    ill_front_hw = ILL_FHW  # 100mm half-width at Y=0
+    ax.add_patch(Rectangle((-ill_front_hw, 1), ill_front_hw * 2, 6,
+                            facecolor="#221800", edgecolor="#443300", linewidth=0.8, zorder=4))
+    # 4 equal segments across full front width
+    seg_w = (ill_front_hw * 2) / 4  # 50mm each
+    seg_centres = [-75, -25, 25, 75]  # centred in each quarter
+    for lx, lc in zip(seg_centres, [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE]):
+        ax.add_patch(Rectangle((lx - seg_w / 2 + 1, 1.5), seg_w - 2, 5,
+                                facecolor=lc, alpha=0.85, linewidth=0, zorder=5))
+    # Dividers
+    for div_x in [-50, 0, 50]:
+        ax.plot([div_x, div_x], [1, 7], color="#111122", linewidth=1.0, zorder=6)
+    # Glow
+    ax.plot([-ill_front_hw + 2, ill_front_hw - 2], [4, 4],
+            color="#ffb347", linewidth=2.0, alpha=0.7, zorder=6)
 
     ax.text(0, -5, "WS2812B LED STATUS BAR  ·  4-ZONE  ·  290×8mm",
             ha="center", va="top", fontsize=5.5, color="#ffb347", zorder=6)
 
     # ── Zone 1 — Phone Qi dish ──
-    z1_dish = FancyBboxPatch((-20 - 40, 60 - 27.5), 80, 55,
+    z1_dish = FancyBboxPatch((-45 - 40, 70 - 27.5), 80, 55,
                               boxstyle="round,pad=0,rounding_size=10",
                               facecolor="#1c2a3a", edgecolor=Z1_BLUE,
                               linewidth=1.4, zorder=6)
     ax.add_patch(z1_dish)
     # Silicone insert
-    z1_si = FancyBboxPatch((-20 - 39, 60 - 26.5), 78, 53,
+    z1_si = FancyBboxPatch((-45 - 39, 70 - 26.5), 78, 53,
                             boxstyle="round,pad=0,rounding_size=9",
                             facecolor="#162030", edgecolor=Z1_BLUE,
                             linewidth=0.6, linestyle="--", zorder=7, alpha=0.7)
     ax.add_patch(z1_si)
     # Qi coil circle
-    ax.add_patch(Circle((-20, 60), 27, facecolor="none",
+    ax.add_patch(Circle((-45, 70), 27, facecolor="none",
                          edgecolor=Z1_BLUE, linewidth=0.5, linestyle=":",
                          alpha=0.5, zorder=7))
     # N52 magnets ring
-    ax.add_patch(Circle((-20, 60), 27, facecolor="none",
+    ax.add_patch(Circle((-45, 70), 27, facecolor="none",
                          edgecolor="#4488ff", linewidth=1.0, alpha=0.25, zorder=7))
-    ax.text(-20, 60, "PHONE\nQi2 · 15W", ha="center", va="center",
+    ax.text(-45, 70, "PHONE\nQi2 · 15W", ha="center", va="center",
             fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
-    ax.text(-20, 53, "Ø54mm coil · N52 ring", ha="center", va="top",
+    ax.text(-45, 63, "Ø54mm coil · N52 ring", ha="center", va="top",
             fontsize=4.5, color=Z1_BLUE, zorder=8)
     # Phone silhouette in Zone 1
-    ax.add_patch(FancyBboxPatch((-20 - 9, 60 - 18), 18, 32, boxstyle="round,pad=0,rounding_size=3", facecolor="#0d1520", edgecolor=Z1_BLUE, linewidth=0.8, alpha=0.55, zorder=7))
-    ax.add_patch(Circle((-20, 60 - 14), 2.5, facecolor="#0d1520", edgecolor=Z1_BLUE, linewidth=0.5, alpha=0.55, zorder=7))
-    ax.add_patch(Rectangle((-20 - 4, 60 + 12), 8, 1.5, facecolor=Z1_BLUE, alpha=0.4, linewidth=0, zorder=7))
+    ax.add_patch(FancyBboxPatch((-45 - 9, 70 - 18), 18, 32, boxstyle="round,pad=0,rounding_size=3", facecolor="#0d1520", edgecolor=Z1_BLUE, linewidth=0.8, alpha=0.55, zorder=7))
+    ax.add_patch(Circle((-45, 70 - 14), 2.5, facecolor="#0d1520", edgecolor=Z1_BLUE, linewidth=0.5, alpha=0.55, zorder=7))
+    ax.add_patch(Rectangle((-45 - 4, 70 + 12), 8, 1.5, facecolor=Z1_BLUE, alpha=0.4, linewidth=0, zorder=7))
 
     # ── Zone 2 — Buds Qi dish ──
-    z2_dish = FancyBboxPatch((20 - 32.5, 88 - 27.5), 65, 55,
+    z2_dish = FancyBboxPatch((45 - 32.5, 70 - 27.5), 65, 55,
                               boxstyle="round,pad=0,rounding_size=10",
                               facecolor="#251a35", edgecolor=Z2_PURPLE,
                               linewidth=1.4, zorder=6)
     ax.add_patch(z2_dish)
-    z2_si = FancyBboxPatch((20 - 31.5, 88 - 26.5), 63, 53,
+    z2_si = FancyBboxPatch((45 - 31.5, 70 - 26.5), 63, 53,
                             boxstyle="round,pad=0,rounding_size=9",
                             facecolor="#1e1428", edgecolor=Z2_PURPLE,
                             linewidth=0.6, linestyle="--", zorder=7, alpha=0.7)
     ax.add_patch(z2_si)
-    ax.add_patch(Circle((20, 88), 27, facecolor="none",
+    ax.add_patch(Circle((45, 70), 27, facecolor="none",
                          edgecolor=Z2_PURPLE, linewidth=0.5, linestyle=":",
                          alpha=0.5, zorder=7))
-    ax.text(20, 88, "BUDS\nQi · 5W", ha="center", va="center",
+    ax.text(45, 70, "BUDS\nQi · 5W", ha="center", va="center",
             fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
-    ax.text(20, 81, "Ø54mm coil", ha="center", va="top",
+    ax.text(45, 63, "Ø54mm coil", ha="center", va="top",
             fontsize=4.5, color=Z2_PURPLE, zorder=8)
     # AirPods case silhouette in Zone 2
-    ax.add_patch(FancyBboxPatch((20 - 10, 88 - 13), 20, 24, boxstyle="round,pad=0,rounding_size=5", facecolor="#150d20", edgecolor=Z2_PURPLE, linewidth=0.8, alpha=0.55, zorder=7))
-    ax.add_patch(Circle((20 - 4, 88 - 4), 3.5, facecolor="#1a1030", edgecolor=Z2_PURPLE, linewidth=0.5, alpha=0.6, zorder=8))
-    ax.add_patch(Circle((20 + 4, 88 - 4), 3.5, facecolor="#1a1030", edgecolor=Z2_PURPLE, linewidth=0.5, alpha=0.6, zorder=8))
+    ax.add_patch(FancyBboxPatch((45 - 10, 70 - 13), 20, 24, boxstyle="round,pad=0,rounding_size=5", facecolor="#150d20", edgecolor=Z2_PURPLE, linewidth=0.8, alpha=0.55, zorder=7))
+    ax.add_patch(Circle((45 - 4, 70 - 4), 3.5, facecolor="#1a1030", edgecolor=Z2_PURPLE, linewidth=0.5, alpha=0.6, zorder=8))
+    ax.add_patch(Circle((45 + 4, 70 - 4), 3.5, facecolor="#1a1030", edgecolor=Z2_PURPLE, linewidth=0.5, alpha=0.6, zorder=8))
 
     # ── Zone 3 — Watch cradle pod ──
-    z3 = Circle((-22, 225), 25, facecolor="#1a2a1a",
+    z3 = Circle((-30, 225), 25, facecolor="#1a2a1a",
                  edgecolor=Z3_GREEN, linewidth=1.4, zorder=6)
     ax.add_patch(z3)
     # Inner puck (tilted ellipse)
-    ax.add_patch(Ellipse((-22, 225), 34, 28, angle=0,
+    ax.add_patch(Ellipse((-30, 225), 34, 28, angle=0,
                           facecolor="#152515", edgecolor=Z3_GREEN,
                           linewidth=0.6, linestyle="--", zorder=7, alpha=0.8))
-    ax.text(-22, 225, "WATCH\nMagSafe 5W", ha="center", va="center",
+    ax.text(-30, 225, "WATCH\nMagSafe 5W", ha="center", va="center",
             fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
-    ax.text(-22, 217, "Ø50 pod · 30° tilt", ha="center", va="top",
+    ax.text(-30, 217, "Ø50 pod · 30° tilt", ha="center", va="top",
             fontsize=4.5, color=Z3_GREEN, zorder=8)
 
     # ── Zone 4 — Laptop groove ──
-    z4 = FancyBboxPatch((18, 288), 22, 12,
+    z4 = FancyBboxPatch((44, 288), 22, 12,
                          boxstyle="round,pad=0,rounding_size=3",
                          facecolor="#2a1a0a", edgecolor=Z4_ORANGE,
                          linewidth=1.4, zorder=6)
     ax.add_patch(z4)
-    ax.text(29, 294, "LAPTOP\nUSB-C 100W", ha="center", va="center",
+    ax.text(55, 294, "LAPTOP\nUSB-C 100W", ha="center", va="center",
             fontsize=5.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
     # Left guide wall
-    ax.add_patch(Rectangle((18, 288), 1.5, 12, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
+    ax.add_patch(Rectangle((44, 288), 1.5, 12, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
     # Right guide wall
-    ax.add_patch(Rectangle((38.5, 288), 1.5, 12, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
+    ax.add_patch(Rectangle((64.5, 288), 1.5, 12, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
     # Back wall
-    ax.add_patch(Rectangle((18, 298.5), 22, 1.5, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
+    ax.add_patch(Rectangle((44, 298.5), 22, 1.5, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
     # USB-C port indicator
-    ax.add_patch(FancyBboxPatch((24, 295), 10, 4, boxstyle="round,pad=0,rounding_size=1", facecolor="#444455", edgecolor="#aaaacc", linewidth=0.6, zorder=8))
-    ax.text(29, 297, "USB-C", ha="center", va="center", fontsize=3.5, color="#aaaacc", zorder=9)
+    ax.add_patch(FancyBboxPatch((50, 295), 10, 4, boxstyle="round,pad=0,rounding_size=1", facecolor="#444455", edgecolor="#aaaacc", linewidth=0.6, zorder=8))
+    ax.text(55, 297, "USB-C", ha="center", va="center", fontsize=3.5, color="#aaaacc", zorder=9)
 
     # ── IEC C13 inlet (rear wall) ──
     iec = Rectangle((-14, 296), 28, 20, facecolor="#1a1a2a",
@@ -292,7 +294,7 @@ def draw_top_view(ax: plt.Axes) -> None:
     ax.plot([0, 0], [306, 318], color=GOLD, linewidth=0.5, linestyle="--", zorder=5)
 
     # ── M3 screw holes ──
-    for sx, sy in [(-35, 150), (30, 150)]:
+    for sx, sy in [(-50, 150), (45, 150)]:
         ax.add_patch(Circle((sx, sy), 1.6, facecolor="#0d0d1a",
                              edgecolor=TEXT_DIM, linewidth=0.8, zorder=8))
         ax.add_patch(Circle((sx, sy), 3.5, facecolor="none",
@@ -301,22 +303,20 @@ def draw_top_view(ax: plt.Axes) -> None:
 
     # ── Etched labels ──
     etched_labels = [
-        (-28, 78,  "PHONE",     6.0, "#aaaacc"),
-        ( 12, 103, "BUDS",      6.0, "#aaaacc"),
-        (-38, 203, "WATCH",     6.0, "#aaaacc"),
-        ( 10, 260, "LAPTOP",    6.0, "#aaaacc"),
-        (-18, 278, "Quad-Dock", 7.5, GOLD),
+        (-45, 93,  "PHONE",     6.0, "#aaaacc"),
+        ( 45, 93,  "BUDS",      6.0, "#aaaacc"),
+        (-30, 203, "WATCH",     6.0, "#aaaacc"),
+        ( 55, 260, "LAPTOP",    6.0, "#aaaacc"),
+        (  0, 278, "Quad-Dock", 7.5, GOLD),
     ]
     for lx, ly, lt, lfs, lcol in etched_labels:
-        # Shadow pass
         ax.text(lx + 0.4, ly - 0.4, lt, ha="center", va="center",
                 fontsize=lfs, color="#222233", style="italic", zorder=7)
-        # Main label
         ax.text(lx, ly, lt, ha="center", va="center",
                 fontsize=lfs, color=lcol, style="italic", zorder=8)
 
     # ── PCB and ESP32 ghost outlines ──
-    ax.add_patch(Rectangle((-5 - 60, 110 - 40), 120, 80,
+    ax.add_patch(Rectangle((-5 - 80, 110 - 40), 160, 80,
                              facecolor="none", edgecolor="#2a4a2a",
                              linewidth=0.5, linestyle=":", alpha=0.4, zorder=4))
     ax.add_patch(Rectangle((-15 - 9, 85 - 10), 18, 20,
@@ -325,37 +325,37 @@ def draw_top_view(ax: plt.Axes) -> None:
 
     # ── Dimension annotations ──
     # Overall length (left side)
-    _dim_arrow(ax, -82, 0, -82, 300, "300mm", offset=(-4, 0),
+    _dim_arrow(ax, -ILL_RHW - 15, 0, -ILL_RHW - 15, 300, "300mm", offset=(-4, 0),
                fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-82, -70], [0, 0], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([-82, -70], [300, 300], color=TEXT_DIM, linewidth=0.5)
+    ax.plot([-ILL_RHW - 15, -ILL_RHW], [0, 0], color=TEXT_DIM, linewidth=0.5)
+    ax.plot([-ILL_RHW - 15, -ILL_RHW], [300, 300], color=TEXT_DIM, linewidth=0.5)
 
     # Front width (bottom)
-    _dim_arrow(ax, -55, -22, 55, -22, "110mm  (front)", offset=(0, 0),
+    _dim_arrow(ax, -ILL_FHW, -22, ILL_FHW, -22, "200mm (illustration — spec: 110mm front)", offset=(0, 0),
                fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-55, -55], [-22, 0], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([55, 55],   [-22, 0], color=TEXT_DIM, linewidth=0.5)
+    ax.plot([-ILL_FHW, -ILL_FHW], [-22, 0], color=TEXT_DIM, linewidth=0.5)
+    ax.plot([ ILL_FHW,  ILL_FHW], [-22, 0], color=TEXT_DIM, linewidth=0.5)
 
     # Rear width (top)
-    _dim_arrow(ax, -70, 313, 70, 313, "140mm  (rear)", offset=(0, 0),
+    _dim_arrow(ax, -ILL_RHW, 313, ILL_RHW, 313, "240mm (illustration — spec: 140mm rear)", offset=(0, 0),
                fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-70, -70], [300, 313], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([70, 70],   [300, 313], color=TEXT_DIM, linewidth=0.5)
+    ax.plot([-ILL_RHW, -ILL_RHW], [300, 313], color=TEXT_DIM, linewidth=0.5)
+    ax.plot([ ILL_RHW,  ILL_RHW], [300, 313], color=TEXT_DIM, linewidth=0.5)
 
     # Zone 1 callout
-    _callout(ax, (-20, 88), (65, 115), "80×55mm\nR10 · 2.5mm deep",
+    _callout(ax, (-45, 98), (-10, 120), "80×55mm\nR10 · 2.5mm deep",
              color=Z1_BLUE, fontsize=5)
     # Zone 2 callout
-    _callout(ax, (20, 116), (90, 135), "65×55mm\nR10 · 2.5mm deep",
+    _callout(ax, (45, 98), (110, 120), "65×55mm\nR10 · 2.5mm deep",
              color=Z2_PURPLE, fontsize=5)
     # Zone 3 callout
-    _callout(ax, (-22, 250), (-92, 255), "Ø50mm\n18mm tall · 30°",
+    _callout(ax, (-30, 250), (-120, 255), "Ø50mm\n18mm tall · 30°",
              color=Z3_GREEN, fontsize=5)
     # Zone 4 callout
-    _callout(ax, (29, 301), (95, 295), "22×12mm\nUSB-C groove",
+    _callout(ax, (55, 301), (130, 295), "22×12mm\nUSB-C groove",
              color=Z4_ORANGE, fontsize=5)
     # M3 screw callout
-    _callout(ax, (-35, 150), (-95, 168), "M3 × Ø3.2mm",
+    _callout(ax, (-50, 150), (-95, 168), "M3 × Ø3.2mm",
              color=TEXT_DIM, fontsize=4.5)
 
 
@@ -536,27 +536,27 @@ def draw_perspective_view(ax: plt.Axes) -> None:
     # ── Zones on top face ──
     # Zone 1 — Phone
     z1_corners = [
-        proj(-20 - 40, 60 - 27.5, FH + 0.3),
-        proj(-20 + 40, 60 - 27.5, FH + 0.3),
-        proj(-20 + 40, 60 + 27.5, body_h(60) + 0.3),
-        proj(-20 - 40, 60 + 27.5, body_h(60) + 0.3),
+        proj(-45 - 40, 70 - 27.5, FH + 0.3),
+        proj(-45 + 40, 70 - 27.5, FH + 0.3),
+        proj(-45 + 40, 70 + 27.5, body_h(70) + 0.3),
+        proj(-45 - 40, 70 + 27.5, body_h(70) + 0.3),
     ]
     ax.add_patch(Polygon(z1_corners, closed=True, facecolor="#1c2a3a",
                           edgecolor=Z1_BLUE, linewidth=1.0, zorder=8, alpha=0.9))
-    z1c = proj(-20, 60, FH + 0.5)
+    z1c = proj(-45, 70, FH + 0.5)
     ax.text(z1c[0], z1c[1], "PHONE\nQi2 15W", ha="center", va="center",
             fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
 
     # Zone 2 — Buds
     z2_corners = [
-        proj(20 - 32.5, 88 - 27.5, FH + 0.3),
-        proj(20 + 32.5, 88 - 27.5, FH + 0.3),
-        proj(20 + 32.5, 88 + 27.5, body_h(88) + 0.3),
-        proj(20 - 32.5, 88 + 27.5, body_h(88) + 0.3),
+        proj(45 - 32.5, 70 - 27.5, FH + 0.3),
+        proj(45 + 32.5, 70 - 27.5, FH + 0.3),
+        proj(45 + 32.5, 70 + 27.5, body_h(70) + 0.3),
+        proj(45 - 32.5, 70 + 27.5, body_h(70) + 0.3),
     ]
     ax.add_patch(Polygon(z2_corners, closed=True, facecolor="#251a35",
                           edgecolor=Z2_PURPLE, linewidth=1.0, zorder=8, alpha=0.9))
-    z2c = proj(20, 88, FH + 0.5)
+    z2c = proj(45, 70, FH + 0.5)
     ax.text(z2c[0], z2c[1], "BUDS\nQi 5W", ha="center", va="center",
             fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
 
