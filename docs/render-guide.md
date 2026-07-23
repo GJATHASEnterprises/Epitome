@@ -31,3 +31,12 @@ The render includes all exterior production features:
 - Rubber feet visible under the body
 
 Coordinate source of truth: [component-positions.md](component-positions.md)
+
+## Product Sheet (Fast — No Blender Required)
+
+```bash
+python scripts/generate_product_sheet.py
+```
+
+Output: `assets/quad-dock-product-sheet.png`  
+Time: ~5 seconds
