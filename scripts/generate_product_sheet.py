@@ -74,8 +74,8 @@ def rounded_trapezoid_path(pts: np.ndarray, radius: float) -> MplPath:
     """Build a rounded-corner closed path through pts."""
     pts = np.asarray(pts, dtype=float)
     n = len(pts)
-    verts: list = []
-    codes: list = []
+    verts: list[tuple[float, float]] = []
+    codes: list[int] = []
     for i in range(n):
         p_prev = pts[(i - 1) % n]
         p_curr = pts[i]
@@ -185,7 +185,6 @@ def draw_top_view(ax: plt.Axes) -> None:
     # Draw only the portion inside the body width (55mm half at Y=0)
     for lx, lc in zip(led_sections_x, led_zone_cols):
         if abs(lx) < 55:
-            w_led = min(71, 110 - abs(lx) * 2) / 2
             seg = Rectangle((lx - 35.5, -5.5), 71, 7,
                              facecolor=lc, edgecolor="none",
                              alpha=0.7, linewidth=0, zorder=5)
@@ -364,10 +363,9 @@ def draw_front_elevation(ax: plt.Axes) -> None:
     zone_labels = ["PHONE", "BUDS", "WATCH", "LAPTOP"]
     for i, (lx, zc, zl) in enumerate(zip(led_xs, ZONE_COLS, zone_labels)):
         seg_w = 110 / 4 - 1
-        # Frosted diffuser block
+        # Frosted diffuser block (three translucent layers widening outward)
         for alpha, width in [(0.15, seg_w + 4), (0.35, seg_w), (0.7, seg_w - 4)]:
-            ax.add_patch(Rectangle((lx - seg_w / 2 - (seg_w + 4 - seg_w) / 2 +
-                                    (seg_w + 4 - width) / 2, -2.8),
+            ax.add_patch(Rectangle((lx - width / 2, -2.8),
                                     width, 2.8,
                                     facecolor=zc, alpha=alpha, linewidth=0, zorder=4))
         # LED glow line
