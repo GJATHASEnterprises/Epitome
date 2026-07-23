@@ -171,74 +171,86 @@ def draw_top_view(ax: plt.Axes) -> None:
             linestyle="--", dashes=(4, 4), zorder=2, alpha=0.5)
 
     # ── Y grid lines at zone centres ──
-    for yg, col in [(70, Z1_BLUE), (150, TEXT_DIM), (225, Z3_GREEN), (294, Z4_ORANGE)]:
+    for yg, col in [(60, Z1_BLUE), (88, Z2_PURPLE), (150, TEXT_DIM), (225, Z3_GREEN), (294, Z4_ORANGE)]:
         xw = hw(yg)
         ax.plot([-xw, xw], [yg, yg], color=col, linewidth=0.4,
                 linestyle="--", dashes=(3, 5), alpha=0.3, zorder=2)
 
-    # ── LED bar (front edge Y≈-2, 290×8mm centred) ──
-    led_full = Rectangle((-145, -6), 290, 8, facecolor="#332200",
-                         edgecolor="#554400", linewidth=0.8, zorder=4)
-    ax.add_patch(led_full)
+    # LED bar — sits at front edge inside dock body (Y=1 to Y=7)
+    # Full diffuser strip background
+    ax.add_patch(Rectangle((-55, 1), 110, 6, facecolor="#221800", edgecolor="#443300", linewidth=0.8, zorder=4))
+
+    # 4 LED segments clipped to front edge width (±55mm)
     led_sections_x = [-108.75, -35.25, 38.25, 111.75]
-    led_zone_cols   = [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE]
-    # Draw only the portion inside the body width (55mm half at Y=0)
+    led_zone_cols = [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE]
     for lx, lc in zip(led_sections_x, led_zone_cols):
-        if abs(lx) < 55:
-            seg = Rectangle((lx - 35.5, -5.5), 71, 7,
-                             facecolor=lc, edgecolor="none",
-                             alpha=0.7, linewidth=0, zorder=5)
-            ax.add_patch(seg)
-    # Actual LED bar fits inside front edge
-    for i, (lx, lc) in enumerate(zip([-3*110/8, -1*110/8, 1*110/8, 3*110/8],
-                                      led_zone_cols)):
-        ax.add_patch(Rectangle((lx - 13, -5), 26.5, 6,
-                                facecolor=lc, alpha=0.85, linewidth=0, zorder=5))
-    ax.text(0, -10, "LED STATUS BAR  ·  4-ZONE DIFFUSER  ·  290×8mm",
-            ha="center", va="top", fontsize=5.5, color=LED_COL, zorder=6)
+        seg_left = max(lx - 35.5, -55)
+        seg_right = min(lx + 35.5, 55)
+        if seg_right > seg_left:
+            ax.add_patch(Rectangle((seg_left, 1.5), seg_right - seg_left, 5,
+                                    facecolor=lc, alpha=0.85, linewidth=0, zorder=5))
+
+    # Divider lines between segments (at X positions inside ±55)
+    for div_x in [-71.5, 1.75, 75.0]:
+        clipped = max(min(div_x, 54), -54)
+        ax.plot([clipped, clipped], [1, 7], color="#111122", linewidth=1.0, zorder=6)
+
+    # LED glow line
+    ax.plot([-54, 54], [4, 4], color="#ffb347", linewidth=2.0, alpha=0.7, zorder=6)
+
+    ax.text(0, -5, "WS2812B LED STATUS BAR  ·  4-ZONE  ·  290×8mm",
+            ha="center", va="top", fontsize=5.5, color="#ffb347", zorder=6)
 
     # ── Zone 1 — Phone Qi dish ──
-    z1_dish = FancyBboxPatch((-20 - 40, 70 - 27.5), 80, 55,
+    z1_dish = FancyBboxPatch((-20 - 40, 60 - 27.5), 80, 55,
                               boxstyle="round,pad=0,rounding_size=10",
                               facecolor="#1c2a3a", edgecolor=Z1_BLUE,
                               linewidth=1.4, zorder=6)
     ax.add_patch(z1_dish)
     # Silicone insert
-    z1_si = FancyBboxPatch((-20 - 39, 70 - 26.5), 78, 53,
+    z1_si = FancyBboxPatch((-20 - 39, 60 - 26.5), 78, 53,
                             boxstyle="round,pad=0,rounding_size=9",
                             facecolor="#162030", edgecolor=Z1_BLUE,
                             linewidth=0.6, linestyle="--", zorder=7, alpha=0.7)
     ax.add_patch(z1_si)
     # Qi coil circle
-    ax.add_patch(Circle((-20, 70), 27, facecolor="none",
+    ax.add_patch(Circle((-20, 60), 27, facecolor="none",
                          edgecolor=Z1_BLUE, linewidth=0.5, linestyle=":",
                          alpha=0.5, zorder=7))
     # N52 magnets ring
-    ax.add_patch(Circle((-20, 70), 27, facecolor="none",
+    ax.add_patch(Circle((-20, 60), 27, facecolor="none",
                          edgecolor="#4488ff", linewidth=1.0, alpha=0.25, zorder=7))
-    ax.text(-20, 70, "PHONE\nQi2 · 15W", ha="center", va="center",
+    ax.text(-20, 60, "PHONE\nQi2 · 15W", ha="center", va="center",
             fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
-    ax.text(-20, 63, "Ø54mm coil · N52 ring", ha="center", va="top",
+    ax.text(-20, 53, "Ø54mm coil · N52 ring", ha="center", va="top",
             fontsize=4.5, color=Z1_BLUE, zorder=8)
+    # Phone silhouette in Zone 1
+    ax.add_patch(FancyBboxPatch((-20 - 9, 60 - 18), 18, 32, boxstyle="round,pad=0,rounding_size=3", facecolor="#0d1520", edgecolor=Z1_BLUE, linewidth=0.8, alpha=0.55, zorder=7))
+    ax.add_patch(Circle((-20, 60 - 14), 2.5, facecolor="#0d1520", edgecolor=Z1_BLUE, linewidth=0.5, alpha=0.55, zorder=7))
+    ax.add_patch(Rectangle((-20 - 4, 60 + 12), 8, 1.5, facecolor=Z1_BLUE, alpha=0.4, linewidth=0, zorder=7))
 
     # ── Zone 2 — Buds Qi dish ──
-    z2_dish = FancyBboxPatch((20 - 32.5, 70 - 27.5), 65, 55,
+    z2_dish = FancyBboxPatch((20 - 32.5, 88 - 27.5), 65, 55,
                               boxstyle="round,pad=0,rounding_size=10",
                               facecolor="#251a35", edgecolor=Z2_PURPLE,
                               linewidth=1.4, zorder=6)
     ax.add_patch(z2_dish)
-    z2_si = FancyBboxPatch((20 - 31.5, 70 - 26.5), 63, 53,
+    z2_si = FancyBboxPatch((20 - 31.5, 88 - 26.5), 63, 53,
                             boxstyle="round,pad=0,rounding_size=9",
                             facecolor="#1e1428", edgecolor=Z2_PURPLE,
                             linewidth=0.6, linestyle="--", zorder=7, alpha=0.7)
     ax.add_patch(z2_si)
-    ax.add_patch(Circle((20, 70), 27, facecolor="none",
+    ax.add_patch(Circle((20, 88), 27, facecolor="none",
                          edgecolor=Z2_PURPLE, linewidth=0.5, linestyle=":",
                          alpha=0.5, zorder=7))
-    ax.text(20, 70, "BUDS\nQi · 5W", ha="center", va="center",
+    ax.text(20, 88, "BUDS\nQi · 5W", ha="center", va="center",
             fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
-    ax.text(20, 63, "Ø54mm coil", ha="center", va="top",
+    ax.text(20, 81, "Ø54mm coil", ha="center", va="top",
             fontsize=4.5, color=Z2_PURPLE, zorder=8)
+    # AirPods case silhouette in Zone 2
+    ax.add_patch(FancyBboxPatch((20 - 10, 88 - 13), 20, 24, boxstyle="round,pad=0,rounding_size=5", facecolor="#150d20", edgecolor=Z2_PURPLE, linewidth=0.8, alpha=0.55, zorder=7))
+    ax.add_patch(Circle((20 - 4, 88 - 4), 3.5, facecolor="#1a1030", edgecolor=Z2_PURPLE, linewidth=0.5, alpha=0.6, zorder=8))
+    ax.add_patch(Circle((20 + 4, 88 - 4), 3.5, facecolor="#1a1030", edgecolor=Z2_PURPLE, linewidth=0.5, alpha=0.6, zorder=8))
 
     # ── Zone 3 — Watch cradle pod ──
     z3 = Circle((-22, 225), 25, facecolor="#1a2a1a",
@@ -261,6 +273,15 @@ def draw_top_view(ax: plt.Axes) -> None:
     ax.add_patch(z4)
     ax.text(29, 294, "LAPTOP\nUSB-C 100W", ha="center", va="center",
             fontsize=5.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
+    # Left guide wall
+    ax.add_patch(Rectangle((18, 288), 1.5, 12, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
+    # Right guide wall
+    ax.add_patch(Rectangle((38.5, 288), 1.5, 12, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
+    # Back wall
+    ax.add_patch(Rectangle((18, 298.5), 22, 1.5, facecolor="#333333", edgecolor=Z4_ORANGE, linewidth=0.8, zorder=7))
+    # USB-C port indicator
+    ax.add_patch(FancyBboxPatch((24, 295), 10, 4, boxstyle="round,pad=0,rounding_size=1", facecolor="#444455", edgecolor="#aaaacc", linewidth=0.6, zorder=8))
+    ax.text(29, 297, "USB-C", ha="center", va="center", fontsize=3.5, color="#aaaacc", zorder=9)
 
     # ── IEC C13 inlet (rear wall) ──
     iec = Rectangle((-14, 296), 28, 20, facecolor="#1a1a2a",
@@ -280,15 +301,19 @@ def draw_top_view(ax: plt.Axes) -> None:
 
     # ── Etched labels ──
     etched_labels = [
-        (-28, 93, "PHONE", 5.5),
-        ( 12, 93, "BUDS",  5.5),
-        (-38, 203, "WATCH", 5.5),
-        ( 10, 260, "LAPTOP", 5.5),
-        (-18, 278, "Quad-Dock", 6.5),
+        (-28, 78,  "PHONE",     6.0, "#aaaacc"),
+        ( 12, 103, "BUDS",      6.0, "#aaaacc"),
+        (-38, 203, "WATCH",     6.0, "#aaaacc"),
+        ( 10, 260, "LAPTOP",    6.0, "#aaaacc"),
+        (-18, 278, "Quad-Dock", 7.5, GOLD),
     ]
-    for lx, ly, lt, lfs in etched_labels:
+    for lx, ly, lt, lfs, lcol in etched_labels:
+        # Shadow pass
+        ax.text(lx + 0.4, ly - 0.4, lt, ha="center", va="center",
+                fontsize=lfs, color="#222233", style="italic", zorder=7)
+        # Main label
         ax.text(lx, ly, lt, ha="center", va="center",
-                fontsize=lfs, color="#666688", style="italic", zorder=8)
+                fontsize=lfs, color=lcol, style="italic", zorder=8)
 
     # ── PCB and ESP32 ghost outlines ──
     ax.add_patch(Rectangle((-5 - 60, 110 - 40), 120, 80,
@@ -318,10 +343,10 @@ def draw_top_view(ax: plt.Axes) -> None:
     ax.plot([70, 70],   [300, 313], color=TEXT_DIM, linewidth=0.5)
 
     # Zone 1 callout
-    _callout(ax, (-20, 98), (65, 115), "80×55mm\nR10 · 2.5mm deep",
+    _callout(ax, (-20, 88), (65, 115), "80×55mm\nR10 · 2.5mm deep",
              color=Z1_BLUE, fontsize=5)
     # Zone 2 callout
-    _callout(ax, (20, 98), (90, 135), "65×55mm\nR10 · 2.5mm deep",
+    _callout(ax, (20, 116), (90, 135), "65×55mm\nR10 · 2.5mm deep",
              color=Z2_PURPLE, fontsize=5)
     # Zone 3 callout
     _callout(ax, (-22, 250), (-92, 255), "Ø50mm\n18mm tall · 30°",
@@ -511,27 +536,27 @@ def draw_perspective_view(ax: plt.Axes) -> None:
     # ── Zones on top face ──
     # Zone 1 — Phone
     z1_corners = [
-        proj(-20 - 40, 70 - 27.5, FH + 0.3),
-        proj(-20 + 40, 70 - 27.5, FH + 0.3),
-        proj(-20 + 40, 70 + 27.5, body_h(70) + 0.3),
-        proj(-20 - 40, 70 + 27.5, body_h(70) + 0.3),
+        proj(-20 - 40, 60 - 27.5, FH + 0.3),
+        proj(-20 + 40, 60 - 27.5, FH + 0.3),
+        proj(-20 + 40, 60 + 27.5, body_h(60) + 0.3),
+        proj(-20 - 40, 60 + 27.5, body_h(60) + 0.3),
     ]
     ax.add_patch(Polygon(z1_corners, closed=True, facecolor="#1c2a3a",
                           edgecolor=Z1_BLUE, linewidth=1.0, zorder=8, alpha=0.9))
-    z1c = proj(-20, 70, FH + 0.5)
+    z1c = proj(-20, 60, FH + 0.5)
     ax.text(z1c[0], z1c[1], "PHONE\nQi2 15W", ha="center", va="center",
             fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
 
     # Zone 2 — Buds
     z2_corners = [
-        proj(20 - 32.5, 70 - 27.5, FH + 0.3),
-        proj(20 + 32.5, 70 - 27.5, FH + 0.3),
-        proj(20 + 32.5, 70 + 27.5, body_h(70) + 0.3),
-        proj(20 - 32.5, 70 + 27.5, body_h(70) + 0.3),
+        proj(20 - 32.5, 88 - 27.5, FH + 0.3),
+        proj(20 + 32.5, 88 - 27.5, FH + 0.3),
+        proj(20 + 32.5, 88 + 27.5, body_h(88) + 0.3),
+        proj(20 - 32.5, 88 + 27.5, body_h(88) + 0.3),
     ]
     ax.add_patch(Polygon(z2_corners, closed=True, facecolor="#251a35",
                           edgecolor=Z2_PURPLE, linewidth=1.0, zorder=8, alpha=0.9))
-    z2c = proj(20, 70, FH + 0.5)
+    z2c = proj(20, 88, FH + 0.5)
     ax.text(z2c[0], z2c[1], "BUDS\nQi 5W", ha="center", va="center",
             fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
 
@@ -575,16 +600,32 @@ def draw_perspective_view(ax: plt.Axes) -> None:
                               edgecolor="#222233", linewidth=0.6, zorder=2))
 
     # ── IEC C13 power cord ──
-    iec_pt = proj(0, 298, 8)
-    ax.plot([iec_pt[0], iec_pt[0] + 20], [iec_pt[1], iec_pt[1] + 2],
-            color="#28282f", linewidth=5, solid_capstyle="round", zorder=6)
-    ax.plot([iec_pt[0], iec_pt[0] + 20], [iec_pt[1], iec_pt[1] + 2],
-            color="#1a1a22", linewidth=3, solid_capstyle="round", zorder=7)
-    for i in range(4):
-        ci = iec_pt[0] + 22 + i * 12
-        ax.add_patch(Arc((ci, iec_pt[1] + 3), 14 + i * 4, 8 + i * 2,
-                          theta1=20, theta2=340,
-                          color="#32323f", linewidth=1.5, zorder=7))
+    # IEC C13 socket housing on rear wall
+    iec_pt = proj(0, 299, 6)
+    socket_tl = proj(-5, 299, 10)
+    socket_tr = proj(5, 299, 10)
+    socket_bl = proj(-5, 299, 2)
+    socket_br = proj(5, 299, 2)
+    ax.add_patch(Polygon([socket_tl, socket_tr, socket_br, socket_bl],
+                          closed=True, facecolor="#1a1a2a", edgecolor=GOLD,
+                          linewidth=1.2, zorder=8))
+    # Cord leaving the socket
+    cord_start = proj(0, 300, 6)
+    cord_end = (cord_start[0] + 35, cord_start[1] + 4)
+    ax.plot([cord_start[0], cord_end[0]], [cord_start[1], cord_end[1]],
+            color="#2d2d38", linewidth=8, solid_capstyle="round", zorder=6)
+    ax.plot([cord_start[0], cord_end[0]], [cord_start[1], cord_end[1]],
+            color="#1e1e28", linewidth=5, solid_capstyle="round", zorder=7)
+    # Coil loops
+    for i in range(6):
+        ci_x = cord_end[0] + 5 + i * 14
+        ci_y = cord_end[1] + 2
+        ax.add_patch(Arc((ci_x, ci_y), 16 + i * 2, 10 + i,
+                          theta1=15, theta2=345,
+                          color="#2e2e3c", linewidth=2.0, zorder=7))
+    # Label
+    ax.text(cord_end[0] + 30, cord_end[1] + 12, "IEC C13\nPOWER",
+            ha="center", va="bottom", fontsize=4.5, color=GOLD, zorder=10)
 
     # ── Shadow under dock ──
     shadow = [proj(FL[0], FL[1], -2), proj(FR[0], FR[1], -2),
