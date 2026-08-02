@@ -45,28 +45,30 @@ Zone 4 uses standard USB-C Power Delivery (PD). It automatically negotiates volt
 | Device | Compatible? | Notes |
 |--------|-------------|-------|
 | iPhone 8 and later (all models) | ✅ | Qi standard |
-| iPhone 12–15 (MagSafe aligned via N52 magnets) | ✅ | Snaps into position |
+| iPhone 12–16 (MagSafe aligned via N52 magnets) | ✅ | Snaps into position |
 | Samsung Galaxy S series (S6 and later) | ✅ | Qi standard |
 | Google Pixel (Pixel 3 and later) | ✅ | Qi standard |
 | OnePlus / Xiaomi / OPPO (Qi models) | ✅ | Qi standard |
 | Any phone with Qi wireless charging | ✅ | Universal |
 
-### Zone 2 — 15W Qi Wireless
-Same compatibility as Zone 1 — works for a second phone simultaneously.
+### Zone 2 — 5W Qi Wireless
+Same compatibility as Zone 1 for low-power devices such as earbuds or a secondary phone.
 
-### Zone 4 — USB-C PD (wired, up to 27W for phones)
-| Device | Compatible? |
-|--------|-------------|
-| Any phone with USB-C (iPhone 15+, Android USB-C) | ✅ |
-| iPhone with Lightning connector (via adapter) | ⚠️ Adapter required |
+### Zone 5 — USB-C PD (wired, up to 20W for phones / tablets)
+| Device | Compatible? | Notes |
+|--------|-------------|-------|
+| Any phone with USB-C (iPhone 15+, Android USB-C) | ✅ | Up to 20W on the dedicated side groove |
+| iPhone with Lightning connector (via adapter) | ⚠️ | Adapter required |
+| Nintendo Switch / handhelds | ✅ | Supported within 20W envelope |
 
-### 3 Phones Simultaneously
-Quad-Dock can charge **3 phones at the same time**:
+### 3 Phones + 1 Laptop Simultaneously
+Quad-Dock can charge **3 phones plus a laptop at the same time**:
 - Zone 1: Phone 1 (15W Qi)
-- Zone 2: Phone 2 (15W Qi)
-- Zone 4: Phone 3 (up to 27W USB-C)
+- Zone 2: Phone 2 / earbuds (5W Qi)
+- Zone 4: Laptop (up to 100W USB-C)
+- Zone 5: Phone 3 or iPad (up to 20W USB-C)
 
-Total draw: ~60W — well within the 180W PSU budget.
+Total draw: ~145W max — within the 180W PSU budget.
 
 ---
 
@@ -105,7 +107,7 @@ All Apple Watch models that use the standard magnetic charging puck are compatib
 
 ---
 
-## iPad Compatibility (Zone 4 — USB-C PD)
+## iPad Compatibility (Zone 5 — USB-C PD 20W)
 
 | Model | Compatible? | Notes |
 |-------|-------------|-------|
@@ -120,10 +122,11 @@ All Apple Watch models that use the standard magnetic charging puck are compatib
 
 ---
 
-## 100W Limit Notes
+## Power Limit Notes
 
-Quad-Dock Zone 4 outputs a maximum of 100W. USB-C PD negotiates automatically:
+Quad-Dock Zone 4 outputs a maximum of 100W and Zone 5 outputs a maximum of 20W. USB-C PD negotiates automatically:
 
-- Devices that need less than 100W → get exactly what they need, no issue
-- Devices rated for more than 100W (e.g. some gaming laptops at 130–200W) → will charge, but slower under heavy load. The laptop draws from its battery for the difference. **This is normal behaviour for any 100W charger.**
-- MacBook Pro 16" note specifically: charges at 100W; slightly slower under sustained peak CPU + GPU workloads. Fine for overnight or desk use.
+- Devices that need less than the zone maximum → get exactly what they need, no issue
+- Devices rated for more than 100W on Zone 4 (e.g. some gaming laptops at 130–200W) → will charge, but slower under heavy load. The laptop draws from its battery for the difference. **This is normal behaviour for any 100W charger.**
+- Zone 5 is intended for iPad / phone duty, not laptop replacement charging
+- MacBook Pro 16" note specifically: charges at 100W on Zone 4; slightly slower under sustained peak CPU + GPU workloads. Fine for overnight or desk use.
