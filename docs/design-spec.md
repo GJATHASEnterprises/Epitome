@@ -4,6 +4,8 @@
 > - [Enclosure Specification](enclosure.md) — Arc design, dimensions, materials, zone layout, LED system
 > - [Electronics Specification](electronics.md) — ESP32-C3, all ICs, power architecture, sensors
 > - [Definitive Component Positions](component-positions.md) — exact X/Y/Z coordinates for all exterior/interior features
+> - [Packaging Specification](packaging.md) — in-box contents, cable bundle, warranty card
+> - [Firmware Notes](firmware-notes.md) — night mode behaviour and timing source
 
 ---
 
@@ -35,34 +37,36 @@ Smooth curved wedge — wide at rear, slightly narrower at front. Zero sharp cor
 
 - **Top plate:** 1.5mm brushed aluminum — Gunmetal (Black model), Silver (White model). Laser-etched zone icons and Quad-Dock wordmark.
 - **Base:** Soft-touch matte ABS — Black or White. Laser cut + bent for Batch 1; injection mold from Batch 2.
-- **Zone pockets:** Silicone-lined recessed dishes (2–3mm deep), replacing guide rails
-- **Watch cradle:** Teardrop-shaped elevated pod, rear-left, 30° tilt toward user
-- **Laptop groove:** Rear-right, 22mm wide × 12mm deep, silicone-lined. Laptop stands vertically on its spine.
-- **LED system:** WS2812B strip hidden under front lip with frosted diffuser. 4 sections divided by recessed lines. Laser-etched zone icons above each section.
-- **Assembly:** Snap-fit base + 2× M3 screws only
-- **Cooling:** Vents on base
-- **Top plate:** Removable for service access
+- **Zone pockets:** Silicone-lined recessed dishes and grooves replacing exposed accessory clutter.
+- **Watch cradle:** Teardrop-shaped elevated pod, rear-left, 30° tilt toward user.
+- **Laptop groove:** Right half, `X=+40`, **22mm** wide × **12mm** deep, silicone-lined.
+- **iPad/phone groove:** Right half beside laptop groove, `X=+80`, **18mm** wide × **12mm** deep, silicone-lined.
+- **LED system:** WS2812B strip hidden under front lip with frosted diffuser. **5 sections** divided by recessed lines. Laser-etched zone icons above each section.
+- **Assembly:** Snap-fit base + 2× M3 screws only.
+- **Cooling:** Vents on base.
+- **Top plate:** Removable for service access.
 
 ---
 
 ## Zone Layout
 
 Exact zone anchors:
-- Zone 1: `X=-20.00, Y=70.00`
-- Zone 2: `X=+20.00, Y=70.00`
-- Zone 3: `X=-22.00, Y=225.00`
-- Zone 4: `X=+29.00, Y=294.00` (`X:+18..+40, Y:288..300`)
+- Zone 1: `X=-45.00, Y=60.00`
+- Zone 2: `X=-45.00, Y=140.00`
+- Zone 3: `X=-45.00, Y=225.00`
+- Zone 4: groove centered at `X=+40.00`, `Y=15..285`
+- Zone 5: groove centered at `X=+80.00`, `Y=15..285`
 
 ```
          ← 300mm →
-+----------------------------------------------+  ← rear (140mm wide, 22mm high)
-|  [⌚ ZONE 3 — Watch]    [💻 ZONE 4 — Laptop]  |
-|  Teardrop pod            Vertical spine       |
-|  30° tilt, rear-left     groove, rear-right   |
-+----------------------------------------------+  ← arc taper
-|  [📱 ZONE 1 — Phone]   [🎧 ZONE 2 — Buds]    |
-|  15W Qi + magnets        15W Qi               |
-+---[■ PHONE ■|■ BUDS ■|■ WATCH ■|■ LAPTOP ■]--+
++---------------------------------------------------------+  ← rear (140mm wide, 22mm high)
+|  [⌚ ZONE 3 — Watch]   [💻 ZONE 4 — Laptop] [📱 ZONE 5 — iPad/Phone] |
+|  Teardrop pod          Vertical spine        Parallel USB-C groove    |
+|  30° tilt, rear-left   22mm groove           18mm groove              |
++---------------------------------------------------------+  ← arc taper
+|  [📱 ZONE 1 — Phone]                [🎧 ZONE 2 — Buds]               |
+|  15W Qi + magnets                   5W Qi                            |
++-[■ PHONE ■|■ BUDS ■|■ WATCH ■|■ LAPTOP ■|■ iPAD ■]------------------+
 ← front (110mm wide, 12mm high) →
                    IEC C13 inlet (rear centre)
 ```
@@ -76,8 +80,8 @@ Exact zone anchors:
 - N52 ring magnets for phone alignment (MagSafe-style)
 - Silicone-lined recessed dish
 
-### Zone 2 — Buds / Phone (Qi 15W)
-- 50mm Qi TX coil, 15W
+### Zone 2 — Buds / Phone (Qi 5W)
+- Qi charging zone, 5W target budget
 - Works for AirPods (Qi case) or a second phone
 - Silicone-lined recessed dish
 
@@ -93,6 +97,12 @@ Exact zone anchors:
 - Laptop stands vertically on its spine
 - Compatible: any USB-C laptop (2018+)
 
+### Zone 5 — iPad / Phone / USB-C PD (20W)
+- USB-C PD 2.0, up to 20W
+- Groove: 18mm wide × 12mm deep, silicone-lined
+- Intended for iPad, Android phone, or secondary USB-C device
+- Protected by dedicated INA219 + polyfuse + NTC branch
+
 ---
 
 ## LED Status System
@@ -103,6 +113,8 @@ Exact zone anchors:
 | Full | Green | Device fully charged |
 | Empty | Off | No device detected |
 
+Night mode turns all zone LEDs off between 23:00–07:00 unless a zone is actively drawing more than 0.5W.
+
 ---
 
 ## Electronics Summary
@@ -110,10 +122,10 @@ Exact zone anchors:
 See [electronics.md](electronics.md) for full spec.
 
 - **MCU:** ESP32-C3 Mini (WiFi + BLE, flashed via onboard USB)
-- **Power monitors:** INA3221 (Zones 1–3), INA219 (Zone 4)
+- **Power monitors:** INA3221 (Zones 1–3), INA219 (Zone 4), INA219 (Zone 5)
 - **Ambient light:** BH1750 (I2C)
-- **LED:** WS2812B strip (16 LEDs, 4 per zone)
-- **Charging:** 2× Qi 15W (Zones 1–2), Watch puck 5W (Zone 3), USB-C PD 100W (Zone 4)
+- **LED:** WS2812B strip (20 LEDs, 4 per zone)
+- **Charging:** 2× Qi (Zones 1–2), Watch puck 5W (Zone 3), USB-C PD 100W (Zone 4), USB-C PD 20W (Zone 5)
 - **PSU:** Internal 180W AC/DC (IEC C13 inlet, no external power brick)
 - **No USB-A port**
 - **No physical buttons**
@@ -122,12 +134,13 @@ See [electronics.md](electronics.md) for full spec.
 
 ## Packaging
 
-- Rigid kraft box with structured corners
+- Rigid kraft or matte-black retail box
 - Die-cut foam insert
 - Black tissue paper wrap
 - Quad-Dock logo sticker on tissue
-- QR code card (setup + warranty)
-- No IEC cable bundled
+- Quick-start guide
+- Warranty registration card
+- 1.5m braided IEC C13 cable bundled in-box
 
 ---
 

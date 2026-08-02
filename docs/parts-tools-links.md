@@ -36,24 +36,26 @@ Buy these first. You need them before any parts arrive.
 | 1 | ESP32-C3-MINI-1-N4 (MCU) | C2838502 | [lcsc.com/product-detail/C2838502](https://www.lcsc.com/product-detail/C2838502.html) | ~$2.50 | 2 (1 spare) |
 | 2 | INA3221AIRGVR (power monitor, Zones 1–3) | C207114 | [lcsc.com/product-detail/C207114](https://www.lcsc.com/product-detail/C207114.html) | ~$2.00 | 2 (1 spare) |
 | 3 | INA219BIDCNT (power monitor, Zone 4) | C214795 | [lcsc.com/product-detail/C214795](https://www.lcsc.com/product-detail/C214795.html) | ~$1.00 | 2 (1 spare) |
-| 4 | BH1750FVI-TR (ambient light sensor) | C97234 | [lcsc.com/product-detail/C97234](https://www.lcsc.com/product-detail/C97234.html) | ~$0.60 | 2 (1 spare) |
-| 5 | WS2812B-B/W (addressable LEDs) | C114586 | [lcsc.com/product-detail/C114586](https://www.lcsc.com/product-detail/C114586.html) | ~$0.15 | 30 (need 16, order extra) |
-| 6 | FUSB302MPX (USB-C PD controller chip) | C442699 | [lcsc.com/product-detail/C442699](https://www.lcsc.com/product-detail/C442699.html) | ~$1.50 | 2 (1 spare) |
-| 7 | Mean Well LRS-200-24 PSU (adjust to ~20V) | C2857547 | [lcsc.com/product-detail/C2857547](https://www.lcsc.com/product-detail/C2857547.html) | ~$18 | 1 |
-| 8 | IEC C13 inlet socket (panel mount) | Search "IEC C13" on LCSC | [lcsc.com/search?q=IEC+C13](https://www.lcsc.com/search?q=IEC+C13) | ~$2 | 1 |
-| 9 | NTC thermistor 10K (per coil zone) | Search "NTC 10K" on LCSC | [lcsc.com/search?q=NTC+10K](https://www.lcsc.com/search?q=NTC+10K) | ~$0.20 | 5 |
-| 10 | Polyfuse (resettable fuse, per zone) | Search "polyfuse 2A" on LCSC | [lcsc.com/search?q=polyfuse](https://www.lcsc.com/search?q=polyfuse) | ~$0.40 | 6 |
-| 11 | 300Ω resistor (LED data line protection) | Search "300R 0805" on LCSC | [lcsc.com/search?q=300R+0805](https://www.lcsc.com/search?q=300R+0805) | ~$0.02 | 10 |
-| 12 | 100µF 25V capacitor | Search "100uF 25V" on LCSC | [lcsc.com/search?q=100uF+25V](https://www.lcsc.com/search?q=100uF+25V) | ~$0.10 | 5 |
-| 13 | Full-size breadboard (830 tie-points) | Any | [Amazon](https://www.amazon.com/dp/B07LFD4LT6) | ~$5 | 2 |
-| 14 | Jumper wires (M-M and M-F packs) | Any | [Amazon](https://www.amazon.com/dp/B01EV70C78) | ~$6 | 1 pack each |
+| 4 | INA219 Zone 5 | C214795 | [https://www.lcsc.com/product-detail/C214795.html](https://www.lcsc.com/product-detail/C214795.html) | ~$1 | 1 (in addition to Zone 4 unit) |
+| 5 | BH1750FVI-TR (ambient light sensor) | C97234 | [lcsc.com/product-detail/C97234](https://www.lcsc.com/product-detail/C97234.html) | ~$0.60 | 2 (1 spare) |
+| 6 | WS2812B-B/W (addressable LEDs) | C114586 | [lcsc.com/product-detail/C114586](https://www.lcsc.com/product-detail/C114586.html) | ~$0.15 | 30 (need 20, order extra) |
+| 7 | FUSB302MPX (USB-C PD controller chip) | C442699 | [lcsc.com/product-detail/C442699](https://www.lcsc.com/product-detail/C442699.html) | ~$1.50 | 3 (2 needed + 1 spare) |
+| 8 | USB-C PD 20W controller board | Search "USB-C PD 20W" on LCSC | [lcsc.com/search?q=USB-C+PD+20W](https://www.lcsc.com/search?q=USB-C+PD+20W) | ~$5–8 | 1 |
+| 9 | Mean Well LRS-200-24 PSU (adjust to ~20V) | C2857547 | [lcsc.com/product-detail/C2857547](https://www.lcsc.com/product-detail/C2857547.html) | ~$18 | 1 |
+| 10 | IEC C13 inlet socket (panel mount) | Search "IEC C13" on LCSC | [lcsc.com/search?q=IEC+C13](https://www.lcsc.com/search?q=IEC+C13) | ~$2 | 1 |
+| 11 | NTC thermistor 10K (per zone) | Search "NTC 10K" on LCSC | [lcsc.com/search?q=NTC+10K](https://www.lcsc.com/search?q=NTC+10K) | ~$0.20 | 6 |
+| 12 | Polyfuse (resettable fuse, per zone) | Search "polyfuse 2A" on LCSC | [lcsc.com/search?q=polyfuse+2A](https://www.lcsc.com/search?q=polyfuse+2A) | ~$0.40 | 7 |
+| 13 | 300Ω resistor (LED data line protection) | Search "300R 0805" on LCSC | [lcsc.com/search?q=300R+0805](https://www.lcsc.com/search?q=300R+0805) | ~$0.02 | 10 |
+| 14 | 100µF 25V capacitor | Search "100uF 25V" on LCSC | [lcsc.com/search?q=100uF+25V](https://www.lcsc.com/search?q=100uF+25V) | ~$0.10 | 5 |
+| 15 | Full-size breadboard (830 tie-points) | Any | [Amazon](https://www.amazon.com/dp/B07LFD4LT6) | ~$5 | 2 |
+| 16 | Jumper wires (M-M and M-F packs) | Any | [Amazon](https://www.amazon.com/dp/B01EV70C78) | ~$6 | 1 pack each |
 
 ### ✅ Order from Adafruit — for Qi coils and Apple Watch puck (verified, safe, returnable)
 
 | # | Part | Direct Link | Cost |
 |---|------|-------------|------|
-| 15 | Qi wireless charging transmitter coil (15W capable) | [adafruit.com/product/4526](https://www.adafruit.com/product/4526) | ~$10 |
-| 16 | Apple Watch magnetic charging puck (USB-A) | [adafruit.com/product/4459](https://www.adafruit.com/product/4459) | ~$15 |
+| 17 | Qi wireless charging transmitter coil (15W capable) | [adafruit.com/product/4526](https://www.adafruit.com/product/4526) | ~$10 |
+| 18 | Apple Watch magnetic charging puck (USB-A) | [adafruit.com/product/4459](https://www.adafruit.com/product/4459) | ~$15 |
 
 > **Why Adafruit instead of AliExpress for these?**
 > Qi coil quality directly affects phone charging safety. Adafruit tests their modules.
@@ -143,7 +145,7 @@ solder. If still bad, use solder wick to remove it and start again.
 
 | Tool | Cost | What it's for | Link |
 |------|------|---------------|------|
-| **Fusion 360** | Free (personal use) | Model the dock enclosure to exact spec | [autodesk.com/fusion360](https://www.autodesk.com/products/fusion360/free-trial) |
+| **Fusion 360** | Free (personal use) | Model the dock enclosure to exact 5-zone spec | [autodesk.com/fusion360](https://www.autodesk.com/products/fusion360/free-trial) |
 | **Blender** | Free | Photorealistic renders for Kickstarter / marketing | [blender.org/download](https://www.blender.org/download/) |
 | **Canva** | Free tier | Kickstarter page, social posts, 2D marketing | [canva.com](https://www.canva.com) |
 | **JLCPCB** | Pay per order | 3D print your enclosure shell | [jlcpcb.com/3d-printing](https://jlcpcb.com/3d-printing) |
@@ -165,5 +167,13 @@ solder. If still bad, use solder wick to remove it and start again.
 | **Fiverr** (hire a designer) | 3D renders, logo, Kickstarter page design | [fiverr.com](https://www.fiverr.com) |
 
 ---
+
+## SECTION 7 — PACKAGING & IN-BOX ITEMS
+
+| Item | Source | Cost |
+|---|---|---|
+| 1.5m braided IEC C13 power cable | AliExpress search "IEC C13 braided cable 1.5m" | ~$3 |
+| Warranty registration card (printed, 85×55mm) | Local print shop / Canva + Vistaprint | ~$0.25/unit |
+| Quick start card | Local print shop | ~$0.15/unit |
 
 *Last updated: 2025 — verify prices and stock before ordering.*

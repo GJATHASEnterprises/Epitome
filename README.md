@@ -10,13 +10,13 @@ Open [`assets/quad-dock-model.glb`](assets/quad-dock-model.glb) to view the inte
 
 > Pre-generated. Regenerate at any time by running `python scripts/generate_3d_model.py`.
 
-**A smart, app-controlled 4-zone charging dock for phones, Apple Watch, AirPods, and laptops.**
+**A smart, app-controlled 5-zone charging dock for phones, Apple Watch, AirPods, laptops, and iPad/USB-C accessories.**
 
 ---
 
 ## Overview
 
-Quad-Dock is a self-built, smart charging station that charges up to 4 devices simultaneously from a single wall outlet. It features a brushed aluminum top plate in the "Arc" enclosure — a smooth curved wedge with zero sharp corners — dual 15W Qi wireless coils, a built-in Apple Watch puck, 100W USB-C PD for any modern laptop, a WS2812B LED status bar with laser-etched zone icons, and a companion iOS app with theft alerts, ambient light dimming, and weekly charge reports.
+Quad-Dock is a self-built, smart charging station that charges up to 5 devices/zones simultaneously from a single wall outlet. It features a brushed aluminum top plate in the "Arc" enclosure — a smooth curved wedge with zero sharp corners — dual wireless charging zones, a built-in Apple Watch puck, 100W USB-C PD for any modern laptop, a second 20W USB-C PD groove for iPad/phone charging, a WS2812B LED status bar with laser-etched zone icons, and a companion iOS app with theft alerts, ambient light dimming, night mode, and weekly charge reports.
 
 Plugs directly into the wall via a built-in IEC C13 inlet and internal 180W AC/DC power supply — no external power brick required.
 
@@ -24,28 +24,29 @@ Available in **Black** and **White**.
 
 ---
 
-## 4-Zone Layout
+## 5-Zone Layout
 
 Definitive coordinates for every exterior/interior feature are in
 [`docs/component-positions.md`](docs/component-positions.md):
-- Zone 1 (Phone): `X=-20.00, Y=70.00`
-- Zone 2 (Buds): `X=+20.00, Y=70.00`
-- Zone 3 (Watch cradle base): `X=-22.00, Y=225.00`
-- Zone 4 (Laptop groove center): `X=+29.00, Y=294.00`
+- Zone 1 (Phone): `X=-45.00, Y=60.00`
+- Zone 2 (Buds): `X=-45.00, Y=140.00`
+- Zone 3 (Watch cradle base): `X=-45.00, Y=225.00`
+- Zone 4 (Laptop groove center): `X=+40.00, Y=150.00`
+- Zone 5 (iPad/Phone groove center): `X=+80.00, Y=150.00`
 
 ```
 +-----------------------------------------------------------+
 |  REAR                                                     |
 |  ┌─────────────────────────────────────────────────────┐  |
-|  │  [⌚ ZONE 3 — Watch]      [💻 ZONE 4 — Laptop]      │  |
-|  │  Teardrop cradle           Vertical spine groove    │  |
-|  │  30° tilt, rear-left        rear-right, 22×12mm     │  |
+|  │  [⌚ ZONE 3 — Watch] [💻 ZONE 4 — Laptop] [📲 ZONE 5 — iPad/Phone] │  |
+|  │  Teardrop cradle      Vertical spine groove  Parallel USB-C groove │  |
+|  │  30° tilt, rear-left   right-half, 22×12mm   right-half, 18×12mm   │  |
 |  └─────────────────────────────────────────────────────┘  |
 |  ┌─────────────────────────────────────────────────────┐  |
 |  │  [📱 ZONE 1 — Phone]       [🎧 ZONE 2 — Buds]       │  |
-|  │  15W Qi + magnets          15W Qi, phones/AirPods   │  |
+|  │  15W Qi + magnets          5W Qi, phones/AirPods    │  |
 |  └─────────────────────────────────────────────────────┘  |
-|  [■■■■ PHONE ■■■■|■■■■ BUDS ■■■■|■■■■ WATCH ■■■■|■■ LAPTOP ■■] LED bar
+|  [PHONE|BUDS|WATCH|LAPTOP|iPAD] 5-zone LED bar
 +-----------------------------------------------------------+
   FRONT                              IEC C13 inlet (rear)
 ```
@@ -54,16 +55,19 @@ Definitive coordinates for every exterior/interior feature are in
 
 ## Key Features
 
-- **4 devices at once** — 3 phones simultaneously, Apple Watch, and any modern laptop
+- **5 charging zones** — phone, buds, watch, laptop, and a second USB-C groove for iPad/phone
 - **100W USB-C PD** on Zone 4 — works with any USB-C laptop from the last 6 years
-- **Dual 15W Qi** on Zones 1 + 2 — fast wireless charging for phones and AirPods
+- **20W USB-C PD** on Zone 5 — dedicated groove beside the laptop slot for iPad/phone charging
+- **Qi charging zones** on Zones 1 + 2 — fast wireless charging for phones and AirPods
 - **Apple Watch puck** built-in on Zone 3 — no adapter needed
 - **Arc enclosure** — smooth curved wedge, brushed aluminum top, soft-touch ABS base, zero sharp corners
-- **WS2812B LED bar** with frosted diffuser and laser-etched zone icons (📱 PHONE, 🎧 BUDS, ⌚ WATCH, 💻 LAPTOP)
+- **WS2812B LED bar** with frosted diffuser and laser-etched zone icons (📱 PHONE, 🎧 BUDS, ⌚ WATCH, 💻 LAPTOP, 📲 iPAD)
 - **LED states:** Red = charging, Green = full, Off = empty
+- **Night mode** — LEDs off overnight unless a zone is actively charging; theft alerts can be silenced overnight
 - **Companion iOS app** — theft alerts, ambient auto-dim, BLE proximity, weekly charge reports, home screen widget
 - **ESP32-C3 Mini** MCU — WiFi + BLE, flashed via onboard USB
-- **Internal 180W PSU** — no external power brick
+- **Internal 180W PSU + bundled IEC C13 cable** — no external power brick
+- **Warranty registration card included** — in-box onboarding + follow-up capture
 - **No physical buttons** — all control via app
 
 ---
@@ -72,11 +76,11 @@ Definitive coordinates for every exterior/interior feature are in
 
 See [docs/compatibility.md](docs/compatibility.md) for the full list. Quick summary:
 
-- **Phones:** iPhone (any Qi-capable), Android (any Qi), Zone 4 USB-C for any phone
+- **Phones:** iPhone (any Qi-capable), Android (any Qi), Zone 5 USB-C for modern USB-C phones
 - **Laptops:** MacBook Air, MacBook Pro, Dell XPS, HP Spectre, Lenovo ThinkPad/IdeaPad, ASUS, Acer, Surface Pro, Samsung Galaxy Book, any USB-C laptop (2018+)
 - **Apple Watch:** Series 1–9, SE, Ultra
 - **AirPods:** Pro (1st/2nd gen), 3rd gen, AirPods 4 (Qi case)
-- **iPad:** iPad Pro, Air, mini (USB-C models via Zone 4)
+- **iPad:** iPad Pro, Air, mini (USB-C models via Zone 5)
 
 ---
 
@@ -101,7 +105,9 @@ See [docs/compatibility.md](docs/compatibility.md) for the full list. Quick summ
 | [Compatibility](docs/compatibility.md) | All supported devices and charge speeds |
 | [Production Roadmap](docs/production-roadmap.md) | Batch 1 laser cut → batch 2 mold → batch 3+ |
 | [Prototype Guide](docs/prototype-guide.md) | 4-week build plan, tools, checklist |
+| [Firmware Notes](docs/firmware-notes.md) | Night mode / sleep mode timing and behaviour |
 | [Marketability](docs/marketability.md) | Selling points, target markets, pricing rationale |
+| [Packaging](docs/packaging.md) | In-box contents, warranty card, bundled IEC cable |
 | [Wiring Notes](docs/wiring.md) | Schematic notes, pin assignments, PCB notes |
 
 ---
@@ -110,9 +116,9 @@ See [docs/compatibility.md](docs/compatibility.md) for the full list. Quick summ
 
 | Quantity | Target BOM |
 |----------|-----------|
-| 20–50 units | ~$75–$85 (laser cut batch) |
-| 50 units | ~$67 (with bulk sourcing) |
-| 100+ units | ~$64 |
+| 20–50 units | ~$84–$92 (laser cut batch) |
+| 50 units | ~$79 (with bulk sourcing) |
+| 100+ units | ~$75 |
 
 ---
 

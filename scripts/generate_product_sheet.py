@@ -43,13 +43,14 @@ Z1_BLUE   = "#3a7bd5"   # Phone
 Z2_PURPLE = "#9b59b6"   # Buds
 Z3_GREEN  = "#27ae60"   # Watch
 Z4_ORANGE = "#e67e22"   # Laptop
+Z5_BLUE   = "#3a7bd5"   # iPad / Phone
 
 # Material colours
 ALU_TOP  = "#8a9ba8"   # brushed aluminium
 ABS_BODY = "#1a1a1a"   # dark ABS
 LED_COL  = "#ffb347"   # warm amber LED
 
-ZONE_COLS = [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE]
+ZONE_COLS = [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE, Z5_BLUE]
 
 
 # ─── Physical constants (mm) ─────────────────────────────────────────────────
@@ -156,7 +157,7 @@ def draw_top_view(ax: plt.Axes) -> None:
 
     ill_pts = np.array([[-ILL_FHW, 0], [ILL_FHW, 0], [ILL_RHW, 300], [-ILL_RHW, 300]], dtype=float)
 
-    ax.set_xlim(-150, 175)
+    ax.set_xlim(-150, 200)
     ax.set_ylim(-35, 360)
     ax.set_aspect("equal")
     ax.axis("off")
@@ -186,17 +187,17 @@ def draw_top_view(ax: plt.Axes) -> None:
     # LED bar — inside front edge, full width clipped to illustration front edge
     ax.add_patch(Rectangle((-ILL_FHW, 1), ILL_FHW * 2, 6,
                             facecolor="#221800", edgecolor="#443300", linewidth=0.8, zorder=4))
-    seg_w = (ILL_FHW * 2) / 4
-    seg_centres = [-75, -25, 25, 75]
-    for lx, lc in zip(seg_centres, [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE]):
+    seg_w = (ILL_FHW * 2) / 5
+    seg_centres = [-80, -40, 0, 40, 80]
+    for lx, lc in zip(seg_centres, [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE, Z5_BLUE]):
         ax.add_patch(Rectangle((lx - seg_w / 2 + 1, 1.5), seg_w - 2, 5,
                                 facecolor=lc, alpha=0.85, linewidth=0, zorder=5))
-    for div_x in [-50, 0, 50]:
+    for div_x in [-60, -20, 20, 60]:
         ax.plot([div_x, div_x], [1, 7], color="#111122", linewidth=1.0, zorder=6)
     ax.plot([-ILL_FHW + 2, ILL_FHW - 2], [4, 4],
             color="#ffb347", linewidth=2.0, alpha=0.7, zorder=6)
 
-    ax.text(0, -5, "WS2812B LED STATUS BAR  ·  4-ZONE  ·  290×8mm",
+    ax.text(0, -5, "WS2812B LED STATUS BAR  ·  5-ZONE  ·  290×8mm",
             ha="center", va="top", fontsize=5.5, color="#ffb347", zorder=6)
 
     # ── Zone 1 — Phone Qi dish ──
@@ -246,29 +247,57 @@ def draw_top_view(ax: plt.Axes) -> None:
             fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
 
     # ── Zone 4 — Laptop right-half groove ──
-    z4 = FancyBboxPatch((10, 15), 85, 270,
+    z4 = FancyBboxPatch((10, 15), 45, 270,
                          boxstyle="round,pad=0,rounding_size=8",
                          facecolor="#2a1a0a", edgecolor=Z4_ORANGE,
                          linewidth=1.8, zorder=6)
     ax.add_patch(z4)
-    ax.add_patch(FancyBboxPatch((12, 17), 81, 266,
+    ax.add_patch(FancyBboxPatch((12, 17), 41, 266,
                                 boxstyle="round,pad=0,rounding_size=7",
                                 facecolor="#1e1208", edgecolor=Z4_ORANGE,
                                 linewidth=0.6, linestyle="--", zorder=7, alpha=0.7))
-    ax.add_patch(Rectangle((45, 30), 8, 250, facecolor="#1a0d05",
+    ax.add_patch(Rectangle((35, 30), 8, 250, facecolor="#1a0d05",
                            edgecolor=Z4_ORANGE, linewidth=1.0, zorder=8))
-    ax.add_patch(Rectangle((44, 30), 1.5, 250, facecolor="#333333",
+    ax.add_patch(Rectangle((34, 30), 1.5, 250, facecolor="#333333",
                            edgecolor=Z4_ORANGE, linewidth=0.8, zorder=9))
-    ax.add_patch(Rectangle((53.5, 30), 1.5, 250, facecolor="#333333",
+    ax.add_patch(Rectangle((43.5, 30), 1.5, 250, facecolor="#333333",
                            edgecolor=Z4_ORANGE, linewidth=0.8, zorder=9))
-    ax.add_patch(FancyBboxPatch((43, 255), 14, 6, boxstyle="round,pad=0,rounding_size=1",
+    ax.add_patch(FancyBboxPatch((33, 255), 14, 6, boxstyle="round,pad=0,rounding_size=1",
                                 facecolor="#444455", edgecolor="#aaaacc",
                                 linewidth=0.8, zorder=10))
-    ax.text(50, 258, "USB-C", ha="center", va="center", fontsize=4, color="#aaaacc", zorder=11)
-    ax.text(50, 130, "LAPTOP\nUSB-C 100W", ha="center", va="center",
+    ax.text(40, 258, "USB-C", ha="center", va="center", fontsize=4, color="#aaaacc", zorder=11)
+    ax.text(40, 130, "LAPTOP\nUSB-C 100W", ha="center", va="center",
             fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
-    ax.text(50, 115, "22mm groove · silicone-lined\nlaptop stands vertically on spine",
+    ax.text(40, 115, "22mm groove · silicone-lined\nlaptop stands vertically on spine",
             ha="center", va="top", fontsize=4.5, color=Z4_ORANGE, zorder=10)
+
+    # ── Zone 5 — iPad/Phone groove ──
+    z5 = FancyBboxPatch((60, 15), 40, 270,
+                         boxstyle="round,pad=0,rounding_size=8",
+                         facecolor="#0a1a2a", edgecolor=Z5_BLUE,
+                         linewidth=1.8, zorder=6)
+    ax.add_patch(z5)
+    ax.add_patch(FancyBboxPatch((62, 17), 36, 266,
+                               boxstyle="round,pad=0,rounding_size=7",
+                               facecolor="#071218", edgecolor=Z5_BLUE,
+                               linewidth=0.6, linestyle="--", zorder=7, alpha=0.7))
+    ax.add_patch(Rectangle((72, 30), 6, 250, facecolor="#050e14",
+                          edgecolor=Z5_BLUE, linewidth=1.0, zorder=8))
+    ax.add_patch(Rectangle((71, 30), 1.5, 250, facecolor="#333333",
+                          edgecolor=Z5_BLUE, linewidth=0.8, zorder=9))
+    ax.add_patch(Rectangle((78.5, 30), 1.5, 250, facecolor="#333333",
+                          edgecolor=Z5_BLUE, linewidth=0.8, zorder=9))
+    ax.add_patch(FancyBboxPatch((70, 255), 12, 6,
+                               boxstyle="round,pad=0,rounding_size=1",
+                               facecolor="#444455", edgecolor="#aaaacc",
+                               linewidth=0.8, zorder=10))
+    ax.text(76, 258, "USB-C", ha="center", va="center", fontsize=4, color="#aaaacc", zorder=11)
+    ax.text(76, 130, "iPAD /\nPHONE\n20W", ha="center", va="center",
+            fontsize=5.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
+    ax.text(76, 113, "18mm groove · silicone-lined",
+            ha="center", va="top", fontsize=4, color=Z5_BLUE, zorder=10)
+    ax.text(76, 95, "iPAD", ha="center", va="center",
+            fontsize=6.0, color="#aaaacc", style="italic", zorder=8)
 
     # ── IEC C13 inlet (rear wall) ──
     iec = Rectangle((-20, 292), 28, 10, facecolor="#1a1a2a",
@@ -291,7 +320,8 @@ def draw_top_view(ax: plt.Axes) -> None:
         (-45, 78,  "PHONE",     6.0, "#aaaacc"),
         (-45, 158, "BUDS",      6.0, "#aaaacc"),
         (-45, 247, "WATCH",     6.0, "#aaaacc"),
-        ( 50, 95,  "LAPTOP",    6.0, "#aaaacc"),
+        ( 40, 95,  "LAPTOP",    6.0, "#aaaacc"),
+        ( 80, 95,  "iPAD",      6.0, "#aaaacc"),
         (  0, 278, "Quad-Dock", 7.5, GOLD),
     ]
     for lx, ly, lt, lfs, lcol in etched_labels:
@@ -334,8 +364,10 @@ def draw_top_view(ax: plt.Axes) -> None:
              color=Z2_PURPLE, fontsize=5)
     _callout(ax, (-45, 250), (-130, 255), "Ø50mm\n18mm tall · 30°",
              color=Z3_GREEN, fontsize=5)
-    _callout(ax, (50, 270), (140, 265), "22mm groove\nvertical spine",
+    _callout(ax, (40, 270), (140, 265), "22mm groove\nvertical spine",
              color=Z4_ORANGE, fontsize=5)
+    _callout(ax, (76, 270), (155, 260), "18mm groove\niPad/Phone",
+             color=Z5_BLUE, fontsize=5)
     _callout(ax, (-60, 150), (-140, 165), "M3 × Ø3.2mm",
              color=TEXT_DIM, fontsize=4.5)
 
@@ -364,11 +396,12 @@ def draw_front_elevation(ax: plt.Axes) -> None:
                                linewidth=0.8, zorder=3)
     ax.add_patch(diffuser)
 
-    # 4 LED sections with zone colours
-    led_xs = [-3 * 110 / 8, -1 * 110 / 8, 1 * 110 / 8, 3 * 110 / 8]
-    zone_labels = ["PHONE", "BUDS", "WATCH", "LAPTOP"]
-    for i, (lx, zc, zl) in enumerate(zip(led_xs, ZONE_COLS, zone_labels)):
-        seg_w = 110 / 4 - 1
+    # 5 LED sections with zone colours
+    zone_labels = ["PHONE", "BUDS", "WATCH", "LAPTOP", "iPAD"]
+    led_xs = [-4 * 110 / 10, -2 * 110 / 10, 0, 2 * 110 / 10, 4 * 110 / 10]
+    zone_cols_5 = [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE, Z5_BLUE]
+    for i, (lx, zc, zl) in enumerate(zip(led_xs, zone_cols_5, zone_labels)):
+        seg_w = 110 / 5 - 1
         # Frosted diffuser block (three translucent layers widening outward)
         for alpha, width in [(0.15, seg_w + 4), (0.35, seg_w), (0.7, seg_w - 4)]:
             ax.add_patch(Rectangle((lx - width / 2, -2.8),
@@ -378,7 +411,7 @@ def draw_front_elevation(ax: plt.Axes) -> None:
         ax.plot([lx - seg_w / 2 + 1, lx + seg_w / 2 - 1], [-1.4, -1.4],
                 color=zc, linewidth=2.5, alpha=0.9, solid_capstyle="round", zorder=5)
         # Divider
-        if i < 3:
+        if i < 4:
             ax.plot([lx + seg_w / 2 + 0.5, lx + seg_w / 2 + 0.5], [-3, 0],
                     color="#111122", linewidth=0.8, zorder=6)
         # Zone label below
@@ -414,7 +447,7 @@ def draw_front_elevation(ax: plt.Axes) -> None:
     ax.text(0, 20, "FRONT FACE  ·  110 × 12mm  ·  LED BAR VISIBLE",
             ha="center", va="bottom", fontsize=6, color=GOLD,
             fontweight="bold")
-    ax.text(0, 17, "4-section frosted polycarbonate diffuser · WS2812B addressable",
+    ax.text(0, 17, "5-section frosted polycarbonate diffuser · WS2812B addressable",
             ha="center", va="bottom", fontsize=5, color=TEXT_LIGHT)
 
 
@@ -503,10 +536,10 @@ def draw_perspective_view(ax: plt.Axes) -> None:
     ax.add_patch(Polygon(led_pts, closed=True, facecolor="#1a1000",
                           edgecolor="#332200", linewidth=0.6, zorder=6))
     # LED glow
-    for i, (lx, zc) in enumerate(zip(
-            [-3 * 110 / 8, -1 * 110 / 8, 1 * 110 / 8, 3 * 110 / 8], ZONE_COLS)):
-        p0 = proj(lx - 12, 0, FH - 2)
-        p1 = proj(lx + 12, 0, FH - 2)
+    for lx, zc in zip(
+            [-4 * 110 / 10, -2 * 110 / 10, 0, 2 * 110 / 10, 4 * 110 / 10], ZONE_COLS):
+        p0 = proj(lx - 9, 0, FH - 2)
+        p1 = proj(lx + 9, 0, FH - 2)
         ax.plot([p0[0], p1[0]], [p0[1], p1[1]],
                 color=zc, linewidth=3.5, alpha=0.9,
                 solid_capstyle="round", zorder=7)
@@ -544,14 +577,27 @@ def draw_perspective_view(ax: plt.Axes) -> None:
     # Zone 4 — Laptop right half
     z4_corners = [
         proj(10, 15, FH + 0.3),
-        proj(85, 15, FH + 0.3),
-        proj(100, 285, body_h(285) + 0.3),
+        proj(55, 15, FH + 0.3),
+        proj(70, 285, body_h(285) + 0.3),
         proj(10, 285, body_h(285) + 0.3),
     ]
     ax.add_patch(Polygon(z4_corners, closed=True, facecolor="#2a1a0a",
                           edgecolor=Z4_ORANGE, linewidth=1.2, zorder=8, alpha=0.9))
-    z4c = proj(50, 150, body_h(150) + 0.5)
+    z4c = proj(40, 150, body_h(150) + 0.5)
     ax.text(z4c[0], z4c[1], "LAPTOP\n100W", ha="center", va="center",
+            fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
+
+    # Zone 5 — iPad/Phone groove right of laptop
+    z5_corners = [
+        proj(62, 15, FH + 0.3),
+        proj(100, 15, FH + 0.3),
+        proj(115, 285, body_h(285) + 0.3),
+        proj(62, 285, body_h(285) + 0.3),
+    ]
+    ax.add_patch(Polygon(z5_corners, closed=True, facecolor="#0a1a2a",
+                          edgecolor=Z5_BLUE, linewidth=1.2, zorder=8, alpha=0.9))
+    z5c = proj(80, 150, body_h(150) + 0.5)
+    ax.text(z5c[0], z5c[1], "iPAD\n20W", ha="center", va="center",
             fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
 
     # Zone 3 — Watch cradle pod (raised cylinder + cone)
@@ -847,7 +893,7 @@ def draw_spec_panel(ax: plt.Axes) -> None:
     ax.text(0.5, 0.975, "QUAD-DOCK™", fontsize=16, color=GOLD,
             fontweight="bold", ha="center", va="top",
             fontfamily="monospace", zorder=3)
-    ax.text(0.5, 0.940, "The 4-Zone Desktop Charging Station",
+    ax.text(0.5, 0.940, "5-Zone Desktop Charging Station",
             fontsize=7, color=TEXT_LIGHT, ha="center", va="top")
     hline(0.925, lw=1.2)
 
@@ -880,16 +926,23 @@ def draw_spec_panel(ax: plt.Axes) -> None:
         "Groove:   22×12mm silicone-lined",
         "Compat:   Any USB-C laptop (2018+)",
     ])
+    y = zone_block(y, Z5_BLUE, "ZONE 5 — iPAD / PHONE (USB-C)", [
+        "Protocol: USB-C PD 2.0",
+        "Power:    20W max",
+        "Groove:   18×12mm silicone-lined",
+        "Compat:   iPad, Android, any USB-C device",
+    ])
 
     y -= 0.005
     y = section_title(y, "ELECTRONICS")
     for line in [
         "MCU:     ESP32-C3 Mini  (WiFi + BLE)",
-        "Monitors: INA3221 + INA219",
+        "Monitors: INA3221 (Zones 1–3) + 2× INA219 (Zones 4–5)",
         "Ambient: BH1750 lux sensor",
-        "LED:     WS2812B × 16  (4 per zone)",
+        "LED:     WS2812B × 20  (4 per zone)",
         "PSU:     Internal 180W AC/DC",
         "Inlet:   IEC C13  (no external brick)",
+        "Outputs: 2×Qi, Watch puck, 2×USB-C PD",
         "Surge:   Built-in protection",
     ]:
         y = body_line(y, line, fs=5.8)
@@ -924,8 +977,17 @@ def draw_spec_panel(ax: plt.Axes) -> None:
         ax.add_patch(Circle((0.055, y - 0.008), 0.006,
                              facecolor=lc, edgecolor="none", zorder=3))
         y = body_line(y, lt, indent=0.07, fs=5.8)
-    y = body_line(y, "4 independent zones · WS2812B addressable strip", fs=5.8)
+    y = body_line(y, "5 independent zones · WS2812B addressable strip", fs=5.8)
     y = body_line(y, "Frosted front-lip diffuser", fs=5.8)
+
+    y -= 0.005
+    y = section_title(y, "NIGHT MODE")
+    for line in [
+        "LEDs off 23:00–07:00 (configurable in app)",
+        "Alerts silenced overnight (configurable)",
+        "Active charging always visible regardless",
+    ]:
+        y = body_line(y, line, fs=5.8)
 
     y -= 0.005
     y = section_title(y, "ASSEMBLY")
@@ -936,13 +998,23 @@ def draw_spec_panel(ax: plt.Axes) -> None:
     ]:
         y = body_line(y, line, fs=5.8)
 
+    y -= 0.005
+    y = section_title(y, "IN-BOX CONTENTS")
+    for line in [
+        "Quad-Dock unit",
+        "1.5m braided IEC C13 power cable",
+        "Warranty registration card",
+        "Quick-start guide",
+    ]:
+        y = body_line(y, line, fs=5.8)
+
     # ── Pricing & footer ──
     hline(max(y - 0.020, 0.12))
     y = max(y - 0.025, 0.115)
     ax.text(0.5, y, "$189  USD", fontsize=13, color=GOLD,
             fontweight="bold", ha="center", va="top")
     y -= 0.030
-    ax.text(0.5, y, "Black or White Variant",
+    ax.text(0.5, y, "Black or White Variant · 5-zone · plug-and-play",
             fontsize=6.5, color=TEXT_LIGHT, ha="center", va="top")
     y -= 0.022
     ax.text(0.5, y, "GJATHASEnterprises © 2025",
@@ -984,8 +1056,8 @@ def draw_header(fig: plt.Figure) -> None:
 
     # Subtitle
     hdr.text(0.04, 0.18,
-             "4-Zone Desktop Charging Station  ·  "
-             "Simultaneous Phone + Buds + Watch + Laptop",
+             "5-Zone Desktop Charging Station  ·  "
+             "Simultaneous Phone + Buds + Watch + Laptop + iPad",
              fontsize=9, color=TEXT_LIGHT, va="center",
              transform=hdr.transAxes)
 

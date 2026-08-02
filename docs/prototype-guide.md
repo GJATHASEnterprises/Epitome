@@ -6,12 +6,12 @@
 
 Not a sellable unit — a functional proof of concept to verify:
 
-- ✅ All 4 zones charge correctly
+- ✅ All 5 zones charge correctly
 - ✅ ESP32-C3 connects, reads sensors, controls LEDs
 - ✅ iOS app connects via BLE
 - ✅ Theft alert triggers and sends notification
 - ✅ Arc shape feels right in hand and on desk
-- ✅ Laptop groove holds laptop securely
+- ✅ Laptop groove and iPad/phone groove both hold devices securely
 
 Definitive placement coordinates for prototyping and fixtures are in
 [component-positions.md](component-positions.md).
@@ -22,15 +22,15 @@ Definitive placement coordinates for prototyping and fixtures are in
 
 | Category | Low | High |
 |----------|-----|------|
-| Electronics (breakout boards) | $68 | $111 |
+| Electronics (breakout boards) | $86 | $145 |
 | Enclosure (3D print from JLCPCB) | $40 | $70 |
 | Shipping (JLCPCB 3D print) | $15 | $25 |
 | Tools (if you need them) | $51 | $84 |
 | Buffer for mistakes + spares | $50 | $80 |
 | Second 3D print iteration | $0 | $70 |
-| **Total** | **~$224** | **~$440** |
+| **Total** | **~$242** | **~$474** |
 
-You will have ~$60–$150 remaining for unexpected costs.
+You will have ~$26–$258 remaining for unexpected costs.
 
 ---
 
@@ -41,7 +41,7 @@ You will have ~$60–$150 remaining for unexpected costs.
 | **Soldering iron** | Solder wires to coils, connectors, PSU leads | $20–$35 |
 | **Multimeter** | Check voltages, continuity, debug faults | $15–$25 |
 | **Wire strippers** | Strip PSU wires and hookup wire | $8–$12 |
-| **Hot glue gun** | Prototype assembly — holds components in 3D print shell | $8–$12 |
+| **Hot glue gun** | Prototype assembly — holds components in the 3D print shell | $8–$12 |
 | Flush cutters | Trim wire ends and component leads | $5–$10 |
 | **Total if buying all tools** | | **$56–$94** |
 
@@ -57,19 +57,26 @@ You will have ~$60–$150 remaining for unexpected costs.
 | 2 | Qi 15W TX coil module (50mm) | 2 | $10–$16 | AliExpress |
 | 3 | Apple Watch charger module (puck) | 1 | $8–$12 | AliExpress |
 | 4 | USB-C PD 100W controller board | 1 | $8–$14 | AliExpress |
-| 5 | INA3221 breakout board | 1 | $2–$4 | LCSC / AliExpress |
-| 6 | INA219 breakout board | 1 | $1–$3 | LCSC / AliExpress |
-| 7 | BH1750 ambient light sensor breakout | 1 | $1–$2 | AliExpress |
-| 8 | WS2812B LED strip (1m reel) | 1 | $3–$5 | AliExpress |
-| 9 | N52 ring magnets (×5) | 1 pack | $3–$5 | AliExpress |
-| 10 | 180W AC/DC PSU module (20V out) | 1 | $15–$22 | AliExpress / LCSC |
-| 11 | IEC C13 inlet socket (panel mount) | 1 | $2–$3 | AliExpress |
-| 12 | Full-size breadboard (830 tie-points) | 2 | $6–$10 | Local / AliExpress |
-| 13 | Jumper wires (male-male + male-female) | 2 packs | $4–$8 | Local / AliExpress |
-| 14 | USB-C connector breakout boards | 2 | $2–$4 | AliExpress |
-| 15 | Assorted resistors (300Ω, 10K) + 100µF capacitors | 1 lot | $3–$5 | LCSC |
-| 16 | Frosted acrylic strip (LED diffuser test) | 1 | $5–$10 | Local hardware / AliExpress |
-| **Electronics total** | | | **$79–$133** | |
+| 5 | USB-C PD 20W controller board | 1 | $5–$8 | LCSC / AliExpress |
+| 6 | INA3221 breakout board | 1 | $2–$4 | LCSC / AliExpress |
+| 7 | INA219 breakout board | 1 | $1–$3 | LCSC / AliExpress |
+| 8 | INA219 breakout board (Zone 5) | 1 | $1–$3 | LCSC / AliExpress |
+| 9 | BH1750 ambient light sensor breakout | 1 | $1–$2 | AliExpress |
+| 10 | WS2812B LED strip (1m reel) | 1 | $3–$5 | AliExpress |
+| 11 | N52 ring magnets (×5) | 1 pack | $3–$5 | AliExpress |
+| 12 | 180W AC/DC PSU module (20V out) | 1 | $15–$22 | AliExpress / LCSC |
+| 13 | IEC C13 inlet socket (panel mount) | 1 | $2–$3 | AliExpress |
+| 14 | IEC C13 power cable (1.5m braided, bundle) | 1 | $2–$4 | AliExpress |
+| 15 | Full-size breadboard (830 tie-points) | 2 | $6–$10 | Local / AliExpress |
+| 16 | Jumper wires (male-male + male-female) | 2 packs | $4–$8 | Local / AliExpress |
+| 17 | USB-C connector breakout boards | 2 | $2–$4 | AliExpress |
+| 18 | USB-C connector breakout (Zone 5) | 1 | $1–$2 | AliExpress |
+| 19 | Polyfuse 2A (Zone 5) | 1 | already in lot | LCSC |
+| 20 | NTC thermistor (Zone 5) | 1 | already in lot | LCSC |
+| 21 | Assorted resistors (300Ω, 10K) + 100µF capacitors | 1 lot | $3–$5 | LCSC |
+| 22 | Frosted acrylic strip (LED diffuser test) | 1 | $5–$10 | Local hardware / AliExpress |
+| 23 | Warranty registration card (printed) | 1 per unit | $0.25 | Local print shop |
+| **Electronics total** | | | **$86–$145** | |
 
 *Order at least 25% extra passives and jumper wires as spares.*
 
@@ -84,8 +91,12 @@ You will have ~$60–$150 remaining for unexpected costs.
 2. Order 3D print from JLCPCB (5–7 business days):
    - Upload Arc profile at actual dimensions: 300mm × 140mm (rear) × 110mm (front), 22mm rear height, 12mm front height
    - Request SLA or FDM print (FDM is cheaper; SLA is smoother)
-   - Include laptop groove (22mm × 12mm) and watch cradle teardrop pod in the model
+   - Include laptop groove (22mm × 12mm) and iPad/phone groove (18mm × 12mm) in the model
 3. Order any missing tools if needed
+
+Bundle 1× 1.5m braided IEC C13 cable in retail box — prevents "can't use it out of box" 1-star reviews.
+
+Include printed warranty registration card in box — directs buyer to register email for batch 2 pre-order priority.
 
 **Day 3–7: Prep**
 - Cut cardboard to Arc dimensions (see Week 2)
@@ -103,20 +114,22 @@ You will have ~$60–$150 remaining for unexpected costs.
 1. Cut cardboard to Arc profile — 300mm long, taper from 140mm (rear) to 110mm (front)
 2. Build up rear height to 22mm and front to 12mm using stacked cardboard layers
 3. Cut a 22mm × 12mm slot in the rear-right for the laptop groove
-4. Cut a rough teardrop shape in the rear-left for the watch cradle
-5. Place all 4 devices on the cardboard mock:
-   - Phone on Zone 1 at `(-20,70)`
-   - AirPods/phone on Zone 2 at `(+20,70)`
-   - Apple Watch cradle zone at `(-22,225)`
-   - Laptop groove zone at `(+29,294)` / `X:+18..+40, Y:288..300`
-6. Sit at your desk — does it feel right? Is the watch angle comfortable? Does the laptop feel stable?
-7. **Adjust dimensions in your 3D model** before the print arrives if anything feels off
+4. Cut an 18mm × 12mm slot beside it for the iPad/phone groove
+5. Cut a rough teardrop shape in the rear-left for the watch cradle
+6. Place all 5 charging targets on the cardboard mock:
+   - Phone on Zone 1 at `(-45,60)`
+   - AirPods/phone on Zone 2 at `(-45,140)`
+   - Apple Watch cradle zone at `(-45,225)`
+   - Laptop groove centered at `(+40,150)`
+   - iPad/phone groove centered at `(+80,150)`
+7. Sit at your desk — does it feel right? Is the watch angle comfortable? Do the parallel grooves feel usable?
+8. **Adjust dimensions in your 3D model** before the print arrives if anything feels off
 
 ---
 
 ### Week 3 — Electronics Bench Test
 
-**Goal:** Confirm all 4 zones charge and the ESP32-C3 talks to everything.
+**Goal:** Confirm all 5 zones charge and the ESP32-C3 talks to everything.
 
 **Checklist:**
 - [ ] Wire PSU: IEC C13 inlet → 180W PSU → main 20V rail. Measure with multimeter — confirm 20V output
@@ -124,14 +137,22 @@ You will have ~$60–$150 remaining for unexpected costs.
 - [ ] Wire Qi coil 2 (Zone 2): Same as Zone 1. Test with second phone or AirPods
 - [ ] Wire Watch puck (Zone 3): 5V → puck. Place Apple Watch — confirm charging
 - [ ] Wire USB-C PD board (Zone 4): 20V in → PD board → USB-C out. Connect laptop — confirm charging
+- [ ] Wire USB-C PD 20W board (Zone 5): 20V in → step-down → PD board → USB-C out. Connect iPad or phone — confirm 20W charging
 - [ ] Flash ESP32-C3 via onboard USB — confirm "Hello World" over serial
 - [ ] Wire INA3221 (SDA/SCL to ESP32-C3 GPIO 8/9) — read power data from Zones 1–3
 - [ ] Wire INA219 (same I2C bus) — read power data from Zone 4
+- [ ] Wire INA219 Zone 5 (same I2C bus) — read power data from Zone 5
 - [ ] Wire BH1750 (same I2C bus) — read lux value in serial monitor
-- [ ] Wire WS2812B LED strip (GPIO 4 → 300Ω resistor → DIN) — confirm all 16 LEDs light up
-- [ ] Run LED test: Red → Zone 1, Green → Zone 2, Off → Zones 3+4 — confirm correct zone mapping
+- [ ] Wire NTC thermistor Zone 5 — confirm reading in serial monitor
+- [ ] Wire WS2812B LED strip (GPIO 4 → 300Ω resistor → DIN) — confirm all 20 LEDs light up
+- [ ] Run LED test: Red → Zone 1, Green → Zone 2, Off → Zones 3–5 — confirm correct zone mapping
 - [ ] Connect app via BLE — confirm connection and live zone data reading
 - [ ] Test theft alert: remove phone from Zone 1 while app is connected — confirm push notification fires
+
+**Night Mode (firmware):**
+- LEDs fully off between 23:00–07:00 unless a zone is actively charging (draw > 0.5W per INA reading)
+- Configurable in app — default ON
+- No push notifications sent between 23:00–07:00 (theft alert silenced overnight, configurable)
 
 ---
 
@@ -140,21 +161,23 @@ You will have ~$60–$150 remaining for unexpected costs.
 **Goal:** Fit everything into the 3D printed Arc shell and test as a unit.
 
 **Checklist:**
-- [ ] 3D print has arrived — inspect fit: laptop groove width (22mm), watch cradle shape, overall dimensions
+- [ ] 3D print has arrived — inspect fit: laptop groove width (22mm), iPad/phone groove width (18mm), watch cradle shape, overall dimensions
 - [ ] Hot glue Qi coil 1 into Zone 1 pocket position
 - [ ] Hot glue Qi coil 2 into Zone 2 pocket position
 - [ ] Mount Watch puck into teardrop cradle pod
 - [ ] Mount USB-C PD board in Zone 4 area — confirm USB-C port aligns with groove
+- [ ] Mount USB-C PD 20W board in Zone 5 area — confirm USB-C port aligns with groove 2
+- [ ] Confirm Zone 5 iPad/phone charges at 20W
 - [ ] Hot glue PSU module into base — ensure cooling vents are not blocked
 - [ ] Route IEC C13 inlet to rear panel cutout
 - [ ] Mount ESP32-C3 board in accessible position (for re-flashing)
 - [ ] Fit WS2812B strip under front lip — add frosted acrylic diffuser strip over it
-- [ ] Fit INA3221 + INA219 boards on breadboard or hot glue to base
+- [ ] Fit INA3221 + 2× INA219 boards on breadboard or hot glue to base
 - [ ] Fit BH1750 sensor facing upward (reads ambient light through diffuser or front gap)
 - [ ] Route all wires neatly — use cable ties or hot glue to secure runs
 - [ ] Attach rubber feet to base (×4)
 - [ ] Place aluminum top plate (or cardboard substitute for prototype) on top
-- [ ] Power on — confirm all 4 zones charge simultaneously
+- [ ] Power on — confirm all 5 zones charge simultaneously
 - [ ] Confirm app connection and live data
 - [ ] Confirm theft alert end-to-end (remove device → push notification)
 - [ ] Confirm LED states per zone (Red/Green/Off)
@@ -169,14 +192,16 @@ You will have ~$60–$150 remaining for unexpected costs.
 - [ ] Zone 2 Qi coil charging a phone or AirPods
 - [ ] Zone 3 Watch puck charging Apple Watch
 - [ ] Zone 4 USB-C PD charging laptop
+- [ ] Zone 5 USB-C PD charging iPad or phone at 20W
 - [ ] ESP32-C3 running firmware
 - [ ] INA3221 reading Zones 1–3 power
 - [ ] INA219 reading Zone 4 power
+- [ ] INA219 reading Zone 5 power
 - [ ] BH1750 reading ambient lux
 - [ ] WS2812B LED strip responding to zone states
 - [ ] App connected via BLE
 - [ ] Theft alert firing correctly
-- [ ] Ambient auto-dim working
+- [ ] Ambient auto-dim / night mode working
 - [ ] All components fit in 3D print shell
 
 ---
@@ -185,12 +210,12 @@ You will have ~$60–$150 remaining for unexpected costs.
 
 | Category | Low | High |
 |----------|-----|------|
-| Electronics components | $79 | $133 |
+| Electronics components | $86 | $145 |
 | 3D print (JLCPCB) | $40 | $70 |
 | 3D print shipping | $15 | $25 |
 | Tools (if purchasing) | $51 | $84 |
 | Buffer / spares | $50 | $80 |
 | Second 3D print (if shape adjustment needed) | $0 | $70 |
-| **Total** | **~$235** | **~$462** |
+| **Total** | **~$242** | **~$474** |
 | **Budget** | | **$500** |
-| **Remaining** | | **~$38–$265** |
+| **Remaining** | | **~$26–$258** |

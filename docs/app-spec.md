@@ -145,8 +145,9 @@ Quad-Dock iOS App (SwiftUI)
 | Zone 2 Power | Read/Notify | Voltage, current, watts (JSON) |
 | Zone 3 Power | Read/Notify | Voltage, current, watts (JSON) |
 | Zone 4 Power | Read/Notify | Voltage, current, watts (JSON) |
+| Zone 5 Power | Read/Notify | Voltage, current, watts (JSON) |
 | LED Strip Status | Read/Notify | Per-zone color state + brightness (JSON) |
-| LED Control | Write | Set brightness override, auto-dim on/off |
+| LED Control | Write | Set brightness override, auto-dim / night mode on/off |
 | Device Presence | Read/Notify | Per-zone device detected flag (boolean array) |
 | Theft Alert | Notify | Zone index of unexpected removal event |
 | Theft Alert Mode | Write | Away / Night / Passive (enum) |
