@@ -14,13 +14,13 @@ Exact interior/exterior positions are defined in [component-positions.md](compon
 
 Key electronics placements:
 
-- PCB main board center: `X=-5.00, Y=110.00, Z=5.00`
-- PCB extents: **X:-65.00..+55.00, Y:70.00..150.00**
+- PCB main board center: `X=-35.00, Y=110.00, Z=5.00`
+- PCB extents: **X:-95.00..+25.00, Y:70.00..150.00**
 - PCB standoff height: **5.00mm**
 - PSU module center: `X=0.00, Y=210.00, Z=5.00`
-- Qi coils: `(-20.00,70.00,4.00)` and `(+20.00,70.00,4.00)`
-- Watch puck module: `(-22.00,225.00,4.00)`
-- USB-C PD board center: `(+32.00,155.00,5.00)`
+- Qi coils: `(-45.00,60.00,4.00)` and `(-45.00,140.00,4.00)`
+- Watch puck module: `(-45.00,225.00,4.00)`
+- USB-C PD board center: `(+50.00,150.00,5.00)`
 
 ## Power Path
 
@@ -33,8 +33,8 @@ Key electronics placements:
 
 ## PCB Layout Notes
 
-- Board position is fixed at **X:-65..+55, Y:70..150 on 5mm standoffs**.
-- Keep Qi power traces wide and short to entry points near `Y≈75`.
+- Board position is fixed at **X:-95..+25, Y:70..150 on 5mm standoffs**.
+- Keep Qi power traces wide and short to entry points near `Y≈60` and `Y≈140`.
 - Keep INA3221/INA219 close to their branch sensing points.
 - Keep ESP32-C3 antenna near the board edge with copper keep-out.
 - Place BH1750 near edge exposure side for reliable ambient readings.
