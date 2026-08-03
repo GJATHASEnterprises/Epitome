@@ -11,18 +11,18 @@ Buy these first. You need them before any parts arrive.
 
 | Tool | Why You Need It | Buy Link | Cost |
 |------|----------------|----------|------|
-| **Soldering iron** (temperature-controlled) | Soldering wires to coils, PSU leads, connectors | [Amazon — Hakko FX-888D](https://www.amazon.com/dp/B00ANZRT4M) | ~$50 (worth it — cheap irons ruin joints) |
-| **Solder** (60/40 rosin core, 0.8mm) | The actual joining material | [Amazon — Kester 44](https://www.amazon.com/dp/B00068IJWC) | ~$10 |
-| **Flux pen** | Helps solder flow cleanly, prevents cold joints | [Amazon — MG Chemicals 835](https://www.amazon.com/dp/B005DNR01Q) | ~$8 |
+| **Soldering iron** (80W, temperature-controlled) | Soldering wires to coils, PSU leads, connectors | [Amazon — 80W LCD Digital Soldering Iron Kit](https://www.amazon.com/dp/B07YSCBZ4F) | ~$25 |
+| **Solder** (60/40 rosin core, 0.8mm, 50g) | The actual joining material | [Amazon — HGMZZQ 60/40 Rosin Core 0.8mm](https://www.amazon.com/dp/B0B6397413) | ~$8 |
+| **Flux pen** (125ml) | Helps solder flow cleanly, prevents cold joints | [Amazon — MG Chemicals 835](https://www.amazon.com/dp/B005DNR01Q) | ~$8 |
 | **Multimeter** | Measure voltage, check continuity, debug faults | [Amazon — AstroAI DT132A](https://www.amazon.com/dp/B01ISAMUA6) | ~$15 |
 | **Wire strippers** | Strip PSU wires and hookup wire | [Amazon — Irwin Self-Adjusting](https://www.amazon.com/dp/B000OQ21CA) | ~$12 |
-| **Flush cutters** | Trim component leads and wire ends | [Amazon — Hakko CHP-170](https://www.amazon.com/dp/B00FZPDG1K) | ~$8 |
+| **Flush cutters** | Trim component leads and wire ends | [Amazon — B0F12S5JT4](https://www.amazon.com/dp/B0F12S5JT4) | ~$8 |
 | **Hot glue gun** | Prototype assembly — holds parts in the 3D printed shell | Any hardware store | ~$8 |
 | **Helping hands / PCB vice** | Holds boards still while you solder | [Amazon — Kaisi 899-II](https://www.amazon.com/dp/B07MDKXNPC) | ~$12 |
-| **Solder wick** (desoldering braid) | Remove bad solder joints | [Amazon — Chemtronics CSW2-25](https://www.amazon.com/dp/B00B89ARC8) | ~$6 |
+| **Solder wick** (desoldering braid) | Remove bad solder joints | [Amazon — TOWOT Solder Wick Braid](https://www.amazon.com/dp/B0943PDCC4) | ~$7 |
 | **Safety glasses** | Flux splatter and wire ends can fly | Any hardware store | ~$5 |
 
-**Total tools if buying everything: ~$134**
+**Total tools if buying everything: ~$108**
 *If you already have a multimeter and soldering iron, cut that to ~$60.*
 
 ---
@@ -40,7 +40,7 @@ Buy these first. You need them before any parts arrive.
 | 5 | BH1750FVI-TR (ambient light sensor) | C97234 | [lcsc.com/product-detail/C97234](https://www.lcsc.com/product-detail/C97234.html) | ~$0.60 | 2 (1 spare) |
 | 6 | WS2812B-B/W (addressable LEDs) | C114586 | [lcsc.com/product-detail/C114586](https://www.lcsc.com/product-detail/C114586.html) | ~$0.15 | 30 (need 20, order extra) |
 | 7 | FUSB302MPX (USB-C PD controller chip) | C442699 | [lcsc.com/product-detail/C442699](https://www.lcsc.com/product-detail/C442699.html) | ~$1.50 | 3 (2 needed + 1 spare) |
-| 8 | USB-C PD 20W controller board | Search "USB-C PD 20W" on LCSC | [lcsc.com/search?q=USB-C+PD+20W](https://www.lcsc.com/search?q=USB-C+PD+20W) | ~$5–8 | 1 |
+| 8 | USB-C PD 20W controller board | Search "USB-C PD 20W" on LCSC | [lcsc.com/search?q=USB-C+PD+20W](https://www.lcsc.com/search?q=USB-C+PD+20W) | ~$5��8 | 1 |
 | 9 | Mean Well LRS-200-24 PSU (adjust to ~20V) | C2857547 | [lcsc.com/product-detail/C2857547](https://www.lcsc.com/product-detail/C2857547.html) | ~$18 | 1 |
 | 10 | IEC C13 inlet socket (panel mount) | Search "IEC C13" on LCSC | [lcsc.com/search?q=IEC+C13](https://www.lcsc.com/search?q=IEC+C13) | ~$2 | 1 |
 | 11 | NTC thermistor 10K (per zone) | Search "NTC 10K" on LCSC | [lcsc.com/search?q=NTC+10K](https://www.lcsc.com/search?q=NTC+10K) | ~$0.20 | 6 |
@@ -176,4 +176,4 @@ solder. If still bad, use solder wick to remove it and start again.
 | Warranty registration card (printed, 85×55mm) | Local print shop / Canva + Vistaprint | ~$0.25/unit |
 | Quick start card | Local print shop | ~$0.15/unit |
 
-*Last updated: 2025 — verify prices and stock before ordering.*
+*Last updated: 2026 — verify prices and stock before ordering.*
