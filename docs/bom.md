@@ -37,68 +37,112 @@ Use this for the prototype build. No JLCPCB PCB order required — all breakout 
 
 ## Production BOM (Full JLCPCB PCBA)
 
-| # | Part | Spec | Qty | Unit Cost | Total Est. | Source |
-|---|------|------|-----|-----------|------------|--------|
-| 1 | Qi 15W TX Module | 50mm coil, 15W | 1 | $5–$8 | $5–$8 | LCSC (order ×10) |
-| 2 | Qi 5W TX Module | Buds-friendly wireless TX | 1 | $3–$5 | $3–$5 | LCSC / AliExpress |
-| 3 | Apple Watch Puck | Magnetic puck, 5W | 1 | $4–$6 | $4–$6 | Bulk ×10 order |
-| 4 | USB-C PD Board | 100W capable | 1 | $8–$12 | $8–$12 | LCSC |
-| 5 | USB-C PD Board | 20W capable | 1 | $5–$8 | $5–$8 | LCSC |
-| 6 | ESP32-C3 Mini | RISC-V, WiFi + BLE | 1 | $2–$3 | $2–$3 | LCSC |
-| 7 | INA3221 | 3-ch I2C, Zones 1–3 | 1 | $2–$4 | $2–$4 | LCSC |
-| 8 | INA219 | 1-ch I2C, Zone 4 | 1 | $1–$2 | $1–$2 | LCSC |
-| 9 | INA219 | 1-ch I2C, Zone 5 | 1 | $1–$2 | $1–$2 | LCSC |
-| 10 | BH1750 | I2C ambient light | 1 | $0.50–$1 | $0.50–$1 | LCSC |
-| 11 | WS2812B LED Strip | 20 LEDs cut from 60/m | 1 | $2–$4 | $2–$4 | LCSC |
-| 12 | N52 Ring Magnets | Ring, Zone 1 alignment | 1 set | $1–$2 | $1–$2 | LCSC / AliExpress |
-| 13 | Internal AC/DC PSU | 180W, 20V out | 1 | $10–$15 | $10–$15 | LCSC bulk 50+ units |
-| 14 | IEC C13 Inlet | Panel mount + fuse | 1 | $2–$3 | $2–$3 | LCSC |
-| 15 | 1.5m braided IEC C13 cable | Right-angle C13 end | 1 | $2.50–$3.50 | $2.50–$3.50 | AliExpress / Local bulk |
-| 16 | 3.3V LDO | Shared ESP32 + sensors | 1 | $0.30–$0.60 | $0.30–$0.60 | JLCPCB basic |
-| 17 | Thermistors NTC 10K | Per zone branch | 4 | $0.20–$0.40 | $0.80–$1.60 | JLCPCB basic |
-| 18 | Overcurrent Protection | Polyfuse per powered zone | 5 | $0.40–$0.80 | $2.00–$4.00 | LCSC |
-| 19 | Custom PCB (PCBA) | 2-layer, JLCPCB, 4/panel | 1 | $8–$12 | $8–$12 | JLCPCB |
-| 20 | Capacitors / Resistors | Assorted SMD | lot | $1–$3 | $1–$3 | JLCPCB basic |
-| 21 | Wiring / Connectors | JST, Dupont, misc | lot | $2–$4 | $2–$4 | LCSC |
-| 22 | Silicone Lining | Sheet cut per zone pocket/groove | 1 pack | $2–$4 | $2–$4 | LCSC / Local |
-| 23 | Frosted Diffuser Strip | Frosted acrylic, LED bar | 1 | $1–$2 | $1–$2 | Local |
-| 24 | Aluminum Top Plate | 1.5mm sheet, Arc profile | 1 | $6–$10 | $6–$10 | Local laser cutter 50+ |
-| 25 | ABS Base | Laser cut + bent (Batch 1) | 1 | $12–$18 | $12–$18 | Local fabrication |
-| 26 | Rubber Feet | ×4, Quad-Dock logo emboss | 1 set | $1–$2 | $1–$2 | Local / AliExpress |
-| 27 | M3 Fasteners | Screws only (snap-fit + 2) | 1 lot | $0.50–$1 | $0.50–$1 | LCSC / Local |
-| 28 | Kraft Box | Rigid, structured corners | 1 | $2–$3 | $2–$3 | 100 unit MOQ |
-| 29 | Die-Cut Foam Insert | Holds dock, no shift | 1 | $1.50–$2.50 | $1.50–$2.50 | Local |
-| 30 | Black Tissue Paper | Wrap around dock | 1 sheet | $0.30–$0.50 | $0.30–$0.50 | Local |
-| 31 | Quad-Dock Logo Sticker | On tissue wrap | 1 | $0.25–$0.50 | $0.25–$0.50 | Local |
-| 32 | Warranty Registration Card | 85×55mm printed insert | 1 | $0.25 | $0.25 | Local |
-| 33 | Quick Start Guide | Folded setup card | 1 | $0.15 | $0.15 | Local |
+### Electronics & Internals
+
+| # | Part | Spec | Qty | Unit Cost (15 units) | Unit Cost (50 units) | Source |
+|---|------|------|-----|---------------------|---------------------|--------|
+| 1 | Qi 15W TX Module | 50mm coil, 15W | 1 | $7 | $5–$6 | LCSC / AliExpress |
+| 2 | Qi 5W TX Module | Buds-friendly wireless TX | 1 | $5 | $3–$4 | LCSC / AliExpress |
+| 3 | Apple Watch Puck | Magnetic puck, 5W | 1 | $10 | $4–$6 | Bulk ×10 order |
+| 4 | USB-C PD Board | 100W capable | 1 | $11 | $8–$10 | LCSC |
+| 5 | USB-C PD Board | 20W capable | 1 | $7 | $5–$6 | LCSC |
+| 6 | ESP32-C3 Mini | RISC-V, WiFi + BLE | 1 | $4 | $2–$3 | LCSC |
+| 7 | INA3221 | 3-ch I2C, Zones 1–3 | 1 | $3 | $2–$3 | LCSC |
+| 8 | INA219 Zone 4 | 1-ch I2C, Zone 4 | 1 | $2 | $1–$2 | LCSC |
+| 9 | INA219 Zone 5 | 1-ch I2C, Zone 5 | 1 | $2 | $1–$2 | LCSC |
+| 10 | BH1750 | I2C ambient light | 1 | $1 | $0.50–$1 | LCSC |
+| 11 | WS2812B LED Strip | 20 LEDs cut from 60/m | 1 | $3 | $2–$3 | LCSC |
+| 12 | N52 Ring Magnets | Ring, Zone 1 alignment | 1 set | $2 | $1–$2 | LCSC / AliExpress |
+| 13 | Internal AC/DC PSU | 180W, 20V out | 1 | $20 | $10–$15 | LCSC |
+| 14 | IEC C13 Inlet | Panel mount + fuse | 1 | $3 | $2–$3 | LCSC |
+| 15 | 3.3V LDO | Shared ESP32 + sensors | 1 | $1 | $0.30–$0.60 | JLCPCB basic |
+| 16 | Thermistors NTC 10K | Per zone branch | 4 | $1.50 | $0.80–$1.60 | JLCPCB basic |
+| 17 | Overcurrent Protection | Polyfuse per powered zone | 5 | $3 | $2.00–$4.00 | LCSC |
+| 18 | Custom PCB (PCBA) | 2-layer, JLCPCB | 1 | $14 | $8–$12 | JLCPCB |
+| 19 | Capacitors / Resistors | Assorted SMD | lot | $5 | $1–$3 | JLCPCB basic |
+| 20 | Wiring / Connectors | JST, Dupont, misc | lot | $5 | $2–$4 | LCSC |
+| 21 | Silicone Lining | Sheet cut per zone pocket/groove | 1 pack | $3 | $2–$4 | LCSC / Local |
+| 22 | Frosted Diffuser Strip | Frosted acrylic, LED bar | 1 | $2 | $1–$2 | Local |
+| **Electronics subtotal** | | | | **~$104** | **~$67** | |
+
+### Enclosure
+
+| # | Part | Spec | Qty | Unit Cost (15 units) | Unit Cost (50 units) | Source |
+|---|------|------|-----|---------------------|---------------------|--------|
+| 23 | 3D Printed Shell | JLCPCB FDM, full Arc body, matte ABS — **Batch 1** | 1 | $40–$55 | — | JLCPCB 3D printing |
+| 24 | Aluminum Top Plate | 1.5mm sheet, Arc profile — **Batch 2+** | 1 | — | $6–$10 | Local laser cutter 50+ |
+| 25 | ABS Base | Laser cut + bent — **Batch 2+** | 1 | — | $12–$18 | Local fabrication |
+| 26 | Rubber Feet | ×4, Quad-Dock logo emboss | 1 set | $2 | $1–$2 | Local / AliExpress |
+| 27 | M3 Fasteners | Screws only (snap-fit + 2) | 1 lot | $1 | $0.50–$1 | LCSC / Local |
+| **Enclosure subtotal** | | | | **~$45–$58** | **~$22** | |
+
+> **Batch 1 note:** The aluminum top plate is replaced by a painted/primed matte ABS top (part of the 3D printed shell). Shape and all zones are identical. The brushed aluminum top is introduced in Batch 2 once the injection mold is funded.
+
+### Packaging & In-Box Contents
+
+| # | Item | Spec | Qty | Unit Cost | Source |
+|---|------|------|-----|-----------|--------|
+| 28 | 1.5m braided IEC C13 cable | Right-angle C13 end, braided | 1 | $2.50–$3.50 | AliExpress / Local bulk |
+| 29 | Rigid kraft box | Structured corners, 340×180×90mm | 1 | $2.50–$3.50 | Local (small run) / 100 unit MOQ |
+| 30 | Die-cut foam insert | Custom cut, holds dock + cable | 1 | $2–$2.50 | Local |
+| 31 | Black tissue paper | Wrap around dock | 1 sheet | $0.30–$0.50 | Local |
+| 32 | Quad-Dock logo sticker | On tissue wrap | 1 | $0.25–$0.50 | Local |
+| 33 | Warranty registration card | 85×55mm, matte laminate, QR to registration page | 1 | $0.25 | Local print shop |
+| 34 | Quick-start guide | 4-panel fold, 148×105mm, full colour | 1 | $0.15 | Local print shop |
+| **Packaging subtotal** | | | | **~$8–$11** | |
 
 ---
 
 ## Cost Totals by Volume
 
-| Quantity | Realistic Middle | Notes |
-|----------|-----------------|-------|
-| 20–50 units | ~$84–$92 | Laser cut enclosure, no mold, standard sourcing |
-| **50 units** | **~$79** | Includes 5-zone electronics and in-box bundle |
-| 100+ units | ~$75 | Volume PCB panels, 100 unit MOQ on box |
+| Quantity | Enclosure Method | Per-Unit Cost | Notes |
+|----------|-----------------|---------------|-------|
+| **13–15 units (Batch 1)** | **3D printed ABS shell (JLCPCB FDM)** | **~$115–$125** | No mold, no laser cut — fits $1,500 budget |
+| 20–50 units | Laser cut + bent enclosure | ~$84–$92 | Volume enclosure pricing kicks in |
+| **50 units** | **Laser cut + aluminum top plate** | **~$79** | Includes full in-box bundle |
+| 100+ units | Injection mold base + aluminum top | ~$75 | Volume PCB panels, 100 unit MOQ on box |
+
+---
+
+## Batch 1 Budget (13–15 Units at ~$120/unit)
+
+| Item | Cost (13 units) | Cost (15 units) |
+|------|----------------|----------------|
+| Electronics × units | ~$1,352 | ~$1,560 |
+| 3D printed enclosure × units | ~$585–$715 | ~$675–$825 |
+| Packaging × units | ~$104–$143 | ~$120–$165 |
+| **Total** | **~$1,350–$1,450** | **~$1,500–$1,600** |
+
+> **Target: 13 units = ~$1,400 total — fits within $1,500 budget with ~$100 buffer.**
+> 15 units pushes to ~$1,550 — only viable if packaging is sourced cheaply or 3D print quote comes in at the low end.
+
+### Batch 1 Revenue & Profit (at $189/unit)
+
+| Units Sold | Revenue | Investment | Profit / (Loss) |
+|------------|---------|------------|-----------------|
+| 1 | $189 | $1,400 | ($1,211) |
+| 5 | $945 | $1,400 | ($455) |
+| 8 | $1,512 | $1,400 | $112 |
+| **10** | **$1,890** | **$1,400** | **$490** |
+| 13 | $2,457 | $1,400 | **$1,057** ← break-even + profit |
+| 15 | $2,835 | $1,400 | **$1,435** |
 
 ---
 
 ## Packaging Cost Breakdown
 
-| Item | Cost |
-|------|------|
-| Rigid kraft box | $2–$3 |
-| Die-cut foam insert | $1.50–$2.50 |
+| Item | Unit Cost |
+|------|-----------|
+| 1.5m braided IEC C13 cable | $2.50–$3.50 |
+| Rigid kraft box | $2.50–$3.50 |
+| Die-cut foam insert | $2.00–$2.50 |
 | Black tissue paper | $0.30–$0.50 |
 | Quad-Dock logo sticker | $0.25–$0.50 |
 | Warranty registration card | $0.25 |
 | Quick-start guide | $0.15 |
-| IEC C13 braided cable | $2.50–$3.50 |
-| **Total packaging** | **$6.95–$10.40** |
+| **Total packaging** | **~$8–$11** |
 
-Bundling the IEC cable keeps the dock usable out of the box and the warranty card captures buyer emails for batch 2 follow-up.
+Bundling the IEC cable keeps the dock usable out of the box — this is the single most common source of 1-star reviews for desktop power products. Bundling it eliminates that entirely.
 
 ---
 
@@ -108,23 +152,23 @@ Bundling the IEC cable keeps the dock usable out of the box and the warranty car
 |--------|--------|
 | Source PSU from LCSC in bulk (50+ units) | -$3–$5 |
 | Combine PCB panels (4 boards per panel at JLCPCB) | -$2–$3 |
-| Aluminum top via local laser cutter at 50+ units | -$2–$4 |
+| Aluminum top via local laser cutter at 50+ units | replaces 3D print (-$30–$40/unit) |
 | Apple Watch puck in bulk (×10 minimum order) | -$1–$2 |
 | Kraft box at 100 unit MOQ | -$1–$2 |
 | Qi coils from LCSC in sets of 10 | -$1–$2 |
-| **Total additional savings** | **-$10–$18** |
+| **Total additional savings vs Batch 1** | **-$38–$54/unit** |
 
 ---
 
 ## Injection Mold Note (Deferred to Batch 2)
 
-The ABS base is laser cut + bent for Batch 1. An injection mold is planned for Batch 2 after break-even.
+The Batch 1 enclosure is a JLCPCB FDM 3D printed ABS shell. An injection mold for the ABS base is planned for Batch 2 after break-even, combined with switching to a proper laser-cut brushed aluminum top plate.
 
 | | Cost |
 |-|------|
 | Mold tooling (one-time) | $800–$1,500 |
-| Per-unit cost with mold | ~$6–$10 |
-| When to order | After ~19 units sold (break-even on $1,500 investment) |
+| Per-unit base cost with mold | ~$6–$10 |
+| When to order | After Batch 1 sells through and profit is confirmed |
 
 See [production-roadmap.md](production-roadmap.md).
 
@@ -135,9 +179,10 @@ See [production-roadmap.md](production-roadmap.md).
 | Supplier | Use For |
 |----------|---------|
 | LCSC (lcsc.com) | ICs, passives, modules, connectors, sensors |
-| JLCPCB (jlcpcb.com) | Custom PCB + PCBA assembly (4 boards per panel) |
-| AliExpress | Prototype breakout boards, Qi coils, magnets, packaging |
-| Local laser cutter | Aluminum top plate + ABS base at 50+ units |
+| JLCPCB (jlcpcb.com) | Custom PCB + PCBA assembly + Batch 1 3D printed enclosure |
+| AliExpress | Prototype breakout boards, Qi coils, magnets, packaging items |
+| Local laser cutter | Aluminum top plate + ABS base at 50+ units (Batch 2+) |
+| Local print shop | Warranty card, quick-start guide |
 
 ---
 
