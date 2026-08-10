@@ -3,11 +3,13 @@
 ## Core Envelope
 
 - Length: **300.00mm**
-- Front width: **110.00mm**
-- Rear width: **140.00mm**
+- Front width: **146.00mm**
+- Rear width: **156.00mm**
 - Front height: **12.00mm**
 - Rear height: **22.00mm**
 - Corner radius: **R20.00mm**
+
+> **Width note:** Front width was increased from 110mm to 146mm and rear width from 140mm to 156mm to accommodate all 5 zones within the top surface boundary. With the original 110/140mm sizing, Zone 5 (right edge X=+75) fell outside the tapered surface at the front. The new width formula `W(Y) = 146 + 10*(Y/300)` ensures Zone 5's right edge at X=+75 stays within the half-width of 74mm at Y=60 (the groove start depth).
 
 Coordinate model used everywhere: see [component-positions.md](component-positions.md).
 
@@ -21,8 +23,8 @@ Critical zone anchors now fixed to:
 - **Zone 2 (Buds dish):** `X=-45.00, Y=140.00`
 - **Zone 3 (Watch cradle):** `X=-45.00, Y=225.00`
 - **Zone 4 (Laptop groove):** `X=+40.00, Y=15..285`, **22mm wide**
-- **Zone 5 (iPad/Phone groove):** `X=+64.00, Y=60..285`, **18mm wide**
-  <!-- Zone 5 position reasoning: Zone 4 right edge X=+51 (centre +40, width 22mm). 6mm structural wall → Zone 5 left edge X=+57. Width 18mm → centre X=+64, right edge X=+71. At rear Y=285 half-width=69.25mm, right edge +71 just fits ✅. At Y=60 half-width=58mm, right edge +71 just fits ✅. Groove starts at Y=60 (not Y=15) because at Y<60 the taper clips the right edge. -->
+- **Zone 5 (iPad/Phone groove):** `X=+66.00, Y=60..285`, **18mm wide**
+  <!-- Zone 5 position reasoning: Zone 4 right edge X=+51 (centre +40, width 22mm). 6mm structural wall → Zone 5 left edge X=+57. Width 18mm → centre X=+66, right edge X=+75. Enclosure widened to front 146mm / rear 156mm (W(Y)=146+10*(Y/300)), half-width at Y=60 = 73+5*(60/300) = 74mm → right edge +75 just fits ✅. Groove starts at Y=60 (not Y=15) because at Y<60 the half-width is less than 74mm. -->
 
 ## Top-Side Features
 
