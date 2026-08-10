@@ -1,4 +1,4 @@
-# Quad-Dock — Design Specification
+# Epitome Penta — Design Specification
 
 > **Note:** This file provides a summary of the product spec. For detailed specifications see:
 > - [Enclosure Specification](enclosure.md) — Arc design, dimensions, materials, zone layout, LED system
@@ -10,7 +10,7 @@
 ---
 
 ## Product Name
-Quad-Dock
+Epitome Penta
 
 ## Color Variants
 - **Black** — Gunmetal brushed aluminum top, matte black soft-touch ABS base
@@ -35,7 +35,7 @@ Quad-Dock
 
 Smooth curved wedge — wide at rear, slightly narrower at front. Zero sharp corners. R20mm radius on all edges.
 
-- **Top plate:** 1.5mm brushed aluminum — Gunmetal (Black model), Silver (White model). Laser-etched zone icons and Quad-Dock wordmark.
+- **Top plate:** 1.5mm brushed aluminum — Gunmetal (Black model), Silver (White model). Laser-etched zone icons and Epitome Penta wordmark.
 - **Base:** Soft-touch matte ABS — Black or White. Laser cut + bent for Batch 1; injection mold from Batch 2.
 - **Zone pockets:** Silicone-lined recessed dishes and grooves replacing exposed accessory clutter.
 - **Watch cradle:** Teardrop-shaped elevated pod, rear-left, 30° tilt toward user.
@@ -137,7 +137,7 @@ See [electronics.md](electronics.md) for full spec.
 - Rigid kraft or matte-black retail box
 - Die-cut foam insert
 - Black tissue paper wrap
-- Quad-Dock logo sticker on tissue
+- Epitome Penta logo sticker on tissue
 - Quick-start guide
 - Warranty registration card
 - 1.5m braided IEC C13 cable bundled in-box
@@ -326,7 +326,7 @@ Implementation details are documented in [firmware-notes.md](firmware-notes.md).
 
 | SKU | Colorway | MSRP |
 |---|---|---:|
-| Quad-Dock Black | Gunmetal top + black base | $189 |
-| Quad-Dock White | Silver top + white base | $189 |
+| Epitome Penta Black | Gunmetal top + black base | $189 |
+| Epitome Penta White | Silver top + white base | $189 |
 
 Cost and sourcing breakdown supporting this price target are in [bom.md](bom.md).

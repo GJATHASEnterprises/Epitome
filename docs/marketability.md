@@ -1,4 +1,4 @@
-# Quad-Dock — Marketability
+# Epitome Penta — Marketability
 
 ---
 
@@ -6,7 +6,7 @@
 
 | Field | Detail |
 |-------|--------|
-| **Product name** | Quad-Dock |
+| **Product name** | Epitome Penta |
 | **Tagline options** | "Every device. One dock." / "Charge everything. Touch nothing." / "Your whole setup. Always ready." |
 | **Target customer** | Apple ecosystem users (iPhone + Apple Watch + AirPods + MacBook + iPad) who want a clean, organised charging setup |
 | **Brand tone** | Clean, confident, functional — not flashy. Premium without being pretentious. |
@@ -44,8 +44,8 @@
 - Frosted LED diffuser strip under front lip overhang — indirect soft glow
 - LED bar divided into 5 sections with recessed divider lines
 - Laser-etched zone icons on aluminum top plate above each LED section
-- Quad-Dock wordmark laser-etched on rear of aluminum top plate
-- Rubber feet with Quad-Dock logo embossed
+- Epitome Penta wordmark laser-etched on rear of aluminum top plate
+- Rubber feet with Epitome Penta logo embossed
 - Snap-fit base + 2 M3 screws only
 - Cooling vents on base
 - Removable top plate for service access
@@ -82,15 +82,15 @@ See [compatibility.md](compatibility.md) for full list. Summary:
 | Anker 3-in-1 cube | $139 | ❌ | ❌ | ❌ |
 | Belkin 3-in-1 | $149 | ❌ | ❌ | ❌ |
 | Mophie 4-in-1 | $179 | ❌ | ❌ | ❌ |
-| **Quad-Dock** | **$189** | ✅ 100W | ✅ 20W Zone 5 | ✅ |
+| **Epitome Penta** | **$189** | ✅ 100W | ✅ 20W Zone 5 | ✅ |
 
-Quad-Dock is the **only product in its price range that charges a laptop and a second wired USB-C device together** and the **only one with a real smart app**.
+Epitome Penta is the **only product in its price range that charges a laptop and a second wired USB-C device together** and the **only one with a real smart app**.
 
 ---
 
 ## Multi-Device Charging Callout
 
-Quad-Dock can charge **a laptop, phone, buds/watch, and a USB-C tablet/phone at the same time**:
+Epitome Penta can charge **a laptop, phone, buds/watch, and a USB-C tablet/phone at the same time**:
 
 | Zone | Method | Max Power |
 |------|--------|-----------|
@@ -118,9 +118,9 @@ Zone 4 uses standard USB-C Power Delivery (PD) for laptops, while Zone 5 handles
 
 ## Target Markets
 
-| Market | Why Quad-Dock Fits |
+| Market | Why Epitome Penta Fits |
 |--------|-------------------|
-| Apple ecosystem users | iPhone + Watch + AirPods + MacBook + iPad — Quad-Dock covers the full desk stack |
+| Apple ecosystem users | iPhone + Watch + AirPods + MacBook + iPad — Epitome Penta covers the full desk stack |
 | Home office workers | Desk clutter elimination — one dock replaces multiple chargers and one laptop stand |
 | Students | Laptop charging + phone overnight + tablet top-up in one place |
 | Tech gifting | $189 is a strong gift price point — premium feel, obvious utility |

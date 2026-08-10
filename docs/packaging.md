@@ -1,10 +1,10 @@
-# Quad-Dock — Packaging Specification
+# Epitome Penta — Packaging Specification
 
 ## In-Box Contents
 
 | Item | Spec | Cost/unit |
 |---|---|---|
-| Quad-Dock unit | Production unit | — |
+| Epitome Penta unit | Production unit | — |
 | IEC C13 power cable | 1.5m braided, right-angle C13 end | ~$3.00 |
 | Warranty registration card | 85×55mm, matte laminate, QR code to registration page | ~$0.25 |
 | Quick-start guide | 4-panel fold, 148×105mm, full colour | ~$0.15 |
@@ -15,7 +15,7 @@ use the dock out of the box — this is the single most common source of 1-star 
 for desktop power products. Bundling it eliminates this entirely.
 
 ## Warranty Registration Card
-- Front: QUAD-DOCK logo, "Register your warranty" headline, QR code
+- Front: EPITOME PENTA logo, "Register your warranty" headline, QR code
 - Back: Serial number field, purchase date field, brief warranty summary (12 months)
 - QR code links to: registration page that captures name + email
 - Email captured = direct marketing list for batch 2 pre-order announcement

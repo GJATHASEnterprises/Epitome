@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Generate a high-quality 3/4 isometric product render of the Quad-Dock.
+Generate a high-quality 3/4 isometric product render of the Epitome Penta.
 
 Usage:
     python scripts/generate_image.py
 
 Output:
-    assets/quad-dock-render.png  (1200×800 px)
+    assets/epitome-penta-render.png  (1200×800 px)
 """
 from __future__ import annotations
 
@@ -41,11 +41,11 @@ except ImportError as exc:
 # Output path
 # ---------------------------------------------------------------------------
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH = ROOT / "assets" / "quad-dock-render.png"
+OUTPUT_PATH = ROOT / "assets" / "epitome-penta-render.png"
 CANVAS_W, CANVAS_H = 1200, 800
 
 # ---------------------------------------------------------------------------
-# Colour palette — Quad-Dock Black model
+# Colour palette — Epitome Penta Black model
 # ---------------------------------------------------------------------------
 C_BG          = "#f0f2f4"          # canvas background (very light grey)
 C_BODY        = "#1a1d22"          # ABS base (near-black)
@@ -186,7 +186,7 @@ def add_glow(pil_img: Image.Image,
 # ---------------------------------------------------------------------------
 
 def render(ax: plt.Axes) -> None:
-    """Draw the complete Quad-Dock into *ax*."""
+    """Draw the complete Epitome Penta into *ax*."""
 
     # ------------------------------------------------------------------ #
     #  1. Drop shadow                                                      #
@@ -215,9 +215,9 @@ def render(ax: plt.Axes) -> None:
     ]
     stroked_polygon(ax, rear_pts, C_BODY_SHADE, ec="#0a0c0f", lw=1, zorder=3)
 
-    # "Quad-Dock" wordmark on rear face
+    # "Epitome Penta" wordmark on rear face
     rx, ry = iso_p(wr / 2, hr / 2, DL)
-    ax.text(rx, ry, "Quad-Dock", ha="center", va="center",
+    ax.text(rx, ry, "Epitome Penta", ha="center", va="center",
             fontsize=7, color=C_BRAND, fontfamily="monospace",
             alpha=0.7, zorder=4)
 
@@ -587,7 +587,7 @@ def render(ax: plt.Axes) -> None:
     # 10. Title text / brand / info                                       #
     # ------------------------------------------------------------------ #
     print("  Adding title text …")
-    ax.text(0.5, 0.97, "Quad-Dock — Product Render",
+    ax.text(0.5, 0.97, "Epitome Penta — Product Render",
             transform=ax.transAxes, ha="center", va="top",
             fontsize=14, fontweight="bold", color="#2c3540",
             fontfamily="sans-serif")
@@ -628,7 +628,7 @@ def render(ax: plt.Axes) -> None:
     # Rear wordmark callout
     rw_x, rw_y = iso_p(wr / 2, hr / 2, DL)
     ax.annotate(
-        '"Quad-Dock"\nwordmark (rear)',
+        '"Epitome Penta"\nwordmark (rear)',
         xy=(rw_x, rw_y), xytext=(rw_x + 35, rw_y - 20),
         fontsize=6, color="#506070",
         arrowprops=dict(arrowstyle="-", color="#9ab0c0", lw=0.8),
@@ -641,7 +641,7 @@ def render(ax: plt.Axes) -> None:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    print("Quad-Dock image generator starting …")
+    print("Epitome Penta image generator starting …")
 
     # Ensure output directory exists
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -663,7 +663,7 @@ def main() -> None:
     ax.set_xlim(50, CANVAS_W - 50)
     ax.set_ylim(50, CANVAS_H - 50)
 
-    print("Rendering Quad-Dock geometry …")
+    print("Rendering Epitome Penta geometry …")
     render(ax)
 
     # ------------------------------------------------------------------ #

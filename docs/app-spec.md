@@ -1,9 +1,9 @@
-# Quad-Dock — Companion App Specification
+# Epitome Penta — Companion App Specification
 
 ---
 
 ## App Name
-Quad-Dock
+Epitome Penta
 
 ## Platform
 - **iOS (iPhone)** — primary platform
@@ -75,7 +75,7 @@ Three alert modes:
 - Toggle in app to override with fixed brightness
 
 ### Onboarding Animation
-- Plays on first connection to a new Quad-Dock
+- Plays on first connection to a new Epitome Penta
 - Animated zone introduction showing each zone icon and name
 - Skip button available
 
@@ -97,7 +97,7 @@ Three alert modes:
 ## App Architecture
 
 ```
-Quad-Dock iOS App (SwiftUI)
+Epitome Penta iOS App (SwiftUI)
     |
     +-- BLE Service
     |       |

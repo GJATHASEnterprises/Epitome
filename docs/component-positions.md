@@ -1,4 +1,4 @@
-# Quad-Dock Definitive Component Positions (0.01mm)
+# Epitome Penta Definitive Component Positions (0.01mm)
 
 This file is the single source of truth for all physical placement coordinates.
 
@@ -39,7 +39,7 @@ This file is the single source of truth for all physical placement coordinates.
 | Label: WATCH | -45.00 | 247.00 | 21.73 | 6mm etched text |
 | Label: LAPTOP | +40.00 | 95.00 | 18.17 | 6mm etched text |
 | Label: iPAD/PHONE | +80.00 | 95.00 | 18.17 | 6mm etched text |
-| Wordmark: Quad-Dock | 0.00 | 278.00 | 22.87 | 8mm etched rear wordmark |
+| Wordmark: Epitome Penta | 0.00 | 278.00 | 22.87 | 8mm etched rear wordmark |
 | M3 screw hole left | -60.00 | 150.00 | top plate through | Ø3.20 through top plate |
 | M3 screw hole right | +60.00 | 150.00 | top plate through | Ø3.20 through top plate |
 | Rubber foot FL | -39.17 | 15.00 | -1.50 | Ø15, H=3 (centroid at Z=-1.50) |
