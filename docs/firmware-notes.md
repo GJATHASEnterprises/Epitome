@@ -1,4 +1,4 @@
-# Quad-Dock — Firmware Notes
+# Epitome Penta — Firmware Notes
 
 ## Night Mode / Sleep Mode
 

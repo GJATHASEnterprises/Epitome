@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate manufacturing exports for Quad-Dock.
+"""Generate manufacturing exports for Epitome Penta.
 
 All geometry is built using watertight trimesh primitives and concatenation —
 no boolean operations are used anywhere in this script.
@@ -75,12 +75,12 @@ except Exception:
 ROOT = Path(__file__).resolve().parents[1]
 EXPORT_DIR = ROOT / "assets" / "export"
 
-STL_BASE = EXPORT_DIR / "quad-dock-base.stl"
-STL_INTERIOR = EXPORT_DIR / "quad-dock-base-interior.stl"
-STL_TOP = EXPORT_DIR / "quad-dock-top-plate.stl"
-STL_FULL = EXPORT_DIR / "quad-dock-full-assembly.stl"
-DXF_TOP = EXPORT_DIR / "quad-dock-top-plate.dxf"
-SVG_TOP = EXPORT_DIR / "quad-dock-top-plate.svg"
+STL_BASE = EXPORT_DIR / "epitome-penta-base.stl"
+STL_INTERIOR = EXPORT_DIR / "epitome-penta-base-interior.stl"
+STL_TOP = EXPORT_DIR / "epitome-penta-top-plate.stl"
+STL_FULL = EXPORT_DIR / "epitome-penta-full-assembly.stl"
+DXF_TOP = EXPORT_DIR / "epitome-penta-top-plate.dxf"
+SVG_TOP = EXPORT_DIR / "epitome-penta-top-plate.svg"
 
 # mm constants
 FRONT_W = 110.0
@@ -591,7 +591,7 @@ def write_top_plate_dxf_and_svg() -> None:
 
     msp.add_lwpolyline([(-145.0, -6.0), (145.0, -6.0), (145.0, 2.0), (-145.0, 2.0), (-145.0, -6.0)], dxfattribs={"layer": "LED", "linetype": "DASHED"})
 
-    for txt, x, y, htxt in [("PHONE", -28.0, 93.0, 6.0), ("BUDS", 12.0, 93.0, 6.0), ("WATCH", -38.0, 203.0, 6.0), ("LAPTOP", 10.0, 260.0, 6.0), ("Quad-Dock", -18.0, 278.0, 8.0)]:
+    for txt, x, y, htxt in [("PHONE", -28.0, 93.0, 6.0), ("BUDS", 12.0, 93.0, 6.0), ("WATCH", -38.0, 203.0, 6.0), ("LAPTOP", 10.0, 260.0, 6.0), ("Epitome Penta", -18.0, 278.0, 8.0)]:
         msp.add_text(txt, dxfattribs={"height": htxt, "layer": "TEXT_ENGRAVE"}).set_placement((x, y))
 
     # centerlines and dimensions
@@ -605,7 +605,7 @@ def write_top_plate_dxf_and_svg() -> None:
     tx = 180
     ty = -40
     for i, line in enumerate([
-        "QUAD-DOCK TOP PLATE",
+        "EPITOME PENTA TOP PLATE",
         "Material: 1.5mm 6061-T6 Aluminium",
         "Finish: Gunmetal anodized, brushed",
         "All dimensions in mm | Tolerance ±0.10mm",
@@ -632,7 +632,7 @@ def write_top_plate_dxf_and_svg() -> None:
         svg.append(poly(rr + [rr[0]], "blue"))
     svg.append(poly([(18, 288), (40, 288), (40, 300), (18, 300), (18, 288)], "red"))
     svg.append(poly([(-145, -6), (145, -6), (145, 2), (-145, 2), (-145, -6)], "orange", dash="4 3"))
-    for txt, x, y in [("PHONE", -28, 93), ("BUDS", 12, 93), ("WATCH", -38, 203), ("LAPTOP", 10, 260), ("Quad-Dock", -18, 278)]:
+    for txt, x, y in [("PHONE", -28, 93), ("BUDS", 12, 93), ("WATCH", -38, 203), ("LAPTOP", 10, 260), ("Epitome Penta", -18, 278)]:
         svg.append(f'<text x="{x}" y="{320-y}" fill="magenta" font-size="4">{txt}</text>')
     svg.append("</svg>")
     SVG_TOP.write_text("\n".join(svg), encoding="utf-8")

@@ -1,4 +1,4 @@
-# Quad-Dock — Layout Diagram
+# Epitome Penta — Layout Diagram
 
 Coordinate reference: [component-positions.md](component-positions.md)
 

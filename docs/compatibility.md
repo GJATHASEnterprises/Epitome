@@ -1,4 +1,4 @@
-# Quad-Dock — Compatibility Reference
+# Epitome Penta — Compatibility Reference
 
 ---
 
@@ -12,7 +12,7 @@ Zone 4 uses standard USB-C Power Delivery (PD). It automatically negotiates volt
 | MacBook Pro 14" (M-series) | ✅ | 67–96W | Well within 100W limit |
 | MacBook Pro 16" (M-series) | ✅ | 100W | Charges at 100W; slightly slower under peak CPU+GPU load (needs 140W for max speed — normal for any 100W charger) |
 | MacBook (USB-C, 2015–2019) | ✅ | 29–61W | Fully compatible |
-| Dell XPS 13 / 15 / 17 | ✅ | 45–130W | Quad-Dock caps at 100W; XPS 15/17 may charge slightly slower under load |
+| Dell XPS 13 / 15 / 17 | ✅ | 45–130W | Epitome Penta caps at 100W; XPS 15/17 may charge slightly slower under load |
 | HP Spectre / Envy | ✅ | 45–100W | Fully compatible |
 | HP Elite Dragonfly | ✅ | 65W | Fully compatible |
 | Lenovo ThinkPad (USB-C models, 2018+) | ✅ | 45–100W | Fully compatible |
@@ -35,7 +35,7 @@ Zone 4 uses standard USB-C Power Delivery (PD). It automatically negotiates volt
 | Dell, HP, Lenovo laptops with barrel connector only (pre-2018) | No USB-C PD |
 | Surface Pro 1–7 (Surface Connect only) | No USB-C charging |
 
-**Summary:** Any laptop with USB-C PD charging from approximately 2018 onward works with Quad-Dock.
+**Summary:** Any laptop with USB-C PD charging from approximately 2018 onward works with Epitome Penta.
 
 ---
 
@@ -62,7 +62,7 @@ Same compatibility as Zone 1 for low-power devices such as earbuds or a secondar
 | Nintendo Switch / handhelds | ✅ | Supported within 20W envelope |
 
 ### 3 Phones + 1 Laptop Simultaneously
-Quad-Dock can charge **3 phones plus a laptop at the same time**:
+Epitome Penta can charge **3 phones plus a laptop at the same time**:
 - Zone 1: Phone 1 (15W Qi)
 - Zone 2: Phone 2 / earbuds (5W Qi)
 - Zone 4: Laptop (up to 100W USB-C)
@@ -124,7 +124,7 @@ All Apple Watch models that use the standard magnetic charging puck are compatib
 
 ## Power Limit Notes
 
-Quad-Dock Zone 4 outputs a maximum of 100W and Zone 5 outputs a maximum of 20W. USB-C PD negotiates automatically:
+Epitome Penta Zone 4 outputs a maximum of 100W and Zone 5 outputs a maximum of 20W. USB-C PD negotiates automatically:
 
 - Devices that need less than the zone maximum → get exactly what they need, no issue
 - Devices rated for more than 100W on Zone 4 (e.g. some gaming laptops at 130–200W) → will charge, but slower under heavy load. The laptop draws from its battery for the difference. **This is normal behaviour for any 100W charger.**

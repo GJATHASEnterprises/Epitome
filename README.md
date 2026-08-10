@@ -1,12 +1,12 @@
-# Quad-Dock
+# Epitome Penta
 
 ## Product Render
-![Quad-Dock Render](assets/quad-dock-render.png)
+![Epitome Penta Render](assets/epitome-penta-render.png)
 
 > Pre-generated. Regenerate at any time by running `blender --background --python scripts/generate_render.py`.
 
 ## 3D Model
-Open [`assets/quad-dock-model.glb`](assets/quad-dock-model.glb) to view the interactive 3D model in GitHub — rotate, zoom, and inspect from any angle. Always reflects the latest design.
+Open [`assets/epitome-penta-model.glb`](assets/epitome-penta-model.glb) to view the interactive 3D model in GitHub — rotate, zoom, and inspect from any angle. Always reflects the latest design.
 
 > Pre-generated. Regenerate at any time by running `python scripts/generate_3d_model.py`.
 
@@ -16,7 +16,7 @@ Open [`assets/quad-dock-model.glb`](assets/quad-dock-model.glb) to view the inte
 
 ## Overview
 
-Quad-Dock is a self-built, smart charging station that charges up to 5 devices/zones simultaneously from a single wall outlet. It features a brushed aluminum top plate in the "Arc" enclosure — a smooth curved wedge with zero sharp corners — dual wireless charging zones, a built-in Apple Watch puck, 100W USB-C PD for any modern laptop, a second 20W USB-C PD groove for iPad/phone charging, a WS2812B LED status bar with laser-etched zone icons, and a companion iOS app with theft alerts, ambient light dimming, night mode, and weekly charge reports.
+Epitome Penta is a self-built, smart charging station that charges up to 5 devices/zones simultaneously from a single wall outlet. It features a brushed aluminum top plate in the "Arc" enclosure — a smooth curved wedge with zero sharp corners — dual wireless charging zones, a built-in Apple Watch puck, 100W USB-C PD for any modern laptop, a second 20W USB-C PD groove for iPad/phone charging, a WS2812B LED status bar with laser-etched zone icons, and a companion iOS app with theft alerts, ambient light dimming, night mode, and weekly charge reports.
 
 Plugs directly into the wall via a built-in IEC C13 inlet and internal 180W AC/DC power supply — no external power brick required.
 

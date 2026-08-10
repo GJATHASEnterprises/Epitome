@@ -1,4 +1,4 @@
-# Quad-Dock — Parts, Tools & Direct Buy Links
+# Epitome Penta — Parts, Tools & Direct Buy Links
 
 Everything you need to order to build the prototype. All links are verified manufacturer
 or authorised distributor sources only — no random AliExpress stores.

@@ -1,4 +1,4 @@
-# Quad-Dock — 5-Zone Enclosure Specification
+# Epitome Penta — 5-Zone Enclosure Specification
 
 ## Core Envelope
 

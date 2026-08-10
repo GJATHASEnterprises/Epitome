@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Quad-Dock — Comprehensive Multi-View Technical Product Sheet
-Generates assets/quad-dock-product-sheet.png at 7200×5400px (dpi=300, figsize=(24,18)).
+Epitome Penta — Comprehensive Multi-View Technical Product Sheet
+Generates assets/epitome-penta-product-sheet.png at 7200×5400px (dpi=300, figsize=(24,18)).
 Uses only matplotlib, numpy, math, pathlib.
 """
 from __future__ import annotations
@@ -26,7 +26,7 @@ from matplotlib.collections import LineCollection
 
 # ─── Output path ────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH = ROOT / "assets" / "quad-dock-product-sheet.png"
+OUTPUT_PATH = ROOT / "assets" / "epitome-penta-product-sheet.png"
 
 # ─── Colour palette ─────────────────────────────────────────────────────────
 PAGE_BG      = "#0d0d1a"   # deep navy/charcoal page background
@@ -322,7 +322,7 @@ def draw_top_view(ax: plt.Axes) -> None:
         (-45, 247, "WATCH",     6.0, "#aaaacc"),
         ( 40, 95,  "LAPTOP",    6.0, "#aaaacc"),
         ( 80, 95,  "iPAD",      6.0, "#aaaacc"),
-        (  0, 278, "Quad-Dock", 7.5, GOLD),
+        (  0, 278, "Epitome Penta", 7.5, GOLD),
     ]
     for lx, ly, lt, lfs, lcol in etched_labels:
         ax.text(lx + 0.4, ly - 0.4, lt, ha="center", va="center",
@@ -890,7 +890,7 @@ def draw_spec_panel(ax: plt.Axes) -> None:
         return y - 0.004
 
     # ── Header ──
-    ax.text(0.5, 0.975, "QUAD-DOCK™", fontsize=16, color=GOLD,
+    ax.text(0.5, 0.975, "EPITOME PENTA™", fontsize=16, color=GOLD,
             fontweight="bold", ha="center", va="top",
             fontfamily="monospace", zorder=3)
     ax.text(0.5, 0.940, "5-Zone Desktop Charging Station",
@@ -1001,7 +1001,7 @@ def draw_spec_panel(ax: plt.Axes) -> None:
     y -= 0.005
     y = section_title(y, "IN-BOX CONTENTS")
     for line in [
-        "Quad-Dock unit",
+        "Epitome Penta unit",
         "1.5m braided IEC C13 power cable",
         "Warranty registration card",
         "Quick-start guide",
@@ -1050,7 +1050,7 @@ def draw_header(fig: plt.Figure) -> None:
               solid_capstyle="round")
 
     # Title
-    hdr.text(0.04, 0.5, "QUAD-DOCK™", fontsize=28, color=GOLD,
+    hdr.text(0.04, 0.5, "EPITOME PENTA™", fontsize=28, color=GOLD,
              fontweight="bold", va="center", fontfamily="monospace",
              transform=hdr.transAxes)
 

@@ -1,4 +1,4 @@
-# Quad-Dock — Electronics Specification
+# Epitome Penta — Electronics Specification
 
 ## Main Electronics
 
@@ -79,7 +79,7 @@ This section is a full electrical reference intended for design review, prototyp
 
 ## 1) Full System Architecture Narrative
 
-Quad-Dock uses a centralized internal AC/DC supply to generate a robust 20V primary DC rail. That rail is split into five protected zone branches plus a low-voltage logic branch. High-power and low-power branches are electrically isolated at distribution points with per-zone fusing and monitoring so the firmware can provide per-zone telemetry and safety behaviors.
+Epitome Penta uses a centralized internal AC/DC supply to generate a robust 20V primary DC rail. That rail is split into five protected zone branches plus a low-voltage logic branch. High-power and low-power branches are electrically isolated at distribution points with per-zone fusing and monitoring so the firmware can provide per-zone telemetry and safety behaviors.
 
 - **Control/Connectivity Core:** ESP32-C3 Mini (WiFi + BLE) orchestrates telemetry, user control, and LED behavior.
 - **Zone Power Telemetry:** INA3221 measures Zones 1–3; separate INA219 devices independently measure Zones 4 and 5.

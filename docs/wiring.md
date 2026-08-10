@@ -1,4 +1,4 @@
-# Quad-Dock — Wiring & Schematic Notes
+# Epitome Penta — Wiring & Schematic Notes
 
 ---
 

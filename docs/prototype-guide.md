@@ -1,4 +1,4 @@
-# Quad-Dock — Prototype Guide
+# Epitome Penta — Prototype Guide
 
 ---
 

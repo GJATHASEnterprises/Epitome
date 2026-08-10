@@ -8,7 +8,7 @@ blender --background --python scripts/generate_render.py
 
 ## Output
 
-- `assets/quad-dock-render.png`
+- `assets/epitome-penta-render.png`
 - Cycles, **4800×3200**, **512 samples**, PNG 16-bit
 
 ## Expected Runtime
@@ -26,7 +26,7 @@ The render includes all exterior production features:
 - Zone 4 laptop groove with silicone lining + USB-C port
 - Zone 5 iPad/phone groove with silicone lining + USB-C port
 - Front LED diffuser + 5 warm-white emissive LED sections
-- Raised dark labels and rear Quad-Dock wordmark mesh
+- Raised dark labels and rear Epitome Penta wordmark mesh
 - Rear IEC C13 inlet housing mesh
 - Coiled/stowed bundled power cord behind dock
 - Rubber feet visible under the body
@@ -39,5 +39,5 @@ Coordinate source of truth: [component-positions.md](component-positions.md)
 python scripts/generate_product_sheet.py
 ```
 
-Output: `assets/quad-dock-product-sheet.png`  
+Output: `assets/epitome-penta-product-sheet.png`  
 Time: ~5 seconds

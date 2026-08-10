@@ -1,4 +1,4 @@
-# Quad-Dock — Bill of Materials (BOM)
+# Epitome Penta — Bill of Materials (BOM)
 
 **Target BOM:** ~$79 per unit at 50 units with the full 5-zone / in-box bundle spec
 
@@ -72,7 +72,7 @@ Use this for the prototype build. No JLCPCB PCB order required — all breakout 
 | 23 | 3D Printed Shell | JLCPCB FDM, full Arc body, matte ABS — **Batch 1** | 1 | $40–$55 | — | JLCPCB 3D printing |
 | 24 | Aluminum Top Plate | 1.5mm sheet, Arc profile — **Batch 2+** | 1 | — | $6–$10 | Local laser cutter 50+ |
 | 25 | ABS Base | Laser cut + bent — **Batch 2+** | 1 | — | $12–$18 | Local fabrication |
-| 26 | Rubber Feet | ×4, Quad-Dock logo emboss | 1 set | $2 | $1–$2 | Local / AliExpress |
+| 26 | Rubber Feet | ×4, Epitome Penta logo emboss | 1 set | $2 | $1–$2 | Local / AliExpress |
 | 27 | M3 Fasteners | Screws only (snap-fit + 2) | 1 lot | $1 | $0.50–$1 | LCSC / Local |
 | **Enclosure subtotal** | | | | **~$45–$58** | **~$22** | |
 
@@ -86,7 +86,7 @@ Use this for the prototype build. No JLCPCB PCB order required — all breakout 
 | 29 | Rigid kraft box | Structured corners, 340×180×90mm | 1 | $2.50–$3.50 | Local (small run) / 100 unit MOQ |
 | 30 | Die-cut foam insert | Custom cut, holds dock + cable | 1 | $2–$2.50 | Local |
 | 31 | Black tissue paper | Wrap around dock | 1 sheet | $0.30–$0.50 | Local |
-| 32 | Quad-Dock logo sticker | On tissue wrap | 1 | $0.25–$0.50 | Local |
+| 32 | Epitome Penta logo sticker | On tissue wrap | 1 | $0.25–$0.50 | Local |
 | 33 | Warranty registration card | 85×55mm, matte laminate, QR to registration page | 1 | $0.25 | Local print shop |
 | 34 | Quick-start guide | 4-panel fold, 148×105mm, full colour | 1 | $0.15 | Local print shop |
 | **Packaging subtotal** | | | | **~$8–$11** | |
@@ -137,7 +137,7 @@ Use this for the prototype build. No JLCPCB PCB order required — all breakout 
 | Rigid kraft box | $2.50–$3.50 |
 | Die-cut foam insert | $2.00–$2.50 |
 | Black tissue paper | $0.30–$0.50 |
-| Quad-Dock logo sticker | $0.25–$0.50 |
+| Epitome Penta logo sticker | $0.25–$0.50 |
 | Warranty registration card | $0.25 |
 | Quick-start guide | $0.15 |
 | **Total packaging** | **~$8–$11** |
