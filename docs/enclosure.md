@@ -21,7 +21,8 @@ Critical zone anchors now fixed to:
 - **Zone 2 (Buds dish):** `X=-45.00, Y=140.00`
 - **Zone 3 (Watch cradle):** `X=-45.00, Y=225.00`
 - **Zone 4 (Laptop groove):** `X=+40.00, Y=15..285`, **22mm wide**
-- **Zone 5 (iPad/Phone groove):** `X=+80.00, Y=15..285`, **18mm wide**
+- **Zone 5 (iPad/Phone groove):** `X=+64.00, Y=60..285`, **18mm wide**
+  <!-- Zone 5 position reasoning: Zone 4 right edge X=+51 (centre +40, width 22mm). 6mm structural wall → Zone 5 left edge X=+57. Width 18mm → centre X=+64, right edge X=+71. At rear Y=285 half-width=69.25mm, right edge +71 just fits ✅. At Y=60 half-width=58mm, right edge +71 just fits ✅. Groove starts at Y=60 (not Y=15) because at Y<60 the taper clips the right edge. -->
 
 ## Top-Side Features
 
