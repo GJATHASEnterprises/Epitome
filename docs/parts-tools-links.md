@@ -37,8 +37,8 @@ Buy these first. You need them before any parts arrive.
 | 2 | INA3221AIRGVR (power monitor, Zones 1–3) | C207114 | [lcsc.com/product-detail/C207114](https://www.lcsc.com/product-detail/C207114.html) | ~$2.00 | 2 (1 spare) |
 | 3 | INA219BIDCNT (power monitor, Zone 4) | C214795 | [lcsc.com/product-detail/C214795](https://www.lcsc.com/product-detail/C214795.html) | ~$1.00 | 2 (1 spare) |
 | 4 | INA219 Zone 5 | C214795 | [https://www.lcsc.com/product-detail/C214795.html](https://www.lcsc.com/product-detail/C214795.html) | ~$1 | 1 (in addition to Zone 4 unit) |
-| 5 | BH1750FVI-TR (ambient light sensor) | C97234 | [lcsc.com/product-detail/C97234](https://www.lcsc.com/product-detail/C97234.html) | ~$0.60 | 2 (1 spare) |
-| 6 | WS2812B-B/W (addressable LEDs) | C114586 | [lcsc.com/product-detail/C114586](https://www.lcsc.com/product-detail/C114586.html) | ~$0.15 | 30 (need 20, order extra) |
+| 5 | BH1730FVC-TR (ambient light sensor) | C79616 | [lcsc.com/product-detail/C79616](https://www.lcsc.com/product-detail/C79616.html) | ~$0.60 | 2 (1 spare) |
+| 6 | WS2812B-B-V6 (addressable LEDs) | C52941391 | [jlcpcb.com/partdetail/Worldsemi-LED/C52941391](https://jlcpcb.com/partdetail/Worldsemi-LED/C52941391) | ~$0.15 | 30 (need 20, order extra) |
 | 7 | FUSB302MPX (USB-C PD controller chip) | C442699 | [lcsc.com/product-detail/C442699](https://www.lcsc.com/product-detail/C442699.html) | ~$1.50 | 3 (2 needed + 1 spare) |
 | 8 | USB-C PD 20W controller board | Search "USB-C PD 20W" on LCSC | [lcsc.com/search?q=USB-C+PD+20W](https://www.lcsc.com/search?q=USB-C+PD+20W) | ~$5��8 | 1 |
 | 9 | Mean Well LRS-200-24 PSU (adjust to ~20V) | C2857547 | [lcsc.com/product-detail/C2857547](https://www.lcsc.com/product-detail/C2857547.html) | ~$18 | 1 |
@@ -50,16 +50,18 @@ Buy these first. You need them before any parts arrive.
 | 15 | Full-size breadboard (830 tie-points) | Any | [Amazon](https://www.amazon.com/dp/B07LFD4LT6) | ~$5 | 2 |
 | 16 | Jumper wires (M-M and M-F packs) | Any | [Amazon](https://www.amazon.com/dp/B01EV70C78) | ~$6 | 1 pack each |
 
-### ✅ Order from Adafruit — for Qi coils and Apple Watch puck (verified, safe, returnable)
+### ✅ Order from AliExpress — for Qi coils and Apple Watch puck (Adafruit no longer stocks suitable versions)
 
 | # | Part | Direct Link | Cost |
 |---|------|-------------|------|
-| 17 | Qi wireless charging transmitter coil (15W capable) | [adafruit.com/product/4526](https://www.adafruit.com/product/4526) | ~$10 |
-| 18 | Apple Watch magnetic charging puck (USB-A) | [adafruit.com/product/4459](https://www.adafruit.com/product/4459) | ~$15 |
+| 17 | Qi wireless charging transmitter coil (15W capable) | [AliExpress — 15W Qi wireless charging transmitter module 50mm](https://www.aliexpress.com/w/wholesale-15w-qi-wireless-charging-transmitter.html) | ~$5–8 |
+| 18 | Apple Watch magnetic charging puck (bare PCBA module) | [AliExpress — Apple Watch magnetic charging module PCBA](https://www.aliexpress.com/item/1005008702960018.html) | ~$1–2 |
 
-> **Why Adafruit instead of AliExpress for these?**
-> Qi coil quality directly affects phone charging safety. Adafruit tests their modules.
-> AliExpress is fine for passive components — not for power-delivery coils.
+> **Note on part #17 (Qi coil):** Adafruit only sells 5W Qi modules — source 15W coils from AliExpress verified sellers with 4.5★+ ratings
+>
+> **Note on part #18 (Apple Watch puck):** Search "Apple Watch wireless charging PCBA" on AliExpress — verify seller states Apple Watch compatibility, not just Qi
+>
+> **AliExpress sourcing note:** Both parts are sourced from AliExpress because Adafruit no longer stocks suitable versions of these parts. Only use verified AliExpress sellers with strong ratings (4.5★+) for power-delivery modules.
 
 ---
 
