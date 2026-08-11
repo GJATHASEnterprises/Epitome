@@ -35,8 +35,8 @@ This file is the single source of truth for all physical placement coordinates.
 | Zone 3 — Watch cradle pod base | -45.00 | 225.00 | 25.00 | Ø50 cylinder+cone pod, 18 tall, 30° tilt toward front |
 | Zone 4 — Laptop groove centre | +40.00 | 150.00 | right-half | 22mm wide × 10mm deep spine slot, Y:15..285, silicone-lined |
 | Zone 5 — iPad/Phone groove centre | +66.00 | 150.00 | right-half | 18mm wide × 10mm deep spine slot, Y:60..285, silicone-lined |
-| Zone 4 — USB-C port (exterior) | +40.00 | 258.00 | 14.00 | Within groove 1, aligned to slot |
-| Zone 5 — USB-C port (exterior) | +66.00 | 258.00 | 14.00 | Within groove 2, aligned to slot |
+| Zone 4 — USB-C port (exterior) | +40.00 | 258.00 | 14.00 | Within groove 1, aligned to slot; groove-mounted connector fed from PD board below, center-point recessed 0.60mm below the 14.60mm groove-floor plane |
+| Zone 5 — USB-C port (exterior) | +66.00 | 258.00 | 14.00 | Within groove 2, aligned to slot; groove-mounted connector fed from PD board below, center-point recessed 0.60mm below the 14.60mm groove-floor plane |
 | IEC C13 inlet | 0.00 | 298.50 | 6.00 | Rear centered, 28×20 cutout, cutout bottom at Z=1 |
 | Label: PHONE | -45.00 | 78.00 | 19.20 | 6mm etched text, centered over Zone 1 |
 | Label: BUDS | -45.00 | 158.00 | 21.87 | 6mm etched text |
@@ -76,8 +76,8 @@ This file is the single source of truth for all physical placement coordinates.
 | Watch puck module | -45.00 | 225.00 | 4.00 | Ø34×5 below watch cradle |
 | USB-C PD board (Zone 4) | +40.00 | 150.00 | 5.00 | 40×30, X:+20..+60, Y:135..165 |
 | USB-C PD 20W board (Zone 5) | +66.00 | 150.00 | 5.00 | 30×20, X:+51..+81, Y:135..165 |
-| USB-C port (Zone 4, exterior) | +40.00 | 258.00 | 14.00 | Within groove 1, aligned to the spine slot |
-| USB-C port (Zone 5, exterior) | +66.00 | 258.00 | 14.00 | Within groove 2, aligned to the spine slot |
+| USB-C port (Zone 4, exterior) | +40.00 | 258.00 | 14.00 | Within groove 1, aligned to the spine slot; groove-mounted connector fed from PD board below, center-point recessed 0.60mm below the 14.60mm groove-floor plane |
+| USB-C port (Zone 5, exterior) | +66.00 | 258.00 | 14.00 | Within groove 2, aligned to the spine slot; groove-mounted connector fed from PD board below, center-point recessed 0.60mm below the 14.60mm groove-floor plane |
 | Polyfuse Zone 1 | -45.00 | 65.00 | 8.50 | SMD near Qi1 lead-in |
 | Polyfuse Zone 2 | -45.00 | 145.00 | 8.50 | SMD near Qi2 lead-in |
 | Polyfuse Zone 3 | -45.00 | 220.00 | 8.50 | SMD watch power branch |
