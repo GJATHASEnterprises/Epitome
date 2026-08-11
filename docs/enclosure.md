@@ -10,6 +10,8 @@
 - Corner radius: **R20.00mm**
 
 > **Width note:** Front width was increased from 110mm to 146mm and rear width from 140mm to 156mm to accommodate all 5 zones within the top surface boundary. With the original 110/140mm sizing, Zone 5 (right edge X=+75) fell outside the tapered surface at the front. The new width formula `W(Y) = 146 + 10*(Y/300)` ensures Zone 5's right edge at X=+75 stays within the half-width of 74mm at Y=60 (the groove start depth).
+>
+> **Structural-clearance note:** Front/rear heights were increased to **16/26mm**, so `H(Y)=16+10*(Y/300)`, and Zone 4/5 groove depths were reduced to **10mm** (from 12mm) to ensure 4–6mm of solid material below groove floor.
 
 Coordinate model used everywhere: see [component-positions.md](component-positions.md).
 
