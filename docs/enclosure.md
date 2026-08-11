@@ -32,7 +32,7 @@ Critical zone anchors now fixed to:
 
 - Zone 1 dish: rounded rect **80×55 R10**, depth **2.50mm**, silicone insert **78×53 R9**, depth **2.20mm**
 - Zone 2 dish: rounded rect **65×55 R10**, depth **2.50mm**, silicone insert **63×53 R9**, depth **2.20mm**
-- Zone 3 pod: **Ø50** cylinder + cone, total **18mm** above plate, **30°** tilt toward front
+- Zone 3 pod: **Ø50** base tapering to **Ø28** top, tapered pedestal with slight concave waist, **3mm** retaining rim at top, **18mm** above plate, **30°** tilt toward front
 - Zone 4 groove: **22mm** wide × **10mm** deep, silicone-lined, USB‑C interface in groove
 - Zone 5 groove: **18mm** wide × **10mm** deep, silicone-lined, USB‑C port in groove
 - Rear inlet: IEC C13 **28×20mm** cutout centered on rear wall, bottom at **Z=1.00mm**
