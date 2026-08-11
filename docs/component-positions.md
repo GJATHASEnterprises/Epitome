@@ -10,11 +10,13 @@ This file is the single source of truth for all physical placement coordinates.
   - Width by depth: `W(Y)=146+10*(Y/300)`
 - **Y axis**: front `Y=0.00`, rear `Y=300.00`
 - **Z axis**: `Z=0.00` is base floor (underside rubber-feet reference plane), +Z up
-  - Height by depth: `H(Y)=12+10*(Y/300)`
+  - Height by depth: `H(Y)=16+10*(Y/300)`
 - **All coordinates are center-points unless explicitly noted**
 - **All dimensions are in mm and held to 0.01mm**
 
 > **Zone 5 correction note:** Zone 5 was originally documented at X=+80 which falls outside the tapered top surface. Corrected first to X=+64, then finalised at X=+66 after widening the enclosure to front 146mm / rear 156mm — the wider body allows Zone 5 centre at X=+66 (right edge X=+75) with groove starting at Y=60 to stay within the enclosure boundary at all depths.
+
+> **Structural note:** Front height increased from 12mm to 16mm, rear height from 22mm to 26mm, and both right-side grooves were reduced from 12mm deep to 10mm deep so the enclosure keeps a minimum 4–6mm of material below the groove floor.
 
 ## How to Read Coordinates
 
@@ -26,22 +28,22 @@ This file is the single source of truth for all physical placement coordinates.
 
 | Component | X (mm) | Y (mm) | Z (mm) | Notes |
 |---|---:|---:|---:|---|
-| Zone 1 — Phone Qi dish centre | -45.00 | 60.00 | 14.50 | Rounded rect 80×55 R10, 2.50 deep, left-half front zone |
-| Zone 1 — Silicone lining | -45.00 | 60.00 | 12.30 | 78×53 R9, 2.20 deep, anti-slip and anti-scratch |
-| Zone 2 — Buds Qi dish centre | -45.00 | 140.00 | 17.17 | Rounded rect 65×55 R10, 2.50 deep, stacked above phone zone |
-| Zone 2 — Silicone lining | -45.00 | 140.00 | 14.97 | 63×53 R9, 2.20 deep |
-| Zone 3 — Watch cradle pod base | -45.00 | 225.00 | 21.00 | Ø50 cylinder+cone pod, 18 tall, 30° tilt toward front |
-| Zone 4 — Laptop groove centre | +40.00 | 150.00 | right-half | 22mm wide spine slot, Y:15..285, silicone-lined |
-| Zone 5 — iPad/Phone groove centre | +66.00 | 150.00 | right-half | 18mm wide spine slot, Y:60..285, silicone-lined |
-| Zone 4 — USB-C port (exterior) | +40.00 | 258.00 | 8.00 | Within groove 1, aligned to slot |
-| Zone 5 — USB-C port (exterior) | +66.00 | 258.00 | 8.00 | Within groove 2, aligned to slot |
+| Zone 1 — Phone Qi dish centre | -45.00 | 60.00 | 18.50 | Rounded rect 80×55 R10, 2.50 deep, left-half front zone |
+| Zone 1 — Silicone lining | -45.00 | 60.00 | 16.30 | 78×53 R9, 2.20 deep, anti-slip and anti-scratch |
+| Zone 2 — Buds Qi dish centre | -45.00 | 140.00 | 21.17 | Rounded rect 65×55 R10, 2.50 deep, stacked above phone zone |
+| Zone 2 — Silicone lining | -45.00 | 140.00 | 18.97 | 63×53 R9, 2.20 deep |
+| Zone 3 — Watch cradle pod base | -45.00 | 225.00 | 25.00 | Ø50 cylinder+cone pod, 18 tall, 30° tilt toward front |
+| Zone 4 — Laptop groove centre | +40.00 | 150.00 | right-half | 22mm wide × 10mm deep spine slot, Y:15..285, silicone-lined |
+| Zone 5 — iPad/Phone groove centre | +66.00 | 150.00 | right-half | 18mm wide × 10mm deep spine slot, Y:60..285, silicone-lined |
+| Zone 4 — USB-C port (exterior) | +40.00 | 258.00 | 14.00 | Within groove 1, aligned to slot |
+| Zone 5 — USB-C port (exterior) | +66.00 | 258.00 | 14.00 | Within groove 2, aligned to slot |
 | IEC C13 inlet | 0.00 | 298.50 | 6.00 | Rear centered, 28×20 cutout, cutout bottom at Z=1 |
-| Label: PHONE | -45.00 | 78.00 | 15.20 | 6mm etched text, centered over Zone 1 |
-| Label: BUDS | -45.00 | 158.00 | 17.87 | 6mm etched text |
-| Label: WATCH | -45.00 | 247.00 | 21.73 | 6mm etched text |
-| Label: LAPTOP | +40.00 | 95.00 | 18.17 | 6mm etched text |
-| Label: iPAD/PHONE | +66.00 | 95.00 | 18.17 | 6mm etched text |
-| Wordmark: Epitome Penta | 0.00 | 278.00 | 22.87 | 8mm etched rear wordmark |
+| Label: PHONE | -45.00 | 78.00 | 19.20 | 6mm etched text, centered over Zone 1 |
+| Label: BUDS | -45.00 | 158.00 | 21.87 | 6mm etched text |
+| Label: WATCH | -45.00 | 247.00 | 25.73 | 6mm etched text |
+| Label: LAPTOP | +40.00 | 95.00 | 22.17 | 6mm etched text |
+| Label: iPAD/PHONE | +66.00 | 95.00 | 22.17 | 6mm etched text |
+| Wordmark: Epitome Penta | 0.00 | 278.00 | 26.87 | 8mm etched rear wordmark |
 | M3 screw hole left | -60.00 | 150.00 | top plate through | Ø3.20 through top plate |
 | M3 screw hole right | +60.00 | 150.00 | top plate through | Ø3.20 through top plate |
 | Rubber foot FL | -39.17 | 15.00 | -1.50 | Ø15, H=3 (centroid at Z=-1.50) |
@@ -74,8 +76,8 @@ This file is the single source of truth for all physical placement coordinates.
 | Watch puck module | -45.00 | 225.00 | 4.00 | Ø34×5 below watch cradle |
 | USB-C PD board (Zone 4) | +40.00 | 150.00 | 5.00 | 40×30, X:+20..+60, Y:135..165 |
 | USB-C PD 20W board (Zone 5) | +66.00 | 150.00 | 5.00 | 30×20, X:+51..+81, Y:135..165 |
-| USB-C port (Zone 4, exterior) | +40.00 | 258.00 | 8.00 | Within groove 1, aligned to the spine slot |
-| USB-C port (Zone 5, exterior) | +66.00 | 258.00 | 8.00 | Within groove 2, aligned to the spine slot |
+| USB-C port (Zone 4, exterior) | +40.00 | 258.00 | 14.00 | Within groove 1, aligned to the spine slot |
+| USB-C port (Zone 5, exterior) | +66.00 | 258.00 | 14.00 | Within groove 2, aligned to the spine slot |
 | Polyfuse Zone 1 | -45.00 | 65.00 | 8.50 | SMD near Qi1 lead-in |
 | Polyfuse Zone 2 | -45.00 | 145.00 | 8.50 | SMD near Qi2 lead-in |
 | Polyfuse Zone 3 | -45.00 | 220.00 | 8.50 | SMD watch power branch |

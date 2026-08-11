@@ -5,11 +5,13 @@
 - Length: **300.00mm**
 - Front width: **146.00mm**
 - Rear width: **156.00mm**
-- Front height: **12.00mm**
-- Rear height: **22.00mm**
+- Front height: **16.00mm**
+- Rear height: **26.00mm**
 - Corner radius: **R20.00mm**
 
 > **Width note:** Front width was increased from 110mm to 146mm and rear width from 140mm to 156mm to accommodate all 5 zones within the top surface boundary. With the original 110/140mm sizing, Zone 5 (right edge X=+75) fell outside the tapered surface at the front. The new width formula `W(Y) = 146 + 10*(Y/300)` ensures Zone 5's right edge at X=+75 stays within the half-width of 74mm at Y=60 (the groove start depth).
+
+> **Structural note:** Front height was increased from 12mm to 16mm, rear height from 22mm to 26mm, and both groove depths were reduced slightly from 12mm to 10mm so the enclosure keeps a minimum **4–6mm** of material below the groove floor instead of thinning to zero at the front edge.
 
 Coordinate model used everywhere: see [component-positions.md](component-positions.md).
 
@@ -31,8 +33,8 @@ Critical zone anchors now fixed to:
 - Zone 1 dish: rounded rect **80×55 R10**, depth **2.50mm**, silicone insert **78×53 R9**, depth **2.20mm**
 - Zone 2 dish: rounded rect **65×55 R10**, depth **2.50mm**, silicone insert **63×53 R9**, depth **2.20mm**
 - Zone 3 pod: **Ø50** cylinder + cone, total **18mm** above plate, **30°** tilt toward front
-- Zone 4 groove: **22mm** wide × **12mm** deep, silicone-lined, USB‑C interface in groove
-- Zone 5 groove: **18mm** wide × **12mm** deep, silicone-lined, USB‑C port in groove
+- Zone 4 groove: **22mm** wide × **10mm** deep, silicone-lined, USB‑C interface in groove
+- Zone 5 groove: **18mm** wide × **10mm** deep, silicone-lined, USB‑C port in groove
 - Rear inlet: IEC C13 **28×20mm** cutout centered on rear wall, bottom at **Z=1.00mm**
 
 ## Fastening and Bottom Features
