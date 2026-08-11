@@ -18,7 +18,7 @@ This file is the single source of truth for all physical placement coordinates.
 
 > **Groove-clearance note:** For clearance budgeting, the front-face reference is **Z=6.00mm** at `Y=0.00` (`16mm` front height with `10mm` groove depth). The actual groove floors begin at about **Z=6.50mm** for Zone 4 (`Y=15.00`) and **Z=8.00mm** for Zone 5 (`Y=60.00`), then rise with the enclosure taper to about **Z=11.00mm** at the PD-board depth (`Y=150.00`). These groove-floor Z values use the same base-floor reference plane defined above (`Z=0.00` is the base floor / underside rubber-feet reference plane). Any part taller than the local groove-floor height directly under Zone 4 / Zone 5 grooves must be shifted into the left half or lowered clear of the groove underside.
 >
-> **Collision-avoidance note:** INA219 Zone 4/5 and Polyfuse Zone 4/5 were moved into the left half, and both USB-C PD boards were lowered to `Z=3.00`, to avoid collision with the groove underside (front groove-floor reference `Z=6.00`).
+> **Collision-avoidance note:** To avoid collision with the groove underside (front groove-floor reference `Z=6.00`), INA219 Zone 4 moved from `X=0.00, Y=110.00, Z=8.50` to `X=-20.00, Y=110.00, Z=8.50`, INA219 Zone 5 moved from `X=+66.00, Y=150.00, Z=8.50` to `X=-20.00, Y=150.00, Z=8.50`, Polyfuse Zone 4 moved from `X=+55.00, Y=150.00, Z=8.50` to `X=-25.00, Y=130.00, Z=8.50`, Polyfuse Zone 5 moved from `X=+71.00, Y=150.00, Z=8.50` to `X=-25.00, Y=150.00, Z=8.50`, and both USB-C PD boards were lowered from `Z=5.00` to `Z=3.00`.
 
 ## How to Read Coordinates
 
