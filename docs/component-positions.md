@@ -16,7 +16,7 @@ This file is the single source of truth for all physical placement coordinates.
 
 > **Zone 5 correction note:** Zone 5 was originally documented at X=+80 which falls outside the tapered top surface. Corrected first to X=+64, then finalised at X=+66 after widening the enclosure to front 146mm / rear 156mm — the wider body allows Zone 5 centre at X=+66 (right edge X=+75) with groove starting at Y=60 to stay within the enclosure boundary at all depths.
 
-> **Groove-clearance note:** The right-half groove floor now starts at **Z=6.00mm** above the base at the front (`16mm` front height with `10mm` groove depth). Any part taller than `Z=6.00` directly under Zone 4 / Zone 5 grooves must be shifted into the left half or lowered clear of the groove underside.
+> **Groove-clearance note:** For clearance budgeting, the front-face reference is **Z=6.00mm** at `Y=0.00` (`16mm` front height with `10mm` groove depth). The actual groove floors begin at about **Z=6.50mm** for Zone 4 (`Y=15.00`) and **Z=8.00mm** for Zone 5 (`Y=60.00`), then rise with the enclosure taper to about **Z=11.00mm** at the PD-board depth (`Y=150.00`). These groove-floor Z values use the same base-floor reference plane defined above (`Z=0.00` is the base floor / underside rubber-feet reference plane). Any part taller than the local groove-floor height directly under Zone 4 / Zone 5 grooves must be shifted into the left half or lowered clear of the groove underside.
 
 ## How to Read Coordinates
 
@@ -74,8 +74,8 @@ This file is the single source of truth for all physical placement coordinates.
 | Qi coil 2 (Buds) | -45.00 | 140.00 | 4.00 | Ø44×5 in dedicated pocket |
 | N52 ring magnets Zone 1 | -45.00 | 60.00 | 7.50 | Ø54 ring, 2 thick above Qi coil 1 |
 | Watch puck module | -45.00 | 225.00 | 4.00 | Ø34×5 below watch cradle |
-| USB-C PD board (Zone 4) | +40.00 | 150.00 | 3.00 | 40×30, X:+20..+60, Y:135..165 on low-profile 3mm standoffs; board top ~Z=7 for groove clearance |
-| USB-C PD 20W board (Zone 5) | +66.00 | 150.00 | 3.00 | 30×20, X:+51..+81, Y:135..165 on low-profile 3mm standoffs; board top ~Z=7 for groove clearance |
+| USB-C PD board (Zone 4) | +40.00 | 150.00 | 3.00 | 40×30, X:+20..+60, Y:135..165 intentionally remains in the right-half electronics bay beneath the groove on low-profile 3mm standoffs; board top ~Z=7, below the local groove floor (~Z=11 at Y=150) |
+| USB-C PD 20W board (Zone 5) | +66.00 | 150.00 | 3.00 | 18×20 compact board, X:+57..+75, Y:140..160 intentionally remains in the right-half electronics bay beneath the groove on low-profile 3mm standoffs; board top ~Z=7, below the local groove floor (~Z=11 at Y=150) |
 | USB-C port (Zone 4, exterior) | +40.00 | 258.00 | 8.00 | Within groove 1, aligned to the spine slot |
 | USB-C port (Zone 5, exterior) | +66.00 | 258.00 | 8.00 | Within groove 2, aligned to the spine slot |
 | Polyfuse Zone 1 | -45.00 | 65.00 | 8.50 | SMD near Qi1 lead-in |
