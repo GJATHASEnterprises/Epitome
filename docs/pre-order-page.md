@@ -12,7 +12,7 @@
 
 ## Subheadline
 
-The only charging dock that handles your phone, earbuds, watch, laptop, and iPad — all at once, all in one place.
+The only charging dock that handles your phone, earbuds, watch, laptop, and iPad — all at once, all in one place. Just set them down and walk away.
 
 ---
 
@@ -34,31 +34,34 @@ The Epitome Penta is a 5-zone premium charging dock built for people who use App
 
 **5 zones. One cable into the wall.**
 
-| Zone | What it charges |
-|---|---|
-| Zone 1 | iPhone or any Qi phone — 15W MagSafe-compatible wireless |
-| Zone 2 | AirPods or any Qi earbuds — wireless, just set them down |
-| Zone 3 | Apple Watch — dedicated tilted cradle, charges overnight |
-| Zone 4 | MacBook or any USB-C laptop — 100W pass-through |
-| Zone 5 | iPad or second phone — 20W USB-C fast charge |
+| Zone | What it charges | How |
+|---|---|---|
+| Zone 1 | Phone — 15W MagSafe-compatible | Set it down on the lower platform |
+| Zone 2 | AirPods Pro or any Qi earbuds — 5W | Set them down on the upper platform |
+| Zone 3 | Apple Watch | Magnetic cradle on the upper platform |
+| Zone 4 | MacBook or any USB-C laptop up to 17" — 100W | Slide it into the left slot |
+| Zone 5 | iPad Pro or any USB-C tablet — 20W | Slide it into the right slot |
 
 ---
 
 ### Built different
 
-- **Brushed gunmetal aluminium** top plate — not plastic, not glossy, not cheap
-- **Tapered wedge profile** — 16mm at the front, 26mm at the rear, sits perfectly on any desk
-- **Silicone-lined zones** — no scratches, no sliding, no noise
-- **Single IEC C13 power inlet** — one cable in, everything charges
-- **Warm white front LED strip** — subtle status glow, not a rave
-- **180W internal PSU** — enough headroom to charge everything simultaneously at full speed
+- **Stepped centre platform** — phone on the lower level, watch and buds on the upper level, 40mm of separation so nothing interferes
+- **Open-front slots** on both sides — laptop slides in left, iPad slides in right, USB-C port meets them in the back wall
+- **Brushed gunmetal aluminium** on every surface you touch — not plastic, not glossy
+- **Silicone-lined everywhere** — no scratches, no sliding, no noise
+- **Single IEC C13 power inlet** — one cable into the wall, everything charges
+- **Subtle front LED strip** — five zones, one colour each, tells you what's charging and what's full
+- **180W internal PSU** — no external brick, no wall wart, nothing on the floor
 
 ---
 
 ### Dimensions
 
-- **300mm** deep × **156mm** wide (rear)
-- Wedge height: **16mm** front → **26mm** rear
+- **700mm wide × 300mm deep**
+- Upper platform: **40mm** above lower platform
+- Left slot: fits any laptop up to 17"
+- Right slot: fits iPad Pro 13" and smaller
 - Matte ABS base, brushed gunmetal aluminium top
 
 ---
@@ -79,7 +82,7 @@ The Epitome Penta is a 5-zone premium charging dock built for people who use App
 ## FAQ
 
 **Does it work with Android?**
-Yes. Zones 1 and 2 are standard Qi — any Qi phone or earbuds work. Zones 4 and 5 are USB-C PD, compatible with any USB-C device.
+Yes. Zones 1 and 2 are standard Qi — any Qi phone or earbuds work. Zones 4 and 5 are USB-C PD, compatible with any USB-C laptop or tablet.
 
 **What about MagSafe?**
 Zone 1 is MagSafe-compatible at up to 15W for iPhone 12 and later.
@@ -87,8 +90,11 @@ Zone 1 is MagSafe-compatible at up to 15W for iPhone 12 and later.
 **Will it charge my MacBook fast enough to use while charging?**
 Zone 4 delivers 100W USB-C PD — enough for any MacBook Pro or Air to charge at full speed while in use.
 
+**My laptop is 17". Will it actually fit?**
+Yes. The left slot is sized for laptops up to 17" (395mm wide). It slides in from the front, no lifting required.
+
 **Does it need a companion app?**
-No. It works completely standalone. The optional Epitome app (iOS/Android) lets you monitor per-zone power draw and set charge limits — but the dock charges everything out of the box without it.
+No. It works completely standalone. The optional Epitome app (iOS/Android) lets you monitor per-zone power draw and set charge limits — but everything charges out of the box without it.
 
 **When does it ship?**
 Pre-orders are expected to ship [INSERT DATE]. You will receive a tracking number by email as soon as your unit is dispatched.

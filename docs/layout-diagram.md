@@ -1,54 +1,61 @@
 # Epitome Penta — Layout Diagram
 
-Coordinate reference: [component-positions.md](component-positions.md)
+## Top View (~700mm wide × ~300mm deep)
 
-## Top View (X/Y)
+```
++--------------------+----------+----------+--------------------+
+|                    |          |          |                    |
+|                    | [WATCH]  | [BUDS]   |                    |
+|   LAPTOP SLOT      | cradle   | Qi 5W    |   iPAD SLOT        |
+|   Zone 4           |  STEP 2  (+40mm)    |   Zone 5           |
+|   USB-C 100W       |----------|----------|   USB-C 20W        |
+|   open front       |                     |   open front       |
+|   ~400mm wide      |     [PHONE]         |   ~290mm wide      |
+|                    |     Qi 15W          |                    |
+|                    |     STEP 1 (base)   |                    |
++--------------------+---------------------+--------------------+
+                         [FRONT — user side]
 
-```text
-Y=300 (rear)
-X=-70                                                                  X=+70
-+--------------------------------------------------------------------------------+
-|      WATCH cradle base (-45,225)       LAPTOP groove (+40,15..285)  iPAD groove |
-|      Ø50 pod, 30° tilt                 22mm wide, silicone-lined     (+80,15..285)* |
-|                                                                                |
-|  PHONE dish center (-45,60)            BUDS dish center (-45,140)             |
-|  80×55 R10                              65×55 R10                               |
-+--------------------------------------------------------------------------------+
-Y=0 (front)
-
-LED strip centerline: Y=-2.00, Z=1.50 (5× 56mm sections)
-*Zone 5 groove is located on the right half beside Zone 4 in the widened top-view illustration.
+LED strip runs across full front face, 5 sections
+IEC C13 inlet centred on rear wall
 ```
 
-## Side View (Y/Z)
+## Front View
 
-```text
+```
+         700mm
+|<------------------------------------------>|
+
++--------+    +-------+  +-------+    +------+
+|        |    |       |  |       |    |      |  <- Step 2 top (+40mm)
+| LAPTOP |    | WATCH |  | BUDS  |    | iPAD |
+| SLOT   |    +-------+  +-------+    | SLOT |
+|        |    |    PHONE PAD      |    |      |  <- Step 1 (base)
++--------+    +-------------------+    +------+
+[=====LED STRIP ACROSS FULL FRONT FACE=========]
+```
+
+## Side View (centre platform)
+
+```
 Z
-^                  top profile H(Y)=12+10*(Y/300)
-|                /
-|              /
-|            /
-|___________/__________________________________________> Y
-0          0(front)                                300(rear)
+^
++40mm |     +------------------+
+      |     |   Step 2          |
+      |     |  Watch + Buds     |
+  0mm | +---+------------------+---+
+      | |      Step 1 — Phone       |
+      | +---------------------------+
+      +---------------------------------> depth (300mm)
+        [front]               [rear]
 ```
 
-## Exact Coordinates Quick Reference
+## Zone Quick Reference
 
-| Feature | X (mm) | Y (mm) | Z (mm) |
-|---|---:|---:|---:|
-| Zone 1 dish center | -45.00 | 60.00 | 14.50 |
-| Zone 2 dish center | -45.00 | 140.00 | 17.17 |
-| Zone 3 cradle base | -45.00 | 225.00 | 21.00 |
-| Zone 4 groove center | +40.00 | 150.00 | right-half centered |
-| Zone 5 groove center | +80.00 | 150.00 | right-half centered |
-| Zone 4 USB-C port | +40.00 | 258.00 | 8.00 |
-| Zone 5 USB-C port | +80.00 | 258.00 | 8.00 |
-| IEC C13 inlet | 0.00 | 298.50 | 6.00 |
-| M3 hole left | -60.00 | 150.00 | top plate |
-| M3 hole right | +60.00 | 150.00 | top plate |
-| Foot FL | -39.17 | 15.00 | -1.50 |
-| Foot FR | +39.17 | 15.00 | -1.50 |
-| Foot RL | -53.50 | 285.00 | -1.50 |
-| Foot RR | +53.50 | 285.00 | -1.50 |
-
-For the full exterior + interior list, use [component-positions.md](component-positions.md).
+| Zone | Location | Device | Power |
+|---|---|---|---|
+| Zone 1 | Centre Step 1 | Phone | Qi 15W |
+| Zone 2 | Centre Step 2 right | AirPods Pro | Qi 5W |
+| Zone 3 | Centre Step 2 left | Apple Watch | 5W |
+| Zone 4 | Left slot | Laptop (up to 17") | USB-C PD 100W |
+| Zone 5 | Right slot | iPad Pro 13" | USB-C PD 20W |

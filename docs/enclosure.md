@@ -1,50 +1,99 @@
-# Epitome Penta — 5-Zone Enclosure Specification
+# Epitome Penta — Enclosure Specification
 
 ## Core Envelope
 
-- Length: **300.00mm**
-- Front width: **146.00mm**
-- Rear width: **156.00mm**
-- Front height: **16.00mm**
-- Rear height: **26.00mm**
-- Corner radius: **R20.00mm**
+| Dimension | Value |
+|---|---|
+| Overall width | ~700mm |
+| Overall depth | ~300mm |
+| Corner radius | R20mm |
+| Top plate thickness | 1.5mm aluminium |
+| Base material | Matte ABS |
 
-> **Width note:** Front width was increased from 110mm to 146mm and rear width from 140mm to 156mm to accommodate all 5 zones within the top surface boundary. With the original 110/140mm sizing, Zone 5 (right edge X=+75) fell outside the tapered surface at the front. The new width formula `W(Y) = 146 + 10*(Y/300)` ensures Zone 5's right edge at X=+75 stays within the half-width of 74mm at Y=60 (the groove start depth).
->
-> **Structural-clearance note:** Front/rear heights were increased to **16/26mm**, so `H(Y)=16+10*(Y/300)`, and Zone 4/5 groove depths were reduced to **10mm** (from 12mm) to ensure 4–6mm of solid material below groove floor.
+---
 
-Coordinate model used everywhere: see [component-positions.md](component-positions.md).
+## Structural Layout
 
-## Definitive Component Positions
+The enclosure is divided into three sections left to right:
 
-All exact feature coordinates are locked in [component-positions.md](component-positions.md).
+1. **Left slot** — laptop bay
+2. **Centre platform** — two stepped levels, phone/watch/buds
+3. **Right slot** — iPad bay
 
-Critical zone anchors now fixed to:
+---
 
-- **Zone 1 (Phone dish):** `X=-45.00, Y=60.00`
-- **Zone 2 (Buds dish):** `X=-45.00, Y=140.00`
-- **Zone 3 (Watch cradle):** `X=-45.00, Y=225.00`
-- **Zone 4 (Laptop groove):** `X=+40.00, Y=15..285`, **22mm wide**
-- **Zone 5 (iPad/Phone groove):** `X=+66.00, Y=60..285`, **18mm wide**
-  <!-- Zone 5 position reasoning: Zone 4 right edge X=+51 (centre +40, width 22mm). 6mm structural wall → Zone 5 left edge X=+57. Width 18mm → centre X=+66, right edge X=+75. Enclosure widened to front 146mm / rear 156mm (W(Y)=146+10*(Y/300)), half-width at Y=60 = 73+5*(60/300) = 74mm → right edge +75 just fits ✅. Groove starts at Y=60 (not Y=15) because at Y<60 the half-width is less than 74mm. -->
+## Left Slot (Laptop — Zone 4)
 
-## Top-Side Features
+- Entry: open front, laptop slides in horizontally on its side
+- Slot width: **400mm** (accommodates up to 17" laptop, 395mm wide)
+- Slot depth: **25mm** (accommodates up to 18mm thick laptop + clearance)
+- Slot height (opening): **22mm**
+- Silicone lining on floor and rear wall
+- USB-C PD 100W female port mounted in **rear wall**, centred
+- Silicone cable guide to route USB-C to laptop port
 
-- Zone 1 dish: rounded rect **80×55 R10**, depth **2.50mm**, silicone insert **78×53 R9**, depth **2.20mm**
-- Zone 2 dish: rounded rect **65×55 R10**, depth **2.50mm**, silicone insert **63×53 R9**, depth **2.20mm**
-- Zone 3 pod: **Ø50** base tapering to **Ø28** top, tapered pedestal with slight concave waist, **3mm** retaining rim at top, **18mm** above plate, **30°** tilt toward front
-- Zone 4 groove: **22mm** wide × **10mm** deep, silicone-lined, USB‑C interface in groove
-- Zone 5 groove: **18mm** wide × **10mm** deep, silicone-lined, USB‑C port in groove
-- Rear inlet: IEC C13 **28×20mm** cutout centered on rear wall, bottom at **Z=1.00mm**
+---
 
-## Fastening and Bottom Features
+## Right Slot (iPad — Zone 5)
 
-- M3 clearance holes: **Ø3.20mm** at `(-60.00,150.00)` and `(+60.00,150.00)`
-- 4 rubber feet: **Ø15×3mm** at the definitive coordinates in [component-positions.md](component-positions.md)
-- 8 underside vent slots: **40×4×2.5mm** at definitive coordinates
+- Entry: open front, iPad slides in horizontally on its side
+- Slot width: **290mm** (accommodates iPad Pro 13", 281mm tall + clearance)
+- Slot depth: **25mm** (accommodates 5.1mm iPad + clearance)
+- Slot height (opening): **10mm**
+- Silicone lining on floor and rear wall
+- USB-C PD 20W female port mounted in **rear wall**, centred
+
+---
+
+## Centre Platform — Step 1 (Phone — Zone 1)
+
+- Height: base level (0mm above dock surface)
+- Qi wireless pad: 50mm coil, 15W, N52 ring magnets
+- Silicone-lined recessed dish: 90×65mm, R10, 2.5mm deep
+- Sized to accommodate iPhone 16 Pro Max (163mm × 77mm)
+
+---
+
+## Centre Platform — Step 2 (Watch + Buds — Zones 2 & 3)
+
+- Height: **+40mm** above Step 1
+- Step face: vertical riser, brushed aluminium front face
+- **Watch cradle (Zone 3):**
+  - Apple Watch magnetic puck, wired internally
+  - Tapered pod, Ø50 base, 30° tilt toward user
+  - Positioned left side of Step 2
+- **Buds pad (Zone 2):**
+  - Qi wireless, 5W
+  - Silicone-lined dish: 70×50mm, R10, 2.5mm deep
+  - Sized for AirPods Pro case (65×45mm)
+  - Positioned right side of Step 2
+  - Wide enough to place a phone as alternative
+- Total Step 2 surface width: ~180mm
+
+---
+
+## Rear Wall Features
+
+- IEC C13 inlet: **28×20mm** cutout, rear centre, bottom at Z=1mm
+- All internal wiring routes along rear channel
+
+---
+
+## Fastening and Base Features
+
+- M3 clearance holes: Ø3.20mm, left/right symmetry on centre platform
+- 4× rubber feet: Ø15×3mm at corners
+- 8× underside vent slots: 40×4×2.5mm
+- Snap-fit base + M3 screws for service access
+
+---
 
 ## Materials
 
-- Base: matte ABS
-- Top plate: 1.5mm aluminium (gunmetal brushed)
-- Silicone contact zones: dark grey, anti-slip/anti-scratch
+| Part | Material | Finish |
+|---|---|---|
+| Top plate / step faces | 1.5mm aluminium | Brushed gunmetal (Black SKU) / Silver (White SKU) |
+| Base and slot walls | Matte ABS | Black or White |
+| Slot/pad lining | Silicone elastomer | Dark grey anti-slip |
+| Front LED diffuser | Frosted acrylic | Diffused |
+| Feet | Moulded rubber | Matte black |
