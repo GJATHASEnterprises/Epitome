@@ -9,10 +9,10 @@
 
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: #0e0e0e;
+    background: #0a0a0a;
     color: #e8e8e8;
     padding: 40px;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
@@ -21,345 +21,249 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    border-bottom: 1px solid #333;
-    padding-bottom: 24px;
-    margin-bottom: 36px;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 28px;
+    margin-bottom: 40px;
   }
-  .header .brand {
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #888;
-  }
-  .header h1 {
-    font-size: 42px;
-    font-weight: 300;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    color: #fff;
-    line-height: 1;
-    margin-top: 6px;
-  }
-  .header .tagline {
-    font-size: 12px;
-    color: #666;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-align: right;
-  }
-  .header .price-block {
-    text-align: right;
-  }
-  .header .price {
-    font-size: 32px;
-    font-weight: 300;
-    color: #fff;
-    letter-spacing: 2px;
-  }
-  .header .price-note {
-    font-size: 10px;
-    color: #555;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
+  .brand { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: #666; }
+  .header h1 { font-size: 48px; font-weight: 200; letter-spacing: 8px; text-transform: uppercase; color: #fff; line-height: 1; margin-top: 6px; }
+  .price-block { text-align: right; }
+  .tagline { font-size: 11px; color: #555; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+  .price { font-size: 36px; font-weight: 200; color: #fff; letter-spacing: 2px; }
+  .price-note { font-size: 10px; color: #444; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
 
-  /* DOCK DIAGRAM */
-  .diagram-section {
-    background: #161616;
+  /* ── 3-D DOCK SCENE ── */
+  .scene-wrap {
+    perspective: 1200px;
+    margin-bottom: 40px;
+  }
+  .dock-3d {
+    transform: rotateX(28deg) rotateZ(-2deg);
+    transform-style: preserve-3d;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    padding: 32px 32px 0;
+    background: linear-gradient(160deg, #1a1a1a 0%, #111 100%);
     border: 1px solid #2a2a2a;
-    border-radius: 8px;
-    padding: 32px;
-    margin-bottom: 36px;
-  }
-  .diagram-section h2 {
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #555;
-    margin-bottom: 24px;
-  }
-
-  .dock-visual {
-    display: flex;
-    gap: 8px;
-    align-items: stretch;
-    height: 260px;
-  }
-
-  .slot {
-    background: #1e1e1e;
-    border: 1px solid #333;
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 16px 12px;
-    flex: 0 0 180px;
+    border-radius: 12px;
+    box-shadow:
+      0 40px 80px rgba(0,0,0,0.8),
+      0 0 0 1px #333 inset,
+      0 -4px 12px rgba(126,200,227,0.08) inset;
+    min-height: 320px;
     position: relative;
   }
-  .slot .slot-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #666;
-  }
-  .slot .slot-device {
-    font-size: 13px;
-    font-weight: 500;
-    color: #ccc;
-    letter-spacing: 1px;
-  }
-  .slot .slot-power {
-    font-size: 18px;
-    font-weight: 300;
-    color: #7ec8e3;
-  }
-  .slot .slot-dim {
-    font-size: 9px;
-    color: #444;
-    text-align: center;
-    line-height: 1.6;
-  }
-  .slot .open-front {
+
+  /* LED glow along front base */
+  .dock-3d::after {
+    content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: #7ec8e3;
-    border-radius: 0 0 6px 6px;
-    opacity: 0.5;
-  }
-
-  .centre-platform {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .step2 {
-    background: #1e1e1e;
-    border: 1px solid #333;
-    border-radius: 6px;
-    display: flex;
-    gap: 8px;
-    padding: 16px;
-    flex: 1;
-  }
-  .step2-zone {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    border: 1px solid #2a2a2a;
-    border-radius: 4px;
-    padding: 12px 8px;
-  }
-  .step2-zone .zone-icon { font-size: 22px; }
-  .step2-zone .zone-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #666;
-  }
-  .step2-zone .zone-power {
-    font-size: 13px;
-    font-weight: 300;
-    color: #7ec8e3;
-  }
-  .step2-zone .zone-dim {
-    font-size: 9px;
-    color: #444;
-    text-align: center;
-    line-height: 1.6;
-  }
-  .step-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #444;
-    text-align: center;
-  }
-
-  .step1 {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 16px;
-    flex: 0 0 100px;
-  }
-  .step1 .zone-icon { font-size: 24px; }
-  .step1 .zone-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #666;
-  }
-  .step1 .zone-power {
-    font-size: 16px;
-    font-weight: 300;
-    color: #a8e6a3;
-  }
-  .step1 .zone-dim {
-    font-size: 9px;
-    color: #444;
-    text-align: center;
-    line-height: 1.6;
-  }
-
-  .led-bar {
-    height: 6px;
-    border-radius: 3px;
+    bottom: 0; left: 5%; right: 5%;
+    height: 3px;
     background: linear-gradient(to right,
-      #a8e6a3 0%, #a8e6a3 20%,
-      #7ec8e3 20%, #7ec8e3 40%,
-      #f0c070 40%, #f0c070 60%,
-      #7ec8e3 60%, #7ec8e3 80%,
-      #7ec8e3 80%, #7ec8e3 100%
-    );
-    margin-bottom: 8px;
-    opacity: 0.7;
+      #a8e6a3 0%,#a8e6a3 18%,
+      #7ec8e3 18%,#7ec8e3 36%,
+      #f0c070 36%,#f0c070 54%,
+      #7ec8e3 54%,#7ec8e3 72%,
+      #7ec8e3 72%,#7ec8e3 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px 2px rgba(126,200,227,0.5), 0 0 24px 6px rgba(126,200,227,0.2);
   }
-  .led-label {
-    font-size: 9px;
-    color: #444;
-    letter-spacing: 2px;
+
+  /* SLOTS */
+  .slot-3d {
+    flex: 0 0 200px;
+    height: 240px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 14px;
+    position: relative;
+    cursor: default;
+    transition: transform 0.3s;
+  }
+  .slot-3d:hover { transform: translateY(-6px) translateZ(10px); }
+
+  .slot-laptop {
+    background: linear-gradient(170deg, #232323 0%, #1a1a1a 100%);
+    border: 1px solid #3a3a3a;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5), inset 1px 1px 0 #333;
+  }
+  .slot-ipad {
+    background: linear-gradient(170deg, #1e2226 0%, #161a1e 100%);
+    border: 1px solid #2a3540;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.5), inset 1px 1px 0 #2a3540;
+  }
+
+  /* open-front accent bar */
+  .slot-3d .front-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 5px;
+    border-radius: 0 0 8px 8px;
+  }
+  .slot-laptop .front-bar { background: linear-gradient(to right, #4a9eba, #7ec8e3); box-shadow: 0 2px 8px rgba(126,200,227,0.6); }
+  .slot-ipad  .front-bar { background: linear-gradient(to right, #3a7aaa, #5aaae3); box-shadow: 0 2px 8px rgba(90,170,227,0.6); }
+
+  .slot-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #555; }
+  .slot-icon  { font-size: 32px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
+  .slot-name  { font-size: 13px; font-weight: 500; color: #ccc; letter-spacing: 1px; }
+  .slot-power { font-size: 20px; font-weight: 200; color: #7ec8e3; letter-spacing: 1px;
+    text-shadow: 0 0 12px rgba(126,200,227,0.5); }
+  .slot-dim   { font-size: 9px; color: #3a3a3a; text-align: center; line-height: 1.7; }
+  .open-tag {
+    font-size: 8px; letter-spacing: 1px; text-transform: uppercase;
+    color: #7ec8e3; border: 1px solid #7ec8e355;
+    padding: 2px 6px; border-radius: 3px;
+  }
+
+  /* CENTRE PLATFORM */
+  .centre-3d {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-self: flex-end;
+  }
+
+  .step2-3d {
+    background: linear-gradient(170deg, #252830 0%, #1c1f26 100%);
+    border: 1px solid #353840;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    gap: 8px;
+    padding: 16px 14px 20px;
+    position: relative;
+    box-shadow: inset 0 1px 0 #3a3e4a, 0 -8px 20px rgba(0,0,0,0.4);
+  }
+
+  /* step riser face */
+  .step-riser {
+    height: 40px;
+    background: linear-gradient(to bottom, #2a2a2a, #1e1e1e);
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 24px;
+    color: #333;
+    position: relative;
+  }
+  .step-riser::before, .step-riser::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, #444, #222);
+  }
+  .step-riser::before { left: 0; }
+  .step-riser::after  { right: 0; }
+
+  .step1-3d {
+    background: linear-gradient(170deg, #1f2024 0%, #181a1e 100%);
+    border: 1px solid #2a2c32;
+    border-top: none;
+    border-radius: 0 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 18px 14px;
+    box-shadow: inset 0 -1px 0 #111;
+  }
+
+  .zone-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 8px;
+    border-radius: 6px;
+    transition: transform 0.2s;
+  }
+  .zone-card:hover { transform: translateY(-3px); }
+
+  .zone-watch { background: rgba(240,192,112,0.05); border: 1px solid rgba(240,192,112,0.15); }
+  .zone-buds  { background: rgba(126,200,227,0.05); border: 1px solid rgba(126,200,227,0.15); }
+  .zone-phone { background: rgba(168,230,163,0.05); border: 1px solid rgba(168,230,163,0.15); width: 100%; }
+
+  .z-icon  { font-size: 26px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); }
+  .z-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #555; }
+  .z-power { font-size: 14px; font-weight: 300; letter-spacing: 1px; }
+  .z-dim   { font-size: 8px; color: #363636; text-align: center; line-height: 1.6; }
+
+  .zone-watch .z-power { color: #f0c070; text-shadow: 0 0 8px rgba(240,192,112,0.4); }
+  .zone-buds  .z-power { color: #7ec8e3; text-shadow: 0 0 8px rgba(126,200,227,0.4); }
+  .zone-phone .z-power { color: #a8e6a3; text-shadow: 0 0 8px rgba(168,230,163,0.4); }
+
+  .z-note { font-size: 8px; color: #7ec8e3; opacity: 0.7; text-align: center; }
+
+  /* ground shadow */
+  .dock-shadow {
+    height: 20px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, transparent 70%);
+    margin-top: -4px;
+    border-radius: 50%;
+    transform: scaleY(0.3);
   }
 
   /* SPECS GRID */
   .specs-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 36px;
+    gap: 14px;
+    margin-bottom: 28px;
   }
-
   .spec-card {
-    background: #161616;
-    border: 1px solid #2a2a2a;
+    background: #141414;
+    border: 1px solid #222;
     border-radius: 8px;
     padding: 20px;
   }
-  .spec-card h3 {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #555;
-    margin-bottom: 16px;
-  }
-  .spec-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 5px 0;
-    border-bottom: 1px solid #1e1e1e;
-  }
+  .spec-card h3 { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 14px; }
+  .spec-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #1a1a1a; }
   .spec-row:last-child { border-bottom: none; }
-  .spec-row .spec-key {
-    font-size: 11px;
-    color: #666;
-  }
-  .spec-row .spec-val {
-    font-size: 11px;
-    color: #ccc;
-    font-weight: 500;
-    text-align: right;
-  }
+  .spec-key { font-size: 11px; color: #555; }
+  .spec-val { font-size: 11px; color: #ccc; font-weight: 500; text-align: right; }
 
   /* ZONES TABLE */
-  .zones-section {
-    background: #161616;
-    border: 1px solid #2a2a2a;
-    border-radius: 8px;
-    padding: 28px;
-    margin-bottom: 36px;
-  }
-  .zones-section h2 {
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-  th {
-    text-align: left;
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #555;
-    padding: 8px 12px;
-    border-bottom: 1px solid #2a2a2a;
-  }
-  td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #1e1e1e;
-    color: #bbb;
-    vertical-align: top;
-  }
+  .zones-section { background: #141414; border: 1px solid #222; border-radius: 8px; padding: 26px; margin-bottom: 28px; }
+  .zones-section h2 { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #444; padding: 8px 12px; border-bottom: 1px solid #222; }
+  td { padding: 10px 12px; border-bottom: 1px solid #1a1a1a; color: #aaa; vertical-align: top; }
   tr:last-child td { border-bottom: none; }
-  td.zone-num {
-    color: #555;
-    font-size: 11px;
-    width: 60px;
-  }
-  td.zone-name {
-    color: #fff;
-    font-weight: 500;
-  }
-  td.zone-power-cell {
-    color: #7ec8e3;
-    font-weight: 500;
-  }
+  td.zone-num { color: #444; font-size: 10px; width: 50px; }
+  td.zone-name { color: #fff; font-weight: 500; }
+  td.pw { font-weight: 600; }
+  td.pw-green  { color: #a8e6a3; }
+  td.pw-blue   { color: #7ec8e3; }
+  td.pw-yellow { color: #f0c070; }
+  td.pw-cyan   { color: #5aaae3; }
 
   /* FOOTER */
-  .footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #222;
-    padding-top: 20px;
-    margin-top: 8px;
-  }
-  .footer .brand-footer {
-    font-size: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #444;
-  }
-  .footer .sku-block {
-    font-size: 10px;
-    color: #444;
-    letter-spacing: 1px;
-    text-align: right;
-    line-height: 1.8;
-  }
+  .footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e1e1e; padding-top: 20px; }
+  .brand-footer { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #333; }
+  .sku-block { font-size: 9px; color: #333; letter-spacing: 1px; text-align: right; line-height: 1.9; }
 
   @media print {
     body { background: #fff; color: #111; padding: 20px; }
-    .header h1, .header .price { color: #111; }
-    .slot, .step2, .step2-zone, .step1, .spec-card, .zones-section, .diagram-section { background: #f9f9f9; border-color: #ddd; }
-    .slot .slot-device, .step2-zone .zone-power, .step1 .zone-power { color: #0077aa; }
-    td.zone-power-cell { color: #0077aa; }
-    .led-bar { opacity: 1; }
+    .header h1, .price { color: #111; }
+    .dock-3d { background: #f4f4f4; border-color: #ddd; box-shadow: none; }
+    .slot-laptop, .slot-ipad, .step2-3d, .step1-3d { background: #efefef; border-color: #ddd; }
+    .spec-card, .zones-section { background: #f9f9f9; border-color: #ddd; }
+    td.pw-green, td.pw-blue, td.pw-yellow, td.pw-cyan { color: #005599; }
   }
 </style>
 </head>
@@ -372,85 +276,92 @@
     <h1>Penta</h1>
   </div>
   <div class="price-block">
-    <div class="tagline">One dock. Every device.</div>
+    <div class="tagline">One dock. Every device. Nothing else.</div>
     <div class="price">$249</div>
-    <div class="price-note">Early bird $199 · Retail $279</div>
+    <div class="price-note">Early bird $199 &nbsp;·&nbsp; Retail $279</div>
   </div>
 </div>
 
-<!-- DOCK DIAGRAM -->
-<div class="diagram-section">
-  <h2>Layout Overview</h2>
-  <div class="dock-visual">
+<!-- 3D DOCK -->
+<div class="scene-wrap">
+  <div class="dock-3d">
 
     <!-- LEFT SLOT — LAPTOP -->
-    <div class="slot">
-      <div class="slot-label">Zone 4 · Left Slot</div>
-      <div class="slot-device">💻 Laptop</div>
-      <div class="slot-power">100W PD</div>
-      <div class="slot-dim">400mm wide<br>25mm deep<br>22mm opening<br>Open front</div>
-      <div class="open-front"></div>
+    <div class="slot-3d slot-laptop">
+      <div class="slot-label">Zone 4 &nbsp;·&nbsp; Left Slot</div>
+      <div class="slot-icon">💻</div>
+      <div class="slot-name">Laptop</div>
+      <div class="slot-power">100W</div>
+      <div class="open-tag">Open Front</div>
+      <div class="slot-dim">400mm wide<br>25mm deep · 22mm tall<br>USB-C PD rear wall</div>
+      <div class="front-bar"></div>
     </div>
 
     <!-- CENTRE -->
-    <div class="centre-platform">
+    <div class="centre-3d">
 
-      <div class="step-label">Step 2 — +40mm</div>
-      <div class="step2">
-        <div class="step2-zone">
-          <div class="zone-icon">⌚</div>
-          <div class="zone-label">Zone 3 · Watch</div>
-          <div class="zone-power">5W</div>
-          <div class="zone-dim">Ø55mm pod<br>30° tilt</div>
+      <!-- STEP 2 -->
+      <div class="step2-3d">
+        <div class="zone-card zone-watch">
+          <div class="z-icon">⌚</div>
+          <div class="z-label">Zone 3 · Watch</div>
+          <div class="z-power">5W</div>
+          <div class="z-dim">Ø55mm pod<br>30° tilt</div>
         </div>
-        <div class="step2-zone">
-          <div class="zone-icon">🎧</div>
-          <div class="zone-label">Zone 2 · Buds</div>
-          <div class="zone-power">5W Qi</div>
-          <div class="zone-dim">70×50mm<br>2.5mm deep</div>
+        <div class="zone-card zone-buds">
+          <div class="z-icon">🎧</div>
+          <div class="z-label">Zone 2 · Buds / Phone</div>
+          <div class="z-power">15W Qi</div>
+          <div class="z-dim">90×65mm dish<br>2.5mm deep</div>
+          <div class="z-note">fast charges phone too</div>
         </div>
       </div>
 
-      <div class="step-label">Step 1 — Base</div>
-      <div class="step1">
-        <div class="zone-icon">📱</div>
-        <div class="zone-label">Zone 1 · Phone</div>
-        <div class="zone-power">15W Qi</div>
-        <div class="zone-dim">90×65mm<br>2.5mm deep<br>MagSafe</div>
+      <!-- STEP RISER -->
+      <div class="step-riser">+40mm</div>
+
+      <!-- STEP 1 -->
+      <div class="step1-3d">
+        <div class="zone-card zone-phone">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="z-icon">📱</div>
+            <div>
+              <div class="z-label">Zone 1 · Phone</div>
+              <div class="z-power">15W Qi</div>
+              <div class="z-dim">90×65mm dish · 2.5mm deep · MagSafe magnets</div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
 
     <!-- RIGHT SLOT — iPAD -->
-    <div class="slot">
-      <div class="slot-label">Zone 5 · Right Slot</div>
-      <div class="slot-device">📲 iPad</div>
-      <div class="slot-power">20W PD</div>
-      <div class="slot-dim">290mm wide<br>25mm deep<br>10mm opening<br>Open front</div>
-      <div class="open-front"></div>
+    <div class="slot-3d slot-ipad">
+      <div class="slot-label">Zone 5 &nbsp;·&nbsp; Right Slot</div>
+      <div class="slot-icon">📲</div>
+      <div class="slot-name">iPad</div>
+      <div class="slot-power">20W</div>
+      <div class="open-tag">Open Front</div>
+      <div class="slot-dim">290mm wide<br>25mm deep · 10mm tall<br>USB-C PD rear wall</div>
+      <div class="front-bar"></div>
     </div>
 
   </div>
-
-  <div style="margin-top: 20px;">
-    <div class="led-bar"></div>
-    <div class="led-label">WS2812B LED strip — full front face — 5 zone sections</div>
-  </div>
+  <div class="dock-shadow"></div>
 </div>
 
 <!-- SPECS GRID -->
 <div class="specs-grid">
-
   <div class="spec-card">
     <h3>Overall Dimensions</h3>
     <div class="spec-row"><span class="spec-key">Width</span><span class="spec-val">700mm</span></div>
     <div class="spec-row"><span class="spec-key">Depth</span><span class="spec-val">300mm</span></div>
-    <div class="spec-row"><span class="spec-key">Height (Step 2)</span><span class="spec-val">40mm</span></div>
+    <div class="spec-row"><span class="spec-key">Height at Step 2</span><span class="spec-val">40mm</span></div>
+    <div class="spec-row"><span class="spec-key">Step riser</span><span class="spec-val">40mm</span></div>
     <div class="spec-row"><span class="spec-key">Corner radius</span><span class="spec-val">R20mm</span></div>
     <div class="spec-row"><span class="spec-key">Top plate</span><span class="spec-val">1.5mm aluminium</span></div>
-    <div class="spec-row"><span class="spec-key">Base</span><span class="spec-val">Matte ABS</span></div>
   </div>
-
   <div class="spec-card">
     <h3>Slot Dimensions</h3>
     <div class="spec-row"><span class="spec-key">Laptop slot width</span><span class="spec-val">400mm</span></div>
@@ -460,17 +371,15 @@
     <div class="spec-row"><span class="spec-key">iPad slot depth</span><span class="spec-val">25mm</span></div>
     <div class="spec-row"><span class="spec-key">iPad slot opening</span><span class="spec-val">10mm</span></div>
   </div>
-
   <div class="spec-card">
     <h3>Power</h3>
     <div class="spec-row"><span class="spec-key">PSU</span><span class="spec-val">180W internal</span></div>
     <div class="spec-row"><span class="spec-key">Inlet</span><span class="spec-val">IEC C13 rear</span></div>
-    <div class="spec-row"><span class="spec-key">Total load</span><span class="spec-val">145W</span></div>
-    <div class="spec-row"><span class="spec-key">Headroom</span><span class="spec-val">35W</span></div>
+    <div class="spec-row"><span class="spec-key">Total load</span><span class="spec-val">150W</span></div>
+    <div class="spec-row"><span class="spec-key">Headroom</span><span class="spec-val">30W</span></div>
     <div class="spec-row"><span class="spec-key">External brick</span><span class="spec-val">None</span></div>
     <div class="spec-row"><span class="spec-key">Connectivity</span><span class="spec-val">WiFi + BLE 5.0</span></div>
   </div>
-
 </div>
 
 <!-- ZONES TABLE -->
@@ -479,12 +388,7 @@
   <table>
     <thead>
       <tr>
-        <th>Zone</th>
-        <th>Device</th>
-        <th>Method</th>
-        <th>Power</th>
-        <th>Dimensions</th>
-        <th>Fits</th>
+        <th>Zone</th><th>Device</th><th>Method</th><th>Power</th><th>Pad / Slot Size</th><th>Fits</th>
       </tr>
     </thead>
     <tbody>
@@ -492,23 +396,23 @@
         <td class="zone-num">01</td>
         <td class="zone-name">Phone</td>
         <td>Qi wireless + MagSafe magnets</td>
-        <td class="zone-power-cell">15W</td>
+        <td class="pw pw-green">15W</td>
         <td>90×65mm dish, 2.5mm deep</td>
         <td>iPhone 16 Pro Max + any Qi phone</td>
       </tr>
       <tr>
         <td class="zone-num">02</td>
-        <td class="zone-name">AirPods Pro</td>
+        <td class="zone-name">Buds / Phone</td>
         <td>Qi wireless</td>
-        <td class="zone-power-cell">5W</td>
-        <td>70×50mm dish, 2.5mm deep</td>
-        <td>AirPods Pro case (65×45mm)</td>
+        <td class="pw pw-blue">15W</td>
+        <td>90×65mm dish, 2.5mm deep</td>
+        <td>AirPods Pro · phone fast charge</td>
       </tr>
       <tr>
         <td class="zone-num">03</td>
         <td class="zone-name">Apple Watch</td>
         <td>Magnetic puck, wired internally</td>
-        <td class="zone-power-cell">5W</td>
+        <td class="pw pw-yellow">5W</td>
         <td>Ø55mm pod, 30° tilt</td>
         <td>Apple Watch Series 1–9, SE, Ultra 2</td>
       </tr>
@@ -516,7 +420,7 @@
         <td class="zone-num">04</td>
         <td class="zone-name">Laptop</td>
         <td>USB-C PD — rear wall port</td>
-        <td class="zone-power-cell">100W</td>
+        <td class="pw pw-blue">100W</td>
         <td>400×25mm slot, 22mm opening</td>
         <td>Any USB-C laptop up to 17"</td>
       </tr>
@@ -524,7 +428,7 @@
         <td class="zone-num">05</td>
         <td class="zone-name">iPad</td>
         <td>USB-C PD — rear wall port</td>
-        <td class="zone-power-cell">20W</td>
+        <td class="pw pw-cyan">20W</td>
         <td>290×25mm slot, 10mm opening</td>
         <td>iPad Pro 13" and smaller</td>
       </tr>
@@ -534,10 +438,10 @@
 
 <!-- FOOTER -->
 <div class="footer">
-  <div class="brand-footer">Epitome · Penta · epitome.io</div>
+  <div class="brand-footer">Epitome &nbsp;·&nbsp; Penta &nbsp;·&nbsp; epitome.io</div>
   <div class="sku-block">
-    EPT-PENTA-BLK — Gunmetal / Black<br>
-    EPT-PENTA-WHT — Silver / White
+    EPT-PENTA-BLK &nbsp;—&nbsp; Gunmetal / Black<br>
+    EPT-PENTA-WHT &nbsp;—&nbsp; Silver / White
   </div>
 </div>
 

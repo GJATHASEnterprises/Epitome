@@ -60,15 +60,15 @@ The enclosure is divided into three sections left to right:
 - Step face: vertical riser, brushed aluminium front face
 - **Watch cradle (Zone 3):**
   - Apple Watch magnetic puck, wired internally
-  - Tapered pod, Ø50 base, 30° tilt toward user
+  - Tapered pod, Ø55mm base, 30° tilt toward user
   - Positioned left side of Step 2
-- **Buds pad (Zone 2):**
-  - Qi wireless, 5W
-  - Silicone-lined dish: 70×50mm, R10, 2.5mm deep
-  - Sized for AirPods Pro case (65×45mm)
+- **Buds / Phone pad (Zone 2):**
+  - Qi wireless, **15W** (fast charge capable for phone)
+  - Silicone-lined dish: **90×65mm**, R10, 2.5mm deep
+  - Sized for iPhone 16 Pro Max (163×77mm) — phone sits comfortably
+  - AirPods Pro case (65×45mm) also fits
   - Positioned right side of Step 2
-  - Wide enough to place a phone as alternative
-- Total Step 2 surface width: ~180mm
+- Total Step 2 surface width: ~200mm
 
 ---
 
