@@ -1,38 +1,32 @@
 # Epitome Penta — Layout Diagram
 
-## Top View (~700mm wide × ~300mm deep)
+## Top View (Penta Standard ~530mm wide × ~300mm deep)
 
 ```
-+--------------------+----------+----------+--------------------+
-|                    |          |          |                    |
-|                    | [WATCH]  | [BUDS]   |                    |
-|   LAPTOP SLOT      | cradle   | Qi 5W    |   iPAD SLOT        |
-|   Zone 4           |  STEP 2  (+40mm)    |   Zone 5           |
-|   USB-C 100W       |----------|----------|   USB-C 20W        |
-|   open front       |                     |   open front       |
-|   ~400mm wide      |     [PHONE]         |   ~290mm wide      |
-|                    |     Qi 15W          |                    |
-|                    |     STEP 1 (base)   |                    |
-+--------------------+---------------------+--------------------+
-                         [FRONT — user side]
-
-LED strip runs across full front face, 5 sections
-IEC C13 inlet centred on rear wall
++------------------+----------------------+------------------+
+|  Z4 LAPTOP SLOT  |   STEP 2 (+40mm)     |  Z5 TABLET SLOT  |
+| 320w/400w XL     | [WATCH REAR] [BUDS]  | 290mm wide       |
+| 25mm depth       | 5W puck+Qi   15W Qi  | 25mm depth       |
+| 28mm opening     | front-edge buds pad  | 20mm opening     |
+| Captive USB-C    |                      | Captive USB-C    |
+| 300mm, 100W      |----------------------| 200mm, 20W       |
+| 5mm stop shelf   |    STEP 1 PHONE      | 5mm stop shelf   |
+| cable clip rear  |      15W Qi          | cable clip rear  |
++------------------+----------------------+------------------+
+        FRONT (user)                      REAR (right-angle C13)
 ```
 
 ## Front View
 
 ```
-         700mm
-|<------------------------------------------>|
+Standard width ~530mm (XL ~700mm)
 
-+--------+    +-------+  +-------+    +------+
-|        |    |       |  |       |    |      |  <- Step 2 top (+40mm)
-| LAPTOP |    | WATCH |  | BUDS  |    | iPAD |
-| SLOT   |    +-------+  +-------+    | SLOT |
-|        |    |    PHONE PAD      |    |      |  <- Step 1 (base)
-+--------+    +-------------------+    +------+
-[=====LED STRIP ACROSS FULL FRONT FACE=========]
++-----------+    +-------------------+    +-----------+
+|  LAPTOP   |    | STEP 2 (watch+qi) |    |  TABLET   |
+|   SLOT    |    +-------------------+    |   SLOT    |
+| 28mm open |    | STEP 1 (phone qi) |    | 20mm open |
++-----------+    +-------------------+    +-----------+
+[===== LED STRIP ACROSS FULL FRONT FACE =====]
 ```
 
 ## Side View (centre platform)
@@ -40,14 +34,13 @@ IEC C13 inlet centred on rear wall
 ```
 Z
 ^
-+40mm |     +------------------+
-      |     |   Step 2          |
-      |     |  Watch + Buds     |
-  0mm | +---+------------------+---+
-      | |      Step 1 — Phone       |
-      | +---------------------------+
-      +---------------------------------> depth (300mm)
-        [front]               [rear]
++40mm |      +------------------------+
+      |      | Step 2 rear watch zone |
+      |      | Step 2 front buds zone |
+ 0mm  |  +---+------------------------+---+
+      |  |         Step 1 phone pad       |
+      |  +-------------------------------+-+
+      +--------------------------------------> depth (300mm)
 ```
 
 ## Zone Quick Reference
@@ -55,7 +48,7 @@ Z
 | Zone | Location | Device | Power |
 |---|---|---|---|
 | Zone 1 | Centre Step 1 | Phone | Qi 15W |
-| Zone 2 | Centre Step 2 right | AirPods Pro | Qi 5W |
-| Zone 3 | Centre Step 2 left | Apple Watch | 5W |
-| Zone 4 | Left slot | Laptop (up to 17") | USB-C PD 100W |
-| Zone 5 | Right slot | iPad Pro 13" | USB-C PD 20W |
+| Zone 2 | Centre Step 2 front | Buds/Phone | Qi 15W |
+| Zone 3 | Centre Step 2 rear (**Zone 3 rear**) | Watch (Apple puck + Qi) | 5W shared |
+| Zone 4 | Left slot | Laptop | USB-C PD 100W via captive cable |
+| Zone 5 | Right slot | Tablet/Phone | USB-C PD 20W via captive cable |

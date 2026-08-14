@@ -9,27 +9,23 @@ blender --background --python scripts/generate_render.py
 ## Output
 
 - `assets/epitome-penta-render.png`
-- Cycles, **4800×3200**, **512 samples**, PNG 16-bit
 
 ## Expected Runtime
 
-- CPU-only: typically **45–180 minutes** at full quality
-- GPU acceleration can reduce runtime significantly
+- CPU-only: typically 45–180 minutes
 
 ## Scene Contents
 
-The render includes all exterior production features:
+The render brief should now include:
 
-- Exact tapered rounded-trapezoid wedge body
-- Zone 1 and Zone 2 rounded-rectangle dishes + silicone liners
-- Zone 3 tilted watch cradle pod + visible watch puck
-- Zone 4 laptop groove with silicone lining + USB-C port
-- Zone 5 iPad/phone groove with silicone lining + USB-C port
-- Front LED diffuser + 5 warm-white emissive LED sections
-- Raised dark labels and rear Epitome Penta wordmark mesh
-- Rear IEC C13 inlet housing mesh
-- Coiled/stowed bundled power cord behind dock
-- Rubber feet visible under the body
+- Captive USB-C cable indicators in Zone 4 and Zone 5 slots
+- Zone 3 rear watch cradle with dual charging intent (Apple puck + Qi support)
+- Zone 2 pad at front of Step 2 (90×65, 15W)
+- Slot stop shelves and rear cable clips
+- Right-angle rear IEC C13 inlet routing downward
+- PSU placement represented under laptop slot cavity
+- **Two SKU renders:** Standard (~530mm width) and XL (~700mm width)
+- **Three color renders:** Black, White, Midnight Blue
 
 Coordinate source of truth: [component-positions.md](component-positions.md)
 
@@ -39,5 +35,4 @@ Coordinate source of truth: [component-positions.md](component-positions.md)
 python scripts/generate_product_sheet.py
 ```
 
-Output: `assets/epitome-penta-product-sheet.png`  
-Time: ~5 seconds
+Output: `assets/epitome-penta-product-sheet.png`
