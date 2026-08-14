@@ -4,129 +4,86 @@
 
 ## Laptop Compatibility (Zone 4 — USB-C PD 100W)
 
-Zone 4 uses standard USB-C Power Delivery (PD). It automatically negotiates voltage and wattage with any PD-capable device.
+Zone 4 uses USB-C PD up to 100W through a **captured 300mm braided USB-C cable**. Any USB-C charging laptop is compatible.
 
-| Brand / Model | USB-C PD? | Max Charge Speed | Notes |
-|---------------|-----------|-----------------|-------|
-| MacBook Air (M1, M2, M3) | ✅ | 30–67W | Well within 100W limit |
-| MacBook Pro 14" (M-series) | ✅ | 67–96W | Well within 100W limit |
-| MacBook Pro 16" (M-series) | ✅ | 100W | Charges at 100W; slightly slower under peak CPU+GPU load (needs 140W for max speed — normal for any 100W charger) |
-| MacBook (USB-C, 2015–2019) | ✅ | 29–61W | Fully compatible |
-| Dell XPS 13 / 15 / 17 | ✅ | 45–130W | Epitome Penta caps at 100W; XPS 15/17 may charge slightly slower under load |
-| HP Spectre / Envy | ✅ | 45–100W | Fully compatible |
-| HP Elite Dragonfly | ✅ | 65W | Fully compatible |
-| Lenovo ThinkPad (USB-C models, 2018+) | ✅ | 45–100W | Fully compatible |
-| Lenovo IdeaPad (USB-C models) | ✅ | 45–65W | Fully compatible |
-| ASUS ZenBook / VivoBook (USB-C models) | ✅ | 45–100W | Fully compatible |
-| Acer Swift / Aspire (USB-C models) | ✅ | 45–65W | Fully compatible |
-| Microsoft Surface Pro 9 / 10 | ✅ | 60–65W (USB-C) | Fully compatible |
-| Microsoft Surface Laptop 5+ | ✅ | 65W | Fully compatible |
-| Samsung Galaxy Book series | ✅ | 65W | Fully compatible |
-| LG Gram series | ✅ | 65W | Fully compatible |
-| Razer Blade (USB-C charging models) | ✅ | 100W | At limit — charges but slowly under gaming load |
-| Google Pixelbook / Go | ✅ | 45–65W | Fully compatible |
+| Device Category | Compatible? | Notes |
+|---|---|---|
+| MacBook Air/Pro USB-C models | ✅ | Up to 100W negotiated |
+| Dell/HP/Lenovo/ASUS/Acer USB-C PD laptops | ✅ | Up to 100W negotiated |
+| Surface USB-C charging models | ✅ | USB-C PD only |
+| Gaming laptops requiring >100W | ⚠️ | Charges at up to 100W, may drain under full peak load |
 
 ### Laptops That Will NOT Work
 
 | Device | Why |
 |--------|-----|
-| Older MacBook Pro (pre-2016 MagSafe only) | No USB-C port |
-| MacBook Air (2017 and earlier, MagSafe) | No USB-C port |
-| Dell, HP, Lenovo laptops with barrel connector only (pre-2018) | No USB-C PD |
-| Surface Pro 1–7 (Surface Connect only) | No USB-C charging |
+| Non-USB-C legacy laptops | No USB-C PD charge path |
+| Barrel-only charge designs | No USB-C input |
 
-**Summary:** Any laptop with USB-C PD charging from approximately 2018 onward works with Epitome Penta.
+**Slot fit update:** 28mm opening + stop shelf design improves case/foot/hinge clearance.
 
 ---
 
 ## Phone Compatibility
 
 ### Zone 1 — 15W Qi Wireless
-| Device | Compatible? | Notes |
-|--------|-------------|-------|
-| iPhone 8 and later (all models) | ✅ | Qi standard |
-| iPhone 12–16 (MagSafe aligned via N52 magnets) | ✅ | Snaps into position |
-| Samsung Galaxy S series (S6 and later) | ✅ | Qi standard |
-| Google Pixel (Pixel 3 and later) | ✅ | Qi standard |
-| OnePlus / Xiaomi / OPPO (Qi models) | ✅ | Qi standard |
-| Any phone with Qi wireless charging | ✅ | Universal |
+All Qi-compatible phones are supported.
 
-### Zone 2 — 5W Qi Wireless
-Same compatibility as Zone 1 for low-power devices such as earbuds or a secondary phone.
+### Zone 2 — 15W Qi Wireless
+All Qi-compatible phones and earbuds are supported. 90×65mm pad includes a subtle 68×48mm inner ridge for buds alignment.
 
-### Zone 5 — USB-C PD (wired, up to 20W for phones / tablets)
-| Device | Compatible? | Notes |
-|--------|-------------|-------|
-| Any phone with USB-C (iPhone 15+, Android USB-C) | ✅ | Up to 20W on the dedicated side groove |
-| iPhone with Lightning connector (via adapter) | ⚠️ | Adapter required |
-| Nintendo Switch / handhelds | ✅ | Supported within 20W envelope |
+### Zone 5 — USB-C PD (wired, up to 20W)
+Any USB-C phone is supported via captive cable.
 
 ### 3 Phones + 1 Laptop Simultaneously
-Epitome Penta can charge **3 phones plus a laptop at the same time**:
-- Zone 1: Phone 1 (15W Qi)
-- Zone 2: Phone 2 / earbuds (5W Qi)
-- Zone 4: Laptop (up to 100W USB-C)
-- Zone 5: Phone 3 or iPad (up to 20W USB-C)
-
-Total draw: ~145W max — within the 180W PSU budget.
+Supported configuration:
+- Zone 1: Phone (15W Qi)
+- Zone 2: Phone/earbuds (15W Qi)
+- Zone 4: Laptop (100W)
+- Zone 5: Phone/tablet (20W)
 
 ---
 
 ## Apple Watch Compatibility (Zone 3)
 
-| Model | Compatible? |
-|-------|-------------|
-| Apple Watch Series 1 | ✅ |
-| Apple Watch Series 2 | ✅ |
-| Apple Watch Series 3 | ✅ |
-| Apple Watch Series 4 | ✅ |
-| Apple Watch Series 5 | ✅ |
-| Apple Watch Series 6 | ✅ |
-| Apple Watch SE (1st gen) | ✅ |
-| Apple Watch Series 7 | ✅ |
-| Apple Watch Series 8 | ✅ |
-| Apple Watch SE (2nd gen) | ✅ |
-| Apple Watch Series 9 | ✅ |
-| Apple Watch Ultra | ✅ |
-| Apple Watch Ultra 2 | ✅ |
+Zone 3 now supports both:
+1. **Apple Watch magnetic puck charging**, and
+2. **Qi watch charging** for compatible non-Apple watches.
 
-All Apple Watch models that use the standard magnetic charging puck are compatible.
+| Watch Type | Compatible? | Method |
+|---|---|---|
+| Apple Watch Series/SE/Ultra | ✅ | Magnetic puck |
+| Galaxy Watch (Qi models) | ✅ | Qi coil |
+| Pixel Watch (Qi models) | ✅ | Qi coil |
+| Garmin watches with Qi support | ✅ | Qi coil |
+| Non-wireless-charge watches | ❌ | No wireless charging protocol |
+
+Power policy: Zone 3 remains **5W total**, one watch active at a time.
 
 ---
 
 ## AirPods Compatibility (Zone 2 recommended — also Zone 1)
 
-| Model | Compatible? | Notes |
-|-------|-------------|-------|
-| AirPods Pro (1st gen) | ✅ | Qi case |
-| AirPods Pro (2nd gen) | ✅ | Qi + MagSafe case |
-| AirPods (3rd gen) | ✅ | Qi case |
-| AirPods 4 (with wireless charging case) | ✅ | Qi case |
-| AirPods (1st/2nd gen) | ❌ | Lightning case only — no Qi |
-| AirPods Max | ❌ | Lightning / USB-C only — no Qi |
+Any Qi-capable earbuds case is supported on Zones 1 or 2.
 
 ---
 
 ## iPad Compatibility (Zone 5 — USB-C PD 20W)
 
-| Model | Compatible? | Notes |
-|-------|-------------|-------|
-| iPad Pro 11" (2018+) | ✅ | USB-C PD |
-| iPad Pro 12.9" (2018+) | ✅ | USB-C PD |
-| iPad Air (4th gen+) | ✅ | USB-C PD |
-| iPad mini (6th gen+) | ✅ | USB-C PD |
-| iPad (10th gen) | ✅ | USB-C PD |
-| iPad (9th gen and earlier) | ❌ | Lightning only — no USB-C |
-| iPad Air (3rd gen and earlier) | ❌ | Lightning only |
-| iPad mini (5th gen and earlier) | ❌ | Lightning only |
+Zone 5 supports USB-C tablets through the captive 200mm braided cable.
+
+- iPad Pro/Air/mini USB-C generations: ✅
+- Galaxy Tab / Pixel Tablet / Surface Go USB-C models: ✅
+- Lightning-only legacy tablets: ❌ (adapter-dependent)
+
+Slot fit update: **20mm opening** supports common tablet cases.
 
 ---
 
 ## Power Limit Notes
 
-Epitome Penta Zone 4 outputs a maximum of 100W and Zone 5 outputs a maximum of 20W. USB-C PD negotiates automatically:
-
-- Devices that need less than the zone maximum → get exactly what they need, no issue
-- Devices rated for more than 100W on Zone 4 (e.g. some gaming laptops at 130–200W) → will charge, but slower under heavy load. The laptop draws from its battery for the difference. **This is normal behaviour for any 100W charger.**
-- Zone 5 is intended for iPad / phone duty, not laptop replacement charging
-- MacBook Pro 16" note specifically: charges at 100W on Zone 4; slightly slower under sustained peak CPU + GPU workloads. Fine for overnight or desk use.
+- Zone 4 max: 100W
+- Zone 5 max: 20W
+- Zone 2: 15W
+- Zone 3: 5W shared
+- System total: **155W** (180W PSU, 25W headroom)

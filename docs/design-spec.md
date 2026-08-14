@@ -18,18 +18,18 @@ Epitome
 ## Color Variants
 - **Black** — Gunmetal brushed aluminum top, matte black soft-touch ABS base
 - **White** — Silver brushed aluminum top, matte white soft-touch ABS base
+- **Midnight Blue (Limited Launch SKU)** — Deep navy brushed aluminum top, matte navy-black ABS base
 
 ---
 
 ## Overall Dimensions
 
-| Dimension | Value |
-|---|---|
-| Overall width | 700mm |
-| Overall depth | 300mm |
-| Corner radius | R20mm (all exterior edges) |
-| Top plate thickness | 1.5mm brushed aluminium |
-| Base material | Matte ABS |
+| SKU | Overall width | Overall depth | Corner radius | Top plate thickness | Base material |
+|---|---:|---:|---|---|---|
+| **Penta Standard** | **~530mm** | 300mm | R20mm | 1.5mm brushed aluminium | Matte ABS |
+| **Penta XL** | **~700mm** | 300mm | R20mm | 1.5mm brushed aluminium | Matte ABS |
+
+Launch sequence: **Standard first**, then XL.
 
 ---
 
@@ -37,29 +37,27 @@ Epitome
 
 ### Left Slot — Laptop (Zone 4)
 
-| Dimension | Value |
-|---|---|
-| Slot width (internal) | 400mm |
-| Slot depth (front to rear wall) | 25mm |
-| Slot height (opening) | 22mm |
-| Entry | Open front — laptop slides in horizontally on its side |
-| USB-C port location | Rear wall of slot, centred |
-| USB-C port power | 100W PD |
-| Silicone lining | Floor and rear wall |
-| Sized for | Up to 17" laptop (395mm wide × 18mm thick) |
+| Dimension | Standard | XL |
+|---|---:|---:|
+| Slot width (internal) | 320mm | 400mm |
+| Slot depth (front to rear wall) | 25mm | 25mm |
+| Slot height (opening) | **28mm** | **28mm** |
+| Entry | Open front — laptop slides in on side | Open front — laptop slides in on side |
+| Charging interface | **Captive braided USB-C to USB-C cable (300mm, 100W)** | **Captive braided USB-C to USB-C cable (300mm, 100W)** |
+| Rear alignment | 5mm silicone-covered stop shelf + cable clip above shelf | 5mm silicone-covered stop shelf + cable clip above shelf |
+| Sized for | Up to 15" laptops | Up to 17" laptops |
 
 ### Right Slot — iPad (Zone 5)
 
-| Dimension | Value |
-|---|---|
-| Slot width (internal) | 290mm |
-| Slot depth (front to rear wall) | 25mm |
-| Slot height (opening) | 10mm |
-| Entry | Open front — iPad slides in horizontally on its side |
-| USB-C port location | Rear wall of slot, centred |
-| USB-C port power | 20W PD |
-| Silicone lining | Floor and rear wall |
-| Sized for | iPad Pro 13" (281mm tall × 5.1mm thick) and smaller |
+| Dimension | Standard | XL |
+|---|---:|---:|
+| Slot width (internal) | 290mm | 290mm |
+| Slot depth (front to rear wall) | 25mm | 25mm |
+| Slot height (opening) | **20mm** | **20mm** |
+| Entry | Open front — tablet slides in on side | Open front — tablet slides in on side |
+| Charging interface | **Captive braided USB-C to USB-C cable (200mm, 20W)** | **Captive braided USB-C to USB-C cable (200mm, 20W)** |
+| Rear alignment | 5mm silicone-covered stop shelf + cable clip above shelf | 5mm silicone-covered stop shelf + cable clip above shelf |
+| Sized for | iPad/tablets with cases up to ~20mm | iPad/tablets with cases up to ~20mm |
 
 ---
 
@@ -76,7 +74,6 @@ Epitome
 | Silicone insert | 88 × 63mm, R9, 2.2mm deep |
 | Qi coil | 50mm, 15W |
 | N52 ring magnets | MagSafe-style alignment |
-| Sized for | iPhone 16 Pro Max (163mm × 77mm × 8.25mm) |
 
 ### Step 2 — Watch + Buds (Zones 2 & 3)
 
@@ -85,48 +82,42 @@ Epitome
 | Platform width | 200mm |
 | Platform depth | 200mm (rear half of Step 1) |
 | Height | +40mm above Step 1 |
-| Step riser height | 40mm |
-| Step riser face | Brushed aluminium, front-facing |
+| Step riser | Internal ribbing or metal insert reinforcement required |
 | Total centre platform height | 40mm at Step 2 |
 
-#### Watch Cradle (Zone 3) — left side of Step 2
+#### Watch Cradle (Zone 3) — rear of Step 2
 
 | Dimension | Value |
 |---|---|
 | Pod base diameter | Ø55mm |
 | Tilt | 30° toward user |
-| Location | Left side of Step 2 surface |
-| Charging | Apple Watch magnetic puck, 5W |
-| Compatible | Apple Watch Series 1–9, SE, Ultra 2 |
+| Location | Rear edge of Step 2 against rear wall (slightly raised) |
+| Charging | Apple Watch magnetic puck + Qi coil (5W shared budget) |
+| Compatible | Apple Watch + Qi-enabled watches (Galaxy/Pixel/Garmin Qi models) |
 
-#### Buds Pad (Zone 2) — right side of Step 2
+#### Buds Pad (Zone 2) — front edge of Step 2
 
 | Dimension | Value |
 |---|---|
-| Pad dish size | 70 × 50mm, R10, 2.5mm deep |
-| Silicone insert | 68 × 48mm, R9, 2.2mm deep |
-| Location | Right side of Step 2 surface |
-| Qi output | 5W |
-| Sized for | AirPods Pro case (65mm × 45mm × 21mm) |
-| Also fits | Phone as alternative |
+| Pad dish size | **90 × 65mm**, R10, 2.5mm deep |
+| Silicone insert | 88 × 63mm |
+| Inner alignment ridge | **1mm ridge around 68 × 48mm inner zone** |
+| Location | Front edge of Step 2 |
+| Qi output | **15W** |
+| Sized for | Earbuds and full-size phones |
 
 ---
 
 ## Full Dimensions Summary Table
 
-| Feature | Width | Depth | Height / Thickness |
-|---|---|---|---|
-| Overall dock | 700mm | 300mm | 40mm (at Step 2) |
-| Left (laptop) slot — internal | 400mm | 25mm | 22mm opening |
-| Right (iPad) slot — internal | 290mm | 25mm | 10mm opening |
-| Centre Step 1 platform | 200mm | 300mm | base level |
-| Centre Step 2 platform | 200mm | 200mm | +40mm |
-| Phone dish (Step 1) | 90mm | 65mm | 2.5mm deep |
-| Buds dish (Step 2) | 70mm | 50mm | 2.5mm deep |
-| Watch cradle pod base | Ø55mm | — | 30° tilt |
-| Top plate | Full surface | Full surface | 1.5mm |
-| Rubber feet | Ø15mm | — | 3mm |
-| IEC C13 inlet cutout | 28mm | — | 20mm tall |
+| Feature | Standard | XL |
+|---|---|---|
+| Overall dock | ~530 × 300mm | ~700 × 300mm |
+| Left (laptop) slot — internal | 320 × 25mm, 28mm opening | 400 × 25mm, 28mm opening |
+| Right (iPad) slot — internal | 290 × 25mm, 20mm opening | 290 × 25mm, 20mm opening |
+| Centre Step 2 | 200 × 200mm, +40mm | 200 × 200mm, +40mm |
+| Zone 2 dish | 90 × 65mm | 90 × 65mm |
+| Watch cradle | Ø55mm, rear Step 2 | Ø55mm, rear Step 2 |
 
 ---
 
@@ -134,34 +125,28 @@ Epitome
 
 | Device | Model sized for | Key dimension |
 |---|---|---|
-| Phone | iPhone 16 Pro Max | 163mm tall × 77mm wide × 8.25mm thick |
-| iPad | iPad Pro 13" | 281mm tall × 215mm wide × 5.1mm thick |
-| Laptop | 17" generic | 395mm wide × 270mm deep × 18mm thick |
-| Watch | Apple Watch Ultra 2 | 49mm case, 51mm wide with lugs |
-| Buds | AirPods Pro | 65mm × 45mm × 21mm case |
+| Phone | iPhone 16 Pro Max | 163mm × 77mm |
+| Tablet | iPad Pro 13" in case | Up to ~20mm total thickness |
+| Laptop | 15" class (Standard) / 17" class (XL) | Up to ~28mm slot clearance |
+| Watch | Apple Watch Ultra 2 + Qi watches | Ø55mm cradle zone |
 
 ---
 
 ## Zone Layout Diagram
 
 ```
-[TOP VIEW — 700mm wide × 300mm deep]
+[TOP VIEW — Penta Standard ~530mm wide]
 
-+---------------------+--------------------+---------------------+
-|                     |   STEP 2 (+40mm)   |                     |
-|    LAPTOP SLOT      |--------------------|    iPAD SLOT        |
-|    400mm × 25mm     | WATCH  |   BUDS    |    290mm × 25mm     |
-|    22mm opening     | Ø55mm  | 70×50mm   |    10mm opening     |
-|    USB-C 100W       | 30°tilt|  Qi 5W    |    USB-C 20W        |
-|    rear wall        |--------------------|    rear wall        |
-|                     |   STEP 1 (base)    |                     |
-|                     |--------------------|                     |
-|                     |  PHONE 90×65mm     |                     |
-|                     |  Qi 15W MagSafe    |                     |
-+---------------------+--------------------+---------------------+
-[FRONT — user faces this edge]
-[LED strip runs full width across front face — 5 zones]
-                     IEC C13 inlet — rear wall centre
++-------------------+--------------------+-------------------+
+| Laptop Slot Z4    |   STEP 2 (+40mm)   | iPad Slot Z5      |
+| 320×25 / 28mm     | Watch (rear) 5W    | 290×25 / 20mm     |
+| Captive USB-C     | Buds/Phone (front) | Captive USB-C     |
+| 300mm cable 100W  | 90×65 Qi 15W       | 200mm cable 20W   |
+| 5mm stop shelf    |                    | 5mm stop shelf    |
++-------------------+--------------------+-------------------+
+|                   STEP 1 (base): Phone 90×65 Qi 15W          |
++---------------------------------------------------------------+
+Rear: right-angle IEC C13 inlet, PSU under laptop slot cavity
 ```
 
 ---
@@ -169,34 +154,19 @@ Epitome
 ## Zone Specifications
 
 ### Zone 1 — Phone (Qi 15W)
-- 50mm Qi TX coil, 15W MagSafe-compatible
-- N52 ring magnets for phone alignment
-- Silicone-lined recessed dish: 90×65mm, 2.5mm deep
-- Location: Step 1, centre platform
+- 15W Qi + MagSafe alignment magnets
 
-### Zone 2 — AirPods Pro (Qi 5W)
-- Qi wireless TX, 5W
-- Silicone-lined dish: 70×50mm, 2.5mm deep
-- Location: Step 2 right side
-- Also accepts a phone as secondary use
+### Zone 2 — Buds / Phone (Qi 15W)
+- 90×65mm pad with 68×48mm inner ridge marker
 
-### Zone 3 — Apple Watch
-- Apple Watch magnetic puck, wired internally, 5W
-- Pod: Ø55mm base, 30° tilt toward user
-- Location: Step 2 left side
-- Compatible: Apple Watch Series 1–9, SE, Ultra 2
+### Zone 3 — Watch (Universal 5W)
+- Apple Watch puck + Qi coil in same cradle, one device at a time
 
 ### Zone 4 — Laptop (USB-C PD 100W)
-- USB-C PD up to 100W
-- Slot: 400mm wide × 25mm deep × 22mm tall, open front
-- USB-C female port in rear wall, centred
-- Compatible: any USB-C laptop up to 17"
+- Captive 300mm braided USB-C cable from internal PD board
 
-### Zone 5 — iPad (USB-C PD 20W)
-- USB-C PD 2.0 up to 20W
-- Slot: 290mm wide × 25mm deep × 10mm tall, open front
-- USB-C female port in rear wall, centred
-- Compatible: iPad Pro 13" and any smaller USB-C tablet
+### Zone 5 — Tablet (USB-C PD 20W)
+- Captive 200mm braided USB-C cable from internal PD board
 
 ---
 
@@ -208,39 +178,30 @@ Epitome
 | Full | Green | Device fully charged |
 | Idle | Off | No device detected |
 
-Night mode: all LEDs off 23:00–07:00 unless zone draws >0.5W.
-
 ---
 
 ## Electronics Summary
 
 See [electronics.md](electronics.md) for full spec.
 
-- **MCU:** ESP32-C3 Mini (WiFi + BLE)
-- **Power monitors:** INA3221 (Zones 1–3), INA219 (Zone 4), INA219 (Zone 5)
-- **Ambient light:** BH1750 (I2C)
-- **LED:** WS2812B strip (20 LEDs, 4 per zone), full front face
-- **PSU:** Internal 180W AC/DC (IEC C13 inlet, no external brick)
-- **No USB-A port**
-- **No physical buttons**
-- **Power budget:** 145W total load, 35W headroom
+- **PSU:** Internal 180W AC/DC, relocated under laptop slot cavity
+- **Inlet:** Rear right-angle IEC C13
+- **Power budget:** **155W total load, 25W headroom**
+- **Certification planning required:** FCC, CE, UKCA, RCM before retail in target markets
 
 ---
 
 ## Packaging
 
-- Rigid kraft or matte-black retail box (~750×340×100mm)
-- Die-cut foam insert
-- Black tissue paper wrap
-- Epitome Penta logo sticker
-- Quick-start guide (4-panel fold, 148×105mm)
-- Warranty registration card (85×55mm)
-- 1.5m braided IEC C13 cable in-box
+- Standard retail box target: **~580×340×100mm**
+- XL retail box target: **~750×340×100mm**
+- Quick-start guide must explain captive cable pull-out/coil-back usage
 
 ---
 
 ## Price
 
-**$249** — Black or White
-Early bird: **$199** (first 20 pre-orders)
-Retail post-launch: **$279**
+| SKU | Early Bird | Pre-Order | Retail |
+|---|---:|---:|---:|
+| Penta Standard | $199 | $249 | $279 |
+| Penta XL | $229 | $279 | $309 |
