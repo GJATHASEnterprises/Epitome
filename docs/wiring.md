@@ -4,18 +4,18 @@
 
 ## System Overview
 
-```
+```text
 [Wall Outlet]
      |
-[Right-Angle IEC C13 Inlet + Fuse]
+[Right-Angle IEC C13 Inlet]
      |
-[Internal 180W AC/DC PSU under Zone 4 cavity] --> [Main DC Rail: 20V]
+[Internal 160W AC/DC PSU under Zone 4 cavity] --> [Main DC Rail: 20V]
                                                |
        +----------------+----------------+----------------+----------------+----------------+
        |                |                |                |                |
    [Qi TX 1]        [Qi TX 2]      [Watch Branch]   [PD 100W]        [PD 20W]
-   Zone 1 15W       Zone 2 15W     Zone 3 5W shared  Zone 4          Zone 5
-                                     (Puck + Qi)      captive 300mm    captive 200mm
+   Zone 1 20W       Zone 2 15W     Zone 3 5W shared  Zone 4          Zone 5
+                                     (Puck + Qi)      captive 220mm    captive 200mm
 ```
 
 ---
@@ -28,9 +28,9 @@
 | Main DC rail | 20V | Source for all zones and step-downs |
 | Qi coil supply | 12V | Zones 1 & 2 wireless TX modules |
 | Watch branch | 5V | Zone 3 Apple puck + Qi watch coil (single active output) |
-| USB-C PD out (Zone 4) | 5V–20V negotiated | Laptop via captive 300mm USB-C cable |
+| USB-C PD out (Zone 4) | 5V–20V negotiated | Laptop via captive 220mm USB-C cable |
 | USB-C PD out (Zone 5) | 5V–12V negotiated | Tablet/phone via captive 200mm USB-C cable |
-| ESP32-C3 + logic | 3.3V | MCU, sensors, LEDs |
+| ESP32-C3 + logic | 3.3V | MCU, monitors, LEDs |
 
 ---
 
@@ -40,14 +40,14 @@
 |-----|----------|
 | GPIO 8 | I2C SDA |
 | GPIO 9 | I2C SCL |
-| GPIO 4 | WS2812B LED strip data |
+| GPIO 4 | WS2811 LED strip data |
 | GPIO 2 / 3 / 10 / 1 | Thermistor ADC channels |
 
 *Pin assignments are provisional and subject to PCB routing constraints.*
 
 ---
 
-## WS2812B LED Strip Wiring
+## WS2811 LED Strip Wiring
 
 - GPIO 4 -> 300–470Ω -> DIN
 - 5V rail -> LED strip VCC
@@ -56,31 +56,20 @@
 
 ---
 
-## Ambient Light Sensor: BH1750
+## INA3221 #1 — 3-Channel Power Monitor (Zones 1–3)
 
-- I2C on shared bus
-- Address 0x23 default
-- Used for auto-dim / night mode
-
----
-
-## INA3221 — 3-Channel Power Monitor (Zones 1–3)
-
-- CH1 Zone 1 (15W)
+- CH1 Zone 1 (20W)
 - CH2 Zone 2 (15W)
 - CH3 Zone 3 (5W shared puck/Qi)
 
 ---
 
-## INA219 — Single-Channel Power Monitor (Zone 4)
+## INA3221 #2 — 3-Channel Power Monitor (Zones 4–5 + spare/system)
 
-- Monitors Zone 4 (USB-C PD up to 100W)
-
----
-
-## INA219 — Single-Channel Power Monitor (Zone 5)
-
-- Monitors Zone 5 (USB-C PD up to 20W)
+- CH1 Zone 4 (USB-C PD up to 100W)
+- CH2 Zone 5 (USB-C PD up to 20W)
+- CH3 spare/system branch
+- Address: **0x41** (A0 high)
 
 ---
 
@@ -103,10 +92,10 @@
 
 ## Safety Wiring Notes
 
+- PCB PTC resettable fuse on main protection path (replaces inlet fuse holder)
 - Polyfuse on each zone output
 - TVS on both USB-C PD outputs
 - Thermistors on heat-prone branches
-- 3A slow-blow fuse at IEC input
 - Bulk capacitor (470–1000µF) on 20V rail
 
 ---
@@ -133,19 +122,19 @@ This section defines practical wiring execution from wall inlet to every electri
 ## 1) Full System Wiring Narrative (End-to-End)
 
 1. Bring AC mains into rear right-angle IEC C13 inlet.
-2. Route line through 3A slow-blow fuse before PSU AC input.
-3. Route neutral/earth to PSU per safety standards.
-4. Convert AC to regulated ~20V DC.
-5. Split 20V bus into five protected zone branches + logic branch.
-6. Route Zone 4 to captive 300mm cable harness (100W rated, captured 300mm service loop).
-7. Route Zone 5 to captive 200mm cable harness (20W rated).
-8. Route Zone 3 to both Apple puck and Qi watch coil through one-at-a-time control.
+2. Route neutral/earth to PSU per safety standards.
+3. Convert AC to regulated ~20V DC.
+4. Split 20V bus into five protected zone branches + logic branch.
+5. Route Zone 4 to captive 220mm cable harness (100W rated).
+6. Route Zone 5 to captive 200mm cable harness (20W rated).
+7. Route Zone 3 to both Apple puck and Qi watch coil through one-at-a-time control.
+8. Route branch protection through PCB PTC resettable fuse stage.
 
 ## 2) AC Wiring Section
 
 ### Path
 
-`Right-angle IEC C13 inlet -> 3A slow-blow fuse -> PSU AC terminals`
+`Right-angle IEC C13 inlet -> PSU AC terminals`
 
 ### AC Wiring Requirements
 
@@ -153,11 +142,11 @@ This section defines practical wiring execution from wall inlet to every electri
 |---|---|
 | Minimum AC conductor gauge | 18 AWG |
 | Inlet type | Panel-mount right-angle IEC C13 |
-| Fuse type | 3A slow-blow |
+| Overcurrent strategy | PCB PTC resettable fuse on downstream protection branch |
 
 ### AC Assembly Notes
 
-- Keep AC harness isolated from I2C/sensor wiring.
+- Keep AC harness isolated from I2C wiring.
 - Use insulated crimp terminals/ferrules.
 
 ## 3) DC Main Rail Section (20V Backbone)
@@ -176,8 +165,8 @@ This section defines practical wiring execution from wall inlet to every electri
 
 ## 4) Per-Zone DC Wiring Detail
 
-### Zone 1 (Qi 15W)
-`20V -> buck -> Qi TX 15W -> polyfuse -> NTC`
+### Zone 1 (Qi 20W)
+`20V -> buck -> Qi TX 20W -> polyfuse -> NTC`
 
 ### Zone 2 (Qi 15W)
 `20V -> buck -> Qi TX 15W -> polyfuse -> NTC`
@@ -186,54 +175,48 @@ This section defines practical wiring execution from wall inlet to every electri
 `20V -> 5V buck -> (Apple puck OR Qi watch coil) -> polyfuse -> NTC`
 
 ### Zone 4 (USB-C PD 100W)
-`20V -> PD 100W board -> INA219 -> polyfuse -> TVS -> captive USB-C cable (300mm)`
+`20V -> PD 100W board -> INA3221 #2 CH1 -> polyfuse -> TVS -> captive USB-C cable (220mm)`
 
 ### Zone 5 (USB-C PD 20W)
-`20V -> PD 20W board -> INA219 -> polyfuse -> TVS -> captive USB-C cable (200mm)`
+`20V -> PD 20W board -> INA3221 #2 CH2 -> polyfuse -> TVS -> captive USB-C cable (200mm)`
 
 ## 5) I2C Bus Wiring
 
-`GPIO8/9 + 4.7k pull-ups -> INA3221 + INA219 Z4 + INA219 Z5 + BH1750`
+`GPIO8/9 + 4.7k pull-ups -> INA3221 #1 + INA3221 #2`
 
-## 6) WS2812B LED Strip Wiring
+## 6) WS2811 LED Strip Wiring
 
 As above: GPIO4 + resistor + 5V/GND + entry capacitor.
 
-## 7) BH1750 Wiring
-
-VCC 3.3V, GND, SDA GPIO8, SCL GPIO9.
-
-## 8) NTC Thermistor Wiring
+## 7) NTC Thermistor Wiring
 
 `3.3V -> 10k fixed -> ADC node -> NTC 10k -> GND`
 
-## 9) 3.3V LDO Wiring
+## 8) 3.3V LDO Wiring
 
-`5V source -> 3.3V LDO -> ESP32 + sensors/monitors`
+`5V source -> 3.3V LDO -> ESP32 + monitors`
 
-## 10) Full ESP32-C3 Pin Assignment + Wire Color Guidance
+## 9) Full ESP32-C3 Pin Assignment + Wire Color Guidance
 
 | GPIO/Pin | Function | Recommended Wire Color |
 |---|---|---|
 | GPIO 8 | I2C SDA | Blue |
 | GPIO 9 | I2C SCL | Yellow |
-| GPIO 4 | WS2812 DIN | Green |
+| GPIO 4 | WS2811 DIN | Green |
 | GPIO 2/3/10/1 | NTC ADC | White stripe variants |
 
-## 11) I2C Address Table and Conflict Avoidance
+## 10) I2C Address Table and Conflict Avoidance
 
 | Device | Role | Address |
 |---|---|---|
-| INA3221 | Zones 1–3 monitor | 0x40 |
-| INA219 Z4 | Zone 4 monitor | 0x41 |
-| INA219 Z5 | Zone 5 monitor | 0x44 |
-| BH1750 | Ambient lux | 0x23 |
+| INA3221 #1 | Zones 1–3 monitor | 0x40 |
+| INA3221 #2 | Zones 4–5 + spare/system monitor | 0x41 |
 
-## 12) Grounding Strategy
+## 11) Grounding Strategy
 
 Star ground from PSU GND, with separate high-current returns merged at star point.
 
-## 13) Wire Gauge Summary Table
+## 12) Wire Gauge Summary Table
 
 | Branch | Recommended AWG |
 |---|---:|
@@ -244,32 +227,32 @@ Star ground from PSU GND, with separate high-current returns merged at star poin
 | Zone 4 PD 100W branch | 14 AWG |
 | Zone 5 PD 20W branch | 18 AWG |
 
-## 14) Connector Recommendations
+## 13) Connector Recommendations
 
 - DC branches: JST-XH
 - Sensor leads: Dupont/JST
 - Captive cable internal terminations: locking JST-VH or soldered + strain relief
 
-## 15) Safety Checklist Before First Power-On
+## 14) Safety Checklist Before First Power-On
 
 - [ ] Right-angle IEC C13 inlet secure and insulated
-- [ ] 3A fuse installed
+- [ ] PCB PTC resettable fuse populated
 - [ ] No short on 20V to GND
 - [ ] Captive cable strain relief installed on both slot outputs
 - [ ] Zone 3 puck/Qi exclusivity validated
 
-## 16) Full-System ASCII Schematic
+## 15) Full-System ASCII Schematic
 
 ```text
-AC -> C13(RA) -> Fuse -> 180W PSU -> 20V Bus
-  -> Z1 Qi15W
+AC -> C13(RA) -> 160W PSU -> 20V Bus
+  -> Z1 Qi20W
   -> Z2 Qi15W
   -> Z3 Watch 5W (Puck + Qi, one active)
-  -> Z4 PD100W -> Captive USB-C 300mm
+  -> Z4 PD100W -> Captive USB-C 220mm
   -> Z5 PD20W -> Captive USB-C 200mm
 ```
 
-## 17) Practical Integration Notes
+## 16) Practical Integration Notes
 
 - Keep slot cable coils retained with silicone clips above stop shelves.
 - Validate natural cable reach from stop-shelf resting point to common laptop/tablet port locations.

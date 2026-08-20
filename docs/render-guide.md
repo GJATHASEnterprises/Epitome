@@ -18,9 +18,12 @@ blender --background --python scripts/generate_render.py
 
 The render brief should now include:
 
-- Captive USB-C cable indicators in Zone 4 and Zone 5 slots
-- Zone 3 rear watch cradle with dual charging intent (Apple puck + Qi support)
-- Zone 2 pad at front of Step 2 (90×65, 15W)
+- Captive USB-C cable indicators in Zone 4 and Zone 5 slots (Zone 4 cable is 220mm)
+- 3-step tapered centre platform:
+  - Step 1 (180×110×15) with 160×100 full silicone 20W phone surface
+  - Step 2 (140×100×15) with 90×65 buds/phone pad (15W)
+  - Step 3 (100×80×15) with rear raised watch cradle (Apple puck + Qi)
+- Brushed aluminium riser faces on each step with reinforcement intent
 - Slot stop shelves and rear cable clips
 - Right-angle rear IEC C13 inlet routing downward
 - PSU placement represented under laptop slot cavity
