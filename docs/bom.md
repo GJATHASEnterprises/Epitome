@@ -127,7 +127,7 @@
 
 ## Updated Break-Even Table (Batch 1, Standard @ $249)
 
-| Units Sold | Revenue | Build Investment (midpoint $146) × 15 units = $2,190 | Profit / (Loss) |
+| Units Sold | Revenue | Build Investment (15-unit batch) | Profit / (Loss) |
 |---|---|---|---|
 | 1 | $249 | $2,190 | ($1,941) |
 | 5 | $1,245 | $2,190 | ($945) |
@@ -136,6 +136,8 @@
 | 15 | $3,735 | $2,190 | $1,545 |
 
 Break-even improves from 13 units to **9 units**.
+
+> Build investment basis shown above uses midpoint estimate: **$146 × 15 units = $2,190**.
 
 ---
 

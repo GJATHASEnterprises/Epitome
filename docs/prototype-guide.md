@@ -27,6 +27,8 @@ Definitive placement coordinates are in [component-positions.md](component-posit
 | Buffer for mistakes + spares | $50 | $80 |
 | **Total** | **~$249** | **~$438** |
 
+> Electronics high-end estimate reflects wide vendor spread for PSU, watch modules, and early-batch shipping-loaded breakout sourcing.
+
 ---
 
 ## Tools Needed
