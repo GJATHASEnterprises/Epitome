@@ -2,10 +2,10 @@
 
 ## Core Envelope
 
-| SKU | Overall width | Overall depth | Corner radius | Top plate thickness | Base material |
-|---|---:|---:|---|---|---|
-| Penta Standard | ~530mm | ~300mm | R20mm | 1.5mm aluminium | Matte ABS |
-| Penta XL | ~700mm | ~300mm | R20mm | 1.5mm aluminium | Matte ABS |
+| SKU | Overall width | Overall depth | Corner radius | Base material |
+|---|---:|---:|---|---|
+| Penta Standard | ~250mm | ~100mm | R10mm | Matte ABS |
+| Penta XL | ~320mm | ~100mm | R10mm | Matte ABS |
 
 ---
 
@@ -23,27 +23,25 @@ Launch sequence: Standard first, XL second.
 
 ## Left Slot (Laptop — Zone 4)
 
-- Entry: open front, laptop slides in horizontally on its side
-- Slot width: **320mm (Standard)** / **400mm (XL)**
-- Slot depth: **25mm**
-- Slot opening: **28mm**
-- Silicone lining on floor and rear wall
-- **5mm silicone-covered rear stop shelf** supports device edge
-- **Captive braided USB-C to USB-C cable (220mm, 100W)**, fixed internally to PD board
-- Cable free end stores coiled on rear wall via silicone clip (above stop shelf)
+- Entry: device slides in **on its thin edge** (screen facing forward), charges from cable at top
+- Slot length: **400mm** (fits any laptop up to 17" class)
+- Slot width: **35mm** (fits laptops up to ~28mm thick including case)
+- Slot depth: **90mm** (front to back, for stability)
+- Captive braided USB-C cable (220mm, 100W) hangs from top of slot
+- Silicone lining on floor and side walls
+- 5mm silicone-covered floor pad supports device edge
 
 ---
 
-## Right Slot (iPad — Zone 5)
+## Right Slot (Tablet — Zone 5)
 
-- Entry: open front, iPad/tablet slides in horizontally on its side
-- Slot width: **290mm**
-- Slot depth: **25mm**
-- Slot opening: **20mm**
-- Silicone lining on floor and rear wall
-- **5mm silicone-covered rear stop shelf** supports device edge
-- **Captive braided USB-C to USB-C cable (200mm, 20W)**, fixed internally to PD board
-- Cable free end stores coiled on rear wall via silicone clip (above stop shelf)
+- Entry: device slides in **on its thin edge**, charges from cable at top
+- Slot length: **290mm** (fits any tablet up to iPad Pro 13" in case)
+- Slot width: **20mm** (fits tablets up to ~16mm thick including case)
+- Slot depth: **70mm** (front to back, for stability)
+- Captive braided USB-C cable (200mm, 20W) hangs from top of slot
+- Silicone lining on floor and side walls
+- 5mm silicone-covered floor pad supports device edge
 
 ---
 
@@ -57,7 +55,6 @@ Launch sequence: Standard first, XL second.
 
 - Total centre platform height: **45mm** (3 × 15mm)
 - Taper rule: each step is **40mm narrower** than the one below
-- Riser faces: brushed aluminium
 - Each riser requires **internal ribbing reinforcement**
 
 ### Step 1 (Zone 1 — Phone)
@@ -87,8 +84,7 @@ Launch sequence: Standard first, XL second.
 ## Rear Wall Features
 
 - **Right-angle IEC C13 inlet:** 28×20mm cutout, cable routed downward
-- Captive cable clips for Zones 4 and 5 mounted above slot stop shelves
-- Rear wiring channel continues to carry all internal harnesses
+- Rear wiring channel carries all internal harnesses
 - Separate inlet fuse holder removed from rear wall (protection moved to PCB PTC)
 
 ---
@@ -103,37 +99,17 @@ Launch sequence: Standard first, XL second.
 
 ---
 
-## Manufacturing Method (Batch 1 Cost-Optimized Hybrid)
-
-- **Centre platform (3-step):** 3D printed ABS (complex geometry only)
-- **Slot walls (left + right):** laser cut + bent ABS sheet
-- **Top aluminium plates + step riser faces:** laser cut 1.5mm aluminium sheet, bent
-- **Base:** vacuum-formed ABS sheet
-
-### Batch 1 Enclosure Cost Targets (15 units)
-
-- 3D print centre platform only (~120mm × 120mm × 45mm volume): **$18–28 / unit**
-- Laser cut ABS slot walls: **$8–12 / unit**
-- Vacuum-formed base: **$6–10 / unit**
-- Aluminium laser cut + bend set: **$8–12 / unit**
-- **Total enclosure Batch 1:** **~$40–62 / unit** (down from ~$45–65 full 3D print)
-
----
-
 ## Materials
 
-**Batch 1 is full ABS. Aluminium top plates and step faces are a Batch 2+ upgrade only.**
-
-| Part | Material | Finish | Method |
-|---|---|---|---|
-| Centre platform (3-step) | ABS | Matte black painted | 3D printed, school printer |
-| Slot walls (both slots) | ABS | Matte black painted | Laser cut, Pumping Station One |
-| Base plate | ABS | Matte black painted | Laser cut, Pumping Station One |
-| Top panels | ABS | Matte black painted | Laser cut, Pumping Station One |
-| Rear wall | ABS | Matte black painted | Laser cut, Pumping Station One |
-| LED diffuser strip | Frosted acrylic | Clear diffused | Laser cut, Pumping Station One |
-| Slot/pad lining | Silicone elastomer | Dark grey anti-slip | Cut from sheet |
-| Feet | Moulded rubber | Matte black | 100-pack, Amazon |
+| Part | Material | Finish |
+|---|---|---|
+| Top surface + step faces | 3mm ABS sheet | Primed + Rust-Oleum 2X Matte Black |
+| Base | 3mm ABS sheet | Primed + Matte Black |
+| Slot walls | 3mm ABS sheet | Primed + Matte Black |
+| Centre platform | 3D printed ABS | Primed + Matte Black |
+| Slot/pad lining | Silicone sheet | Dark grey anti-slip |
+| Front LED diffuser | Frosted acrylic 3mm | Diffused |
+| Feet | Rubber adhesive | Matte black |
 
 ---
 
@@ -152,7 +128,7 @@ Laser cut slot wall panels use tab-and-slot joints. Dry fit first, then bond all
 Slot boxes sit on base plate and are cemented down. Centre platform sits between them, located by 4× M3 screws through base into brass heat-set inserts in platform bottom.
 
 **Step 3 — Electronics installation**
-Install PSU in cavity under laptop slot. Route all wiring through rear channel. Install all charging modules per component-positions.md. Captive cables routed and clipped.
+Install PSU in cavity under laptop slot. Route all wiring through rear channel. Install all charging modules per component-positions.md. Captive cables routed through top of each slot.
 
 **Step 4 — Top panels**
 Cemented to slot box top edges + 2× M3 screws per panel from underneath.
