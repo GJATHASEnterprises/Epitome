@@ -9,7 +9,7 @@
      |
 [Right-Angle IEC C13 Inlet]
      |
-[Internal 160W AC/DC PSU under Zone 4 cavity] --> [Main DC Rail: 20V]
+[Internal 156W AC/DC PSU (Mean Well LRS-150-24) under Zone 4 cavity] --> [Main DC Rail: 20V]
                                                |
        +----------------+----------------+----------------+----------------+----------------+
        |                |                |                |                |
@@ -244,7 +244,7 @@ Star ground from PSU GND, with separate high-current returns merged at star poin
 ## 15) Full-System ASCII Schematic
 
 ```text
-AC -> C13(RA) -> 160W PSU -> 20V Bus
+AC -> C13(RA) -> 156W PSU (Mean Well LRS-150-24) -> 20V Bus
   -> Z1 Qi20W
   -> Z2 Qi15W
   -> Z3 Watch 5W (Puck + Qi, one active)
@@ -254,5 +254,4 @@ AC -> C13(RA) -> 160W PSU -> 20V Bus
 
 ## 16) Practical Integration Notes
 
-- Keep slot cable coils retained with silicone clips above stop shelves.
-- Validate natural cable reach from stop-shelf resting point to common laptop/tablet port locations.
+- Validate natural cable reach from top-of-slot hang point to common laptop/tablet port locations when device is fully inserted.

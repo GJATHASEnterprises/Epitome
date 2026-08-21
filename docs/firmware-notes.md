@@ -17,8 +17,8 @@
 - Zone 4 max: **100W**
 - Zone 5 max: **20W**
 - System max budget: **155W**
-- PSU capacity: **160W**
-- Headroom target: **5W**
+- PSU capacity: **156W** (Mean Well LRS-150-24)
+- Headroom target: **1W** (155W load, 156W PSU)
 - Firmware soft cap: **150W total draw**
 
 ## Zone 3 Dual-Mode Detection
