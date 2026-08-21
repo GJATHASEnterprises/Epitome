@@ -10,69 +10,69 @@ Keep existing core tool set: soldering iron, solder, flux, multimeter, wire tool
 
 ---
 
-## SECTION 2 — ELECTRONICS PARTS (Direct Buy Links)
+## Verified US Suppliers — Batch 1 (August 2026)
 
-### ✅ Safe to order from LCSC — core electronics
+### AliExpress (single combined order — apply 25% Section 301 tariff)
+- ESP32-C3 SuperMini (~$1.26)
+- PD 100W trigger board (~$1.50)
+- PD 20W trigger board (~$1.25)
+- Apple Watch magnetic puck PCBA (~$1.60)
+- Qi watch coil 5W module (~$5.00)
+- WS2811 LED strip 5m rolls ×2 (~$7 each)
+- IEC C13 right-angle inlet (~$3.00)
 
-Keep current LCSC core parts list for ESP32/INA3221/passives/PSU.
+### LCSC (combine into same AliExpress order if possible, otherwise separate)
+- INA3221 chip ×20 (2 per unit × 10 units = 20 chips, ~$1.20 each)
+- Mean Well LRS-150-24 PSU ×10 (~$13.85 each)
+- PTC fuse + passives
 
-### ✅ Add/replace key revision parts
+### JLCPCB
+- Bare INA3221 breakout PCBs — order 20+ at ~$0.20 each
 
-| Part | What changed | Source guidance |
-|---|---|---|
-| Captive USB-C cable (220mm, braided, 100W) | Zone 4 cable shortened from 300mm to 220mm | LCSC/AliExpress verified |
-| Captive USB-C cable (200mm, braided, 20W) | Zone 5 cable retained | LCSC/AliExpress verified |
-| Qi 20W TX module | Upgrades Zone 1 from 15W to 20W | Verified Qi vendor, sample test first |
-| Qi watch coil 5W module | Zone 3 universal watch support | AliExpress verified |
-| Apple Watch puck module | MOQ 50 direct sourcing target | Verified Shenzhen supplier, target $4–6 |
-| INA3221 (second unit) | Replaces both INA219 monitors | LCSC preferred |
-| Right-angle IEC C13 inlet | Replaces straight-through C13 inlet | LCSC preferred |
-| PCB PTC resettable fuse | Replaces separate inlet fuse holder function | LCSC preferred |
-| Step-riser reinforcement insert/rib material | Added to prevent riser cracking (3-step stack) | Local/LCSC |
-| WS2811 LED strip | Replaces WS2812B line item | LCSC/AliExpress verified |
+### Amazon US (domestic, no tariff, Prime shipping)
+- Qi 20W TX module (~$14)
+- Qi 15W TX module (~$11)
+- Captive USB-C cable 220mm 100W braided (~$4)
+- Captive USB-C cable 200mm 20W braided (~$3)
+- Mean Well LRS-150-24 PSU alternative (~$22–25 if LCSC order delayed)
+- Flat-pack rigid kraft boxes ~580×340×100mm (~$3.50–4 each)
+- Rubber feet 100-pack (~$7)
+- M3 screw assortment kit (~$9)
+- M3 brass heat-set inserts 50-pack (~$8)
+- Silicone sheet 500×500mm (~$13)
+- Weld-On #3 ABS cement (~$8)
+- IEC C13 braided cable 1.5m (~$3 each)
 
-### ❌ Removed from current revision
+### Inventables (Chicago, fast to Downers Grove IL)
+- ABS sheet 3mm black (enough for all 10 units)
+- Frosted acrylic 3mm strip material
 
-- BH1750 ambient light sensor
-- INA219 monitor modules (Zone 4/Zone 5)
-- Separate rear inlet fuse holder
-- Fixed USB-C panel-mount rear slot ports (Zone 4 / Zone 5 user interface now captive cables)
+### Pumping Station One (Chicago makerspace)
+- Address: 3519 N. Elston Ave, Chicago IL
+- Membership: ~$50/month
+- Use: laser cutting all ABS panels and acrylic diffuser strips for all 10 units
+- Bring: DXF files of all panels, own ABS sheet from Inventables
 
----
+### School makerspace
+- Use: 3D printing centre platform ×10
+- Bring: own ABS filament spool ($20, Bambu or Hatchbox ABS)
+- Print settings: 2.5mm walls, 20% infill, 0.2mm layer height
+- Print time: ~6–8 hours per part
 
-## SECTION 3 — ENCLOSURE SOURCING
+### Home Depot / Walmart (Downers Grove)
+- Acetone 1 litre
+- Rust-Oleum Filler Primer
+- Rust-Oleum 2X Matte Black
+- Rust-Oleum Matte Clear Coat
+- Sandpaper assortment
 
-- **Centre platform (3-step):** 3D print ABS only for centre geometry
-- **Slot walls:** laser cut + bent ABS
-- **Base:** vacuum-formed ABS
-- **Top plates + riser faces:** laser cut + bent 1.5mm aluminium
+### Microcenter (Westmont IL — 7 min from Downers Grove)
+- Backup source for ESP32 dev boards
+- Soldering supplies, jumper wires, breadboards
+- Do not pay Microcenter prices for items cheaper on Amazon/AliExpress
 
-Batch 1 target (15 units): ~**$40–62** enclosure cost per unit.
-
----
-
-## SECTION 4 — SOLDERING TUTORIAL
-
-No process change; existing soldering guidance remains valid.
-
----
-
-## SECTION 5 — CAD / RENDER TOOLS
-
-Use existing Blender + Fusion 360 workflow and update geometry to 3-step tapered centre + hybrid enclosure parts.
-
----
-
-## SECTION 6 — SELLING PLATFORM LINKS
-
-Use Kickstarter/Indiegogo or lawyer-reviewed direct-site terms for pre-order legal coverage.
-
----
-
-## SECTION 7 — PACKAGING & IN-BOX ITEMS
-
-| Item | Source | Cost |
-|---|---|---|
-| 1.5m braided IEC C13 power cable | AliExpress / local bulk | ~$3 |
-| Moulded pulp tray (Apple-style cardboard) | Local packaging vendor | ~$1.50–$2.50 |
-| Warranty / setup docs | QR code on box base + dock base (`epitome.io/warranty`, `epitome.io/setup`) | Print removed |
+### Payment / shipping
+- Wise.com: for international bank transfer to AliExpress/LCSC (0.45% fee, much cheaper than PayPal)
+- Stripe: payment processing for customer orders (2.9% + $0.30 per transaction)
+- Carrd.co: product landing page + Stripe buy button ($19/year pro plan)
+- UPS Ground or FedEx Ground: domestic shipping to customers (~$16/unit for ~3.5kg box from IL)

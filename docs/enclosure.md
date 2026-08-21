@@ -122,10 +122,45 @@ Launch sequence: Standard first, XL second.
 
 ## Materials
 
-| Part | Material | Finish |
-|---|---|---|
-| Top plate / step faces | 1.5mm aluminium | Gunmetal (Black), Silver (White), Midnight Blue |
-| Base and slot walls | Matte ABS | Black, White, Navy-black |
-| Slot/pad lining | Silicone elastomer | Dark grey anti-slip |
-| Front LED diffuser | Frosted acrylic | Diffused |
-| Feet | Moulded rubber | Matte black |
+**Batch 1 is full ABS. Aluminium top plates and step faces are a Batch 2+ upgrade only.**
+
+| Part | Material | Finish | Method |
+|---|---|---|---|
+| Centre platform (3-step) | ABS | Matte black painted | 3D printed, school printer |
+| Slot walls (both slots) | ABS | Matte black painted | Laser cut, Pumping Station One |
+| Base plate | ABS | Matte black painted | Laser cut, Pumping Station One |
+| Top panels | ABS | Matte black painted | Laser cut, Pumping Station One |
+| Rear wall | ABS | Matte black painted | Laser cut, Pumping Station One |
+| LED diffuser strip | Frosted acrylic | Clear diffused | Laser cut, Pumping Station One |
+| Slot/pad lining | Silicone elastomer | Dark grey anti-slip | Cut from sheet |
+| Feet | Moulded rubber | Matte black | 100-pack, Amazon |
+
+---
+
+## Assembly Method
+
+**Tools needed:**
+- Soldering iron (for heat-set inserts)
+- Weld-On #3 ABS cement
+- M3 screwdriver
+- Wire stripper / crimper
+
+**Step 1 — Slot boxes**
+Laser cut slot wall panels use tab-and-slot joints. Dry fit first, then bond all joints with Weld-On #3 ABS cement. Hold 60 seconds per joint. Full cure: 24 hours.
+
+**Step 2 — Base plate**
+Slot boxes sit on base plate and are cemented down. Centre platform sits between them, located by 4× M3 screws through base into brass heat-set inserts in platform bottom.
+
+**Step 3 — Electronics installation**
+Install PSU in cavity under laptop slot. Route all wiring through rear channel. Install all charging modules per component-positions.md. Captive cables routed and clipped.
+
+**Step 4 — Top panels**
+Cemented to slot box top edges + 2× M3 screws per panel from underneath.
+
+**Step 5 — Rear wall**
+Cemented to back of both slot boxes. IEC C13 inlet installed in cutout.
+
+**Step 6 — Base close**
+4× M3 screws at corners. Rubber feet press-fit over screw heads.
+
+**Time per unit:** ~45–60 minutes once experienced.
