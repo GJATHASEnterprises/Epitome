@@ -35,7 +35,7 @@ Keep existing core tool set: soldering iron, solder, flux, multimeter, wire tool
 - Captive USB-C cable 220mm 100W braided (~$4)
 - Captive USB-C cable 200mm 20W braided (~$3)
 - Mean Well LRS-150-24 PSU alternative (~$22–25 if LCSC order delayed)
-- Flat-pack rigid kraft boxes ~580×340×100mm (~$3.50–4 each)
+- Rigid kraft boxes ~300×150×120mm (~$3 each)
 - Rubber feet 100-pack (~$7)
 - M3 screw assortment kit (~$9)
 - M3 brass heat-set inserts 50-pack (~$8)
@@ -46,6 +46,7 @@ Keep existing core tool set: soldering iron, solder, flux, multimeter, wire tool
 ### Inventables (Chicago, fast to Downers Grove IL)
 - ABS sheet 3mm black (enough for all 10 units)
 - Frosted acrylic 3mm strip material
+- ABS sheet sized for compact dock: base and top panels 250×100mm; slot wall sizes per enclosure.md
 
 ### Pumping Station One (Chicago makerspace)
 - Address: 3519 N. Elston Ave, Chicago IL
@@ -75,4 +76,4 @@ Keep existing core tool set: soldering iron, solder, flux, multimeter, wire tool
 - Wise.com: for international bank transfer to AliExpress/LCSC (0.45% fee, much cheaper than PayPal)
 - Stripe: payment processing for customer orders (2.9% + $0.30 per transaction)
 - Carrd.co: product landing page + Stripe buy button ($19/year pro plan)
-- UPS Ground or FedEx Ground: domestic shipping to customers (~$16/unit for ~3.5kg box from IL)
+- UPS Ground or FedEx Ground: domestic shipping to customers (~$11/unit for ~2kg box (new compact design) from IL)

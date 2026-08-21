@@ -3,8 +3,8 @@
 ## Batch 1 Context
 
 - **Location:** Downers Grove, IL (Chicago suburb)
-- **Batch size:** 10 units
-- **SKU scope:** Standard SKU only
+- **Batch size:** 10 units (Batch 1 — US, August 2026)
+- **SKU scope:** Standard SKU only (XL is Batch 2+)
 - **Colour scope:** Black only
 - **Budget:** $1,500
 - **Sell price:** $249
@@ -14,149 +14,150 @@
 
 ---
 
-## Electronics — Per Unit Costs (Verified August 2026)
+## Device Size Reference
 
-### AliExpress order (apply 25% Section 301 tariff to all)
-
-| Part | Calculation | Per Unit |
-|---|---:|---:|
-| ESP32-C3 SuperMini | $1.26 × 1.25 | $1.58 |
-| PD 100W trigger board | $1.50 × 1.25 | $1.88 |
-| PD 20W trigger board | $1.25 × 1.25 | $1.56 |
-| Apple Watch puck PCBA module | $1.60 × 1.25 | $2.00 |
-| Qi watch coil 5W | $5.00 × 1.25 | $6.25 |
-| INA3221 chip ×2 (LCSC, raw chip for DIY breakout) | $1.20 × 2 × 1.25 | $3.00 |
-| JLCPCB bare INA3221 breakout PCBs ×2 (ordered with parts) | $0.20 × 2 | $0.40 |
-| Mean Well LRS-150-24 PSU (LCSC) | $13.85 × 1.25 | $17.31 |
-| WS2811 LED strip section (20 LEDs, from 2× 5m rolls shared across batch) | Fixed | $1.40 |
-| IEC C13 right-angle inlet (LCSC) | $3.00 × 1.25 | $3.75 |
-| Wiring / JST connectors / heat shrink / cable clips | $6.50 × 1.25 | $8.13 |
-| PTC resettable fuse + passives (LCSC) | $0.40 × 1.25 | $0.50 |
-
-### Amazon US domestic order (no tariff)
-
-| Part | Per Unit |
-|---|---:|
-| Qi 20W TX module (Zone 1) | $14.00 |
-| Qi 15W TX module (Zone 2) | $11.00 |
-| Captive USB-C cable 220mm 100W braided | $4.00 |
-| Captive USB-C cable 200mm 20W braided | $3.00 |
-| Wiring / connectors supplement | $8.00 |
-| PTC fuse passives supplement | $1.00 |
-
-**Electronics total per unit: $90.96**
-**Electronics total ×10: $909.60**
+| Device | Orientation | Slot used | Slot length |
+|---|---|---|---|
+| Laptop (Standard) — up to 17" class | On thin edge (like book on shelf) | Zone 4 | 400mm |
+| Tablet — iPad Pro 13" in case | On thin edge (like book on shelf) | Zone 5 | 290mm |
 
 ---
 
-## Enclosure — Per Unit Costs
+## Zone Sizes
 
-### 3D printed centre platform (school printer)
-
-- **Filament only:** 198g ABS per unit, from own $20 spool = **$2.00**
-- **Print time:** ~6–8 hours per unit on school printer
-
-### Laser cut ABS panels (Pumping Station One, Chicago — makerspace)
-
-- Pumping Station One membership: **$50/month** (one month covers all 10 units)
-- ABS sheet from Inventables (Chicago-based, fast shipping to Downers Grove): **~$50–60 for all 10 units worth**
-- Machine time at member rate (~$1–2/min): **~$20–30 for all 10 units**
-- **Total laser cutting all-in:** **~$120–140 for whole batch = $12–14/unit**
-
-### Parts cut on laser
-
-- Slot walls (both slots): tab-and-slot panels, simple rectangles
-- Base plate: 530×300mm
-- Top panels: left 330×300mm, right 300×300mm
-- Rear wall with IEC C13 cutout
-- LED diffuser strip: frosted acrylic 530×15mm
-
-### Finishing supplies (shared across all 10 units)
-
-- Sandpaper assortment 120–800 grit: $6
-- Acetone 1 litre (Home Depot/Walmart): $8
-- Rust-Oleum filler primer 1 can: $6
-- Rust-Oleum matte black paint 1 can: $6
-- Matte clear coat 1 can: $6
-- **Total finishing supplies:** $32 = **$3.20/unit**
-
-### Assembly consumables
-
-- Weld-On #3 ABS cement (one bottle, covers all 10): $8 total = $0.80/unit
-- M3 brass heat-set inserts 50-pack: $8 total = $0.80/unit
-- M3 screw assortment kit (one kit): $9 total = $0.90/unit
-- Rubber feet 100-pack: $7 total = $0.70/unit
-- Silicone sheet 500×500mm (one sheet cut for all 10): $13 total = $1.30/unit
-
-**Enclosure total per unit: $21.70 (excl. makerspace membership amortised separately)**
-**Makerspace membership: $50 one-time**
-**Enclosure + membership total ×10: $267**
+| Zone | Function | Internal size (L × D × W) | Notes |
+|---|---|---|---|
+| Zone 1 | Phone Qi pad | 160×100mm surface | 20W, MagSafe ring |
+| Zone 2 | Buds/Phone pad | 90×65mm dish | 15W |
+| Zone 3 | Watch cradle | 50×50mm | Apple puck + Qi coil |
+| Zone 4 | Laptop slot | **400×90×35mm** | Cable from top, device on thin edge |
+| Zone 5 | iPad slot | **290×70×20mm** | Cable from top, device on thin edge |
 
 ---
 
-## Packaging — Per Unit
+## Cardboard Prototype Cut Guide
 
-- Flat-pack rigid kraft box ~580×340×100mm (self-assembled): $3.50–4.00
-- IEC C13 braided cable 1.5m (Amazon domestic): $3.00
-- Cardboard insert (cut from offcuts): $0.50
-- Felt liner (cut from $5 roll): $0.20
-- Tape + label: $0.50
-- **Packaging total per unit:** $7.70–8.20. Use **$8.00**.
-- **Packaging total ×10:** $80.00
-
----
-
-## Hidden / Operational Costs
-
-- Single combined AliExpress/LCSC order inbound shipping (ePacket): $25 total
-- Amazon order: free Prime shipping
-- Inventables ABS sheet shipping (Chicago-based, fast to Downers Grove): $10–15
-- Stripe US payment processing (2.9% + $0.30 on $249): $7.52/unit = $75.20 total
-- UPS/FedEx Ground domestic shipping to customer (~3.5kg box, IL origin): $16.00/unit = $160.00 total
-- Defect/spare buffer (1 unit parts cost ~$91): $91.00 total = $9.10/unit
-- Domain (epitome.io): $15/year = $1.50/unit
-- Carrd pro site: $19/year = $1.90/unit
-- Wise bank transfer fee (0.45% on ~$500 AliExpress order): $2.25 total
-- **Hidden costs total:** **~$385–395**
+| Piece | Dimensions |
+|---|---|
+| Base plate | 250mm × 100mm |
+| Left slot outer box | 400mm × 90mm × 35mm |
+| Left slot inner cavity | 400mm × 90mm × 35mm (cardboard prototype — no wall offset) |
+| Centre Step 1 block | 180mm × 100mm × 40mm |
+| Centre Step 2 block | 140mm × 100mm × 40mm |
+| Right slot outer box | 290mm × 70mm × 20mm |
+| Right slot inner cavity | 290mm × 70mm × 20mm (cardboard prototype — no wall offset) |
 
 ---
 
-## Full Batch 1 Totals
+## Production BOM — Electronics & Internals
 
-| Category | Total ×10 |
-|---|---:|
-| Electronics | $909.60 |
-| Enclosure (inc. makerspace membership + finishing + assembly consumables) | $267.00 |
-| Packaging | $80.00 |
-| Hidden / operational | $390.00 |
-| **Grand total** | **$1,646.60** |
-| **Per unit cost** | **$164.66** |
+| # | Part | Spec | Qty | Source | Unit Cost (10 units) |
+|---|---|---|---|---|---|
+| 1 | Qi 20W TX Module | Zone 1 phone pad | 1 | Amazon domestic | $14.00 |
+| 2 | Qi 15W TX Module | Zone 2 buds/phone pad | 1 | Amazon domestic | $11.00 |
+| 3 | Apple Watch Puck PCBA | Zone 3 | 1 | AliExpress + 25% tariff | $2.00 |
+| 4 | Qi watch coil 5W | Zone 3 universal watch | 1 | AliExpress + 25% tariff | $6.25 |
+| 5 | USB-C PD 100W trigger board | Zone 4 | 1 | AliExpress + 25% tariff | $1.88 |
+| 6 | USB-C PD 20W trigger board | Zone 5 | 1 | AliExpress + 25% tariff | $1.56 |
+| 7 | Captive USB-C cable 220mm 100W braided | Zone 4 | 1 | Amazon domestic | $4.00 |
+| 8 | Captive USB-C cable 200mm 20W braided | Zone 5 | 1 | Amazon domestic | $3.00 |
+| 9 | ESP32-C3 SuperMini | MCU | 1 | AliExpress + 25% tariff | $1.58 |
+| 10 | INA3221 chip ×2 + bare breakout PCB ×2 | Monitoring | 1 lot | LCSC chips + JLCPCB PCBs | $3.40 |
+| 11 | Mean Well LRS-150-24 PSU | 156W 24V internal | 1 | LCSC + 25% tariff | $17.31 |
+| 12 | IEC C13 right-angle inlet | Panel mount | 1 | AliExpress + 25% tariff | $3.75 |
+| 13 | WS2811 LED strip (~20 LED section) | Front diffuser | 1 | AliExpress + 25% tariff ($1.75 × 1.25) | $2.19 |
+| 14 | PTC fuse + passives | Safety | 1 lot | Amazon domestic | $1.00 |
+| 15 | Wiring / JST connectors / heat shrink / clips | Internal harness | 1 lot | Amazon domestic | $8.00 |
+| **Electronics subtotal** | | | | | **$81.92/unit** |
 
-**Revenue:** 10 × $249 = **$2,490**
-**Profit:** **$843.40**
-**Per unit margin:** **$84.34**
+---
 
-**Budget note:** Total spend of **$1,646.60** exceeds the **$1,500** budget by **$146.60**. Collect **1 pre-order ($249)** before placing any parts orders. After 1 pre-order: **out-of-pocket = $1,397.60** — inside budget with **$102.40** safety net.
+## Enclosure
+
+| # | Part | Spec | Qty | Unit Cost (10 units) |
+|---|---|---|---|---|
+| 16 | 3D printed centre platform | ABS, school printer, own filament | 1 | $2.00 |
+| 17 | Laser cut ABS base plate | 250×100mm, 3mm ABS | 1 | $1.35 |
+| 18 | Laser cut ABS top panels | 2× panels, 3mm ABS | 1 set | $1.35 |
+| 19 | Laser cut ABS laptop slot walls | 400mm length, 3mm ABS | 1 set | $7.84 |
+| 20 | Laser cut ABS tablet slot walls | 290mm length, 3mm ABS | 1 set | $5.05 |
+| 21 | Frosted acrylic LED diffuser strip | 250×15mm, 3mm | 1 | $0.80 |
+| 22 | Silicone sheet lining | All slots + pad surfaces, ~1,111cm² | 1 lot | $3.50 |
+| 23 | Rubber feet ×4 + M3 fasteners + grommets | Base hardware | 1 set | $2.60 |
+| 24 | Cardboard insert + felt liner | Packaging inner | 1 | $0.70 |
+| 25 | Laser cutting setup fee (amortised over 10) | One-time job setup | 1 | $1.50 |
+| 26 | ABS cement + finishing consumables | Primer, paint, sandpaper | 1 lot | $2.00 |
+| **Enclosure subtotal** | | | | **$28.69/unit** |
+
+---
+
+## Packaging
+
+| # | Item | Spec | Qty | Unit Cost |
+|---|---|---|---|---|
+| 27 | Rigid kraft box | ~300×150×120mm (new compact size) | 1 | $3.00 |
+| 28 | IEC C13 braided cable 1.5m | Right-angle C13 end | 1 | $3.00 |
+| 29 | Warranty card | 12-month + QR | 1 | $0.25 |
+| 30 | Quick-start guide | 4-panel fold | 1 | $0.15 |
+| 31 | Tape + shipping label | Per unit | 1 | $0.50 |
+| **Packaging subtotal** | | | | **$6.90/unit** |
+
+---
+
+## Cost Totals by Volume
+
+| Quantity | Method | Per-Unit Build Cost | Notes |
+|---|---|---|---|
+| **10 units (Batch 1)** | School 3D print + local laser cut ABS | **~$117.51** | Build cost only, excl. shipping/fees |
+| 50 units (Batch 2) | Local laser cut + volume electronics | ~$92–99 | After supplier relationships established |
+
+---
+
+## Batch 1 — 10 Units, US (Downers Grove IL), August 2026
+
+| Category | Per Unit | ×10 Total |
+|---|---|---|
+| Electronics | $81.92 | $819.20 |
+| Enclosure (school print + local laser) | $28.69 | $286.90 |
+| Packaging | $6.90 | $69.00 |
+| UPS/FedEx Ground to customer (~2kg box) | $11.00 | $110.00 |
+| Stripe fees (2.9% + $0.30 on $249) | $7.52 | $75.20 |
+| Defect/spare buffer (1 unit parts cost) | $9.19 | $91.90 |
+| Domain + Carrd landing page | $1.50 | $15.00 |
+| **Total real cost** | **$146.72** | **$1,467.20** |
+
+**Revenue & Profit:**
+
+| Units Sold | Revenue @ $249 | Total Cost | Profit / (Loss) |
+|---|---|---|---|
+| 1 | $249 | $1,467 | ($1,218) |
+| 5 | $1,245 | $1,467 | ($222) |
+| 7 | $1,743 | $1,467 | $276 |
+| **10** | **$2,490** | **$1,467** | **$1,023** |
+
+**Break-even: 6 units sold.**
+**Budget note: $1,467 total spend is within the $1,500 build budget with $33 safety net. Take 1 pre-order before ordering parts to create a comfortable $282 safety net.**
 
 ---
 
 ## Approved Suppliers
 
-| Supplier | Use for |
+| Supplier | Use For |
 |---|---|
-| AliExpress (single combined order) | ESP32-C3, PD boards, Apple Watch puck, Qi coil, INA3221 chip, PSU, WS2811, IEC inlet, wiring |
-| LCSC (combine with AliExpress order) | INA3221 chip, PSU, passives |
-| Amazon US (domestic, no tariff) | Qi 20W/15W modules, USB-C cables, wiring supplements, rubber feet, M3 kit, silicone sheet, flat-pack boxes, IEC cable |
-| Inventables (Chicago) | ABS sheet, frosted acrylic strip |
-| JLCPCB | Bare INA3221 breakout PCBs (order with AliExpress/LCSC) |
-| Pumping Station One (Chicago makerspace) | Laser cutting all ABS + acrylic panels |
+| AliExpress (verified sellers) | ESP32, PD boards, Apple Watch puck, Qi coil, WS2811, IEC inlet |
+| LCSC | Mean Well PSU, INA3221 chips, passives |
+| JLCPCB | Bare INA3221 breakout PCBs |
+| Amazon US (Prime, US warehouse) | Qi modules, cables, wiring, rubber feet, M3 hardware, silicone sheet |
+| Inventables (Chicago) | ABS sheet 3mm, frosted acrylic strip |
+| Pumping Station One (Chicago) | Laser cutting all ABS panels and acrylic diffuser |
 | School makerspace | 3D printing centre platform ×10 |
-| Home Depot / Walmart (Downers Grove) | Acetone, sandpaper, Rust-Oleum primer/paint/clear coat |
-| Microcenter (Westmont, IL — 7 min away) | Backup ESP32, connectors, soldering supplies |
+| Home Depot / Walmart (Downers Grove) | Acetone, primer, paint, sandpaper |
+| Microcenter (Westmont IL) | Backup ESP32, soldering supplies |
+| Wise.com | International transfers to AliExpress/LCSC |
 
 ---
 
-## Tariff Note (August 20 2026)
+## Tariff Note (August 2026)
 
 - Section 301: **25% active** on Chinese electronics
 - Section 122: **EXPIRED July 24 2026** — no longer applied
