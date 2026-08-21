@@ -6,11 +6,11 @@
 
 ## Budget Summary
 
-- **Total cost:** $1,646.60
-- **Personal spend needed (after 1 pre-order):** $1,397.60
-- **Safety net:** $102.40
+- **Total cost:** $1,467.20
+- **Personal spend needed (after 1 pre-order):** $1,218.20
+- **Safety net:** $281.80
 - **Revenue:** $2,490
-- **Profit:** $843.40
+- **Profit:** $1,022.80
 
 ## Pricing
 

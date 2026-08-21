@@ -18,17 +18,17 @@ blender --background --python scripts/generate_render.py
 
 The render brief should now include:
 
-- Captive USB-C cable indicators in Zone 4 and Zone 5 slots (Zone 4 cable is 220mm)
+- Captive USB-C cable indicators in Zone 4 and Zone 5 slots (Zone 4 cable is 220mm, hangs from top of slot)
 - 3-step tapered centre platform:
   - Step 1 (180×110×15) with 160×100 full silicone 20W phone surface
   - Step 2 (140×100×15) with 90×65 buds/phone pad (15W)
   - Step 3 (100×80×15) with rear raised watch cradle (Apple puck + Qi)
-- Brushed aluminium riser faces on each step with reinforcement intent
-- Slot stop shelves and rear cable clips
+- All riser faces: matte ABS (no aluminium)
+- Devices on thin edge in slots (like books on a shelf), cable from top of each slot
 - Right-angle rear IEC C13 inlet routing downward
 - PSU placement represented under laptop slot cavity
-- **Two SKU renders:** Standard (~530mm width) and XL (~700mm width)
-- **Three color renders:** Black, White, Midnight Blue
+- **One SKU render for Batch 1:** Standard (~250mm wide × ~100mm deep)
+- **One color render:** Black (Batch 1 only)
 
 Coordinate source of truth: [component-positions.md](component-positions.md)
 

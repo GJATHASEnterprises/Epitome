@@ -20,7 +20,7 @@ Zone 4 uses USB-C PD up to 100W through a **captured 220mm braided USB-C cable**
 | Non-USB-C legacy laptops | No USB-C PD charge path |
 | Barrel-only charge designs | No USB-C input |
 
-**Slot fit update:** 28mm opening + stop shelf design improves case/foot/hinge clearance.
+**Slot fit update:** 35mm slot width, device on thin edge (like a book on a shelf), cable from top — fits any laptop up to ~28mm thick including case.
 
 ---
 
@@ -76,7 +76,7 @@ Zone 5 supports USB-C tablets through the captive 200mm braided cable.
 - Galaxy Tab / Pixel Tablet / Surface Go USB-C models: ✅
 - Lightning-only legacy tablets: ❌ (adapter-dependent)
 
-Slot fit update: **20mm opening** supports common tablet cases.
+Slot fit update: **20mm slot width**, device on thin edge (like a book on a shelf), cable from top — fits any tablet up to ~16mm thick including case.
 
 ---
 
@@ -87,4 +87,4 @@ Slot fit update: **20mm opening** supports common tablet cases.
 - Zone 1: 20W
 - Zone 2: 15W
 - Zone 3: 5W shared
-- System total: **155W** (160W PSU, 5W headroom, firmware cap 150W)
+- System total: **155W** (156W PSU Mean Well LRS-150-24, 1W headroom, firmware cap 150W)

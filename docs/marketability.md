@@ -10,16 +10,16 @@
 | **Tagline options** | "Every device. One dock." / "Universal desk power." / "One dock for all your Qi + USB-C gear." |
 | **Target customer** | Desk users with mixed ecosystems (Apple + Android + Windows) |
 | **Brand tone** | Clean, confident, premium utility |
-| **Colors** | Black, White, Midnight Blue (limited launch) |
-| **Price** | Standard $249 / XL $279 |
+| **Colors** | Black (Batch 1) |
+| **Price** | $249 |
 
 ---
 
 ## Key Selling Points
 
 1. **True universal compatibility:** all Qi phones, all USB-C laptops/tablets, all Qi watches.
-2. **Captive slot cables:** safer than fixed rear ports and easier to use daily.
-3. **Dual-SKU strategy:** Standard for mainstream desks, XL for power users.
+2. **Captive slot cables:** device slides in on thin edge, cable hangs from top of slot — natural plug-in on insertion.
+3. **Compact footprint:** ~250mm wide (about the size of a large book) — fits any desk.
 4. **3-step charging theatre:** tapered centre platform with dedicated phone, buds, and watch stages.
 5. **Zone 3 dual-mode watch charging:** Apple puck plus Qi coil, no accessory swap.
 6. **Thermal-aware architecture:** PSU moved under laptop slot, away from Qi zones.
@@ -28,9 +28,10 @@
 
 ## Physical Features
 
-- Standard width ~530mm (launch SKU), XL ~700mm
-- Laptop slot opening 28mm, tablet slot opening 20mm
-- 5mm rear stop shelf + silicone cable clip in both slots
+- ~250mm wide (compact footprint — about the size of a large book)
+- Laptop slot 35mm wide / 400mm long, device on thin edge, cable from top
+- Tablet slot 20mm wide / 290mm long, device on thin edge, cable from top
+- Captive cable hangs from top of each slot for natural plug-in on device insertion
 - 3-step tapered centre stack (180/140/100 widths, 45mm total height)
 - Step riser reinforcement (internal ribbing on each riser)
 
@@ -49,11 +50,11 @@ See [compatibility.md](compatibility.md) for full list.
 
 ## Pricing
 
-| | Standard | XL |
-|-|---:|---:|
-| **Early Bird** | $199 | $229 |
-| **Pre-order** | $249 | $279 |
-| **Retail** | $279 | $309 |
+| | Standard |
+|-|---:|
+| **Pre-order** | $249 |
+
+> $249 flat. No early bird, no retail tier. XL is Batch 2+ and not currently priced.
 
 ---
 
@@ -63,7 +64,7 @@ See [compatibility.md](compatibility.md) for full list.
 |------------|---------------|-----------------|--------------------------|-----------------------|
 | Typical 3-in-1 pad | $129–$199 | ❌ | ❌ | ❌ |
 | Generic desktop Qi stand | $59–$119 | ❌ | ⚠️ limited | ❌ |
-| **Epitome Penta** | **$249 / $279** | ✅ 100W | ✅ Apple puck + Qi | ✅ |
+| **Epitome Penta** | **$249** | ✅ 100W | ✅ Apple puck + Qi | ✅ |
 
 ---
 
@@ -77,7 +78,7 @@ See [compatibility.md](compatibility.md) for full list.
 | Zone 4 | USB-C PD captive cable | 100W |
 | Zone 5 | USB-C PD captive cable | 20W |
 
-**Total draw at full load: 155W** (**160W PSU, 5W headroom**; firmware soft cap at 150W).
+**Total draw at full load: 155W** (**156W PSU Mean Well LRS-150-24, 1W headroom**; firmware soft cap at 150W).
 
 ---
 

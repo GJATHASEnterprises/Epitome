@@ -1,5 +1,7 @@
 # Epitome Penta — 3D Print Finishing Guide
 
+> This guide covers finishing for all ABS parts — both the 3D printed centre platform and the laser cut slot walls, base, and top panels.
+
 All centre platforms are 3D printed in ABS and require finishing before assembly. This guide covers the full process to achieve a professional matte black surface indistinguishable from injection moulded at normal viewing distance.
 
 ## Supplies needed (covers all 10 units)

@@ -55,16 +55,16 @@ Additions for this revision:
 
 ### Week 1 — Order Everything
 - Order all electronics and mechanical parts
-- Order Standard enclosure parts with hybrid method (3D centre + laser slots + vacuum base)
+- Order Standard enclosure parts with hybrid method (3D centre + laser slots + laser base)
 
 ### Week 2 — Cardboard Mock
 
 **Goal:** Validate ergonomics and slot clearances before fabrication.
 
 Standard mock dimensions:
-- Base: **530×300mm**
-- Laptop slot: **320×25×28mm opening**
-- Tablet slot: **290×25×20mm opening**
+- Base: **250×100mm**
+- Laptop slot: **400mm long × 35mm wide × 90mm deep**, device on thin edge
+- Tablet slot: **290mm long × 20mm wide × 70mm deep**, device on thin edge
 - Step 1: **180×110×15mm**
 - Step 2: **140×100×15mm**
 - Step 3: **100×80×15mm**
@@ -73,7 +73,7 @@ Placement checks:
 - Step 1 full-width 160×100 phone surface (20W)
 - Step 2 buds pad centred (90×65, 15W)
 - Watch cradle at rear of Step 3
-- 5mm stop shelf + cable clip in each slot
+- Cable hang point at top of each slot — verify cable reach to device port when fully inserted
 
 ### Week 3 — Electronics Bench Test
 
@@ -91,8 +91,8 @@ Placement checks:
 - [ ] Mount PSU under laptop slot cavity
 - [ ] Install right-angle C13 inlet
 - [ ] Populate PCB PTC resettable fuse protection
-- [ ] Install slot stop shelves + silicone clips
-- [ ] Confirm captive cable pull/retract usability
+- [ ] Route captive cables from top of each slot
+- [ ] Confirm captive cable reach to device port when fully inserted
 - [ ] Confirm thermal stability under simultaneous high-load test
 
 ---

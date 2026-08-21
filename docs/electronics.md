@@ -5,7 +5,7 @@
 - MCU: ESP32-C3 Mini
 - Monitoring: **INA3221 #1 (Zones 1–3) + INA3221 #2 (Zones 4–5 + spare/system)**
 - Ambient sensor: **Removed (BH1750 dropped for cost reduction)**
-- Power: internal **160W** AC/DC PSU + **right-angle IEC C13 inlet**
+- Power: internal **156W** AC/DC PSU (Mean Well LRS-150-24, trim-adjusted to ~20V) + **right-angle IEC C13 inlet**
 - Outputs: 20W Qi (Zone 1), 15W Qi (Zone 2), Zone 3 dual charger (Apple puck + Qi coil sharing 5W), 2×USB-C PD branches (100W + 20W)
 - Lighting: WS2811 addressable strip
 
@@ -21,7 +21,7 @@ Key placement updates:
 
 ## Power Path
 
-`Right-angle IEC C13 -> 160W PSU (under laptop slot) -> zone branches + regulation -> monitoring + protections`
+`Right-angle IEC C13 -> 156W PSU (Mean Well LRS-150-24, under laptop slot) -> zone branches + regulation -> monitoring + protections`
 
 - Zone 1: Qi 20W + polyfuse + thermistor
 - Zone 2: Qi 15W + polyfuse + thermistor
@@ -39,7 +39,7 @@ Key placement updates:
 | Zone 4 Laptop | 100W |
 | Zone 5 Tablet/Phone | 20W |
 | **Total** | **155W** |
-| PSU (160W) headroom | **5W spare** |
+| PSU (156W Mean Well LRS-150-24) headroom | **1W spare** |
 | Firmware soft cap | **150W total draw** |
 
 ## PCB Layout Notes
@@ -75,7 +75,7 @@ This section is a full electrical reference intended for design review, prototyp
 Epitome Penta uses a centralized internal AC/DC supply to generate a 20V primary DC rail. That rail is split into five protected zone branches plus a low-voltage logic branch.
 
 Architecture update highlights:
-- PSU baseline moved to 160W class with 150W firmware soft cap.
+- PSU is Mean Well LRS-150-24 (156W nominal) with 150W firmware soft cap.
 - Zone 3 supports Apple Watch magnetic protocol plus generic Qi-watch charging in one cradle footprint.
 - Zone 4 and Zone 5 use captive braided cables.
 - Ambient auto-dim sensor removed; brightness is app-controlled.
@@ -119,7 +119,7 @@ Architecture update highlights:
 | Model baseline | Mean Well LRS-150-24 or equivalent (trim-adjusted to ~20V output target) |
 | Input | 100–240VAC |
 | Inlet | **Rear right-angle IEC C13** |
-| Nominal available output | 160W usable target |
+| Nominal available output | 156W (Mean Well LRS-150-24) | |
 | System full-load design | **155W total branch budget** |
 | Headroom | **5W** |
 | Firmware global cap | **150W** |
@@ -195,7 +195,7 @@ PSU location: **under laptop slot cavity**.
 
 - PSU positioned under Zone 4 cavity, away from centre wireless zones
 - Wireless zones physically separated from highest-current branch
-- 5W power headroom retained, backed by 150W firmware cap to avoid sustained edge load
+- 1W power headroom (155W load, 156W PSU), backed by 150W firmware cap to avoid sustained edge load
 
 ## 13) PCB Layout Notes (Manufacturing-Facing)
 
@@ -214,10 +214,10 @@ PSU location: **under laptop slot cavity**.
 | Zone 4 | USB-C PD laptop branch | 100W |
 | Zone 5 | USB-C PD tablet/phone branch | 20W |
 | **Total load** |  | **155W** |
-| **PSU nominal output budget** |  | **160W** |
-| **Headroom** |  | **5W** |
+| **PSU nominal output budget** |  | **156W (Mean Well LRS-150-24)** |
+| **Headroom** |  | **1W** |
 | **Firmware soft cap** |  | **150W total draw** |
 
 ## 15) Design Intent Summary
 
-The electronics architecture remains modular and monitorable, while now adding universal watch support, safer captive cable UX for both slots, dual INA3221 monitoring, and lower-cost high-confidence power architecture using a managed 160W PSU envelope.
+The electronics architecture remains modular and monitorable, while now adding universal watch support, safer captive cable UX for both slots, dual INA3221 monitoring, and lower-cost high-confidence power architecture using a managed 156W PSU envelope (Mean Well LRS-150-24).

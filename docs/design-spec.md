@@ -16,20 +16,20 @@ Epitome Penta
 Epitome
 
 ## Color Variants
-- **Black** — Gunmetal brushed aluminum top, matte black soft-touch ABS base
-- **White** — Silver brushed aluminum top, matte white soft-touch ABS base
-- **Midnight Blue (Limited Launch SKU)** — Deep navy brushed aluminum top, matte navy-black ABS base
+- **Black** — Matte ABS, all surfaces (Batch 1)
+
+> White and Midnight Blue are planned for a future batch. Black only for Batch 1.
 
 ---
 
 ## Overall Dimensions
 
-| SKU | Overall width | Overall depth | Corner radius | Top plate thickness | Base material |
+| SKU | Overall width | Overall depth | Corner radius | Top plate material | Base material |
 |---|---:|---:|---|---|---|
-| **Penta Standard** | **~530mm** | 300mm | R20mm | 1.5mm brushed aluminium | Matte ABS |
-| **Penta XL** | **~700mm** | 300mm | R20mm | 1.5mm brushed aluminium | Matte ABS |
+| **Penta Standard** | **~250mm** | ~100mm | R10mm | 3mm matte ABS | Matte ABS |
+| **Penta XL** | ~320mm | ~100mm | R10mm | 3mm matte ABS | Matte ABS |
 
-Launch sequence: **Standard first**, then XL.
+> XL is Batch 2+. Standard launches first. No aluminium anywhere in Batch 1.
 
 ---
 
@@ -37,27 +37,29 @@ Launch sequence: **Standard first**, then XL.
 
 ### Left Slot — Laptop (Zone 4)
 
-| Dimension | Standard | XL |
-|---|---:|---:|
-| Slot width (internal) | 320mm | 400mm |
-| Slot depth (front to rear wall) | 25mm | 25mm |
-| Slot height (opening) | **28mm** | **28mm** |
-| Entry | Open front — laptop slides in on side | Open front — laptop slides in on side |
-| Charging interface | **Captive braided USB-C to USB-C cable (220mm, 100W)** | **Captive braided USB-C to USB-C cable (220mm, 100W)** |
-| Rear alignment | 5mm silicone-covered stop shelf + cable clip above shelf | 5mm silicone-covered stop shelf + cable clip above shelf |
-| Sized for | Up to 15" laptops | Up to 17" laptops |
+| Dimension | Standard |
+|---|---:|
+| Slot length (left to right) | 400mm |
+| Slot depth (front to back, stability) | 90mm |
+| Slot width (opening thickness) | **35mm** |
+| Entry | Device slides in on its **thin edge** (like a book on a shelf) |
+| Charging interface | **Captive braided USB-C cable (220mm, 100W) hangs from top of slot** |
+| Alignment | Cable at top of slot — device plugs in on insertion |
+| Sized for | Any laptop up to 17" class (~28mm thick including case) |
+
+> XL extends slot length to 400mm (same) with wider dock footprint — Batch 2+.
 
 ### Right Slot — iPad (Zone 5)
 
-| Dimension | Standard | XL |
-|---|---:|---:|
-| Slot width (internal) | 290mm | 290mm |
-| Slot depth (front to rear wall) | 25mm | 25mm |
-| Slot height (opening) | **20mm** | **20mm** |
-| Entry | Open front — tablet slides in on side | Open front — tablet slides in on side |
-| Charging interface | **Captive braided USB-C to USB-C cable (200mm, 20W)** | **Captive braided USB-C to USB-C cable (200mm, 20W)** |
-| Rear alignment | 5mm silicone-covered stop shelf + cable clip above shelf | 5mm silicone-covered stop shelf + cable clip above shelf |
-| Sized for | iPad/tablets with cases up to ~20mm | iPad/tablets with cases up to ~20mm |
+| Dimension | Standard |
+|---|---:|
+| Slot length (left to right) | 290mm |
+| Slot depth (front to back, stability) | 70mm |
+| Slot width (opening thickness) | **20mm** |
+| Entry | Device slides in on its **thin edge** (like a book on a shelf) |
+| Charging interface | **Captive braided USB-C cable (200mm, 20W) hangs from top of slot** |
+| Alignment | Cable at top of slot — device plugs in on insertion |
+| Sized for | Any tablet up to iPad Pro 13" in case (~16mm thick) |
 
 ---
 
@@ -71,7 +73,7 @@ Launch sequence: **Standard first**, then XL.
 
 - Total centre platform height: **45mm**
 - Taper rule: each step is **40mm narrower** than the one below
-- Every riser face uses brushed aluminium + internal ribbing reinforcement
+- All riser faces: 3D printed ABS + internal ribbing reinforcement
 
 ### Zone 1 (Step 1 base)
 
@@ -105,16 +107,18 @@ Launch sequence: **Standard first**, then XL.
 
 ## Full Dimensions Summary Table
 
-| Feature | Standard | XL |
-|---|---|---|
-| Overall dock | ~530 × 300mm | ~700 × 300mm |
-| Left (laptop) slot — internal | 320 × 25mm, 28mm opening | 400 × 25mm, 28mm opening |
-| Right (iPad) slot — internal | 290 × 25mm, 20mm opening | 290 × 25mm, 20mm opening |
-| Centre Step 1 | 180 × 110 × 15mm | 180 × 110 × 15mm |
-| Centre Step 2 | 140 × 100 × 15mm | 140 × 100 × 15mm |
-| Centre Step 3 | 100 × 80 × 15mm | 100 × 80 × 15mm |
-| Zone 1 silicone surface | 160 × 100mm | 160 × 100mm |
-| Zone 2 dish | 90 × 65mm | 90 × 65mm |
+| Feature | Standard |
+|---|---|
+| Overall dock | ~250 × 100mm |
+| Left (laptop) slot | 400mm long × 90mm deep × 35mm wide, device on thin edge, cable from top |
+| Right (iPad) slot | 290mm long × 70mm deep × 20mm wide, device on thin edge, cable from top |
+| Centre Step 1 | 180 × 110 × 15mm |
+| Centre Step 2 | 140 × 100 × 15mm |
+| Centre Step 3 | 100 × 80 × 15mm |
+| Zone 1 silicone surface | 160 × 100mm |
+| Zone 2 dish | 90 × 65mm |
+
+> XL (Batch 2+): ~320mm wide × ~100mm deep, same slot and platform geometry.
 
 ---
 
@@ -123,8 +127,8 @@ Launch sequence: **Standard first**, then XL.
 | Device | Model sized for | Key dimension |
 |---|---|---|
 | Phone | iPhone 16 Pro Max | 163mm × 77mm |
-| Tablet | iPad Pro 13" in case | Up to ~20mm total thickness |
-| Laptop | 15" class (Standard) / 17" class (XL) | Up to ~28mm slot clearance |
+| Tablet | iPad Pro 13" in case | Up to ~16mm total thickness |
+| Laptop | 17" class (Standard slot 400mm) | Up to ~28mm slot clearance |
 | Watch | Apple Watch Ultra 2 + Qi watches | Step 3 raised cradle zone |
 
 ---
@@ -132,15 +136,17 @@ Launch sequence: **Standard first**, then XL.
 ## Zone Layout Diagram
 
 ```text
-[TOP VIEW — Penta Standard ~530mm wide]
+[TOP VIEW — Penta Standard ~250mm wide × ~100mm deep]
 
-+-------------------+------------------------------+-------------------+
-| Laptop Slot Z4    |    3-Step Centre Platform   | iPad Slot Z5      |
-| 320×25 / 28mm     | Step 3: Watch (rear) 5W     | 290×25 / 20mm     |
-| Captive USB-C     | Step 2: Buds 90×65, 15W     | Captive USB-C     |
-| 220mm cable 100W  | Step 1: Phone 160×100, 20W  | 200mm cable 20W   |
-| 5mm stop shelf    | 45mm total stack height      | 5mm stop shelf    |
-+-------------------+------------------------------+-------------------+
++------------------+------------------------------+------------------+
+| Laptop Slot Z4   |   3-Step Centre Platform    | iPad Slot Z5     |
+| 400mm long       | Step 3: Watch (rear) 5W     | 290mm long       |
+| 90mm deep        | Step 2: Buds 90×65, 15W     | 70mm deep        |
+| 35mm wide        | Step 1: Phone 160×100, 20W  | 20mm wide        |
+| Captive USB-C    | 45mm total stack height      | Captive USB-C    |
+| 220mm cable 100W | 40mm taper per step width   | 200mm cable 20W  |
+| cable from top   | device on thin edge          | cable from top   |
++------------------+------------------------------+------------------+
 Rear: right-angle IEC C13 inlet, PSU under laptop slot cavity
 ```
 
@@ -158,10 +164,10 @@ Rear: right-angle IEC C13 inlet, PSU under laptop slot cavity
 - Apple Watch puck + Qi coil in same cradle, one device at a time
 
 ### Zone 4 — Laptop (USB-C PD 100W)
-- Captive 220mm braided USB-C cable from internal PD board
+- Captive 220mm braided USB-C cable hangs from top of slot; device plugs in on insertion
 
 ### Zone 5 — Tablet (USB-C PD 20W)
-- Captive 200mm braided USB-C cable from internal PD board
+- Captive 200mm braided USB-C cable hangs from top of slot; device plugs in on insertion
 
 ---
 
@@ -179,9 +185,9 @@ Rear: right-angle IEC C13 inlet, PSU under laptop slot cavity
 
 See [electronics.md](electronics.md) for full spec.
 
-- **PSU:** Internal 160W AC/DC, relocated under laptop slot cavity
+- **PSU:** Mean Well LRS-150-24 (156W, 24V, trim-adjusted to ~20V output), under laptop slot cavity
 - **Inlet:** Rear right-angle IEC C13
-- **Power budget:** **155W total load, 5W headroom**
+- **Power budget:** **155W total load, 1W headroom**
 - **Firmware cap:** global soft power cap at **150W**
 - **Certification planning required:** FCC, CE, UKCA, RCM before retail in target markets
 
@@ -189,27 +195,27 @@ See [electronics.md](electronics.md) for full spec.
 
 ## Manufacturing Method (Batch 1)
 
-- 3D print ABS: centre platform only (3-step geometry)
-- Laser cut + bent ABS: left/right slot walls
-- Vacuum-formed ABS: base
-- Laser cut + bent aluminium: top plates + step riser faces
+- 3D print ABS: centre platform only (3-step geometry, school makerspace printer, own filament)
+- Laser cut ABS: slot walls, base plate, top panels (Pumping Station One, Chicago)
+- All surfaces: sand → acetone vapour smooth → primer → Rust-Oleum 2X Matte Black → clear coat
+- No vacuum-formed parts. No aluminium. All ABS.
 
-Batch 1 enclosure target: **~$40–62 per unit**.
+Batch 1 enclosure target: **~$28.69/unit**.
 
 ---
 
 ## Packaging
 
-- Standard retail box target: **~580×340×100mm**
-- XL retail box target: **~750×340×100mm**
-- Moulded pulp tray replaces die-cut foam
+- Standard retail box target: **~300×150×120mm** rigid kraft
+- Insert: cardboard offcut + felt liner
 - Warranty/setup docs provided via QR only (`epitome.io/warranty`, `epitome.io/setup`)
 
 ---
 
 ## Price
 
-| SKU | Early Bird | Pre-Order | Retail |
-|---|---:|---:|---:|
-| Penta Standard | $199 | $249 | $279 |
-| Penta XL | $229 | $279 | $309 |
+| SKU | Price |
+|---|---:|
+| Penta Standard | **$249** |
+
+> $249 flat — no early bird pricing, no retail tier. XL is Batch 2+ and not priced for Batch 1.
