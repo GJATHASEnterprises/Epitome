@@ -5,22 +5,26 @@
 | Item | Spec | Cost/unit |
 |---|---|---|
 | Epitome Penta unit | Standard or XL SKU | — |
-| IEC C13 power cable | 1.5m braided, right-angle C13 end | ~$3.00 |
-| Warranty registration card | 85×55mm, matte laminate, QR code | ~$0.25 |
-| Quick-start guide | 4-panel fold, includes captive-cable instructions | ~$0.15 |
+| IEC C13 power cable | 1.5m braided, right-angle C13 end | ~$2.50–$3.50 |
+| Rigid kraft box (Standard / XL) | Retail carton | ~$3.20–$5.60 |
+| Moulded pulp tray | Apple-style cardboard tray for dock + cable | ~$1.50–$2.50 |
 
 ## Why bundle the IEC cable
 Bundling avoids out-of-box friction and supports clean downward routing from the right-angle C13 inlet.
 
-## Warranty Registration Card
-- Front: EPITOME PENTA logo + QR
-- Back: serial field + purchase date + 12-month warranty summary
-- QR links to warranty/returns page
+## QR-Only Documentation Strategy
+
+Printed inserts removed for cost reduction and cleaner unboxing:
+
+- **Warranty card removed**
+- **Printed quick-start guide removed**
+- Warranty terms and registration now at **`epitome.io/warranty`** via QR code printed on box base
+- Setup guide now at **`epitome.io/setup`** via QR code printed on dock base
 
 ## Box Spec (retail)
 - **Penta Standard:** ~580×340×100mm
 - **Penta XL:** ~750×340×100mm
-- Insert: custom foam/pulp tray for dock + cable
+- Insert: **moulded pulp tray** (replaces die-cut foam)
 - Label: include "Captive slot cables" and "Universal Qi + USB-C compatibility"
 
 ## Warranty Terms Summary

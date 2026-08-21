@@ -14,7 +14,7 @@
 The enclosure remains split into three sections left to right:
 
 1. **Left slot** — laptop bay (Zone 4)
-2. **Centre platform** — Step 1 + Step 2 (Zones 1–3)
+2. **Centre platform** — **Step 1 + Step 2 + Step 3** (Zones 1–3)
 3. **Right slot** — tablet bay (Zone 5)
 
 Launch sequence: Standard first, XL second.
@@ -29,7 +29,7 @@ Launch sequence: Standard first, XL second.
 - Slot opening: **28mm**
 - Silicone lining on floor and rear wall
 - **5mm silicone-covered rear stop shelf** supports device edge
-- **Captive braided USB-C to USB-C cable (300mm, 100W)**, fixed internally to PD board
+- **Captive braided USB-C to USB-C cable (220mm, 100W)**, fixed internally to PD board
 - Cable free end stores coiled on rear wall via silicone clip (above stop shelf)
 
 ---
@@ -47,24 +47,40 @@ Launch sequence: Standard first, XL second.
 
 ---
 
-## Centre Platform — Step 1 (Phone — Zone 1)
+## Centre Platform — 3-Step Tapered Geometry
 
-- Height: base level (0mm above dock surface)
-- Qi wireless pad: 50mm coil, 15W, N52 ring magnets
-- Silicone-lined recessed dish: 90×65mm, R10, 2.5mm deep
+| Step | Width | Depth | Height | Zone | Content |
+|---|---:|---:|---:|---|---|
+| Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle — Apple puck + Qi coil |
+| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds/Phone pad — 15W Qi, 90×65mm landscape |
+| Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad — 20W Qi, full-width silicone surface |
 
----
+- Total centre platform height: **45mm** (3 × 15mm)
+- Taper rule: each step is **40mm narrower** than the one below
+- Riser faces: brushed aluminium
+- Each riser requires **internal ribbing reinforcement**
 
-## Centre Platform — Step 2 (Watch + Buds — Zones 2 & 3)
+### Step 1 (Zone 1 — Phone)
 
-- Height: **+40mm** above Step 1
-- Step face: brushed aluminium front face
-- **Step riser reinforcement required:** internal ribbing or metal insert to prevent stress cracking under arm pressure
-- **Watch cradle (Zone 3):** moved to rear wall edge of Step 2, slightly raised
-  - Apple Watch magnetic puck + integrated Qi coil (5W budget, one device at a time)
-- **Buds / Phone pad (Zone 2):** moved to front edge of Step 2
-  - Qi wireless **15W**
-  - 90×65mm dish with subtle 1mm silicone ridge marking a 68×48mm inner buds zone
+- Full-width flat silicone wireless surface (no recessed dish)
+- Silicone area: **160mm × 100mm**
+- Qi TX: **20W**, centred coil under surface
+- Magnetic alignment: N52 MagSafe-style ring
+- Phone orientation target: **landscape**
+
+### Step 2 (Zone 2 — Buds/Phone)
+
+- 90×65mm landscape silicone dish
+- 15W Qi coil centred
+- 1mm subtle silicone ridge defining **68×48mm** inner buds zone
+- Slight phone side overhang on this step is acceptable and expected
+
+### Step 3 (Zone 3 — Watch)
+
+- Rear-position watch cradle on Step 3 top
+- Slight raised profile for premium visibility
+- Apple Watch magnetic puck + Qi watch coil
+- Shared 5W budget, one watch charging path active at a time
 
 ---
 
@@ -73,6 +89,7 @@ Launch sequence: Standard first, XL second.
 - **Right-angle IEC C13 inlet:** 28×20mm cutout, cable routed downward
 - Captive cable clips for Zones 4 and 5 mounted above slot stop shelves
 - Rear wiring channel continues to carry all internal harnesses
+- Separate inlet fuse holder removed from rear wall (protection moved to PCB PTC)
 
 ---
 
@@ -83,6 +100,23 @@ Launch sequence: Standard first, XL second.
 - 8× underside vent slots: 40×4×2.5mm
 - Snap-fit base + M3 screws for service access
 - **PSU cavity moved under laptop slot** for thermal isolation from centre Qi zones
+
+---
+
+## Manufacturing Method (Batch 1 Cost-Optimized Hybrid)
+
+- **Centre platform (3-step):** 3D printed ABS (complex geometry only)
+- **Slot walls (left + right):** laser cut + bent ABS sheet
+- **Top aluminium plates + step riser faces:** laser cut 1.5mm aluminium sheet, bent
+- **Base:** vacuum-formed ABS sheet
+
+### Batch 1 Enclosure Cost Targets (15 units)
+
+- 3D print centre platform only (~120mm × 120mm × 45mm volume): **$18–28 / unit**
+- Laser cut ABS slot walls: **$8–12 / unit**
+- Vacuum-formed base: **$6–10 / unit**
+- Aluminium laser cut + bend set: **$8–12 / unit**
+- **Total enclosure Batch 1:** **~$40–62 / unit** (down from ~$45–65 full 3D print)
 
 ---
 

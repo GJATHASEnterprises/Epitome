@@ -4,7 +4,7 @@
 
 ## Laptop Compatibility (Zone 4 — USB-C PD 100W)
 
-Zone 4 uses USB-C PD up to 100W through a **captured 300mm braided USB-C cable**. Any USB-C charging laptop is compatible.
+Zone 4 uses USB-C PD up to 100W through a **captured 220mm braided USB-C cable**. Any USB-C charging laptop is compatible.
 
 | Device Category | Compatible? | Notes |
 |---|---|---|
@@ -26,7 +26,7 @@ Zone 4 uses USB-C PD up to 100W through a **captured 300mm braided USB-C cable**
 
 ## Phone Compatibility
 
-### Zone 1 — 15W Qi Wireless
+### Zone 1 — 20W Qi Wireless
 All Qi-compatible phones are supported.
 
 ### Zone 2 — 15W Qi Wireless
@@ -37,7 +37,7 @@ Any USB-C phone is supported via captive cable.
 
 ### 3 Phones + 1 Laptop Simultaneously
 Supported configuration:
-- Zone 1: Phone (15W Qi)
+- Zone 1: Phone (20W Qi)
 - Zone 2: Phone/earbuds (15W Qi)
 - Zone 4: Laptop (100W)
 - Zone 5: Phone/tablet (20W)
@@ -46,7 +46,7 @@ Supported configuration:
 
 ## Apple Watch Compatibility (Zone 3)
 
-Zone 3 now supports both:
+Zone 3 supports both:
 1. **Apple Watch magnetic puck charging**, and
 2. **Qi watch charging** for compatible non-Apple watches.
 
@@ -84,6 +84,7 @@ Slot fit update: **20mm opening** supports common tablet cases.
 
 - Zone 4 max: 100W
 - Zone 5 max: 20W
+- Zone 1: 20W
 - Zone 2: 15W
 - Zone 3: 5W shared
-- System total: **155W** (180W PSU, 25W headroom)
+- System total: **155W** (160W PSU, 5W headroom, firmware cap 150W)

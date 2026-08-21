@@ -32,19 +32,19 @@ Epitome Penta is a 5-zone charging dock designed for **all Qi phones**, **all US
 
 | Zone | What it charges | How |
 |---|---|---|
-| Zone 1 | Phone | 15W Qi lower platform |
-| Zone 2 | Buds or phone | 15W Qi upper-front pad (90×65mm) |
+| Zone 1 | Phone | **20W Qi** on Step 1 full-width silicone surface |
+| Zone 2 | Buds or phone | 15W Qi Step 2 pad (90×65mm) |
 | Zone 3 | Watch | Apple Watch puck + Qi coil (5W shared) |
-| Zone 4 | USB-C laptop | Captive braided USB-C cable, 100W |
+| Zone 4 | USB-C laptop | Captive braided USB-C cable, 100W (220mm) |
 | Zone 5 | USB-C tablet/phone | Captive braided USB-C cable, 20W |
 
 ---
 
 ### Built different
 
+- **3-step tapered charging theatre:** dedicated phone, buds, and watch zones
 - **Captive slot cables** eliminate blind rear-port insertion damage
 - **Open-front slots with stop shelves** align devices naturally
-- **Step 2 layout fixed:** watch at rear, buds/phone pad at front
 - **Universal watch support:** Apple puck + Qi coil in one cradle
 - **Two sizes:** Standard first, XL next
 - **PSU moved under laptop slot** for better thermal behavior around Qi zones
@@ -58,7 +58,7 @@ Epitome Penta is a 5-zone charging dock designed for **all Qi phones**, **all US
 - **Penta XL:** ~700mm wide × 300mm deep
 - Laptop slot opening: **28mm**
 - Tablet slot opening: **20mm**
-- Step riser: +40mm with internal reinforcement
+- Centre stack: 3×15mm steps (45mm total), tapered 180mm → 140mm → 100mm
 
 ---
 
@@ -77,7 +77,7 @@ Epitome Penta is a 5-zone charging dock designed for **all Qi phones**, **all US
 Yes. Qi pads support all Qi phones/earbuds, slots support all USB-C laptops/tablets, and Zone 3 supports Qi-enabled watches plus Apple Watch puck charging.
 
 **Does it still support Apple Watch magnetic charging?**
-Yes. Zone 3 keeps the Apple magnetic puck and adds Qi underneath/beside it.
+Yes. Zone 3 keeps the Apple magnetic puck and adds Qi support in the same cradle.
 
 **Why captive cables in the slots?**
 They prevent blind port impact, support any side-port position, and are service-replaceable.

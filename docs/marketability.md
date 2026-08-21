@@ -20,9 +20,9 @@
 1. **True universal compatibility:** all Qi phones, all USB-C laptops/tablets, all Qi watches.
 2. **Captive slot cables:** safer than fixed rear ports and easier to use daily.
 3. **Dual-SKU strategy:** Standard for mainstream desks, XL for power users.
-4. **Zone 3 dual-mode watch charging:** Apple puck plus Qi coil, no accessory swap.
-5. **Thermal-aware architecture:** PSU moved under laptop slot, away from Qi zones.
-6. **Right-angle C13 inlet:** cleaner cable routing.
+4. **3-step charging theatre:** tapered centre platform with dedicated phone, buds, and watch stages.
+5. **Zone 3 dual-mode watch charging:** Apple puck plus Qi coil, no accessory swap.
+6. **Thermal-aware architecture:** PSU moved under laptop slot, away from Qi zones.
 
 ---
 
@@ -31,8 +31,8 @@
 - Standard width ~530mm (launch SKU), XL ~700mm
 - Laptop slot opening 28mm, tablet slot opening 20mm
 - 5mm rear stop shelf + silicone cable clip in both slots
-- Step 2 watch moved to rear; buds/phone pad moved to front
-- Step riser reinforcement (internal ribbing or insert)
+- 3-step tapered centre stack (180/140/100 widths, 45mm total height)
+- Step riser reinforcement (internal ribbing on each riser)
 
 ---
 
@@ -71,13 +71,13 @@ See [compatibility.md](compatibility.md) for full list.
 
 | Zone | Method | Max Power |
 |------|--------|-----------|
-| Zone 1 | Qi wireless | 15W |
+| Zone 1 | Qi wireless | 20W |
 | Zone 2 | Qi wireless | 15W |
 | Zone 3 | Watch puck + Qi (one active) | 5W |
 | Zone 4 | USB-C PD captive cable | 100W |
 | Zone 5 | USB-C PD captive cable | 20W |
 
-**Total draw at full load: 155W** (180W PSU, 25W headroom).
+**Total draw at full load: 155W** (**160W PSU, 5W headroom**; firmware soft cap at 150W).
 
 ---
 

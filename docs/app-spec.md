@@ -33,8 +33,8 @@ Epitome Penta
 
 ### LED Control
 - LED enable/disable
-- Ambient light auto-dim toggle
-- Manual brightness override
+- **Manual brightness slider (0–100%)**
+- Optional per-zone brightness presets
 
 ### Theft Alert
 Three alert modes: Away / Night / Passive.
@@ -56,11 +56,8 @@ Three alert modes: Away / Night / Passive.
 ### Voice Assistant Shortcuts
 - Siri shortcuts for status and LED controls
 
-### Ambient Light Auto-Dim
-- BH1750-driven LED dimming
-
 ### Onboarding Animation
-- Introduces updated zone map including captive cables and watch dual-mode charging
+- Introduces updated zone map including 3-step centre platform, captive cables, and watch dual-mode charging
 
 ### iPhone Home Screen Widget
 - Live per-zone state
@@ -95,7 +92,7 @@ Epitome Penta iOS App (SwiftUI)
 
 | GATT Characteristic | Direction | Data |
 |---------------------|-----------|------|
-| Zone 1 Power | Read/Notify | Voltage/current/watts |
+| Zone 1 Power | Read/Notify | Voltage/current/watts (**20W max**) |
 | Zone 2 Power | Read/Notify | Voltage/current/watts (**15W max**) |
 | Zone 3 Power | Read/Notify | Voltage/current/watts (**5W max**) |
 | Zone 3 Mode | Read/Notify | `puck` or `qi_watch` |
