@@ -47,7 +47,7 @@ Epitome
 | Alignment | Cable at top of slot — device plugs in on insertion |
 | Sized for | Any laptop up to 17" class (~28mm thick including case) |
 
-> XL extends slot length to 400mm (same) with wider dock footprint — Batch 2+.
+> XL (Batch 2+) has a wider overall dock footprint (~320mm wide); the slot length remains 400mm.
 
 ### Right Slot — iPad (Zone 5)
 
@@ -118,7 +118,7 @@ Epitome
 | Zone 1 silicone surface | 160 × 100mm |
 | Zone 2 dish | 90 × 65mm |
 
-> XL (Batch 2+): ~320mm wide × ~100mm deep, same slot and platform geometry.
+> XL (Batch 2+): ~320mm wide × ~100mm deep, with the same 400mm slot length and platform geometry as Standard.
 
 ---
 

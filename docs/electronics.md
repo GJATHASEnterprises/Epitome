@@ -121,7 +121,7 @@ Architecture update highlights:
 | Inlet | **Rear right-angle IEC C13** |
 | Nominal available output | 156W (Mean Well LRS-150-24) | |
 | System full-load design | **155W total branch budget** |
-| Headroom | **5W** |
+| Headroom | **1W** |
 | Firmware global cap | **150W** |
 
 PSU location: **under laptop slot cavity**.
