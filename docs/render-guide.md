@@ -26,8 +26,8 @@ The render brief should now include:
 - All riser faces: matte ABS (no aluminium)
 - Devices on thin edge in slots (like books on a shelf), cable from top of each slot
 - Right-angle rear IEC C13 inlet routing downward
-- PSU placement represented under laptop slot cavity
-- **One SKU render for Batch 1:** Standard (~250mm wide × ~100mm deep)
+- PSU placement represented under centre platform cavity with raised step body above it
+- **One SKU render for Batch 1:** Standard (~250mm wide × ~100mm deep × ~100mm tall)
 - **One color render:** Black (Batch 1 only)
 
 Coordinate source of truth: [component-positions.md](component-positions.md)

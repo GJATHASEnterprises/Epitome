@@ -24,10 +24,10 @@ Epitome
 
 ## Overall Dimensions
 
-| SKU | Overall width | Overall depth | Corner radius | Top plate material | Base material |
-|---|---:|---:|---|---|---|
-| **Penta Standard** | **~250mm** | ~100mm | R10mm | 3mm matte ABS | Matte ABS |
-| **Penta XL** | ~320mm | ~100mm | R10mm | 3mm matte ABS | Matte ABS |
+| SKU | Overall width | Overall depth | Overall height | Corner radius | Top plate material | Base material |
+|---|---:|---:|---:|---|---|---|
+| **Penta Standard** | **~250mm** | **~100mm** | **~100mm** | R10mm | 3mm matte ABS | Matte ABS |
+| **Penta XL** | ~320mm | ~100mm | ~100mm | R10mm | 3mm matte ABS | Matte ABS |
 
 > XL is Batch 2+. Standard launches first. No aluminium anywhere in Batch 1.
 
@@ -40,8 +40,9 @@ Epitome
 | Dimension | Standard |
 |---|---:|
 | Slot length (left to right) | 400mm |
-| Slot depth (front to back, stability) | 90mm |
+| Slot depth (front to back, internal) | 90mm |
 | Slot width (opening thickness) | **35mm** |
+| Slot wall height | **95mm** |
 | Entry | Device slides in on its **thin edge** (like a book on a shelf) |
 | Charging interface | **Captive braided USB-C cable (220mm, 100W) hangs from top of slot** |
 | Alignment | Cable at top of slot — device plugs in on insertion |
@@ -54,8 +55,9 @@ Epitome
 | Dimension | Standard |
 |---|---:|
 | Slot length (left to right) | 290mm |
-| Slot depth (front to back, stability) | 70mm |
+| Slot depth (front to back, internal) | 70mm |
 | Slot width (opening thickness) | **20mm** |
+| Slot wall height | **75mm** |
 | Entry | Device slides in on its **thin edge** (like a book on a shelf) |
 | Charging interface | **Captive braided USB-C cable (200mm, 20W) hangs from top of slot** |
 | Alignment | Cable at top of slot — device plugs in on insertion |
@@ -71,9 +73,10 @@ Epitome
 | Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds/Phone pad — 15W Qi, 90×65 landscape |
 | Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad — 20W Qi, full-width silicone surface |
 
-- Total centre platform height: **45mm**
-- Taper rule: each step is **40mm narrower** than the one below
-- All riser faces: 3D printed ABS + internal ribbing reinforcement
+- Step dimensions are unchanged.
+- Centre platform body is raised over the PSU on a perimeter wall.
+- **20mm riser cavity** sits between PSU top and Step 1 base for coil/logic wiring.
+- Total centre column height from base floor: **95mm**.
 
 ### Zone 1 (Step 1 base)
 
@@ -81,7 +84,7 @@ Epitome
 |---|---|
 | Silicone charging area | 160 × 100mm (flat, no recessed dish) |
 | Qi output | **20W** |
-| Qi coil | Centered under silicone surface |
+| Qi coil | Embedded in Step 1 body under silicone surface |
 | Magnets | N52 ring magnets for alignment |
 | Orientation intent | Landscape phone placement |
 
@@ -100,7 +103,7 @@ Epitome
 |---|---|
 | Step area | 100 × 80mm |
 | Cradle location | Rear of Step 3, slightly raised |
-| Charging | Apple Watch magnetic puck + Qi coil |
+| Charging | Apple Watch magnetic puck + Qi coil embedded in Step 3 body |
 | Policy | 5W shared, one active watch path at a time |
 
 ---
@@ -109,16 +112,17 @@ Epitome
 
 | Feature | Standard |
 |---|---|
-| Overall dock | ~250 × 100mm |
-| Left (laptop) slot | 400mm long × 90mm deep × 35mm wide, device on thin edge, cable from top |
-| Right (iPad) slot | 290mm long × 70mm deep × 20mm wide, device on thin edge, cable from top |
+| Overall dock | ~250 × 100 × 100mm |
+| Left (laptop) slot | 400mm long × 90mm deep × 35mm wide × 95mm tall |
+| Right (iPad) slot | 290mm long × 70mm deep × 20mm wide × 75mm tall |
 | Centre Step 1 | 180 × 110 × 15mm |
 | Centre Step 2 | 140 × 100 × 15mm |
 | Centre Step 3 | 100 × 80 × 15mm |
+| Centre column height | 95mm from base floor |
 | Zone 1 silicone surface | 160 × 100mm |
 | Zone 2 dish | 90 × 65mm |
 
-> XL (Batch 2+): ~320mm wide × ~100mm deep, with the same 400mm slot length and platform geometry as Standard.
+> XL (Batch 2+): ~320mm wide × ~100mm deep × ~100mm tall, with the same 400mm slot length and platform geometry as Standard.
 
 ---
 
@@ -136,18 +140,18 @@ Epitome
 ## Zone Layout Diagram
 
 ```text
-[TOP VIEW — Penta Standard ~250mm wide × ~100mm deep]
+[TOP VIEW — Penta Standard ~250mm wide × ~100mm deep × ~100mm tall]
 
 +------------------+------------------------------+------------------+
 | Laptop Slot Z4   |   3-Step Centre Platform    | iPad Slot Z5     |
 | 400mm long       | Step 3: Watch (rear) 5W     | 290mm long       |
 | 90mm deep        | Step 2: Buds 90×65, 15W     | 70mm deep        |
 | 35mm wide        | Step 1: Phone 160×100, 20W  | 20mm wide        |
-| Captive USB-C    | 45mm total stack height      | Captive USB-C    |
-| 220mm cable 100W | 40mm taper per step width   | 200mm cable 20W  |
-| cable from top   | device on thin edge          | cable from top   |
+| 95mm tall wall   | Raised over PSU cavity       | 75mm tall wall   |
+| cable from top   | coils embedded in step body  | cable from top   |
 +------------------+------------------------------+------------------+
-Rear: right-angle IEC C13 inlet, PSU under laptop slot cavity
+Rear: full-width rear spine with centred IEC C13 cutout
+Front: full-width fascia strip with LED diffuser channel
 ```
 
 ---
@@ -185,8 +189,8 @@ Rear: right-angle IEC C13 inlet, PSU under laptop slot cavity
 
 See [electronics.md](electronics.md) for full spec.
 
-- **PSU:** Mean Well LRS-150-24 (156W, 24V, trim-adjusted to ~20V output), under laptop slot cavity
-- **Inlet:** Rear right-angle IEC C13
+- **PSU:** Mean Well LRS-150-24 (156W, 24V, trim-adjusted to ~20V output), under centre platform cavity
+- **Inlet:** Rear right-angle IEC C13 in rear spine plate
 - **Power budget:** **155W total load, 1W headroom**
 - **Firmware cap:** global soft power cap at **150W**
 - **Certification planning required:** FCC, CE, UKCA, RCM before retail in target markets
@@ -195,12 +199,12 @@ See [electronics.md](electronics.md) for full spec.
 
 ## Manufacturing Method (Batch 1)
 
-- 3D print ABS: centre platform only (3-step geometry, school makerspace printer, own filament)
-- Laser cut ABS: slot walls, base plate, top panels (Pumping Station One, Chicago)
+- 3D print ABS: centre platform only (raised 3-step geometry, school makerspace printer, own filament)
+- Laser cut ABS: slot walls, base plate, top panels, rear spine plate, front fascia strip (Pumping Station One, Chicago)
 - All surfaces: sand → acetone vapour smooth → primer → Rust-Oleum 2X Matte Black → clear coat
 - No vacuum-formed parts. No aluminium. All ABS.
 
-Batch 1 enclosure target: **~$28.69/unit**.
+Batch 1 enclosure target: **~$31.39/unit**.
 
 ---
 

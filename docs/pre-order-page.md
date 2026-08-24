@@ -44,19 +44,19 @@ Epitome Penta is a 5-zone charging dock designed for **all Qi phones**, **all US
 
 - **3-step tapered charging theatre:** dedicated phone, buds, and watch zones
 - **Captive slot cables** hang from top of each slot — device slides in on thin edge and plugs in naturally
-- **Compact footprint:** ~250mm wide × ~100mm deep — fits any desk
+- **Compact footprint:** ~250mm wide × ~100mm deep × ~100mm tall — fits any desk
 - **Universal watch support:** Apple puck + Qi coil in one cradle
-- **PSU moved under laptop slot** for better thermal behavior around Qi zones
+- **PSU moved under centre platform** to keep the slot walls clear while preserving thermal separation from the wireless zones
 - **Right-angle IEC C13 inlet** keeps rear cable routing clean
 
 ---
 
 ### Dimensions
 
-- **Penta Standard:** ~250mm wide × ~100mm deep
+- **Penta Standard:** ~250mm wide × ~100mm deep × ~100mm tall
 - Laptop slot: **400mm long × 35mm wide**, device on thin edge
 - Tablet slot: **290mm long × 20mm wide**, device on thin edge
-- Centre stack: 3×15mm steps (45mm total), tapered 180mm → 140mm → 100mm
+- Centre stack: three 15mm steps over a raised PSU cavity, **95mm total centre-column height**, tapered 180mm → 140mm → 100mm
 
 ---
 

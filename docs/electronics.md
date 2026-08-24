@@ -5,7 +5,7 @@
 - MCU: ESP32-C3 Mini
 - Monitoring: **INA3221 #1 (Zones 1–3) + INA3221 #2 (Zones 4–5 + spare/system)**
 - Ambient sensor: **Removed (BH1750 dropped for cost reduction)**
-- Power: internal **156W** AC/DC PSU (Mean Well LRS-150-24, trim-adjusted to ~20V) + **right-angle IEC C13 inlet**
+- Power: internal **156W** AC/DC PSU (**Mean Well LRS-150-24, 156W, 24V output trim-adjusted to ~20V. Physical size: 159×97×30mm. Located under centre platform.**) + **right-angle IEC C13 inlet**
 - Outputs: 20W Qi (Zone 1), 15W Qi (Zone 2), Zone 3 dual charger (Apple puck + Qi coil sharing 5W), 2×USB-C PD branches (100W + 20W)
 - Lighting: WS2811 addressable strip
 
@@ -14,14 +14,14 @@
 Exact interior/exterior positions are defined in [component-positions.md](component-positions.md).
 
 Key placement updates:
-- PSU remains under laptop slot cavity
+- PSU now sits under the **centre platform cavity**
 - Zone 3 includes both Apple puck module and Qi watch coil in same cradle region
 - Zone 4 and Zone 5 terminate to captive cable harnesses
-- Centre platform now uses three 15mm steps with reinforcement at each riser
+- Centre platform uses three 15mm steps above a 20mm riser cavity
 
 ## Power Path
 
-`Right-angle IEC C13 -> 156W PSU (Mean Well LRS-150-24, under laptop slot) -> zone branches + regulation -> monitoring + protections`
+`Right-angle IEC C13 -> 156W PSU (Mean Well LRS-150-24, under centre platform cavity) -> zone branches + regulation -> monitoring + protections`
 
 - Zone 1: Qi 20W + polyfuse + thermistor
 - Zone 2: Qi 15W + polyfuse + thermistor
@@ -38,8 +38,9 @@ Key placement updates:
 | Zone 3 Watch (puck or Qi) | 5W |
 | Zone 4 Laptop | 100W |
 | Zone 5 Tablet/Phone | 20W |
-| **Total** | **155W** |
-| PSU (156W Mean Well LRS-150-24) headroom | **1W spare** |
+| **Total system load** | **155W** |
+| PSU output budget | **156W** |
+| Headroom | **1W** |
 | Firmware soft cap | **150W total draw** |
 
 ## PCB Layout Notes
@@ -49,6 +50,7 @@ Key placement updates:
 - Add zone-3 mux/switching logic footprint for puck-vs-Qi exclusivity (single-device mode).
 - Keep ESP32-C3 antenna near board edge with copper keep-out.
 - Add PCB **PTC resettable fuse** stage on main branch protection path (replaces inlet fuse holder).
+- **Logic board (ESP32-C3 + INA3221 ×2) mounts in the 20mm riser cavity between PSU top (Z=33mm) and Step 1 base (Z=50mm).**
 
 ## Night Mode / Sleep Mode
 
@@ -79,6 +81,7 @@ Architecture update highlights:
 - Zone 3 supports Apple Watch magnetic protocol plus generic Qi-watch charging in one cradle footprint.
 - Zone 4 and Zone 5 use captive braided cables.
 - Ambient auto-dim sensor removed; brightness is app-controlled.
+- PSU sits under the centre platform so the step bodies can carry the embedded coils directly above the wiring cavity.
 
 ## 2) Core Controller — ESP32-C3 Mini
 
@@ -117,14 +120,15 @@ Architecture update highlights:
 | Parameter | Specification |
 |---|---|
 | Model baseline | Mean Well LRS-150-24 or equivalent (trim-adjusted to ~20V output target) |
+| Physical size | 159×97×30mm |
 | Input | 100–240VAC |
 | Inlet | **Rear right-angle IEC C13** |
-| Nominal available output | 156W (Mean Well LRS-150-24) | |
+| Nominal available output | **156W (Mean Well LRS-150-24)** |
 | System full-load design | **155W total branch budget** |
 | Headroom | **1W** |
 | Firmware global cap | **150W** |
 
-PSU location: **under laptop slot cavity**.
+PSU location: **under centre platform cavity**.
 
 ## 6) Power Architecture and Distribution Narrative
 
@@ -193,9 +197,10 @@ PSU location: **under laptop slot cavity**.
 
 ## 12) Thermal Management Strategy
 
-- PSU positioned under Zone 4 cavity, away from centre wireless zones
-- Wireless zones physically separated from highest-current branch
-- 1W power headroom (155W load, 156W PSU), backed by 150W firmware cap to avoid sustained edge load
+- PSU now positioned under centre platform.
+- Centre platform perimeter wall creates an enclosed PSU cavity with 20mm riser space above for wiring.
+- Thermal isolation from slot zones is maintained by physical separation.
+- 1W power headroom (155W load, 156W PSU), backed by 150W firmware cap to avoid sustained edge load.
 
 ## 13) PCB Layout Notes (Manufacturing-Facing)
 
@@ -203,6 +208,7 @@ PSU location: **under laptop slot cavity**.
 - Add mechanical anchoring for captive cable strain relief on Zones 4 and 5
 - Keep watch dual-mode branch routing short and isolated
 - Keep dual INA3221 traces short and symmetric for measurement consistency
+- Mount ESP32-C3 + INA3221 ×2 assembly in the 20mm riser cavity for short, flat I2C routing
 
 ## 14) Power Budget Table (Final Reference)
 
@@ -220,4 +226,4 @@ PSU location: **under laptop slot cavity**.
 
 ## 15) Design Intent Summary
 
-The electronics architecture remains modular and monitorable, while now adding universal watch support, safer captive cable UX for both slots, dual INA3221 monitoring, and lower-cost high-confidence power architecture using a managed 156W PSU envelope (Mean Well LRS-150-24).
+The electronics architecture remains modular and monitorable, while now adding universal watch support, safer captive cable UX for both slots, dual INA3221 monitoring, and a tightly packaged 156W PSU envelope under the centre platform with a dedicated riser cavity for logic and coil routing.

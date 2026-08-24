@@ -22,7 +22,7 @@
 3. **Compact footprint:** ~250mm wide (about the size of a large book) — fits any desk.
 4. **3-step charging theatre:** tapered centre platform with dedicated phone, buds, and watch stages.
 5. **Zone 3 dual-mode watch charging:** Apple puck plus Qi coil, no accessory swap.
-6. **Thermal-aware architecture:** PSU moved under laptop slot, away from Qi zones.
+6. **Thermal-aware architecture:** PSU moved under the centre platform, with the slot walls and rear spine keeping the Qi zones structurally and thermally separated.
 
 ---
 
@@ -32,7 +32,7 @@
 - Laptop slot 35mm wide / 400mm long, device on thin edge, cable from top
 - Tablet slot 20mm wide / 290mm long, device on thin edge, cable from top
 - Captive cable hangs from top of each slot for natural plug-in on device insertion
-- 3-step tapered centre stack (180/140/100 widths, 45mm total height)
+- 3-step tapered centre stack (180/140/100 widths) raised over the PSU cavity for a 95mm overall centre-column height
 - Step riser reinforcement (internal ribbing on each riser)
 
 ---
