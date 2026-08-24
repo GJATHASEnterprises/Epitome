@@ -42,13 +42,15 @@
 | Base plate | 250mm × 100mm |
 | Left slot outer box | 400mm × 90mm × 35mm |
 | Left slot inner cavity | 400mm × 90mm × 35mm (cardboard prototype — no wall offset) |
-| Centre Step 1 block | 180mm × 110mm × 50mm |
+| Centre Step 1 block | 180mm × 110mm × 15mm |
 | Centre Step 2 block | 140mm × 100mm × 15mm |
 | Centre Step 3 block | 100mm × 80mm × 15mm |
 | Right slot outer box | 290mm × 70mm × 20mm |
 | Right slot inner cavity | 290mm × 70mm × 20mm (cardboard prototype — no wall offset) |
 | Rear spine plate | 250mm × 100mm |
 | Front fascia strip | 250mm × 20mm |
+
+For cardboard mockups, represent the raised centre-platform stance separately so Step 1 still lands at the revised **Z=50mm** base height.
 
 ---
 
