@@ -1,4 +1,4 @@
-# Epitome Penta — Wiring & Schematic Notes
+# Penta Dock — Wiring & Schematic Notes
 
 ---
 
@@ -12,10 +12,11 @@
 [Internal 201W AC/DC PSU (Mean Well LRS-200-24) under centre platform cavity] --> [Main DC Rail: 20V]
                                                |
        +----------------+----------------+----------------+----------------+----------------+
-       |                |                |                |                |
-   [Qi TX 1]        [Qi TX 2]      [Watch Branch]   [PD 100W]        [PD 20W]
-   Zone 1 20W       Zone 2 20W     Zone 3 5W shared  Zone 4          Zone 5
-                                     (Puck + Qi)      captive 220mm    captive 200mm
+       |                |                |                |                |                |
+   [Qi2 TX]        [Qi TX]        [Watch Branch]     [PD 100W]        [PD 45W]
+   Zone 1 20W       Zone 2 20W     Zone 3 5W shared   Zone 4           Zone 5
+                                    (Puck + Qi)        captive 220mm    captive 200mm
+                                    hardware relay     strain relief    strain relief
 ```
 
 ---
@@ -26,90 +27,62 @@
 |------|---------|----------|
 | AC input | 100–240V AC | Right-angle IEC C13 inlet to internal PSU |
 | Main DC rail | 20V | Source for all zones and step-downs |
-| Qi coil supply | 12V | Zones 1 & 2 wireless TX modules |
-| Watch branch | 5V | Zone 3 Apple puck + Qi watch coil (single active output) |
-| USB-C PD out (Zone 4) | 5V–20V negotiated | Laptop via captive 220mm USB-C cable |
-| USB-C PD out (Zone 5) | 5V–12V negotiated | Tablet/phone via captive 200mm USB-C cable |
-| ESP32-C3 + logic | 3.3V | MCU, monitors, LEDs |
+| Qi coil supply | 12V | Zones 1 & 2 wireless TX modules (via 12V buck ×2) |
+| Watch branch | 5V | Zone 3 Apple puck + Qi watch coil (one active via hardware relay) |
+| USB-C PD out (Zone 4) | 5V–20V negotiated | Laptop via captive 220mm USB-C cable (100W rated, 90° dock-end) |
+| USB-C PD out (Zone 5) | 5V–12V negotiated | Tablet via captive 200mm USB-C cable (65W rated, 90° dock-end) |
+| ATtiny85 + logic | 5V | LED controller (ATtiny85), WS2811 strip |
 
 ---
 
-## ESP32-C3 Mini Pin Assignments
+## ATtiny85 Pin Assignments
 
 | Pin | Function |
 |-----|----------|
-| GPIO 8 | I2C SDA |
-| GPIO 9 | I2C SCL |
-| GPIO 4 | WS2811 LED strip data |
-| GPIO 2 / 3 / 10 / 1 | Thermistor ADC channels |
+| PB4 (physical pin 3) | WS2811 LED strip data |
+| PB3 (physical pin 2) | Zone indicator input A |
+| PB2 (physical pin 7) | Zone indicator input B |
 
-*Pin assignments are provisional and subject to PCB routing constraints.*
+*Pin assignments are provisional and subject to layout constraints. ATtiny85 programmed at assembly.*
 
 ---
 
 ## WS2811 LED Strip Wiring
 
-- GPIO 4 -> 300–470Ω -> DIN
+- ATtiny85 data pin -> 300–470Ω -> DIN
 - 5V rail -> LED strip VCC
 - Common GND
 - 100µF capacitor at strip entry
 
 ---
 
-## INA3221 #1 — 3-Channel Power Monitor (Zones 1–3)
+## Hardware Relay — Zone 3 Mutual Exclusion
 
-- CH1 Zone 1 (20W)
-- CH2 Zone 2 (20W)
-- CH3 Zone 3 (5W shared puck/Qi)
+- Hardware relay selects between Apple Watch puck output and Qi watch coil output
+- Only one watch charging path is active at any time
+- Relay state determined by device detection on Zone 3
+- No firmware required for relay switching
 
----
-
-## INA3221 #2 — 3-Channel Power Monitor (Zones 4–5 + spare/system)
-
-- CH1 Zone 4 (USB-C PD up to 100W)
-- CH2 Zone 5 (USB-C PD up to 45W)
-- CH3 spare/system branch
-- Address: **0x41** (A0 high)
-
----
-
-## ESP32-C3 Mini
-
-- Main MCU
-- WiFi + BLE
-- Flashed via onboard USB
-
----
-
-## LED Behavior Logic
-
-- **Red:** charging
-- **Green:** full
-- **Off:** no device detected
-- **Night mode:** 23:00–07:00 LEDs off unless zone draw >0.5W
+```text
+5V buck -> relay -> [Apple Watch puck]
+                 -> [Qi watch coil 5W]
+```
 
 ---
 
 ## Safety Wiring Notes
 
-- PCB PTC resettable fuse on main protection path (replaces inlet fuse holder)
 - Polyfuse on each zone output
-- TVS on both USB-C PD outputs
-- Thermistors on heat-prone branches
+- TVS on both USB-C PD outputs (Zones 4 and 5)
+- NTC thermistors on heat-prone branches
+- Thermal cutoff on PSU branch
+- PTC fuse on main protection path
 - Bulk capacitor (470–1000µF) on 20V rail
+- **Silicone strain relief boots** at captive cable exit points (top of Zone 4 and Zone 5 slots)
 
 ---
 
-## PCB Notes
-
-- 2-layer PCB
-- Add pads/anchors for captive cable strain relief (Zone 4 + Zone 5)
-- Keep watch dual-mode switching path short
-- Route logic board and monitor interconnects flat through the riser cavity
-
----
-
-## Comprehensive Wiring Implementation Guide (Revision A)
+## Comprehensive Wiring Implementation Guide (Revision B)
 
 This section defines practical wiring execution from wall inlet to every electrical load branch.
 
@@ -118,7 +91,6 @@ This section defines practical wiring execution from wall inlet to every electri
 - Electrical architecture: [electronics.md](electronics.md)
 - Coordinates and placement: [component-positions.md](component-positions.md)
 - Parts and recommended modules: [bom.md](bom.md)
-- Firmware safety/night behavior: [firmware-notes.md](firmware-notes.md)
 
 ## 1) Full System Wiring Narrative (End-to-End)
 
@@ -126,11 +98,13 @@ This section defines practical wiring execution from wall inlet to every electri
 2. Route neutral/earth to PSU per safety standards.
 3. Convert AC to regulated ~20V DC.
 4. Split 20V bus into five protected zone branches + logic branch.
-5. Route Zone 4 to captive 220mm cable harness (100W rated).
-6. Route Zone 5 to captive 200mm cable harness (65W rated).
-7. Route Zone 3 to both Apple puck and Qi watch coil through one-at-a-time control.
-8. Route branch protection through PCB PTC resettable fuse stage.
-9. Route all PSU-to-zone wiring through the **20mm riser cavity (Z=33mm to Z=50mm)** under centre platform Step 1.
+5. Zone 1: 20V → 12V buck → Qi2 TX module (20W, magnetic alignment).
+6. Zone 2: 20V → 12V buck → Qi TX module (20W, 120×80mm dish).
+7. Zone 3: 20V → 5V buck → hardware relay → Apple puck or Qi watch coil (one active).
+8. Zone 4: 20V → PD 100W board → polyfuse → TVS → captive 220mm cable (100W rated, 90° dock-end) → silicone strain relief boot at slot exit.
+9. Zone 5: 20V → PD 45W board → polyfuse → TVS → captive 200mm cable (65W rated, 90° dock-end) → silicone strain relief boot at slot exit.
+10. ATtiny85: 5V from 5V buck → controls WS2811 strip via data line.
+11. Route all PSU-to-zone wiring through the **20mm riser cavity (Z=33mm to Z=50mm)** under centre platform Step 1.
 
 ## 2) AC Wiring Section
 
@@ -144,11 +118,11 @@ This section defines practical wiring execution from wall inlet to every electri
 |---|---|
 | Minimum AC conductor gauge | 18 AWG |
 | Inlet type | Panel-mount right-angle IEC C13 |
-| Overcurrent strategy | PCB PTC resettable fuse on downstream protection branch |
+| Overcurrent strategy | PTC fuse on main protection path |
 
 ### AC Assembly Notes
 
-- Keep AC harness isolated from I2C wiring.
+- Keep AC harness isolated from DC and LED wiring.
 - Use insulated crimp terminals/ferrules.
 
 ## 3) DC Main Rail Section (20V Backbone)
@@ -167,93 +141,72 @@ This section defines practical wiring execution from wall inlet to every electri
 
 ## 4) Per-Zone DC Wiring Detail
 
-### Zone 1 (Qi 20W)
-`20V -> buck -> Qi TX 20W -> polyfuse -> NTC`
+### Zone 1 (Qi2 20W)
+`20V -> 12V buck -> Qi2 TX 20W -> polyfuse -> NTC`
 
 ### Zone 2 (Qi 20W)
-`20V -> buck -> Qi TX 20W -> polyfuse -> NTC`
+`20V -> 12V buck -> Qi TX 20W (120×80mm dish) -> polyfuse -> NTC`
 
-### Zone 3 (Watch 5W shared)
-`20V -> 5V buck -> (Apple puck OR Qi watch coil) -> polyfuse -> NTC`
+### Zone 3 (Watch 5W shared, hardware relay)
+`20V -> 5V buck -> hardware relay -> (Apple puck OR Qi watch coil) -> polyfuse`
 
 ### Zone 4 (USB-C PD 100W)
-`20V -> PD 100W board -> INA3221 #2 CH1 -> polyfuse -> TVS -> captive USB-C cable (220mm)`
+`20V -> PD 100W board -> polyfuse -> TVS -> captive USB-C cable (220mm, 100W, 90° dock-end) + strain relief boot at exit`
 
 ### Zone 5 (USB-C PD 45W)
-`20V -> PD 45W board -> INA3221 #2 CH2 -> polyfuse -> TVS -> captive USB-C cable (200mm, 65W rated)`
+`20V -> PD 45W board -> polyfuse -> TVS -> captive USB-C cable (200mm, 65W rated, 90° dock-end) + strain relief boot at exit`
 
-## 5) I2C Bus Wiring
+## 5) WS2811 LED Strip Wiring
 
-`GPIO8/9 + 4.7k pull-ups -> INA3221 #1 + INA3221 #2`
+ATtiny85 data pin + series resistor + 5V/GND + entry capacitor.
 
-## 6) WS2811 LED Strip Wiring
-
-As above: GPIO4 + resistor + 5V/GND + entry capacitor.
-
-## 7) NTC Thermistor Wiring
+## 6) NTC Thermistor Wiring
 
 `3.3V -> 10k fixed -> ADC node -> NTC 10k -> GND`
+*(or use 5V reference with ATtiny85 ADC as appropriate)*
 
-## 8) 3.3V LDO Wiring
-
-`5V source -> 3.3V LDO -> ESP32 + monitors`
-
-## 9) Full ESP32-C3 Pin Assignment + Wire Color Guidance
-
-| GPIO/Pin | Function | Recommended Wire Color |
-|---|---|---|
-| GPIO 8 | I2C SDA | Blue |
-| GPIO 9 | I2C SCL | Yellow |
-| GPIO 4 | WS2811 DIN | Green |
-| GPIO 2/3/10/1 | NTC ADC | White stripe variants |
-
-## 10) I2C Address Table and Conflict Avoidance
-
-| Device | Role | Address |
-|---|---|---|
-| INA3221 #1 | Zones 1–3 monitor | 0x40 |
-| INA3221 #2 | Zones 4–5 + spare/system monitor | 0x41 |
-
-## 11) Grounding Strategy
-
-Star ground from PSU GND, with separate high-current returns merged at star point.
-
-## 12) Wire Gauge Summary Table
+## 7) Wire Gauge Summary Table
 
 | Branch | Recommended AWG |
 |---|---:|
 | AC input harness | 18 AWG min |
 | 20V main rail trunk | 16 AWG |
-| Zone 1/2 Qi branches | 18 AWG |
-| Zone 3 watch branch | 22 AWG |
-| Zone 4 PD 100W branch | 14 AWG |
-| Zone 5 PD 45W branch | 18 AWG |
+| Zone 1/2 Qi branches (12V) | 18 AWG |
+| Zone 3 watch branch (5V) | 22 AWG |
+| Zone 4 PD 100W branch (20V) | 14 AWG |
+| Zone 5 PD 45W branch (20V) | 18 AWG |
+| ATtiny85 + LED (5V logic) | 22 AWG |
 
-## 13) Connector Recommendations
+## 8) Connector Recommendations
 
 - DC branches: JST-XH
 - Sensor leads: Dupont/JST
 - Captive cable internal terminations: locking JST-VH or soldered + strain relief
 
-## 14) Safety Checklist Before First Power-On
+## 9) Safety Checklist Before First Power-On
 
 - [ ] Right-angle IEC C13 inlet secure and insulated
-- [ ] PCB PTC resettable fuse populated
+- [ ] PTC fuse populated on main protection path
 - [ ] No short on 20V to GND
-- [ ] Captive cable strain relief installed on both slot outputs
-- [ ] Zone 3 puck/Qi exclusivity validated
+- [ ] Silicone strain relief boots installed at Zone 4 and Zone 5 cable exits
+- [ ] Zone 3 hardware relay mutual exclusion validated (only one path active)
+- [ ] All polyfuses populated per zone
 
-## 15) Full-System ASCII Schematic
+## 10) Full-System ASCII Schematic
 
 ```text
 AC -> C13(RA) -> 201W PSU (Mean Well LRS-200-24, under centre platform cavity) -> 20V Bus
-  -> Z1 Qi 20W
-  -> Z2 Qi 20W
-  -> Z3 Watch 5W (Puck + Qi, one active)
-  -> Z4 PD100W -> Captive USB-C 220mm
-  -> Z5 PD45W -> Captive USB-C 200mm (65W rated)
+  -> Z1 Qi2 20W (12V buck -> Qi2 TX)
+  -> Z2 Qi 20W (12V buck -> Qi TX, 120×80mm dish)
+  -> Z3 Watch 5W (5V buck -> relay -> Puck OR Qi coil, one active)
+  -> Z4 PD100W -> Captive USB-C 220mm (100W, 90° dock-end, strain relief boot)
+  -> Z5 PD45W -> Captive USB-C 200mm (65W rated, 90° dock-end, strain relief boot)
+
+5V buck -> ATtiny85 -> WS2811 strip data
 ```
 
-## 16) Practical Integration Notes
+## 11) Practical Integration Notes
 
 - Validate natural cable reach from top-of-slot hang point to common laptop/tablet port locations when device is fully inserted on thin edge.
+- Silicone strain relief boots prevent cable damage at exit point and maintain cable position at top of slot.
+- Microfibre lining on Zone 4 and Zone 5 inner walls applied after slot assembly.

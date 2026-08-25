@@ -1,4 +1,4 @@
-# Epitome Penta — Enclosure Specification
+# Penta Dock — Enclosure Specification
 
 ## Core Envelope
 
@@ -29,9 +29,11 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 - Slot width: **35mm**
 - Slot depth: **90mm** (internal, front fascia to rear spine)
 - Slot wall height: **95mm**
-- Captive braided USB-C cable (**220mm, 100W**) hangs from the top of the slot
+- Captive braided USB-C cable (**220mm, 100W, 90° angled dock-end**) hangs from the top of the slot
+- **Silicone strain relief boot** at cable exit point (top of slot)
+- **Microfibre lining** on inner slot walls (protects device edges on insertion)
 - No stop shelf; device rests on the lined floor and natural cable reach is validated at full insertion
-- Silicone lining on floor and inner side walls
+- Silicone lining on slot floor
 
 ---
 
@@ -42,9 +44,11 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 - Slot width: **20mm**
 - Slot depth: **70mm** (internal)
 - Slot wall height: **75mm**
-- Captive braided USB-C cable (**200mm, 20W**) hangs from the top of the slot
+- Captive braided USB-C cable (**200mm, 65W rated, 90° angled dock-end**) hangs from the top of the slot
+- **Silicone strain relief boot** at cable exit point (top of slot)
+- **Microfibre lining** on inner slot walls (protects device edges on insertion)
 - No stop shelf; device rests on the lined floor
-- Silicone lining on floor and inner side walls
+- Silicone lining on slot floor
 
 ---
 
@@ -52,7 +56,7 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 
 | Step | Width | Depth | Height | Zone | Content |
 |---|---:|---:|---:|---|---|
-| Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad, 20W Qi, 160×100mm silicone surface |
+| Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad, 20W Qi2, 160×100mm silicone surface (1mm recessed dish) |
 | Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad, 20W Qi, 120×80mm dish |
 | Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle, Apple puck + Qi watch coil |
 
@@ -65,8 +69,9 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 ### Zone 1 (Step 1)
 
 - Flat silicone charging surface: **160×100mm**
-- Qi TX: **20W**, embedded inside Step 1 body directly under the silicone surface
-- Magnetic alignment ring included
+- **1mm recessed dish** in silicone surface for Qi2 magnetic alignment
+- Qi TX: **20W Qi2**, embedded inside Step 1 body directly under the silicone surface
+- Magnetic alignment ring (N52) included
 
 ### Zone 2 (Step 2)
 
@@ -162,20 +167,23 @@ Fit check:
 
 | Part | Unit cost |
 |---|---:|
-| 3D printed centre platform | $2.00 |
+| 3D printed centre platform (school, own filament) | $2.00 |
 | Laser cut ABS base plate 250×100mm | $1.35 |
-| Laser cut ABS top panels | $1.35 |
-| Laser cut ABS laptop slot walls | $7.84 |
-| Laser cut ABS tablet slot walls | $5.05 |
+| Laser cut ABS top panels ×2 | $1.35 |
+| Laser cut ABS laptop slot walls 400mm 95mm tall | $7.84 |
+| Laser cut ABS tablet slot walls 290mm 75mm tall | $5.05 |
 | Laser cut ABS rear spine plate 250×100mm | $1.50 |
 | Laser cut ABS front fascia strip 250×20mm | $0.70 |
 | Frosted acrylic LED diffuser strip 250×15mm | $0.80 |
-| Silicone sheet lining | $3.50 |
-| Rubber feet + M3 + grommets | $2.60 |
-| Cardboard insert + felt liner | $0.70 |
-| Laser cutting setup fee amortised | $1.50 |
-| ABS cement + finishing consumables | $2.50 |
-| **Enclosure total** | **$31.39/unit** |
+| Silicone sheet textured dot ~1,150cm² | $3.70 |
+| 3M Bumpons SJ5023 ×4 | $0.60 |
+| Physical power button rear rail | $1.50 |
+| M3 fasteners + heat-set inserts + grommets | $2.00 |
+| Laser cutting setup fee amortised ÷10 | $1.50 |
+| ABS cement + primer + matte black paint + sandpaper | $2.50 |
+| Strain relief silicone boots ×2 (captive cables) | $0.60 |
+| Microfibre slot lining (Zones 4+5 inner walls) | $1.30 |
+| **Enclosure total** | **$33.79/unit** |
 
 ---
 

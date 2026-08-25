@@ -1,4 +1,4 @@
-# Epitome Penta — Marketability
+# Penta Dock — Marketability
 
 ---
 
@@ -6,12 +6,14 @@
 
 | Field | Detail |
 |-------|--------|
-| **Product name** | Epitome Penta |
-| **Tagline options** | "Every device. One dock." / "Universal desk power." / "One dock for all your Qi + USB-C gear." |
+| **Product name** | Penta Dock |
+| **Slogan** | "One dock. Every device." |
+| **Secondary line** | "190W total output — laptop, tablet, phone, watch, buds, all at full speed." |
 | **Target customer** | Desk users with mixed ecosystems (Apple + Android + Windows) |
 | **Brand tone** | Clean, confident, premium utility |
-| **Colors** | Black (Batch 1) |
+| **Colors** | Obsidian (matte black) — Batch 1 only |
 | **Price** | $249 |
+| **Domain** | epitomecharge.com |
 
 ---
 
@@ -64,7 +66,7 @@ See [compatibility.md](compatibility.md) for full list.
 |------------|---------------|-----------------|--------------------------|-----------------------|
 | Typical 3-in-1 pad | $129–$199 | ❌ | ❌ | ❌ |
 | Generic desktop Qi stand | $59–$119 | ❌ | ⚠️ limited | ❌ |
-| **Epitome Penta** | **$249** | ✅ 100W | ✅ Apple puck + Qi | ✅ |
+| **Penta Dock** | **$249** | ✅ 100W | ✅ Apple puck + Qi | ✅ |
 
 ---
 
@@ -72,8 +74,8 @@ See [compatibility.md](compatibility.md) for full list.
 
 | Zone | Method | Max Power |
 |------|--------|-----------|
-| Zone 1 | Qi wireless | 20W |
-| Zone 2 | Qi wireless | 20W |
+| Zone 1 | Qi2 wireless | 20W |
+| Zone 2 | Qi wireless (120×80mm dish — buds or second phone) | 20W |
 | Zone 3 | Watch puck + Qi (one active) | 5W |
 | Zone 4 | USB-C PD captive cable | 100W |
 | Zone 5 | USB-C PD captive cable | 45W |
@@ -92,7 +94,7 @@ See [compatibility.md](compatibility.md) for full list.
 
 ## Target Markets
 
-| Market | Why Epitome Penta Fits |
+| Market | Why Penta Dock Fits |
 |--------|-------------------|
 | Hybrid ecosystem users | One dock for Apple + Android + Windows devices |
 | Home office workers | Replaces multiple chargers and desk clutter |
@@ -103,7 +105,7 @@ See [compatibility.md](compatibility.md) for full list.
 
 ## Suggested Marketing Channels
 
-- Kickstarter/Indiegogo launch campaign
 - Instagram / TikTok desk-setup content
+- Reddit (r/homeoffice, r/malelivingspace, r/apple, r/techsetups)
+- Direct DTC pre-order page at epitomecharge.com
 - YouTube setup channels and gadget roundups
-- Direct DTC pre-order page with legal T&Cs

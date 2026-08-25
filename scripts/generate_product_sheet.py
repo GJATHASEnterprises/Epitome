@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Penta Dock — comprehensive multi-view technical product sheet.
 
-Generates assets/epitome-penta-product-sheet.png at 7200×5400px
+Generates assets/penta-dock-product-sheet.png at 7200×5400px
 (dpi=300, figsize=(24,18)).
 """
 from __future__ import annotations
@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, FancyBboxPatch, Circle, Ellipse, Polygon
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH = ROOT / "assets" / "epitome-penta-product-sheet.png"
+OUTPUT_PATH = ROOT / "assets" / "penta-dock-product-sheet.png"
 
 # Palette
 PAGE_BG = "#0d0d1a"
@@ -234,7 +234,7 @@ def draw_side_elevation(ax: plt.Axes) -> None:
     ax.text(65, 18, "PSU 199×98×30 (Mean Well LRS-200-24)", color=TEXT_LIGHT, fontsize=5.2, ha="center")
 
     ax.add_patch(Rectangle((8, 33), 114, 17, facecolor="#1a1f29", edgecolor="#3f4760", linewidth=1.0))
-    ax.text(65, 41.5, "Riser cavity + wiring\nESP32 / INA3221 shelf @ Z=35", color=TEXT_DIM, fontsize=5.1, ha="center", va="center")
+    ax.text(65, 41.5, "Riser cavity + wiring (ATtiny85 + relay) @ Z=35", color=TEXT_DIM, fontsize=5.1, ha="center", va="center")
 
     ax.add_patch(Rectangle((8, 50), 110, 15, facecolor="#2b313c", edgecolor=Z1_BLUE, linewidth=1.0))
     ax.add_patch(Circle((52, 57.5), 6.0, facecolor="none", edgecolor=Z1_BLUE, linestyle=":", linewidth=1.0))
@@ -330,9 +330,9 @@ def draw_spec_panel(ax: plt.Axes) -> None:
 
     y -= 0.01
     write("ELECTRONICS", color=TEXT_WHITE, fs=8.7, weight="bold")
-    write("• MCU: ESP32-C3 SuperMini (WiFi + BLE 5.0)")
+    write("• LED controller: ATtiny85 (zone LED logic, 185W global soft cap)")
     write("• Power safety MCU: ATtiny85 (global soft-cap gate)")
-    write("• Power monitor: INA3221 ×2")
+    write("• NO ESP32, NO INA3221, NO BLE, NO app hardware — Batch 1")
     write("• PSU: Mean Well LRS-200-24, 201W")
     write("• Output rail trimmed to 20V")
     write("• LED: WS2811 strip, 12–15 LEDs, 250mm")

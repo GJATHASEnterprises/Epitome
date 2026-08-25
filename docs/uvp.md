@@ -52,9 +52,15 @@ TABLET   45W  USB-C
 ```
 
 ### Braided captive cables
-- Zone 4: 220mm braided nylon, 100W rated, angled dock-end connector
-- Zone 5: 200mm braided nylon, 65W rated, angled dock-end connector
+- Zone 4: 220mm braided nylon, 100W rated, 90° angled dock-end connector
+- Zone 5: 200mm braided nylon, 65W rated, 90° angled dock-end connector
 - Colour: matte black matching dock finish
+- Silicone strain relief boots at cable exit points (Zones 4 and 5)
+
+### Microfibre slot lining
+- Zone 4 (laptop slot) inner walls: self-adhesive microfibre lining
+- Zone 5 (tablet slot) inner walls: self-adhesive microfibre lining
+- Protects device edges from scratching on insertion
 
 ### Magnetic phone alignment — Zone 1
 Qi2 magnetic ring on Step 1 silicone. Phone snaps to charging position instantly.
@@ -69,7 +75,7 @@ Dot-pattern silicone on all charging surfaces.
 Rear rail, next to IEC C13. Cuts all zones. Tactile click. Matte black.
 
 ### LED status strip
-Frosted acrylic diffuser, front fascia. ESP32-C3-controlled.
+Frosted acrylic diffuser, front fascia. ATtiny85-controlled.
 
 Per-zone colours:
 - Zone 1 Phone: blue
@@ -96,15 +102,18 @@ Behaviour:
 | Penta Dock Arctic | Matte white ABS, light grey silicone | Batch 2 |
 
 ## Packaging
-- Magnetic closure matte black rigid box
-- Foam insert cut to dock shape
-- Cables in separate foam cutouts
-- Setup card: matte black card stock, zone reference, QR to epitomecharge.com
+- Magnetic closure matte black rigid box (~300×160×130mm)
+- Black foam insert cut to dock shape
+- Black foam insert — separate cutouts for IEC cable and accessories
+- Braided fabric IEC C13 cable 1.5m matte black
+- Setup card 85×55mm matte black (Moo.com), zone reference, QR to epitomecharge.com
 - Belly band: "Penta Dock — One dock. Every device."
+- Printed inner lid insert: zone diagram + product name, glued to inside of box lid
+- Velcro cable tie matte black
 
 ## Pricing
 - **$249 USD**
-- Free shipping (US)
+- Shipping calculated at checkout (customer pays actual shipping via Shopify/Pirateship)
 - Pre-order — ships [date TBD]
 - Obsidian only at launch
 

@@ -1,4 +1,4 @@
-# Epitome Penta — 3D Print Finishing Guide
+# Penta Dock — 3D Print Finishing Guide
 
 > This guide covers finishing for all ABS parts — both the 3D printed centre platform and the laser cut slot walls, base, and top panels.
 
@@ -73,3 +73,85 @@ Result: surface appears near-injection-moulded.
 | Clear coat + cure | ~24 hours (cure overnight) |
 
 Run all 10 parts through each step together as a batch — acetone all 10 on the same day, prime all 10 the next day, paint all 10 the day after. Total active hands-on time across all 10 parts: ~4 hours.
+
+---
+
+## Microfibre Slot Lining
+
+Apply self-adhesive microfibre sheet to the inner walls of Zone 4 (laptop slot) and Zone 5 (tablet slot).
+
+### Materials
+
+| Item | Source |
+|---|---|
+| Self-adhesive microfibre sheet (dark grey, ~300×200mm per slot) | Amazon |
+| Scissors / craft knife + cutting mat | Already owned |
+| Ruler | Already owned |
+
+### Steps
+
+1. Measure the inner wall dimensions for each slot:
+   - Zone 4 (laptop slot): two side walls 90mm × 95mm each, one rear wall 35mm × 95mm, floor 400mm × 90mm. Cut to size accordingly.
+   - Zone 5 (tablet slot): two side walls 70mm × 75mm each, one rear wall 20mm × 75mm, floor 290mm × 70mm.
+2. Cut the microfibre sheet to each panel size. Add 1–2mm overlap where surfaces meet.
+3. Peel backing from one panel at a time.
+4. Press microfibre firmly onto inner wall surface from one edge to avoid bubbles.
+5. Use a card or flat edge to smooth out any air pockets.
+6. Repeat for remaining panels.
+
+**Note:** Apply microfibre AFTER painting and curing the ABS shell, but BEFORE installing the captive cables.
+
+---
+
+## Strain Relief Boot Installation
+
+Silicone strain relief boots fit around the captive USB-C cables at the exit point from the top of each slot.
+
+### Materials
+
+| Item | Source |
+|---|---|
+| Silicone strain relief boots ×2 (sized for USB-C captive cable) | Amazon |
+
+### Steps
+
+1. Before routing the captive cable, slide the strain relief boot onto the cable from the free end.
+2. Route the cable through the exit grommet hole at the top of the slot.
+3. Position the strain relief boot so it sits flush against the grommet, covering the cable entry point.
+4. Apply a small dab of silicone adhesive around the boot flange to fix it in place if needed.
+5. Let cure before testing cable flex.
+
+**Purpose:** Prevents the cable jacket from cracking or kinking at the hard exit point. Maintains cable position at the top of the slot.
+
+---
+
+## Printed Inner Lid Insert
+
+The printed inner lid insert is the first thing a customer sees when they open the box lid.
+
+### Materials
+
+| Item | Source |
+|---|---|
+| 400gsm card stock (A4 or Letter) | Home laser printer |
+| Spray adhesive (e.g. 3M Super 77) | Home Depot |
+| Canva account (free) | canva.com |
+
+### Design
+
+1. Open Canva and create a new design matching the inside lid dimensions (measure the magnetic closure box lid interior — approximately 290×150mm).
+2. Add:
+   - "PENTA DOCK" in large bold text, centred
+   - Zone diagram: simple 5-zone layout with zone numbers and wattages
+   - Domain: epitomecharge.com
+3. Export as PDF (print quality) or PNG at 300dpi.
+
+### Production
+
+1. Print on home laser printer on 400gsm card stock.
+2. Trim to fit inside lid with a craft knife and metal ruler. Leave ~2mm margin on all sides.
+3. Apply spray adhesive lightly to the back of the printed card.
+4. Press into the inside of the box lid. Smooth from centre outward to avoid bubbles.
+5. Let dry 10–15 minutes before closing box.
+
+**Note:** Print all 10 inserts in one batch before assembly to ensure consistency.

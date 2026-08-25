@@ -1,4 +1,4 @@
-# Epitome Penta — Design Specification
+# Penta Dock — Design Specification
 
 > **Note:** This file provides a summary of the product spec. For detailed specifications see:
 > - [Enclosure Specification](enclosure.md)
@@ -10,10 +10,10 @@
 ---
 
 ## Product Name
-Epitome Penta
+Penta Dock
 
 ## Brand
-Epitome
+Epitome Charge (epitomecharge.com)
 
 ## Color Variants
 - **Black** — Matte ABS, all surfaces (Batch 1)
@@ -44,7 +44,7 @@ Epitome
 | Slot width (opening thickness) | **35mm** |
 | Slot wall height | **95mm** |
 | Entry | Device slides in on its **thin edge** (like a book on a shelf) |
-| Charging interface | **Captive braided USB-C cable (220mm, 100W) hangs from top of slot** |
+| Charging interface | **Captive braided USB-C cable (220mm, 100W, 90° angled dock-end) hangs from top of slot + silicone strain relief boot at exit** |
 | Alignment | Cable at top of slot — device plugs in on insertion |
 | Sized for | Any laptop up to 17" class (~28mm thick including case) |
 
@@ -59,7 +59,7 @@ Epitome
 | Slot width (opening thickness) | **20mm** |
 | Slot wall height | **75mm** |
 | Entry | Device slides in on its **thin edge** (like a book on a shelf) |
-| Charging interface | **Captive braided USB-C cable (200mm, 20W) hangs from top of slot** |
+| Charging interface | **Captive braided USB-C cable (200mm, 45W, 90° angled dock-end) hangs from top of slot + silicone strain relief boot at exit** |
 | Alignment | Cable at top of slot — device plugs in on insertion |
 | Sized for | Any tablet up to iPad Pro 13" in case (~16mm thick) |
 
@@ -71,7 +71,7 @@ Epitome
 |---|---:|---:|---:|---|---|
 | Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle — Apple puck + Qi coil |
 | Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad — 20W Qi, 120×80 landscape |
-| Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad — 20W Qi, full-width silicone surface |
+| Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad — 20W Qi2, full-width silicone surface |
 
 - Step dimensions are unchanged.
 - Centre platform body is raised over the PSU on a perimeter wall.
@@ -82,8 +82,9 @@ Epitome
 
 | Dimension | Value |
 |---|---|
-| Silicone charging area | 160 × 100mm (flat, no recessed dish) |
+| Silicone charging area | 160 × 100mm (recessed 1mm dish) |
 | Qi output | **20W** |
+| Standard | Qi2 certified, magnetic alignment N52 ring |
 | Qi coil | Embedded in Step 1 body under silicone surface |
 | Magnets | N52 ring magnets for alignment |
 | Orientation intent | Landscape phone placement |
@@ -158,8 +159,8 @@ Front: full-width fascia strip with LED diffuser channel
 
 ## Zone Specifications
 
-### Zone 1 — Phone (Qi 20W)
-- 20W Qi + MagSafe-style alignment magnets
+### Zone 1 — Phone (Qi2 20W)
+- 20W Qi2 + Qi2 magnetic alignment N52 ring, recessed 1mm dish
 
 ### Zone 2 — Buds / Phone (Qi 20W)
 - 120×80mm pad with 68×48mm inner ridge marker
@@ -168,10 +169,14 @@ Front: full-width fascia strip with LED diffuser channel
 - Apple Watch puck + Qi coil in same cradle, one device at a time
 
 ### Zone 4 — Laptop (USB-C PD 100W)
-- Captive 220mm braided USB-C cable hangs from top of slot; device plugs in on insertion
+- Captive 220mm braided USB-C cable (100W rated, 90° angled dock-end) hangs from top of slot; device plugs in on insertion
+- Silicone strain relief boot at cable exit point
+- Microfibre lining on inner slot walls
 
 ### Zone 5 — Tablet (USB-C PD 45W)
-- Captive 200mm braided USB-C cable hangs from top of slot; device plugs in on insertion
+- Captive 200mm braided USB-C cable (65W rated, 90° angled dock-end) hangs from top of slot; device plugs in on insertion
+- Silicone strain relief boot at cable exit point
+- Microfibre lining on inner slot walls
 
 ---
 
@@ -210,9 +215,13 @@ Batch 1 enclosure target: **~$31.39/unit**.
 
 ## Packaging
 
-- Standard retail box target: **~300×150×120mm** rigid kraft
-- Insert: cardboard offcut + felt liner
-- Warranty/setup docs provided via QR only (`epitome.io/warranty`, `epitome.io/setup`)
+- Magnetic closure matte black rigid box (~300×160×130mm)
+- Black foam inserts ×2 (dock shape + cables)
+- Braided fabric IEC C13 cable 1.5m matte black
+- Setup card 85×55mm matte black (Moo.com), zone reference, QR to epitomecharge.com
+- Belly band "Penta Dock — One dock. Every device."
+- Printed inner lid insert (zone diagram + product name)
+- Velcro cable tie matte black
 
 ---
 

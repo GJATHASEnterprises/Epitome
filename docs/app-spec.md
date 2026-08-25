@@ -1,3 +1,6 @@
+> ⚠️ SHELVED — FUTURE REFERENCE ONLY
+> App development is not part of the current build plan. Preserved for potential Batch 2 revisitation. See docs/uvp.md for current product scope.
+
 # Epitome Penta — Companion App Specification
 
 ---

@@ -1,12 +1,12 @@
 # Penta Dock
 
 ## Product Render
-![Penta Dock Render](assets/epitome-penta-render.png)
+![Penta Dock Render](assets/penta-dock-render.png)
 
 > Pre-generated. Regenerate at any time by running `blender --background --python scripts/generate_render.py`.
 
 ## 3D Model
-Open [`assets/epitome-penta-model.glb`](assets/epitome-penta-model.glb) to view the interactive 3D model in GitHub.
+Open [`assets/penta-dock-model.glb`](assets/penta-dock-model.glb) to view the interactive 3D model in GitHub.
 
 **One dock. Every device.**
 

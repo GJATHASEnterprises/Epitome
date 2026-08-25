@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-High-quality Epitome Penta render generator.
+High-quality Penta Dock render generator.
 Run:
   blender --background --python scripts/generate_render.py
 """
@@ -13,7 +13,7 @@ import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH = ROOT / "assets" / "epitome-penta-render.png"
+OUTPUT_PATH = ROOT / "assets" / "penta-dock-render.png"
 MM = 0.001
 
 # Envelope (mm)
@@ -41,7 +41,7 @@ TEXT_ITEMS = [
     ("BUDS", 12.0, 93.0, 6.0),
     ("WATCH", -38.0, 203.0, 6.0),
     ("LAPTOP", 10.0, 260.0, 6.0),
-    ("Epitome Penta", -18.0, 278.0, 8.0),
+    ("Penta Dock", -18.0, 278.0, 8.0),
 ]
 
 LED_SECTION_W = 71.0
@@ -437,8 +437,8 @@ def main() -> None:
     apply_mat(diffuser, m_sil)
 
     for txt, x, y, size in TEXT_ITEMS:
-        if txt == "Epitome Penta":
-            add_label("Label_EpitomePenta", txt, x, y, size, m_etched)
+        if txt == "Penta Dock":
+            add_label("Label_PentaDock", txt, x, y, size, m_etched)
         else:
             add_label(f"Label_{txt}", txt, x, y, size, m_etched)
 

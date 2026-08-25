@@ -1,4 +1,4 @@
-# Epitome Penta — Prototype Guide
+# Penta Dock — Prototype Guide
 
 ---
 
@@ -43,11 +43,11 @@ Use [bom.md](bom.md) as the source-of-truth list and pricing.
 
 Additions for this revision:
 - Captive braided USB-C cable **220mm** (100W)
-- Captive braided USB-C cable 200mm (20W)
+- Captive braided USB-C cable 200mm (65W rated, 45W Zone 5)
 - Qi watch coil 5W for Zone 3
 - Right-angle IEC C13 inlet
 - Step-riser reinforcement insert/rib material (3 risers)
-- Dual INA3221 monitor layout (INA219 removed)
+- Hardware relay for Zone 3 mutual exclusion (Apple puck vs Qi coil)
 
 ---
 
@@ -83,7 +83,7 @@ Placement checks:
 - [ ] Verify Zone 3 Qi mode charges supported non-Apple watch
 - [ ] Verify only one Zone 3 path is active at a time
 - [ ] Verify Zone 4 captive cable delivers up to 100W (220mm lead)
-- [ ] Verify Zone 5 captive cable delivers up to 45W
+- [ ] Verify Zone 5 captive cable delivers up to 45W (65W rated cable)
 - [ ] Validate full-load envelope at 190W total and ATtiny85 soft cap at 185W
 
 ### Week 4 — Full Assembly
@@ -100,12 +100,12 @@ Placement checks:
 ## Full Assembly Checklist (Quick Reference)
 
 - [ ] PSU wired and outputting ~20V
-- [ ] Zone 1 Qi charging at 20W
+- [ ] Zone 1 Qi2 charging at 20W
 - [ ] Zone 2 Qi charging at 20W
 - [ ] Zone 3 puck + Qi watch modes validated
 - [ ] Zone 4 captive cable charging laptop
 - [ ] Zone 5 captive cable charging tablet/phone
-- [ ] ESP32 telemetry + app BLE functional
+- [ ] ATtiny85 LED logic functional (per-zone colours, status indicators)
 
 ---
 
