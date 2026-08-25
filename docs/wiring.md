@@ -162,8 +162,8 @@ ATtiny85 data pin + series resistor + 5V/GND + entry capacitor.
 
 ## 6) NTC Thermistor Wiring
 
-`3.3V -> 10k fixed -> ADC node -> NTC 10k -> GND`
-*(or use 5V reference with ATtiny85 ADC as appropriate)*
+`5V -> 10k fixed -> ADC node -> NTC 10k -> GND`
+
 
 ## 7) Wire Gauge Summary Table
 

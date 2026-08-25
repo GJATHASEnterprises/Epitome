@@ -330,8 +330,7 @@ def draw_spec_panel(ax: plt.Axes) -> None:
 
     y -= 0.01
     write("ELECTRONICS", color=TEXT_WHITE, fs=8.7, weight="bold")
-    write("• LED controller: ATtiny85 (zone LED logic, 185W global soft cap)")
-    write("• Power safety MCU: ATtiny85 (global soft-cap gate)")
+    write("• ATtiny85 (zone LED logic + 185W global soft cap)")
     write("• NO ESP32, NO INA3221, NO BLE, NO app hardware — Batch 1")
     write("• PSU: Mean Well LRS-200-24, 201W")
     write("• Output rail trimmed to 20V")
