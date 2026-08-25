@@ -6,50 +6,41 @@
 <title>Epitome Penta — Product Sheet</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,Arial,sans-serif;background:#0a0a0a;color:#e8e8e8;padding:32px;max-width:1200px;margin:0 auto}
-.header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #2a2a2a;padding-bottom:22px;margin-bottom:28px}
-.brand{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#777}
-h1{font-size:44px;font-weight:300;letter-spacing:7px;text-transform:uppercase}
-.price{font-size:32px;font-weight:300;text-align:right}
-.price-note{font-size:11px;color:#9aa0a6;text-align:right;margin-top:4px;line-height:1.4}
-.scene-wrap{perspective:1100px;margin:24px 0 30px}
-.dock{transform:rotateX(25deg) rotateZ(-2deg);transform-style:preserve-3d;display:flex;gap:10px;align-items:flex-end;padding:26px 26px 0;background:linear-gradient(165deg,#17181d,#111);border:1px solid #2a2a2a;border-radius:12px;min-height:340px;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.7),inset 0 0 0 1px #30343d}
-.dock:after{content:'';position:absolute;left:6%;right:6%;bottom:0;height:4px;border-radius:2px;background:linear-gradient(90deg,#9ce79f 0 20%,#7ec8e3 20% 40%,#f2d27f 40% 60%,#7ec8e3 60% 80%,#5baae0 80% 100%);box-shadow:0 0 16px rgba(126,200,227,.4)}
-.slot{flex:0 0 220px;height:240px;border-radius:8px 8px 0 0;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative}
-.slot .front{position:absolute;left:0;right:0;bottom:0;height:5px}
-.laptop{background:linear-gradient(170deg,#232323,#191919);border:1px solid #3a3a3a}
-.laptop .front{background:linear-gradient(90deg,#4598b8,#7ec8e3)}
-.tablet{background:linear-gradient(170deg,#1f242d,#171b23);border:1px solid #2d3645}
-.tablet .front{background:linear-gradient(90deg,#3b74a8,#5baae0)}
-.lbl{font-size:8px;letter-spacing:2px;color:#8d96a3;text-transform:uppercase}
-.nm{font-size:13px;font-weight:600}
-.pw{font-size:20px;font-weight:300;color:#7ec8e3}
-.dim{font-size:10px;color:#b9bec6;text-align:center;line-height:1.45}
-.cap{font-size:9px;color:#9ce79f;border:1px solid #9ce79f66;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
-.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:0}
-.step{border:1px solid #313640;border-radius:8px 8px 0 0;padding:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.step3{width:100px;background:linear-gradient(170deg,#262b35,#1e232c)}
-.step2{width:140px;background:linear-gradient(170deg,#222831,#1a212a);border-top:none}
-.step1{width:180px;background:linear-gradient(170deg,#1f2228,#181b21);border-top:none}
-.watch,.buds,.phone{border-radius:7px;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;text-align:center}
-.watch{background:rgba(242,210,127,.08);border:1px solid rgba(242,210,127,.24)}
-.buds{background:rgba(126,200,227,.08);border:1px solid rgba(126,200,227,.24)}
-.phone{background:rgba(156,231,159,.08);border:1px solid rgba(156,231,159,.24)}
-.zp{font-size:13px;font-weight:600}
-.watch .zp{color:#f2d27f}.buds .zp{color:#7ec8e3}.phone .zp{color:#9ce79f}
-.riser{height:15px;width:180px;background:linear-gradient(#2b2b2b,#1d1d1d);display:flex;align-items:center;justify-content:center;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#9aa0a6;border-left:1px solid #313640;border-right:1px solid #313640}
-.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
-.card{background:#141414;border:1px solid #232323;border-radius:8px;padding:16px}
-.card h3{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8d96a3;margin-bottom:10px}
-.row{display:flex;justify-content:space-between;border-bottom:1px solid #1f1f1f;padding:6px 0;font-size:12px}
+body{font-family:Inter,Arial,sans-serif;background:#0d0d1a;color:#e8e8e8;padding:32px;max-width:1200px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #2b2b42;padding-bottom:20px;margin-bottom:24px}
+.brand{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#8f90a4}
+h1{font-size:42px;font-weight:300;letter-spacing:7px;text-transform:uppercase}
+.price{font-size:32px;font-weight:300;color:#c8a84b;text-align:right}
+.price-note{font-size:11px;color:#a8adba;text-align:right;margin-top:4px;line-height:1.4}
+.scene{background:#171826;border:1px solid #2a2a4a;border-radius:12px;padding:20px;margin-bottom:18px}
+.dock{display:flex;gap:16px;align-items:flex-end;min-height:280px;position:relative;padding:18px;background:linear-gradient(165deg,#1a1b2a,#111321);border-radius:10px}
+.fascia{position:absolute;left:16px;right:16px;bottom:16px;height:16px;background:#1f222b;border:1px solid #384056;border-radius:5px}
+.fascia:after{content:'';position:absolute;left:10px;right:10px;top:5px;height:5px;border-radius:3px;background:linear-gradient(90deg,#3a7bd5 0 20%,#9b59b6 20% 40%,#27ae60 40% 60%,#e67e22 60% 80%,#3a7bd5 80% 100%);box-shadow:0 0 10px rgba(255,179,71,.55)}
+.slot{width:90px;border-radius:8px 8px 0 0;background:linear-gradient(170deg,#252832,#171a22);border:1px solid #3a4052;padding:10px;height:220px;position:relative}
+.slot.small{height:190px;width:72px}
+.slot:before{content:'';position:absolute;left:10px;right:10px;top:16px;bottom:8px;background:#0d1117;border:1px solid #232b39;border-radius:4px}
+.slot h3,.slot p{position:relative;z-index:1}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:0;position:relative;z-index:1}
+.step{border:1px solid #3a4256;border-bottom:none;background:linear-gradient(170deg,#252a33,#1c2129);padding:8px 10px}
+.step1{width:240px}
+.step2{width:190px}
+.step3{width:140px}
+.zone{font-size:12px;font-weight:600;display:flex;justify-content:space-between}
+.z1{color:#3a7bd5}.z2{color:#9b59b6}.z3{color:#27ae60}.z4{color:#e67e22}.z5{color:#3a7bd5}
+.dim{font-size:10px;color:#a3a9b8;line-height:1.4;margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.card{background:#161729;border:1px solid #2a2e45;border-radius:8px;padding:14px}
+.card h3{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#a1a6ba;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;border-bottom:1px solid #20243a;padding:6px 0;font-size:12px}
 .row:last-child{border-bottom:none}
-.tbl{background:#141414;border:1px solid #232323;border-radius:8px;padding:18px}
-.tbl h2{font-size:10px;letter-spacing:2px;color:#8d96a3;text-transform:uppercase;margin-bottom:10px}
-table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;border-bottom:1px solid #1f1f1f;text-align:left}th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8d96a3}
+.tbl{background:#161729;border:1px solid #2a2e45;border-radius:8px;padding:16px}
+.tbl h2{font-size:10px;letter-spacing:2px;color:#a1a6ba;text-transform:uppercase;margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:8px;border-bottom:1px solid #20243a;text-align:left}
+th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#a1a6ba}
 tr:last-child td{border-bottom:none}
-.footer{display:flex;justify-content:space-between;border-top:1px solid #232323;padding-top:14px;margin-top:16px;font-size:11px;color:#9aa0a6}
-.sw{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:middle}
-@media(max-width:900px){.specs{grid-template-columns:1fr}.dock{flex-direction:column;transform:none}.slot{width:100%;height:auto}.center{width:100%}.step1,.step2,.step3,.riser{width:100%}}
+.footer{display:flex;justify-content:space-between;border-top:1px solid #2a2e45;padding-top:12px;margin-top:14px;font-size:11px;color:#9ea4b2}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.dock{flex-direction:column}.step1,.step2,.step3{width:100%}}
 </style>
 </head>
 <body>
@@ -59,86 +50,65 @@ tr:last-child td{border-bottom:none}
     <h1>Penta</h1>
   </div>
   <div>
-    <div class="price">$249 Standard / $279 XL</div>
-    <div class="price-note">Early Bird: $199 / $229<br>Retail: $279 / $309</div>
+    <div class="price">PRE-ORDER — $249</div>
+    <div class="price-note">Flat pricing · pre-order only<br>No early-bird or XL tier</div>
   </div>
 </div>
 
-<div class="scene-wrap">
+<div class="scene">
   <div class="dock">
-    <div class="slot laptop">
-      <div class="lbl">Zone 4 · Laptop Slot</div>
-      <div class="nm">Captive USB-C (220mm)</div>
-      <div class="pw">100W</div>
-      <div class="cap">Captive Cable</div>
-      <div class="dim">Standard 320mm / XL 400mm wide<br>25mm deep · 28mm opening<br>5mm rear stop shelf + clip</div>
-      <div class="front"></div>
+    <div class="slot">
+      <h3 class="z4">Zone 4 · Laptop Slot</h3>
+      <p class="dim">35mm wide × 95mm wall height<br>On-edge insertion, top USB-C cable</p>
     </div>
 
     <div class="center">
       <div class="step step3">
-        <div class="watch">
-          <div class="lbl">Zone 3 · Step 3</div>
-          <div class="nm">Watch Cradle (Rear)</div>
-          <div class="zp">5W shared</div>
-          <div class="dim">Apple puck + Qi coil<br>one device at a time</div>
-        </div>
+        <div class="zone z3"><span>Zone 3 · Watch</span><span>5W</span></div>
+        <div class="dim">100×80mm top step · Apple puck + Qi coil</div>
       </div>
-      <div class="riser">15mm Brushed Aluminium Riser</div>
       <div class="step step2">
-        <div class="buds">
-          <div class="lbl">Zone 2 · Step 2</div>
-          <div class="nm">Buds / Phone Pad</div>
-          <div class="zp">15W Qi</div>
-          <div class="dim">90×65mm dish<br>68×48 inner ridge</div>
-        </div>
+        <div class="zone z2"><span>Zone 2 · Buds/Phone</span><span>15W Qi</span></div>
+        <div class="dim">140×100mm · silicone dish 90×65mm</div>
       </div>
-      <div class="riser">15mm Brushed Aluminium Riser</div>
       <div class="step step1">
-        <div class="phone">
-          <div class="lbl">Zone 1 · Step 1</div>
-          <div class="nm">Phone Pad</div>
-          <div class="zp">20W Qi</div>
-          <div class="dim">160×100 full silicone surface<br>landscape placement</div>
-        </div>
+        <div class="zone z1"><span>Zone 1 · Phone</span><span>20W Qi</span></div>
+        <div class="dim">180×110mm · silicone pad 160×100mm</div>
       </div>
     </div>
 
-    <div class="slot tablet">
-      <div class="lbl">Zone 5 · Tablet Slot</div>
-      <div class="nm">Captive USB-C (200mm)</div>
-      <div class="pw">20W</div>
-      <div class="cap">Captive Cable</div>
-      <div class="dim">290mm wide<br>25mm deep · 20mm opening<br>5mm rear stop shelf + clip</div>
-      <div class="front"></div>
+    <div class="slot small">
+      <h3 class="z5">Zone 5 · Tablet Slot</h3>
+      <p class="dim">20mm wide × 75mm wall height<br>On-edge insertion, top USB-C cable</p>
     </div>
+    <div class="fascia"></div>
   </div>
 </div>
 
-<div class="specs">
+<div class="grid">
   <div class="card">
-    <h3>SKUs & Dimensions</h3>
-    <div class="row"><span>Standard Width</span><span>~530mm</span></div>
-    <div class="row"><span>XL Width</span><span>~700mm</span></div>
-    <div class="row"><span>Depth</span><span>300mm</span></div>
-    <div class="row"><span>Centre Height</span><span>45mm (3×15mm)</span></div>
-    <div class="row"><span>Colors</span><span>Black / White / Midnight Blue</span></div>
+    <h3>Physical</h3>
+    <div class="row"><span>Overall size</span><span>~250×100×100mm</span></div>
+    <div class="row"><span>Body material</span><span>Full ABS</span></div>
+    <div class="row"><span>Finish</span><span>Matte black paint</span></div>
+    <div class="row"><span>Rear rail</span><span>25mm (full width)</span></div>
+    <div class="row"><span>Front fascia</span><span>20mm with diffuser channel</span></div>
   </div>
   <div class="card">
-    <h3>Mechanical Updates</h3>
-    <div class="row"><span>Taper Rule</span><span>40mm narrower per step</span></div>
-    <div class="row"><span>Step Widths</span><span>180 / 140 / 100mm</span></div>
-    <div class="row"><span>Step Reinforcement</span><span>Ribbing per riser</span></div>
-    <div class="row"><span>Watch Position</span><span>Rear of Step 3</span></div>
-    <div class="row"><span>Zone 4 Cable</span><span>220mm captive</span></div>
+    <h3>Electronics</h3>
+    <div class="row"><span>MCU</span><span>ESP32-C3 SuperMini</span></div>
+    <div class="row"><span>Monitors</span><span>INA3221 ×2</span></div>
+    <div class="row"><span>PSU</span><span>Mean Well LRS-150-24 (156W)</span></div>
+    <div class="row"><span>LED</span><span>WS2811, 12–15 LEDs</span></div>
+    <div class="row"><span>Power cap</span><span>150W firmware soft limit</span></div>
   </div>
   <div class="card">
-    <h3>Electrical Summary</h3>
-    <div class="row"><span>PSU</span><span>156W internal</span></div>
-    <div class="row"><span>PSU Position</span><span>Under centre platform cavity</span></div>
-    <div class="row"><span>Inlet</span><span>Right-angle IEC C13</span></div>
-    <div class="row"><span>Total Load</span><span>155W</span></div>
-    <div class="row"><span>Headroom</span><span>1W (cap at 150W)</span></div>
+    <h3>Load & Controls</h3>
+    <div class="row"><span>Total load</span><span>155W</span></div>
+    <div class="row"><span>Zone 4</span><span>100W USB-C PD</span></div>
+    <div class="row"><span>Zone 5</span><span>20W USB-C PD</span></div>
+    <div class="row"><span>Night mode</span><span>LEDs off 23:00–07:00</span></div>
+    <div class="row"><span>Inlet</span><span>IEC C13 right-angle</span></div>
   </div>
 </div>
 
@@ -146,25 +116,21 @@ tr:last-child td{border-bottom:none}
   <h2>Zone Specifications</h2>
   <table>
     <thead>
-      <tr><th>Zone</th><th>Device</th><th>Method</th><th>Power</th><th>Details</th><th>Compatibility</th></tr>
+      <tr><th>Zone</th><th>Device</th><th>Method</th><th>Power</th><th>Details</th></tr>
     </thead>
     <tbody>
-      <tr><td>01</td><td>Phone</td><td>Qi + alignment magnets</td><td>20W</td><td>160×100 full silicone</td><td>All Qi phones</td></tr>
-      <tr><td>02</td><td>Buds / Phone</td><td>Qi</td><td>15W</td><td>90×65mm + ridge</td><td>All Qi earbuds/phones</td></tr>
-      <tr><td>03</td><td>Watch</td><td>Apple puck + Qi coil</td><td>5W shared</td><td>Rear Step 3 cradle</td><td>Apple + Qi-enabled watches</td></tr>
-      <tr><td>04</td><td>Laptop</td><td>USB-C PD captive cable</td><td>100W</td><td>220mm braided cable</td><td>All USB-C laptops</td></tr>
-      <tr><td>05</td><td>Tablet / Phone</td><td>USB-C PD captive cable</td><td>20W</td><td>200mm braided cable</td><td>All USB-C tablets/phones</td></tr>
+      <tr><td>01</td><td>Phone</td><td>Qi</td><td>20W</td><td>Step 1 silicone pad</td></tr>
+      <tr><td>02</td><td>Buds / Phone</td><td>Qi</td><td>15W</td><td>Step 2 silicone dish</td></tr>
+      <tr><td>03</td><td>Watch</td><td>Apple puck + Qi coil</td><td>5W</td><td>Step 3 raised cradle pod</td></tr>
+      <tr><td>04</td><td>Laptop</td><td>USB-C PD captive cable</td><td>100W</td><td>Vertical left slot, top-fed cable</td></tr>
+      <tr><td>05</td><td>Tablet</td><td>USB-C PD captive cable</td><td>20W</td><td>Vertical right slot, top-fed cable</td></tr>
     </tbody>
   </table>
 </div>
 
 <div class="footer">
-  <div>
-    <span class="sw" style="background:#2d2d2d"></span>Black
-    <span class="sw" style="background:#e1e1e1"></span>White
-    <span class="sw" style="background:#1b2947"></span>Midnight Blue
-  </div>
-  <div>Epitome · Penta · Universal Qi + USB-C Charging Dock</div>
+  <div>Epitome Penta · Compact 5-zone dock · Full ABS matte black</div>
+  <div>© 2026 GJATHASEnterprises</div>
 </div>
 </body>
 </html>
