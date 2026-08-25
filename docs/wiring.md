@@ -9,7 +9,7 @@
      |
 [Right-Angle IEC C13 Inlet]
      |
-[Internal 156W AC/DC PSU (Mean Well LRS-150-24) under Zone 4 cavity] --> [Main DC Rail: 20V]
+[Internal 156W AC/DC PSU (Mean Well LRS-150-24) under centre platform cavity] --> [Main DC Rail: 20V]
                                                |
        +----------------+----------------+----------------+----------------+----------------+
        |                |                |                |                |
@@ -105,6 +105,7 @@
 - 2-layer PCB
 - Add pads/anchors for captive cable strain relief (Zone 4 + Zone 5)
 - Keep watch dual-mode switching path short
+- Route logic board and monitor interconnects flat through the riser cavity
 
 ---
 
@@ -129,6 +130,7 @@ This section defines practical wiring execution from wall inlet to every electri
 6. Route Zone 5 to captive 200mm cable harness (20W rated).
 7. Route Zone 3 to both Apple puck and Qi watch coil through one-at-a-time control.
 8. Route branch protection through PCB PTC resettable fuse stage.
+9. Route all PSU-to-zone wiring through the **20mm riser cavity (Z=33mm to Z=50mm)** under centre platform Step 1.
 
 ## 2) AC Wiring Section
 
@@ -244,7 +246,7 @@ Star ground from PSU GND, with separate high-current returns merged at star poin
 ## 15) Full-System ASCII Schematic
 
 ```text
-AC -> C13(RA) -> 156W PSU (Mean Well LRS-150-24) -> 20V Bus
+AC -> C13(RA) -> 156W PSU (Mean Well LRS-150-24, under centre platform cavity) -> 20V Bus
   -> Z1 Qi20W
   -> Z2 Qi15W
   -> Z3 Watch 5W (Puck + Qi, one active)
@@ -254,4 +256,4 @@ AC -> C13(RA) -> 156W PSU (Mean Well LRS-150-24) -> 20V Bus
 
 ## 16) Practical Integration Notes
 
-- Validate natural cable reach from top-of-slot hang point to common laptop/tablet port locations when device is fully inserted.
+- Validate natural cable reach from top-of-slot hang point to common laptop/tablet port locations when device is fully inserted on thin edge.

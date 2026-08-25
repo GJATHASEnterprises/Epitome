@@ -2,15 +2,15 @@
 
 ## Batch 1 — Standard SKU Pilot, 10 Units
 
-**Goal:** Launch, validate demand, prove the 5-zone UVP, build 10 units within $1,500 personal budget.
+**Goal:** Launch, validate demand, prove the 5-zone UVP, and build 10 units with the revised enclosure still inside the $1,500 budget.
 
 ## Budget Summary
 
-- **Total cost:** $1,467.20
-- **Personal spend needed (after 1 pre-order):** $1,218.20
-- **Safety net:** $281.80
+- **Total cost:** $1,494.20
+- **Personal spend needed (after 1 pre-order):** $1,245.20
+- **Safety net:** $254.80
 - **Revenue:** $2,490
-- **Profit:** $1,022.80
+- **Profit:** $995.80
 
 ## Pricing
 
@@ -20,7 +20,7 @@
 
 ## Pre-order Strategy
 
-Collect a minimum of **1 pre-order at $249** before ordering any parts. This covers the budget gap and provides a safety net.
+Collect a minimum of **1 pre-order at $249** before ordering any parts. Total batch cost is still under the $1,500 ceiling by **$5.80**, and one pre-order increases the available safety buffer to **$254.80**.
 
 ## Build Sequence
 

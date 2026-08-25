@@ -10,7 +10,7 @@ Not a sellable unit — a functional proof of concept to verify:
 - ✅ Captive cable slot UX works naturally for laptop/tablet
 - ✅ Zone 3 dual watch mode (Apple puck + Qi) behaves correctly
 - ✅ Standard SKU footprint is desk-friendly
-- ✅ Thermal behavior remains stable with PSU under laptop slot cavity and 150W firmware soft cap
+- ✅ Thermal behavior remains stable with PSU under centre platform cavity and 150W firmware soft cap
 
 Definitive placement coordinates are in [component-positions.md](component-positions.md).
 
@@ -88,7 +88,7 @@ Placement checks:
 
 ### Week 4 — Full Assembly
 
-- [ ] Mount PSU under laptop slot cavity
+- [ ] Mount PSU under centre platform cavity
 - [ ] Install right-angle C13 inlet
 - [ ] Populate PCB PTC resettable fuse protection
 - [ ] Route captive cables from top of each slot

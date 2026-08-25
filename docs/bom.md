@@ -30,8 +30,8 @@
 | Zone 1 | Phone Qi pad | 160×100mm surface | 20W, MagSafe ring |
 | Zone 2 | Buds/Phone pad | 90×65mm dish | 15W |
 | Zone 3 | Watch cradle | 50×50mm | Apple puck + Qi coil |
-| Zone 4 | Laptop slot | **400×90×35mm** | Cable from top, device on thin edge |
-| Zone 5 | iPad slot | **290×70×20mm** | Cable from top, device on thin edge |
+| Zone 4 | Laptop slot | **400×90×35mm** | 95mm tall wall, cable from top, device on thin edge |
+| Zone 5 | iPad slot | **290×70×20mm** | 75mm tall wall, cable from top, device on thin edge |
 
 ---
 
@@ -42,10 +42,15 @@
 | Base plate | 250mm × 100mm |
 | Left slot outer box | 400mm × 90mm × 35mm |
 | Left slot inner cavity | 400mm × 90mm × 35mm (cardboard prototype — no wall offset) |
-| Centre Step 1 block | 180mm × 100mm × 40mm |
-| Centre Step 2 block | 140mm × 100mm × 40mm |
+| Centre Step 1 block | 180mm × 110mm × 15mm |
+| Centre Step 2 block | 140mm × 100mm × 15mm |
+| Centre Step 3 block | 100mm × 80mm × 15mm |
 | Right slot outer box | 290mm × 70mm × 20mm |
 | Right slot inner cavity | 290mm × 70mm × 20mm (cardboard prototype — no wall offset) |
+| Rear spine plate | 250mm × 100mm |
+| Front fascia strip | 250mm × 20mm |
+
+For cardboard mockups, represent the raised centre-platform stance separately so Step 1 still lands at the revised **Z=50mm** base height.
 
 ---
 
@@ -63,7 +68,7 @@
 | 8 | Captive USB-C cable 200mm 20W braided | Zone 5 | 1 | Amazon domestic | $3.00 |
 | 9 | ESP32-C3 SuperMini | MCU | 1 | AliExpress + 25% tariff | $1.58 |
 | 10 | INA3221 chip ×2 + bare breakout PCB ×2 | Monitoring | 1 lot | LCSC chips + JLCPCB PCBs | $3.40 |
-| 11 | Mean Well LRS-150-24 PSU | 156W 24V internal | 1 | LCSC + 25% tariff | $17.31 |
+| 11 | Mean Well LRS-150-24 PSU | 156W 24V internal, under centre platform | 1 | LCSC + 25% tariff | $17.31 |
 | 12 | IEC C13 right-angle inlet | Panel mount | 1 | AliExpress + 25% tariff | $3.75 |
 | 13 | WS2811 LED strip (~20 LED section) | Front diffuser | 1 | AliExpress + 25% tariff ($1.75 × 1.25) | $2.19 |
 | 14 | PTC fuse + passives | Safety | 1 lot | Amazon domestic | $1.00 |
@@ -79,15 +84,17 @@
 | 16 | 3D printed centre platform | ABS, school printer, own filament | 1 | $2.00 |
 | 17 | Laser cut ABS base plate | 250×100mm, 3mm ABS | 1 | $1.35 |
 | 18 | Laser cut ABS top panels | 2× panels, 3mm ABS | 1 set | $1.35 |
-| 19 | Laser cut ABS laptop slot walls | 400mm length, 3mm ABS | 1 set | $7.84 |
-| 20 | Laser cut ABS tablet slot walls | 290mm length, 3mm ABS | 1 set | $5.05 |
-| 21 | Frosted acrylic LED diffuser strip | 250×15mm, 3mm | 1 | $0.80 |
-| 22 | Silicone sheet lining | All slots + pad surfaces, ~1,111cm² | 1 lot | $3.50 |
-| 23 | Rubber feet ×4 + M3 fasteners + grommets | Base hardware | 1 set | $2.60 |
-| 24 | Cardboard insert + felt liner | Packaging inner | 1 | $0.70 |
-| 25 | Laser cutting setup fee (amortised over 10) | One-time job setup | 1 | $1.50 |
-| 26 | ABS cement + finishing consumables | Primer, paint, sandpaper | 1 lot | $2.00 |
-| **Enclosure subtotal** | | | | **$28.69/unit** |
+| 19 | Laser cut ABS laptop slot walls | 400mm length, 95mm tall, 3mm ABS | 1 set | $7.84 |
+| 20 | Laser cut ABS tablet slot walls | 290mm length, 75mm tall, 3mm ABS | 1 set | $5.05 |
+| 21 | Laser cut ABS rear spine plate | 250×100mm, 3mm ABS | 1 | $1.50 |
+| 22 | Laser cut ABS front fascia strip | 250×20mm, 3mm ABS | 1 | $0.70 |
+| 23 | Frosted acrylic LED diffuser strip | 250×15mm, 3mm | 1 | $0.80 |
+| 24 | Silicone sheet lining | All slots + pad surfaces, ~1,111cm² | 1 lot | $3.50 |
+| 25 | Rubber feet ×4 + M3 fasteners + grommets | Base hardware | 1 set | $2.60 |
+| 26 | Cardboard insert + felt liner | Packaging inner | 1 | $0.70 |
+| 27 | Laser cutting setup fee (amortised over 10) | One-time job setup | 1 | $1.50 |
+| 28 | ABS cement + finishing consumables | Primer, paint, sandpaper | 1 lot | $2.50 |
+| **Enclosure subtotal** | | | | **$31.39/unit** |
 
 ---
 
@@ -95,11 +102,11 @@
 
 | # | Item | Spec | Qty | Unit Cost |
 |---|---|---|---|---|
-| 27 | Rigid kraft box | ~300×150×120mm (new compact size) | 1 | $3.00 |
-| 28 | IEC C13 braided cable 1.5m | Right-angle C13 end | 1 | $3.00 |
-| 29 | Warranty card | 12-month + QR | 1 | $0.25 |
-| 30 | Quick-start guide | 4-panel fold | 1 | $0.15 |
-| 31 | Tape + shipping label | Per unit | 1 | $0.50 |
+| 29 | Rigid kraft box | ~300×150×120mm (new compact size) | 1 | $3.00 |
+| 30 | IEC C13 braided cable 1.5m | Right-angle C13 end | 1 | $3.00 |
+| 31 | Warranty card | 12-month + QR | 1 | $0.25 |
+| 32 | Quick-start guide | 4-panel fold | 1 | $0.15 |
+| 33 | Tape + shipping label | Per unit | 1 | $0.50 |
 | **Packaging subtotal** | | | | **$6.90/unit** |
 
 ---
@@ -108,7 +115,7 @@
 
 | Quantity | Method | Per-Unit Build Cost | Notes |
 |---|---|---|---|
-| **10 units (Batch 1)** | School 3D print + local laser cut ABS | **~$117.51** | Build cost only, excl. shipping/fees |
+| **10 units (Batch 1)** | School 3D print + local laser cut ABS | **~$120.21** | Build cost only, excl. shipping/fees |
 | 50 units (Batch 2) | Local laser cut + volume electronics | ~$92–99 | After supplier relationships established |
 
 ---
@@ -118,25 +125,26 @@
 | Category | Per Unit | ×10 Total |
 |---|---|---|
 | Electronics | $81.92 | $819.20 |
-| Enclosure (school print + local laser) | $28.69 | $286.90 |
+| Enclosure (school print + local laser) | $31.39 | $313.90 |
 | Packaging | $6.90 | $69.00 |
 | UPS/FedEx Ground to customer (~2kg box) | $11.00 | $110.00 |
 | Stripe fees (2.9% + $0.30 on $249) | $7.52 | $75.20 |
 | Defect/spare buffer (1 unit parts cost) | $9.19 | $91.90 |
 | Domain + Carrd landing page | $1.50 | $15.00 |
-| **Total real cost** | **$146.72** | **$1,467.20** |
+| **Total real cost** | **$149.42** | **$1,494.20** |
 
 **Revenue & Profit:**
 
 | Units Sold | Revenue @ $249 | Total Cost | Profit / (Loss) |
 |---|---|---|---|
-| 1 | $249 | $1,467 | ($1,218) |
-| 5 | $1,245 | $1,467 | ($222) |
-| 7 | $1,743 | $1,467 | $276 |
-| **10** | **$2,490** | **$1,467** | **$1,023** |
+| 1 | $249 | $1,494.20 | ($1,245.20) |
+| 5 | $1,245 | $1,494.20 | ($249.20) |
+| 6 | $1,494 | $1,494.20 | ($0.20) |
+| 7 | $1,743 | $1,494.20 | $248.80 |
+| **10** | **$2,490** | **$1,494.20** | **$995.80** |
 
-**Break-even: 6 units sold.**
-**Budget note: $1,467 total spend is within the $1,500 build budget with $33 safety net. Take 1 pre-order before ordering parts to create a comfortable $282 safety net.**
+**Break-even: 7 units sold.**
+**Budget note: $1,494.20 total spend is within the $1,500 build budget with $5.80 safety net. Take 1 pre-order before ordering parts to create a $254.80 safety net.**
 
 ---
 
