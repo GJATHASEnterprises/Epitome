@@ -1,4 +1,4 @@
-# Epitome Penta — Pre-Order Page Copy
+# Penta Dock — Pre-Order Page Copy
 
 > Use this copy for Shopify, Kickstarter, Indiegogo, or a direct pre-order landing page.
 
@@ -6,13 +6,13 @@
 
 ## Headline
 
-**Epitome Penta. One dock. Every device. Universal by design.**
+**Penta Dock. One dock. Every device.**
 
 ---
 
 ## Subheadline
 
-The charging dock that handles your phone, buds, watch, laptop, and tablet at once — with safer captive cables and no desk clutter.
+190W total output — laptop, tablet, phone, watch, buds, all at full speed. One IEC cable. Zero clutter.
 
 ---
 
@@ -22,21 +22,21 @@ The charging dock that handles your phone, buds, watch, laptop, and tablet at on
 
 Too many chargers, too many bricks, too many loose cables.
 
-**Epitome Penta replaces that with one premium dock and one wall cable.**
+**Penta Dock replaces that with one premium dock and one wall cable.**
 
 ---
 
 ### What it is
 
-Epitome Penta is a 5-zone charging dock designed for **all Qi phones**, **all USB-C laptops/tablets**, and **all Qi-enabled watches** (plus direct Apple Watch puck support).
+Penta Dock is a 5-zone charging dock designed for **all Qi phones**, **all USB-C laptops/tablets**, and **all Qi-enabled watches** (plus direct Apple Watch puck support).
 
 | Zone | What it charges | How |
 |---|---|---|
-| Zone 1 | Phone | **20W Qi2** on Step 1 full-width silicone surface |
-| Zone 2 | Buds or second phone | 20W Qi Step 2 pad (120×80mm) |
-| Zone 3 | Watch | Apple Watch puck + Qi coil (5W shared) |
-| Zone 4 | USB-C laptop | Captive braided USB-C cable, 100W (220mm) |
-| Zone 5 | USB-C tablet/phone | Captive braided USB-C cable, 45W (200mm) |
+| Zone 1 | Phone | **20W Qi2** on Step 1, recessed 1mm dish, N52 magnetic alignment |
+| Zone 2 | Buds or second phone | 20W Qi Step 2 pad (120×80mm dish) |
+| Zone 3 | Watch | Apple Watch puck + Qi coil (5W, hardware relay) |
+| Zone 4 | USB-C laptop | Captive braided USB-C cable, 100W (220mm, 90° dock-end) |
+| Zone 5 | USB-C tablet/phone | Captive braided USB-C cable, 45W (200mm, 65W rated, 90° dock-end) |
 
 ---
 
@@ -44,10 +44,12 @@ Epitome Penta is a 5-zone charging dock designed for **all Qi phones**, **all US
 
 - **3-step tapered charging theatre:** dedicated phone, buds, and watch zones
 - **Captive slot cables** hang from top of each slot — device slides in on thin edge and plugs in naturally
+- **90° angled dock-end connectors** with silicone strain relief boots at exit
+- **Microfibre lining** on laptop and tablet slot inner walls
 - **Compact footprint:** ~250mm wide × ~100mm deep × ~100mm tall — fits any desk
 - **Universal watch support:** Apple puck + Qi coil in one cradle
-- **PSU moved under centre platform** to keep the slot walls clear while preserving thermal separation from the wireless zones
 - **Right-angle IEC C13 inlet** keeps rear cable routing clean
+- **ATtiny85 LED logic** — per-zone status LEDs, no app required
 
 ---
 
@@ -66,39 +68,35 @@ Epitome Penta is a 5-zone charging dock designed for **all Qi phones**, **all US
 |---|---:|
 | **Penta Standard** | **$249** |
 
-> $249 flat pre-order price. No early bird pricing, no retail tier.
+> $249 flat pre-order price. Shipping calculated at checkout — customer pays actual shipping at time of purchase.
 
 ---
 
 ## FAQ
 
 **Does it work with Android?**
-Yes. Qi pads support all Qi phones/earbuds, slots support all USB-C laptops/tablets, and Zone 3 supports Qi-enabled watches plus Apple Watch puck charging.
+Yes. Qi2/Qi pads support all Qi phones/earbuds, slots support all USB-C laptops/tablets, and Zone 3 supports Qi-enabled watches plus Apple Watch puck charging.
 
 **Does it still support Apple Watch magnetic charging?**
-Yes. Zone 3 keeps the Apple magnetic puck and adds Qi support in the same cradle.
+Yes. Zone 3 keeps the Apple magnetic puck and adds Qi support in the same cradle via hardware relay.
 
 **Why captive cables in the slots?**
-Device slides in on its thin edge and the cable hanging from the top of the slot plugs in naturally. No blind port hunting, no loose cables, no damage risk.
+Device slides in on its thin edge and the cable hanging from the top of the slot plugs in naturally. No blind port hunting, no loose cables, no damage risk. 90° angled connectors and strain relief boots protect both the cable and the device port.
 
 **Is there an XL version?**
 Yes, the XL is planned for Batch 2 and will accommodate laptops up to 17" class with a wider dock footprint (~320mm). Batch 1 is Standard SKU only.
 
 **Does it need a companion app?**
-No. It works fully standalone.
+No. Penta Dock works fully standalone. ATtiny85 handles LED logic on-device. App is a Batch 2+ consideration.
 
-**What if I want a refund before shipping?**
-Refund policy should be governed by formal pre-order terms.
+**What about free shipping?**
+Shipping is not included in the price. Customer pays actual shipping at checkout via Shopify — you pay exactly what it costs to ship to your address.
 
 ---
 
 ## Pre-Order Legal Terms Note
 
-Before launch, publish legally reviewed pre-order Terms & Conditions.
-
-Recommended paths:
-1. Use Kickstarter/Indiegogo legal framework for first campaign, or
-2. Publish lawyer-reviewed direct-site pre-order T&Cs covering refunds, timelines, and liability.
+Before launch, publish legally reviewed pre-order Terms & Conditions on epitomecharge.com.
 
 ---
 
@@ -106,8 +104,8 @@ Recommended paths:
 
 **Your setup is universal. Your dock should be too.**
 
-[Pre-order Epitome Penta Standard — $249]
+[Pre-order Penta Dock Standard — $249 + shipping]
 
 ---
 
-*By Epitome. Designed and engineered from the ground up.*
+*By GJATHASEnterprises · epitomecharge.com*

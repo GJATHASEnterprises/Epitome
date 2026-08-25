@@ -1,41 +1,61 @@
-# Generating the Product Render
+# Generating the Penta Dock Renders and Product Sheet
 
-## Command
+## Running All 4 Scripts
 
 ```bash
-blender --background --python scripts/generate_render.py
+cd scripts
+pip install -r requirements.txt
+python generate_3d_model.py
+python generate_render.py
+python generate_product_sheet.py
+python generate_image.py
 ```
 
-## Output
+> **Note:** `generate_render.py` requires Blender. Run it with:
+> ```bash
+> blender --background --python scripts/generate_render.py
+> ```
+> The other three scripts (`generate_3d_model.py`, `generate_product_sheet.py`, `generate_image.py`) run with plain Python — no Blender required.
 
-- `assets/epitome-penta-render.png`
+## Outputs
 
-## Expected Runtime
+All outputs appear in the `/output` folder (or `/assets/` for PNG renders and `/assets/export/` for STL/DXF):
 
-- CPU-only: typically 45–180 minutes
+| Script | Output |
+|---|---|
+| `generate_render.py` | `assets/penta-dock-render.png` |
+| `generate_product_sheet.py` | `assets/penta-dock-product-sheet.png` |
+| `generate_image.py` | `assets/penta-dock-hero.png` |
+| `generate_3d_model.py` | `assets/export/penta-dock-base.stl`, `penta-dock-top-plate.dxf`, etc. |
 
-## Scene Contents
+## What to Do With the Outputs
 
-The render brief should now include:
+- **penta-dock-render.png** — High-quality Blender render. Use for README header and marketing materials.
+- **penta-dock-product-sheet.png** — Technical product sheet. Use for social media posts and pre-order page.
+- **penta-dock-hero.png** — Lightweight isometric image. Use for quick social media posts.
+- **penta-dock-top-plate.dxf** — Laser cutting reference. Load in Inkscape or send to Pumping Station One.
+- **STL files** — 3D print reference geometry. Load in Bambu Studio or PrusaSlicer.
 
-- Captive USB-C cable indicators in Zone 4 and Zone 5 slots (Zone 4 cable is 220mm, hangs from top of slot)
-- 3-step tapered centre platform:
-  - Step 1 (180×110×15) with 160×100 full silicone 20W phone surface
-  - Step 2 (140×100×15) with 120×80 buds or second phone pad (20W)
-  - Step 3 (100×80×15) with rear raised watch cradle (Apple puck + Qi)
-- All riser faces: matte ABS (no aluminium)
-- Devices on thin edge in slots (like books on a shelf), cable from top of each slot
-- Right-angle rear IEC C13 inlet routing downward
-- PSU placement represented under centre platform cavity with raised step body above it
-- **One SKU render for Batch 1:** Standard (~250mm wide × ~100mm deep × ~100mm tall)
-- **One color render:** Black (Batch 1 only)
+## Blender Render Details
+
+- **Command:** `blender --background --python scripts/generate_render.py`
+- **Output:** `assets/penta-dock-render.png`
+- **Expected Runtime:** CPU-only: typically 45–180 minutes
+
+## Scene Contents (generate_render.py)
+
+- 3-step staircase geometry with Zone 4 laptop slot on left, Zone 5 tablet slot on right
+- Zone labels: PHONE 20W Qi2, BUDS/PHONE 20W Qi, WATCH 5W, LAPTOP 100W USB-C, TABLET 45W USB-C
+- Total output annotation: 190W
+- LED strip: per-zone colours (Zone 1 blue, Zone 2 purple, Zone 3 green, Zone 4 orange, Zone 5 blue)
+- Colour scheme: matte black / Obsidian
+- Title: "Penta Dock" and "One dock. Every device."
 
 Coordinate source of truth: [component-positions.md](component-positions.md)
 
-## Product Sheet (Fast — No Blender Required)
+## Troubleshooting
 
-```bash
-python scripts/generate_product_sheet.py
-```
-
-Output: `assets/epitome-penta-product-sheet.png`
+- **ModuleNotFoundError:** Run `pip install [module name]` for the missing module, or run `pip install -r scripts/requirements.txt` to install all dependencies.
+- **Blender not found:** Install Blender from blender.org and ensure `blender` is in your PATH.
+- **ezdxf unavailable:** DXF/SVG export will be skipped with a warning. Install with `pip install ezdxf`.
+- **Output folder missing:** The scripts create the output directory automatically. If you see a permissions error, ensure you have write access to the `assets/` directory.

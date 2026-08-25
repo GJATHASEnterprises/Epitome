@@ -1,4 +1,7 @@
-# Epitome Penta — Firmware Notes
+> ⚠️ SHELVED — FUTURE REFERENCE ONLY
+> Firmware/MCU is not part of the current build (ATtiny85 only, no wireless). Preserved for future app integration reference.
+
+# Penta Dock — Firmware Notes
 
 ## Night Mode / Sleep Mode
 

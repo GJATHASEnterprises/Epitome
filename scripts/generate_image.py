@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Generate a 3/4 isometric render of the compact Epitome Penta dock.
+"""Generate a 3/4 isometric render of the compact Penta Dock.
 
 Usage:
     python scripts/generate_image.py
 
 Output:
-    assets/epitome-penta-render.png  (1200×800 px)
+    assets/penta-dock-hero.png  (1200×800 px)
 """
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH = ROOT / "assets" / "epitome-penta-render.png"
+OUTPUT_PATH = ROOT / "assets" / "penta-dock-hero.png"
 CANVAS_W, CANVAS_H = 1200, 800
 
 # Dimensions (mm)
@@ -156,7 +156,7 @@ def render(ax):
     add_label(ax, 835, 320, "Zone 5: Tablet slot · 45W USB-C PD")
     add_label(ax, 730, 430, "Zone 3: Watch cradle · 5W")
     add_label(ax, 620, 500, "Zone 2: Buds or second phone dish · 20W Qi")
-    add_label(ax, 500, 560, "Zone 1: Phone pad · 20W Qi")
+    add_label(ax, 500, 560, "Zone 1: Phone pad · 20W Qi2")
     add_label(ax, 680, 635, "20mm front fascia + WS2811 diffuser")
     add_label(ax, 850, 470, "25mm rear rail + centered IEC C13")
 

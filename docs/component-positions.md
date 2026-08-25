@@ -1,4 +1,4 @@
-# Epitome Penta Definitive Component Positions (0.01mm)
+# Penta Dock — Definitive Component Positions (0.01mm)
 
 > **Note: Coordinates revised for compact 250×100×100mm footprint, on-edge slot geometry, and PSU under centre platform.**
 
@@ -37,7 +37,7 @@ This file is the single source of truth for all physical placement coordinates.
 | Step 1 top centre (180×110×15) | -45.00 | 50.00 | 65.00 | Base step top surface |
 | Step 2 top centre (140×100×15) | -45.00 | 50.00 | 80.00 | Middle step top surface |
 | Step 3 top centre (100×80×15) | -45.00 | 50.00 | 95.00 | Top step / watch presentation surface |
-| Zone 1 — Phone pad centre | -45.00 | 50.00 | 65.00 | 160×100 silicone surface, 20W Qi |
+| Zone 1 — Phone pad centre | -45.00 | 50.00 | 65.00 | 160×100 silicone surface, 20W Qi2, 1mm recessed dish |
 | Zone 2 — Buds or second phone dish centre | -45.00 | 50.00 | 80.00 | 120×80 dish, 20W Qi |
 | Zone 3 — Watch cradle pod base | -45.00 | 65.00 | 95.00 | Apple puck + Qi watch coil region |
 | Zone 4 — Laptop slot centreline | +85.00 | 45.00 | 47.50 | 35mm wide, 90mm deep, 400mm long, 95mm tall; captive cable hangs from top |
@@ -52,13 +52,12 @@ This file is the single source of truth for all physical placement coordinates.
 |---|---:|---:|---:|---|
 | 201W PSU module (Mean Well LRS-200-24) | 0.00 | 50.00 | 3.00 | Under centre platform, 199×98×30mm, centred |
 | PSU cavity perimeter wall | -45.00 | 50.00 | 26.50 | Supports raised centre platform body over PSU |
-| ESP32-C3 SuperMini | -22.00 | 42.00 | 40.00 | Mounted in riser cavity, keep antenna clear |
-| INA3221 #1 | -8.00 | 42.00 | 42.00 | Mounted in riser cavity for Zones 1–3 monitor |
-| INA3221 #2 | 8.00 | 42.00 | 42.00 | Mounted in riser cavity for Zones 4–5 + spare |
-| Qi coil 1 (Phone) | -45.00 | 50.00 | 62.00 | Inside Step 1 body, under silicone surface |
-| Qi coil 2 (Buds or second phone) | -45.00 | 50.00 | 77.00 | Inside Step 2 body, centred under 120×80 dish |
+| ATtiny85 controller | -22.00 | 42.00 | 40.00 | Mounted in riser cavity, programmed at assembly |
+| Qi coil 1 (Phone — Qi2) | -45.00 | 50.00 | 62.00 | Inside Step 1 body, under recessed 1mm silicone surface |
+| Qi coil 2 (Buds or second phone — Qi) | -45.00 | 50.00 | 77.00 | Inside Step 2 body, centred under 120×80 dish |
 | Apple Watch puck module | -45.00 | 65.00 | 92.00 | Inside Step 3 body |
 | Zone 3 Qi watch coil | -45.00 | 62.00 | 92.00 | Inside Step 3 body, adjacent to puck |
+| Hardware relay (Zone 3 mutual exclusion) | -30.00 | 42.00 | 40.00 | In riser cavity, switches puck vs Qi coil |
 | USB-C PD 100W trigger board (Zone 4) | +85.00 | 70.00 | 60.00 | Mounted on inner wall of laptop slot, wired to captive cable at top |
 | USB-C PD 45W trigger board (Zone 5) | -105.00 | 55.00 | 45.00 | Mounted on inner wall of tablet slot, wired to captive cable at top |
 | Step 1 base plane | -45.00 | 50.00 | 50.00 | Bottom of Step 1 / top of riser cavity |
@@ -67,8 +66,8 @@ This file is the single source of truth for all physical placement coordinates.
 
 ## Premium Placement Rationale
 
-- **Usability:** captive cable hangs from the top of each slot so devices plug in naturally during insertion.
-- **Universal charging:** Zone 3 still supports both Apple magnetic charging and generic Qi watch charging in the same top step.
+- **Usability:** captive cable hangs from the top of each slot so devices plug in naturally during insertion. 90° angled dock-end connectors minimise stress on port.
+- **Universal charging:** Zone 3 still supports both Apple magnetic charging and generic Qi watch charging in the same top step via hardware relay.
 - **Thermals:** PSU under the centre platform stays physically separated from the slot zones while the 20mm riser cavity preserves wiring clearance.
 - **Compactness:** rear spine and front fascia let the dock stay within a ~250×100×100mm footprint without sacrificing step or slot function.
-- **Serviceability:** ESP32-C3 and INA3221 boards stay in the riser cavity for short, flat I2C runs and easier access.
+- **Serviceability:** ATtiny85 and relay boards stay in the riser cavity for access during assembly.

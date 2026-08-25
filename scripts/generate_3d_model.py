@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate visual-reference STL/DXF/SVG exports for the compact Quad Device Dock.
+"""Generate visual-reference STL/DXF/SVG exports for the Penta Dock.
 
 All geometry is generated from watertight trimesh primitives and concatenation.
 """
@@ -42,12 +42,12 @@ except Exception:
 ROOT = Path(__file__).resolve().parents[1]
 EXPORT_DIR = ROOT / "assets" / "export"
 
-STL_BASE = EXPORT_DIR / "epitome-penta-base.stl"
-STL_INTERIOR = EXPORT_DIR / "epitome-penta-base-interior.stl"
-STL_TOP = EXPORT_DIR / "epitome-penta-top-plate.stl"
-STL_FULL = EXPORT_DIR / "epitome-penta-full-assembly.stl"
-DXF_TOP = EXPORT_DIR / "epitome-penta-top-plate.dxf"
-SVG_TOP = EXPORT_DIR / "epitome-penta-top-plate.svg"
+STL_BASE = EXPORT_DIR / "penta-dock-base.stl"
+STL_INTERIOR = EXPORT_DIR / "penta-dock-base-interior.stl"
+STL_TOP = EXPORT_DIR / "penta-dock-top-plate.stl"
+STL_FULL = EXPORT_DIR / "penta-dock-full-assembly.stl"
+DXF_TOP = EXPORT_DIR / "penta-dock-top-plate.dxf"
+SVG_TOP = EXPORT_DIR / "penta-dock-top-plate.svg"
 
 # New dock geometry — compact rectangular design
 DOCK_W = 250.0
@@ -70,8 +70,8 @@ STEP_H = 15.0
 STEP_TAPER = 40.0
 
 # PSU cavity
-PSU_W = 159.0
-PSU_D = 97.0
+PSU_W = 199.0
+PSU_D = 98.0
 PSU_H = 30.0
 
 # Rear rail and front fascia
@@ -218,7 +218,7 @@ def build_top_plate() -> trimesh.Trimesh:
 
     # Silicone pad guides (thin raised references)
     parts.append(_box((DOCK_W / 2.0, 52.0, RISER_H + STEP_H + 0.4), (160.0, 90.0, 0.8)))
-    parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + 2.0 * STEP_H + 0.4), (90.0, 65.0, 0.8)))
+    parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + 2.0 * STEP_H + 0.4), (120.0, 80.0, 0.8)))
 
     # Slot cable grommet collars (top cap references)
     parts.append(_cyl(4.0, 2.0, (LAPTOP_SLOT_W / 2.0, 84.0, LAPTOP_SLOT_H + 1.0), sections=30))
@@ -297,7 +297,7 @@ def write_top_plate_dxf_and_svg() -> None:
     tx = DOCK_W + 24
     ty = 96
     title_lines = [
-        "EPITOME PENTA — COMPACT DOCK TOP VIEW",
+        "PENTA DOCK TOP VIEW",
         "Material: Full ABS (Matte Black)",
         "Outer: 250 x 100 mm | Corner R10",
         "IEC C13 cutout: 28 x 20 mm centered (rear rail)",

@@ -1,4 +1,4 @@
-# Epitome Penta — Compatibility Reference
+# Penta Dock — Compatibility Reference
 
 ---
 
@@ -26,8 +26,8 @@ Zone 4 uses USB-C PD up to 100W through a **captured 220mm braided USB-C cable**
 
 ## Phone Compatibility
 
-### Zone 1 — 20W Qi Wireless
-All Qi-compatible phones are supported.
+### Zone 1 — 20W Qi2 Wireless
+Qi2 compatible devices (iPhone 13+, Pixel 8+, Samsung S24+ for Qi2; all Qi phones for standard Qi fallback).
 
 ### Zone 2 — 20W Qi Wireless
 All Qi-compatible phones and earbuds are supported. 120×80mm pad includes a subtle 68×48mm inner ridge for buds alignment.
