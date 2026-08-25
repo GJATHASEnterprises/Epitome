@@ -26,7 +26,7 @@ Standard width ~250mm
 
 +-----------+   +---------------------------------+   +-----------+
 |  LAPTOP   |   | Step 3: 100mm (Watch)           |   |  TABLET   |
-|   SLOT    |   | Step 2: 140mm (Buds/Phone)      |   |   SLOT    |
+|   SLOT    |   | Step 2: 140mm (Buds or second phone)      |   |   SLOT    |
 | 35mm wide |   | Step 1: 180mm (Phone 20W)       |   | 20mm wide |
 | 95mm tall |   | top reaches Z=95mm              |   | 75mm tall |
 +-----------+   +---------------------------------+   +-----------+
@@ -54,7 +54,7 @@ Z
 | Zone | Location | Device | Power | Notes |
 |---|---|---|---|---|
 | Zone 1 | Centre Step 1 (base) | Phone | Qi 20W | coil embedded in Step 1 body |
-| Zone 2 | Centre Step 2 (middle) | Buds/Phone | Qi 15W | coil embedded in Step 2 body |
+| Zone 2 | Centre Step 2 (middle) | Buds or second phone | Qi 15W | coil embedded in Step 2 body |
 | Zone 3 | Centre Step 3 rear (top) | Watch (Apple puck + Qi) | 5W shared | puck + Qi coil embedded in Step 3 body |
 | Zone 4 | Left slot | Laptop | USB-C PD 100W via captive 220mm cable | 35mm wide, 90mm deep, cable from top |
-| Zone 5 | Right slot | Tablet/Phone | USB-C PD 20W via captive 200mm cable | 20mm wide, 70mm deep, cable from top |
+| Zone 5 | Right slot | Tablet/Phone | USB-C PD 45W via captive 200mm cable | 20mm wide, 70mm deep, cable from top |

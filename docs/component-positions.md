@@ -38,7 +38,7 @@ This file is the single source of truth for all physical placement coordinates.
 | Step 2 top centre (140×100×15) | -45.00 | 50.00 | 80.00 | Middle step top surface |
 | Step 3 top centre (100×80×15) | -45.00 | 50.00 | 95.00 | Top step / watch presentation surface |
 | Zone 1 — Phone pad centre | -45.00 | 50.00 | 65.00 | 160×100 silicone surface, 20W Qi |
-| Zone 2 — Buds/Phone dish centre | -45.00 | 50.00 | 80.00 | 90×65 dish, 15W Qi |
+| Zone 2 — Buds or second phone dish centre | -45.00 | 50.00 | 80.00 | 120×80 dish, 20W Qi |
 | Zone 3 — Watch cradle pod base | -45.00 | 65.00 | 95.00 | Apple puck + Qi watch coil region |
 | Zone 4 — Laptop slot centreline | +85.00 | 45.00 | 47.50 | 35mm wide, 90mm deep, 400mm long, 95mm tall; captive cable hangs from top |
 | Zone 5 — Tablet slot centreline | -105.00 | 35.00 | 37.50 | 20mm wide, 70mm deep, 290mm long, 75mm tall; captive cable hangs from top |
@@ -50,17 +50,17 @@ This file is the single source of truth for all physical placement coordinates.
 
 | Component | X (mm) | Y (mm) | Z (mm) | Notes |
 |---|---:|---:|---:|---|
-| 156W PSU module (Mean Well LRS-150-24) | 0.00 | 50.00 | 3.00 | Under centre platform, 159×97×30mm, centred |
+| 201W PSU module (Mean Well LRS-200-24) | 0.00 | 50.00 | 3.00 | Under centre platform, 159×97×30mm, centred |
 | PSU cavity perimeter wall | -45.00 | 50.00 | 26.50 | Supports raised centre platform body over PSU |
 | ESP32-C3 SuperMini | -22.00 | 42.00 | 40.00 | Mounted in riser cavity, keep antenna clear |
 | INA3221 #1 | -8.00 | 42.00 | 42.00 | Mounted in riser cavity for Zones 1–3 monitor |
 | INA3221 #2 | 8.00 | 42.00 | 42.00 | Mounted in riser cavity for Zones 4–5 + spare |
 | Qi coil 1 (Phone) | -45.00 | 50.00 | 62.00 | Inside Step 1 body, under silicone surface |
-| Qi coil 2 (Buds/Phone) | -45.00 | 50.00 | 77.00 | Inside Step 2 body, centred under 90×65 dish |
+| Qi coil 2 (Buds or second phone) | -45.00 | 50.00 | 77.00 | Inside Step 2 body, centred under 120×80 dish |
 | Apple Watch puck module | -45.00 | 65.00 | 92.00 | Inside Step 3 body |
 | Zone 3 Qi watch coil | -45.00 | 62.00 | 92.00 | Inside Step 3 body, adjacent to puck |
 | USB-C PD 100W trigger board (Zone 4) | +85.00 | 70.00 | 60.00 | Mounted on inner wall of laptop slot, wired to captive cable at top |
-| USB-C PD 20W trigger board (Zone 5) | -105.00 | 55.00 | 45.00 | Mounted on inner wall of tablet slot, wired to captive cable at top |
+| USB-C PD 45W trigger board (Zone 5) | -105.00 | 55.00 | 45.00 | Mounted on inner wall of tablet slot, wired to captive cable at top |
 | Step 1 base plane | -45.00 | 50.00 | 50.00 | Bottom of Step 1 / top of riser cavity |
 | Step 2 base plane | -45.00 | 50.00 | 65.00 | Bottom of Step 2 |
 | Step 3 base plane | -45.00 | 50.00 | 80.00 | Bottom of Step 3 |

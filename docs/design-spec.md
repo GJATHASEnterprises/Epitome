@@ -70,7 +70,7 @@ Epitome
 | Step | Width | Depth | Height | Zone | Content |
 |---|---:|---:|---:|---|---|
 | Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle — Apple puck + Qi coil |
-| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds/Phone pad — 15W Qi, 90×65 landscape |
+| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad — 20W Qi, 120×80 landscape |
 | Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad — 20W Qi, full-width silicone surface |
 
 - Step dimensions are unchanged.
@@ -145,7 +145,7 @@ Epitome
 +------------------+------------------------------+------------------+
 | Laptop Slot Z4   |   3-Step Centre Platform    | iPad Slot Z5     |
 | 400mm long       | Step 3: Watch (rear) 5W     | 290mm long       |
-| 90mm deep        | Step 2: Buds 90×65, 15W     | 70mm deep        |
+| 90mm deep        | Step 2: Buds 120×80, 15W     | 70mm deep        |
 | 35mm wide        | Step 1: Phone 160×100, 20W  | 20mm wide        |
 | 95mm tall wall   | Raised over PSU cavity       | 75mm tall wall   |
 | cable from top   | coils embedded in step body  | cable from top   |
@@ -162,7 +162,7 @@ Front: full-width fascia strip with LED diffuser channel
 - 20W Qi + MagSafe-style alignment magnets
 
 ### Zone 2 — Buds / Phone (Qi 15W)
-- 90×65mm pad with 68×48mm inner ridge marker
+- 120×80mm pad with 68×48mm inner ridge marker
 
 ### Zone 3 — Watch (Universal 5W)
 - Apple Watch puck + Qi coil in same cradle, one device at a time
@@ -170,7 +170,7 @@ Front: full-width fascia strip with LED diffuser channel
 ### Zone 4 — Laptop (USB-C PD 100W)
 - Captive 220mm braided USB-C cable hangs from top of slot; device plugs in on insertion
 
-### Zone 5 — Tablet (USB-C PD 20W)
+### Zone 5 — Tablet (USB-C PD 45W)
 - Captive 200mm braided USB-C cable hangs from top of slot; device plugs in on insertion
 
 ---
@@ -189,10 +189,10 @@ Front: full-width fascia strip with LED diffuser channel
 
 See [electronics.md](electronics.md) for full spec.
 
-- **PSU:** Mean Well LRS-150-24 (156W, 24V, trim-adjusted to ~20V output), under centre platform cavity
+- **PSU:** Mean Well LRS-200-24 (201W, 24V, trim-adjusted to ~20V output), under centre platform cavity
 - **Inlet:** Rear right-angle IEC C13 in rear spine plate
-- **Power budget:** **155W total load, 1W headroom**
-- **Firmware cap:** global soft power cap at **150W**
+- **Power budget:** **190W total load, 11W headroom**
+- **ATtiny85 soft cap:** global soft power cap at **185W**
 - **Certification planning required:** FCC, CE, UKCA, RCM before retail in target markets
 
 ---

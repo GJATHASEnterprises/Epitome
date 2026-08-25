@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Epitome Penta — comprehensive multi-view technical product sheet.
+"""Penta Dock — comprehensive multi-view technical product sheet.
 
 Generates assets/epitome-penta-product-sheet.png at 7200×5400px
 (dpi=300, figsize=(24,18)).
@@ -95,10 +95,10 @@ def draw_top_view(ax: plt.Axes) -> None:
 
     # Zone labels
     ax.text(LEFT_W / 2, 50, "ZONE 4\nLAPTOP\n100W PD", ha="center", va="center", color=TEXT_WHITE, fontsize=6.3)
-    ax.text(cx, 54, "ZONE 1\nPHONE\n20W Qi", ha="center", va="center", color=Z1_BLUE, fontsize=6.1, fontweight="bold")
-    ax.text(cx, 36, "ZONE 2\nBUDS/PHONE\n15W Qi", ha="center", va="center", color=Z2_PURPLE, fontsize=5.6, fontweight="bold")
+    ax.text(cx, 54, "ZONE 1\nPHONE\n20W Qi2", ha="center", va="center", color=Z1_BLUE, fontsize=6.1, fontweight="bold")
+    ax.text(cx, 36, "ZONE 2\nBUDS OR\nSECOND PHONE\n20W Qi", ha="center", va="center", color=Z2_PURPLE, fontsize=5.6, fontweight="bold")
     ax.text(cx, 74, "ZONE 3\nWATCH\n5W", ha="center", va="center", color=Z3_GREEN, fontsize=5.6, fontweight="bold")
-    ax.text(DOCK_W - RIGHT_W / 2, 50, "ZONE 5\nTABLET\n20W PD", ha="center", va="center", color=TEXT_WHITE, fontsize=6.0)
+    ax.text(DOCK_W - RIGHT_W / 2, 50, "ZONE 5\nTABLET\n45W PD", ha="center", va="center", color=TEXT_WHITE, fontsize=6.0)
 
     _dim_arrow(ax, 0, -10, DOCK_W, -10, "250 mm overall width")
     _dim_arrow(ax, 260, 0, 260, DOCK_D, "100 mm depth", offx=10)
@@ -215,8 +215,8 @@ def draw_perspective_view(ax: plt.Axes) -> None:
     ax.text(340, 62, "Zone 4 laptop slot\n(on-edge, top cable)", color=Z4_ORANGE, fontsize=5.9, ha="left")
     ax.text(370, 154, "Zone 5 tablet slot\n(on-edge, top cable)", color=Z5_BLUE, fontsize=5.9, ha="left")
     ax.text(282, 228, "Zone 3 watch cradle", color=Z3_GREEN, fontsize=5.9)
-    ax.text(200, 260, "Zone 2 buds/phone · 15W Qi", color=Z2_PURPLE, fontsize=5.9)
-    ax.text(115, 292, "Zone 1 phone · 20W Qi", color=Z1_BLUE, fontsize=5.9)
+    ax.text(200, 260, "Zone 2 buds or second phone · 20W Qi · 120×80mm dish", color=Z2_PURPLE, fontsize=5.9)
+    ax.text(115, 292, "Zone 1 phone · 20W Qi2", color=Z1_BLUE, fontsize=5.9)
     ax.text(250, 307, "20 mm fascia with frosted diffuser", color=TEXT_LIGHT, fontsize=5.6)
     ax.text(298, 111, "25 mm low rear rail", color=TEXT_LIGHT, fontsize=5.6)
 
@@ -231,18 +231,18 @@ def draw_side_elevation(ax: plt.Axes) -> None:
     # Stack outline
     ax.add_patch(Rectangle((0, 0), 130, 3, facecolor="#252a34", edgecolor="#48506a", linewidth=1.0))
     ax.add_patch(Rectangle((8, 3), 114, 30, facecolor="#1f2430", edgecolor="#59627d", linewidth=1.0))
-    ax.text(65, 18, "PSU 159×97×30 (Mean Well LRS-150-24)", color=TEXT_LIGHT, fontsize=5.2, ha="center")
+    ax.text(65, 18, "PSU 159×97×30 (Mean Well LRS-200-24)", color=TEXT_LIGHT, fontsize=5.2, ha="center")
 
     ax.add_patch(Rectangle((8, 33), 114, 17, facecolor="#1a1f29", edgecolor="#3f4760", linewidth=1.0))
     ax.text(65, 41.5, "Riser cavity + wiring\nESP32 / INA3221 shelf @ Z=35", color=TEXT_DIM, fontsize=5.1, ha="center", va="center")
 
     ax.add_patch(Rectangle((8, 50), 110, 15, facecolor="#2b313c", edgecolor=Z1_BLUE, linewidth=1.0))
     ax.add_patch(Circle((52, 57.5), 6.0, facecolor="none", edgecolor=Z1_BLUE, linestyle=":", linewidth=1.0))
-    ax.text(86, 56.5, "Step 1\n20W Qi", color=Z1_BLUE, fontsize=5.5, ha="center")
+    ax.text(86, 56.5, "Step 1\n20W Qi2", color=Z1_BLUE, fontsize=5.5, ha="center")
 
     ax.add_patch(Rectangle((8, 65), 100, 15, facecolor="#303741", edgecolor=Z2_PURPLE, linewidth=1.0))
     ax.add_patch(Circle((48, 72.5), 5.5, facecolor="none", edgecolor=Z2_PURPLE, linestyle=":", linewidth=1.0))
-    ax.text(82, 72.0, "Step 2\n15W Qi", color=Z2_PURPLE, fontsize=5.4, ha="center")
+    ax.text(82, 72.0, "Step 2\n20W Qi", color=Z2_PURPLE, fontsize=5.4, ha="center")
 
     ax.add_patch(Rectangle((8, 80), 80, 15, facecolor="#363e49", edgecolor=Z3_GREEN, linewidth=1.0))
     ax.add_patch(Circle((36, 87.5), 4.8, facecolor="none", edgecolor=Z3_GREEN, linestyle=":", linewidth=1.0))
@@ -322,20 +322,20 @@ def draw_spec_panel(ax: plt.Axes) -> None:
 
     y -= 0.01
     write("5 ZONES", color=TEXT_WHITE, fs=8.7, weight="bold")
-    write(f"• Zone 1 Phone — 20W Qi", color=Z1_BLUE)
-    write(f"• Zone 2 Buds/Phone — 15W Qi", color=Z2_PURPLE)
+    write(f"• Zone 1 Phone — 20W Qi2", color=Z1_BLUE)
+    write(f"• Zone 2 Buds or second phone — 20W Qi (120×80mm dish)", color=Z2_PURPLE)
     write(f"• Zone 3 Watch — 5W (Apple puck + Qi coil)", color=Z3_GREEN)
     write(f"• Zone 4 Laptop slot — 100W USB-C PD", color=Z4_ORANGE)
-    write(f"• Zone 5 Tablet slot — 20W USB-C PD", color=Z5_BLUE)
+    write(f"• Zone 5 Tablet slot — 45W USB-C PD", color=Z5_BLUE)
 
     y -= 0.01
     write("ELECTRONICS", color=TEXT_WHITE, fs=8.7, weight="bold")
     write("• MCU: ESP32-C3 SuperMini (WiFi + BLE 5.0)")
     write("• Power monitor: INA3221 ×2")
-    write("• PSU: Mean Well LRS-150-24, 156W")
+    write("• PSU: Mean Well LRS-200-24, 201W")
     write("• Output rail trimmed to 20V")
     write("• LED: WS2811 strip, 12–15 LEDs, 250mm")
-    write("• Total load 155W, firmware soft cap 150W")
+    write("• Total output 190W, ATtiny85 soft cap 185W")
     write("• Night mode: LEDs off 23:00–07:00")
 
     y -= 0.01
@@ -345,13 +345,13 @@ def draw_spec_panel(ax: plt.Axes) -> None:
     write("• Silicone lining on slot floor + side walls")
     write("• Centre 3-step ABS staircase charging platform")
 
-    ax.text(0.04, 0.03, "© 2026 GJATHASEnterprises · Epitome Penta", transform=ax.transAxes,
+    ax.text(0.04, 0.03, "© 2026 GJATHASEnterprises · Penta Dock", transform=ax.transAxes,
             color=TEXT_DIM, fontsize=7, fontfamily="monospace")
 
 
 def draw_header(fig: plt.Figure) -> None:
-    fig.text(0.03, 0.975, "EPITOME PENTA", color=TEXT_WHITE, fontsize=25, fontweight="bold", va="top")
-    fig.text(0.03, 0.952, "5-ZONE COMPACT CHARGING DOCK · CURRENT DESIGN", color=GOLD, fontsize=11, va="top")
+    fig.text(0.03, 0.975, "PENTA DOCK", color=TEXT_WHITE, fontsize=25, fontweight="bold", va="top")
+    fig.text(0.03, 0.952, "190W TOTAL OUTPUT · 5-ZONE CHARGING DOCK", color=GOLD, fontsize=11, va="top")
     fig.text(0.97, 0.973, "PRE-ORDER — $249", color=GOLD, fontsize=12, ha="right", va="top", fontweight="bold")
     fig.text(0.97, 0.952, "FULL ABS · MATTE BLACK · 2026", color=TEXT_DIM, fontsize=9, ha="right", va="top")
 

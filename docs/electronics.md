@@ -1,12 +1,12 @@
-# Epitome Penta — Electronics Specification
+# Penta Dock — Electronics Specification
 
 ## Main Electronics
 
 - MCU: ESP32-C3 Mini
 - Monitoring: **INA3221 #1 (Zones 1–3) + INA3221 #2 (Zones 4–5 + spare/system)**
 - Ambient sensor: **Removed (BH1750 dropped for cost reduction)**
-- Power: internal **156W** AC/DC PSU (**Mean Well LRS-150-24, 156W, 24V output trim-adjusted to ~20V. Physical size: 159×97×30mm. Located under centre platform.**) + **right-angle IEC C13 inlet**
-- Outputs: 20W Qi (Zone 1), 15W Qi (Zone 2), Zone 3 dual charger (Apple puck + Qi coil sharing 5W), 2×USB-C PD branches (100W + 20W)
+- Power: internal **201W** AC/DC PSU (**Mean Well LRS-200-24, 201W, 24V output trim-adjusted to ~20V. Physical size: 159×97×30mm. Located under centre platform.**) + **right-angle IEC C13 inlet**
+- Outputs: 20W Qi2 (Zone 1), 20W Qi (Zone 2), Zone 3 dual charger (Apple puck + Qi coil sharing 5W), 2×USB-C PD branches (100W + 45W)
 - Lighting: WS2811 addressable strip
 
 ## Exact Placement Coordinates
@@ -21,27 +21,27 @@ Key placement updates:
 
 ## Power Path
 
-`Right-angle IEC C13 -> 156W PSU (Mean Well LRS-150-24, under centre platform cavity) -> zone branches + regulation -> monitoring + protections`
+`Right-angle IEC C13 -> 201W PSU (Mean Well LRS-200-24, under centre platform cavity) -> zone branches + regulation -> monitoring + protections`
 
-- Zone 1: Qi 20W + polyfuse + thermistor
-- Zone 2: Qi 15W + polyfuse + thermistor
+- Zone 1: Qi2 20W TX module (Qi2 certified, magnetic alignment ring compatible) + polyfuse + thermistor
+- Zone 2: Qi 20W + polyfuse + thermistor
 - Zone 3: Apple puck + Qi watch coil, shared 5W policy (single active target)
 - Zone 4: USB-C PD 100W + INA3221 #2 + captive 220mm cable harness
-- Zone 5: USB-C PD 20W + INA3221 #2 + captive 200mm cable harness
+- Zone 5: USB-C PD 45W + INA3221 #2 + captive 200mm cable harness (65W rated cable)
 
 ## Power Budget
 
-| Zone | Power |
-|---|---:|
-| Zone 1 Phone Qi2 | 20W |
-| Zone 2 Buds/Phone Qi | 15W |
-| Zone 3 Watch (puck or Qi) | 5W |
-| Zone 4 Laptop | 100W |
-| Zone 5 Tablet/Phone | 20W |
-| **Total system load** | **155W** |
-| PSU output budget | **156W** |
-| Headroom | **1W** |
-| Firmware soft cap | **150W total draw** |
+| Zone | Device | Power | Method |
+|---|---|---|---|
+| Zone 1 | Phone | 20W | Qi2 (magnetic alignment) |
+| Zone 2 | Buds or second phone | 20W | Qi |
+| Zone 3 | Watch | 5W | Apple Watch puck + Qi coil |
+| Zone 4 | Laptop | 100W | USB-C PD (captive braided cable) |
+| Zone 5 | Tablet | 45W | USB-C PD (captive braided cable) |
+| **Total worst case** | | **190W** | |
+| **PSU rated** | | **201W (Mean Well LRS-200-24)** | |
+| **Headroom** | | **11W** | |
+| **ATtiny85 soft cap** | | **185W** | |
 
 ## PCB Layout Notes
 
@@ -74,10 +74,10 @@ This section is a full electrical reference intended for design review, prototyp
 
 ## 1) Full System Architecture Narrative
 
-Epitome Penta uses a centralized internal AC/DC supply to generate a 20V primary DC rail. That rail is split into five protected zone branches plus a low-voltage logic branch.
+Penta Dock uses a centralized internal AC/DC supply to generate a 20V primary DC rail. That rail is split into five protected zone branches plus a low-voltage logic branch.
 
 Architecture update highlights:
-- PSU is Mean Well LRS-150-24 (156W nominal) with 150W firmware soft cap.
+- PSU is Mean Well LRS-200-24 (201W nominal) with a 185W ATtiny85 soft cap.
 - Zone 3 supports Apple Watch magnetic protocol plus generic Qi-watch charging in one cradle footprint.
 - Zone 4 and Zone 5 use captive braided cables.
 - Ambient auto-dim sensor removed; brightness is app-controlled.
@@ -119,14 +119,14 @@ Architecture update highlights:
 
 | Parameter | Specification |
 |---|---|
-| Model baseline | Mean Well LRS-150-24 or equivalent (trim-adjusted to ~20V output target) |
+| Model baseline | Mean Well LRS-200-24 or equivalent (trim-adjusted to ~20V output target) |
 | Physical size | 159×97×30mm |
 | Input | 100–240VAC |
 | Inlet | **Rear right-angle IEC C13** |
-| Nominal available output | **156W (Mean Well LRS-150-24)** |
-| System full-load design | **155W total branch budget** |
-| Headroom | **1W** |
-| Firmware global cap | **150W** |
+| Nominal available output | **201W (Mean Well LRS-200-24)** |
+| System full-load design | **190W total branch budget** |
+| Headroom | **11W** |
+| Firmware global cap | **185W** |
 
 PSU location: **under centre platform cavity**.
 
@@ -142,8 +142,8 @@ PSU location: **under centre platform cavity**.
 ### Zone 1 — Qi 20W Path
 `20V rail -> 12V buck -> Qi TX module (20W)`
 
-### Zone 2 — Qi 15W Path
-`20V rail -> 12V buck -> Qi TX module (15W)`
+### Zone 2 — Qi 20W Path
+`20V rail -> 12V buck -> Qi TX module (20W)`
 
 ### Zone 3 — Watch Universal 5W Path
 `20V rail -> 5V buck -> dual-output watch branch (Apple puck + Qi watch coil) with firmware/hardware mutual-exclusion`
@@ -151,8 +151,8 @@ PSU location: **under centre platform cavity**.
 ### Zone 4 — USB-C PD 100W Path
 `20V rail -> USB-C PD 100W board -> INA3221 #2 CH1 -> captive 220mm cable (USB-C male free end)`
 
-### Zone 5 — USB-C PD 20W Path
-`20V rail -> USB-C PD 20W board -> INA3221 #2 CH2 -> captive 200mm cable (USB-C male free end)`
+### Zone 5 — USB-C PD 45W Path
+`20V rail -> USB-C PD 45W board -> INA3221 #2 CH2 -> captive 200mm cable (USB-C male free end, 65W rated)`
 
 ## 7) Logic Rail and 3.3V LDO
 
@@ -200,7 +200,7 @@ PSU location: **under centre platform cavity**.
 - PSU now positioned under centre platform.
 - Centre platform perimeter wall creates an enclosed PSU cavity with 20mm riser space above for wiring.
 - Thermal isolation from slot zones is maintained by physical separation.
-- 1W power headroom (155W load, 156W PSU), backed by 150W firmware cap to avoid sustained edge load.
+- 11W power headroom (190W load, 201W PSU), backed by 185W ATtiny85 soft cap to avoid sustained edge load.
 
 ## 13) PCB Layout Notes (Manufacturing-Facing)
 
@@ -212,18 +212,28 @@ PSU location: **under centre platform cavity**.
 
 ## 14) Power Budget Table (Final Reference)
 
-| Zone | Function | Max Power |
-|---|---|---:|
-| Zone 1 | Qi phone charging | 20W |
-| Zone 2 | Qi buds/secondary phone | 15W |
-| Zone 3 | Apple puck or Qi watch | 5W |
-| Zone 4 | USB-C PD laptop branch | 100W |
-| Zone 5 | USB-C PD tablet/phone branch | 20W |
-| **Total load** |  | **155W** |
-| **PSU nominal output budget** |  | **156W (Mean Well LRS-150-24)** |
-| **Headroom** |  | **1W** |
-| **Firmware soft cap** |  | **150W total draw** |
+| Zone | Device | Power | Method |
+|---|---|---|---|
+| Zone 1 | Phone | 20W | Qi2 (magnetic alignment) |
+| Zone 2 | Buds or second phone | 20W | Qi |
+| Zone 3 | Watch | 5W | Apple Watch puck + Qi coil |
+| Zone 4 | Laptop | 100W | USB-C PD (captive braided cable) |
+| Zone 5 | Tablet | 45W | USB-C PD (captive braided cable) |
+| **Total worst case** | | **190W** | |
+| **PSU rated** | | **201W (Mean Well LRS-200-24)** | |
+| **Headroom** | | **11W** | |
+| **ATtiny85 soft cap** | | **185W** | |
 
 ## 15) Design Intent Summary
 
-The electronics architecture remains modular and monitorable, while now adding universal watch support, safer captive cable UX for both slots, dual INA3221 monitoring, and a tightly packaged 156W PSU envelope under the centre platform with a dedicated riser cavity for logic and coil routing.
+The electronics architecture remains modular and monitorable, while now adding universal watch support, safer captive cable UX for both slots, dual INA3221 monitoring, and a tightly packaged 201W PSU envelope under the centre platform with a dedicated riser cavity for logic and coil routing.
+
+## Wattage Etch Labels
+
+```
+PHONE    20W  Qi2
+BUDS     20W  Qi
+WATCH     5W
+LAPTOP  100W  USB-C
+TABLET   45W  USB-C
+```

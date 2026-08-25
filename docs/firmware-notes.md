@@ -15,11 +15,11 @@
 - Zone 2 max: **15W**
 - Zone 3 max: **5W total shared budget**
 - Zone 4 max: **100W**
-- Zone 5 max: **20W**
-- System max budget: **155W**
-- PSU capacity: **156W** (Mean Well LRS-150-24)
-- Headroom target: **1W** (155W load, 156W PSU)
-- Firmware soft cap: **150W total draw**
+- Zone 5 max: **45W**
+- System max budget: **190W**
+- PSU capacity: **201W** (Mean Well LRS-200-24)
+- Headroom target: **11W** (190W load, 201W PSU)
+- ATtiny85 soft cap: **185W total draw**
 
 ## Zone 3 Dual-Mode Detection
 

@@ -9,7 +9,7 @@
      |
 [Right-Angle IEC C13 Inlet]
      |
-[Internal 156W AC/DC PSU (Mean Well LRS-150-24) under centre platform cavity] --> [Main DC Rail: 20V]
+[Internal 201W AC/DC PSU (Mean Well LRS-200-24) under centre platform cavity] --> [Main DC Rail: 20V]
                                                |
        +----------------+----------------+----------------+----------------+----------------+
        |                |                |                |                |
@@ -67,7 +67,7 @@
 ## INA3221 #2 — 3-Channel Power Monitor (Zones 4–5 + spare/system)
 
 - CH1 Zone 4 (USB-C PD up to 100W)
-- CH2 Zone 5 (USB-C PD up to 20W)
+- CH2 Zone 5 (USB-C PD up to 45W)
 - CH3 spare/system branch
 - Address: **0x41** (A0 high)
 
@@ -127,7 +127,7 @@ This section defines practical wiring execution from wall inlet to every electri
 3. Convert AC to regulated ~20V DC.
 4. Split 20V bus into five protected zone branches + logic branch.
 5. Route Zone 4 to captive 220mm cable harness (100W rated).
-6. Route Zone 5 to captive 200mm cable harness (20W rated).
+6. Route Zone 5 to captive 200mm cable harness (65W rated).
 7. Route Zone 3 to both Apple puck and Qi watch coil through one-at-a-time control.
 8. Route branch protection through PCB PTC resettable fuse stage.
 9. Route all PSU-to-zone wiring through the **20mm riser cavity (Z=33mm to Z=50mm)** under centre platform Step 1.
@@ -179,7 +179,7 @@ This section defines practical wiring execution from wall inlet to every electri
 ### Zone 4 (USB-C PD 100W)
 `20V -> PD 100W board -> INA3221 #2 CH1 -> polyfuse -> TVS -> captive USB-C cable (220mm)`
 
-### Zone 5 (USB-C PD 20W)
+### Zone 5 (USB-C PD 45W)
 `20V -> PD 20W board -> INA3221 #2 CH2 -> polyfuse -> TVS -> captive USB-C cable (200mm)`
 
 ## 5) I2C Bus Wiring
@@ -227,7 +227,7 @@ Star ground from PSU GND, with separate high-current returns merged at star poin
 | Zone 1/2 Qi branches | 18 AWG |
 | Zone 3 watch branch | 22 AWG |
 | Zone 4 PD 100W branch | 14 AWG |
-| Zone 5 PD 20W branch | 18 AWG |
+| Zone 5 PD 45W branch | 18 AWG |
 
 ## 13) Connector Recommendations
 
@@ -246,7 +246,7 @@ Star ground from PSU GND, with separate high-current returns merged at star poin
 ## 15) Full-System ASCII Schematic
 
 ```text
-AC -> C13(RA) -> 156W PSU (Mean Well LRS-150-24, under centre platform cavity) -> 20V Bus
+AC -> C13(RA) -> 201W PSU (Mean Well LRS-200-24, under centre platform cavity) -> 20V Bus
   -> Z1 Qi20W
   -> Z2 Qi15W
   -> Z3 Watch 5W (Puck + Qi, one active)

@@ -18,7 +18,7 @@ The enclosure is a compact three-zone body tied together by two continuous struc
 4. **Rear spine plate** — full-width structural rear panel tying both slot walls and the centre platform rear together
 5. **Front fascia strip** — full-width front base panel carrying the LED diffuser and visually unifying the dock
 
-The Mean Well LRS-150-24 PSU no longer sits under the laptop slot. It now sits flat on the base plate under the centre platform footprint, with the centre platform body raised on a perimeter wall above it.
+The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits flat on the base plate under the centre platform footprint, with the centre platform body raised on a perimeter wall above it.
 
 ---
 
@@ -53,7 +53,7 @@ The Mean Well LRS-150-24 PSU no longer sits under the laptop slot. It now sits f
 | Step | Width | Depth | Height | Zone | Content |
 |---|---:|---:|---:|---|---|
 | Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad, 20W Qi, 160×100mm silicone surface |
-| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds/Phone pad, 15W Qi, 90×65mm dish |
+| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad, 20W Qi, 120×80mm dish |
 | Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle, Apple puck + Qi watch coil |
 
 - Centre platform body raised on perimeter wall over PSU cavity
@@ -70,7 +70,7 @@ The Mean Well LRS-150-24 PSU no longer sits under the laptop slot. It now sits f
 
 ### Zone 2 (Step 2)
 
-- Silicone dish: **90×65mm**
+- Silicone dish: **120×80mm**
 - Qi TX: **15W**, embedded inside Step 2 body and centred under the dish
 - Slight phone overhang remains acceptable
 
@@ -99,7 +99,7 @@ The Mean Well LRS-150-24 PSU no longer sits under the laptop slot. It now sits f
 
 ## PSU Cavity
 
-PSU (**Mean Well LRS-150-24, 159×97×30mm**) sits flat on the base plate under the centre platform. The centre platform perimeter wall creates an enclosed PSU cavity, and the **20mm riser cavity above the PSU** carries all wiring to the coils and logic board.
+PSU (**Mean Well LRS-200-24, 159×97×30mm**) sits flat on the base plate under the centre platform. The centre platform perimeter wall creates an enclosed PSU cavity, and the **20mm riser cavity above the PSU** carries all wiring to the coils and logic board.
 
 Fit check:
 - PSU width: **159mm < 180mm** centre platform base footprint ✅

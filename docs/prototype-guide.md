@@ -10,7 +10,7 @@ Not a sellable unit — a functional proof of concept to verify:
 - ✅ Captive cable slot UX works naturally for laptop/tablet
 - ✅ Zone 3 dual watch mode (Apple puck + Qi) behaves correctly
 - ✅ Standard SKU footprint is desk-friendly
-- ✅ Thermal behavior remains stable with PSU under centre platform cavity and 150W firmware soft cap
+- ✅ Thermal behavior remains stable with PSU under centre platform cavity and 185W ATtiny85 soft cap
 
 Definitive placement coordinates are in [component-positions.md](component-positions.md).
 
@@ -71,7 +71,7 @@ Standard mock dimensions:
 
 Placement checks:
 - Step 1 full-width 160×100 phone surface (20W)
-- Step 2 buds pad centred (90×65, 15W)
+- Step 2 buds pad centred (120×80, 15W)
 - Watch cradle at rear of Step 3
 - Cable hang point at top of each slot — verify cable reach to device port when fully inserted
 
@@ -83,8 +83,8 @@ Placement checks:
 - [ ] Verify Zone 3 Qi mode charges supported non-Apple watch
 - [ ] Verify only one Zone 3 path is active at a time
 - [ ] Verify Zone 4 captive cable delivers up to 100W (220mm lead)
-- [ ] Verify Zone 5 captive cable delivers up to 20W
-- [ ] Validate full-load envelope at 155W total and firmware soft cap at 150W
+- [ ] Verify Zone 5 captive cable delivers up to 45W
+- [ ] Validate full-load envelope at 190W total and ATtiny85 soft cap at 185W
 
 ### Week 4 — Full Assembly
 

@@ -33,10 +33,10 @@ Epitome Penta is a 5-zone charging dock designed for **all Qi phones**, **all US
 | Zone | What it charges | How |
 |---|---|---|
 | Zone 1 | Phone | **20W Qi** on Step 1 full-width silicone surface |
-| Zone 2 | Buds or phone | 15W Qi Step 2 pad (90×65mm) |
+| Zone 2 | Buds or phone | 20W Qi Step 2 pad (120×80mm) |
 | Zone 3 | Watch | Apple Watch puck + Qi coil (5W shared) |
 | Zone 4 | USB-C laptop | Captive braided USB-C cable, 100W (220mm) |
-| Zone 5 | USB-C tablet/phone | Captive braided USB-C cable, 20W (200mm) |
+| Zone 5 | USB-C tablet/phone | Captive braided USB-C cable, 45W (200mm) |
 
 ---
 

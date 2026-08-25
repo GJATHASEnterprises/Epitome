@@ -1,125 +1,69 @@
-# Epitome Penta
+# Penta Dock
 
 ## Product Render
-![Epitome Penta Render](assets/epitome-penta-render.png)
+![Penta Dock Render](assets/epitome-penta-render.png)
 
 > Pre-generated. Regenerate at any time by running `blender --background --python scripts/generate_render.py`.
 
 ## 3D Model
-Open [`assets/epitome-penta-model.glb`](assets/epitome-penta-model.glb) to view the interactive 3D model in GitHub — rotate, zoom, and inspect from any angle. Always reflects the latest design.
+Open [`assets/epitome-penta-model.glb`](assets/epitome-penta-model.glb) to view the interactive 3D model in GitHub.
 
-> Pre-generated. Regenerate at any time by running `python scripts/generate_3d_model.py`.
+**One dock. Every device.**
 
-**A smart, app-controlled 5-zone charging dock for phones, Apple Watch, AirPods, laptops, and iPad/USB-C accessories.**
+*190W total output — laptop, tablet, phone, watch, buds, all at full speed.*
 
 ---
 
 ## Overview
 
-Epitome Penta is a self-built, smart charging station that charges up to 5 devices/zones simultaneously from a single wall outlet. It features a brushed aluminum top plate in the "Arc" enclosure — a smooth curved wedge with zero sharp corners — dual wireless charging zones, a built-in Apple Watch puck, 100W USB-C PD for any modern laptop, a second 20W USB-C PD groove for iPad/phone charging, a WS2812B LED status bar with laser-etched zone icons, and a companion iOS app with theft alerts, ambient light dimming, night mode, and weekly charge reports.
+Penta Dock is a 5-zone charging dock that powers laptop, tablet, phone, watch, and buds (or a second phone) simultaneously from a single wall outlet.
 
-Plugs directly into the wall via a built-in IEC C13 inlet and internal 180W AC/DC power supply — no external power brick required.
+## Power Budget
 
-Available in **Black** and **White**.
+| Zone | Device | Power | Method |
+|---|---|---|---|
+| Zone 1 | Phone | 20W | Qi2 (magnetic alignment) |
+| Zone 2 | Buds or second phone | 20W | Qi |
+| Zone 3 | Watch | 5W | Apple Watch puck + Qi coil |
+| Zone 4 | Laptop | 100W | USB-C PD (captive braided cable) |
+| Zone 5 | Tablet | 45W | USB-C PD (captive braided cable) |
+| **Total worst case** | | **190W** | |
+| **PSU rated** | | **201W (Mean Well LRS-200-24)** | |
+| **Headroom** | | **11W** | |
+| **ATtiny85 soft cap** | | **185W** | |
 
----
-
-## 5-Zone Layout
-
-Definitive coordinates for every exterior/interior feature are in
-[`docs/component-positions.md`](docs/component-positions.md):
-- Zone 1 (Phone): `X=-45.00, Y=60.00`
-- Zone 2 (Buds): `X=-45.00, Y=140.00`
-- Zone 3 (Watch cradle base): `X=-45.00, Y=225.00`
-- Zone 4 (Laptop groove center): `X=+40.00, Y=150.00`
-- Zone 5 (iPad/Phone groove center): `X=+80.00, Y=150.00`
+## Wattage Etch Labels
 
 ```
-+-----------------------------------------------------------+
-|  REAR                                                     |
-|  ┌─────────────────────────────────────────────────────┐  |
-|  │  [⌚ ZONE 3 — Watch] [💻 ZONE 4 — Laptop] [📲 ZONE 5 — iPad/Phone] │  |
-|  │  Teardrop cradle      Vertical spine groove  Parallel USB-C groove │  |
-|  │  30° tilt, rear-left   right-half, 22×12mm   right-half, 18×12mm   │  |
-|  └─────────────────────────────────────────────────────┘  |
-|  ┌─────────────────────────────────────────────────────┐  |
-|  │  [📱 ZONE 1 — Phone]       [🎧 ZONE 2 — Buds]       │  |
-|  │  15W Qi + magnets          5W Qi, phones/AirPods    │  |
-|  └─────────────────────────────────────────────────────┘  |
-|  [PHONE|BUDS|WATCH|LAPTOP|iPAD] 5-zone LED bar
-+-----------------------------------------------------------+
-  FRONT                              IEC C13 inlet (rear)
+PHONE    20W  Qi2
+BUDS     20W  Qi
+WATCH     5W
+LAPTOP  100W  USB-C
+TABLET   45W  USB-C
 ```
-
----
 
 ## Key Features
 
-- **5 charging zones** — phone, buds, watch, laptop, and a second USB-C groove for iPad/phone
-- **100W USB-C PD** on Zone 4 — works with any USB-C laptop from the last 6 years
-- **20W USB-C PD** on Zone 5 — dedicated groove beside the laptop slot for iPad/phone charging
-- **Qi charging zones** on Zones 1 + 2 — fast wireless charging for phones and AirPods
-- **Apple Watch puck** built-in on Zone 3 — no adapter needed
-- **Arc enclosure** — smooth curved wedge, brushed aluminum top, soft-touch ABS base, zero sharp corners
-- **WS2812B LED bar** with frosted diffuser and laser-etched zone icons (📱 PHONE, 🎧 BUDS, ⌚ WATCH, 💻 LAPTOP, 📲 iPAD)
-- **LED states:** Red = charging, Green = full, Off = empty
-- **Night mode** — LEDs off overnight unless a zone is actively charging; theft alerts can be silenced overnight
-- **Companion iOS app** — theft alerts, ambient auto-dim, BLE proximity, weekly charge reports, home screen widget
-- **ESP32-C3 Mini** MCU — WiFi + BLE, flashed via onboard USB
-- **Internal 180W PSU + bundled IEC C13 cable** — no external power brick
-- **Warranty registration card included** — in-box onboarding + follow-up capture
-- **No physical buttons** — all control via app
+- **190W simultaneous output** across 5 zones
+- **Zone 1:** 20W Qi2 with magnetic alignment
+- **Zone 2:** 20W Qi on an enlarged 120×80mm dish for buds or a second phone
+- **Zone 3:** 5W Apple Watch puck + Qi watch coil
+- **Zone 4:** 100W USB-C PD captive braided cable
+- **Zone 5:** 45W USB-C PD captive braided cable
+- **Zone 5 cable:** 200mm braided nylon, 65W rated
+- **Primary slogan:** **One dock. Every device.**
+- **Secondary tagline:** **190W. Five zones. One cable.**
 
----
-
-## Compatibility
-
-See [docs/compatibility.md](docs/compatibility.md) for the full list. Quick summary:
-
-- **Phones:** iPhone (any Qi-capable), Android (any Qi), Zone 5 USB-C for modern USB-C phones
-- **Laptops:** MacBook Air, MacBook Pro, Dell XPS, HP Spectre, Lenovo ThinkPad/IdeaPad, ASUS, Acer, Surface Pro, Samsung Galaxy Book, any USB-C laptop (2018+)
-- **Apple Watch:** Series 1–9, SE, Ultra
-- **AirPods:** Pro (1st/2nd gen), 3rd gen, AirPods 4 (Qi case)
-- **iPad:** iPad Pro, Air, mini (USB-C models via Zone 5)
-
----
-
-## Pricing
-
-| Color | Price |
-|-------|-------|
-| Black | $189 |
-| White | $189 |
-
----
+> Zone 2's enlarged 120×80mm surface fits a buds case or a full-size phone — charge for two people from one dock.
 
 ## Documentation
 
 | Doc | Contents |
 |-----|----------|
-| [Enclosure Spec](docs/enclosure.md) | Arc design, dimensions, materials, zones, LED system |
-| [Electronics Spec](docs/electronics.md) | ESP32-C3, all ICs, power architecture, sensors |
-| [Component Positions](docs/component-positions.md) | Definitive 0.01mm X/Y/Z coordinates (exterior + interior) |
-| [App Spec](docs/app-spec.md) | iOS app features, theft alerts, BLE, notifications |
-| [Bill of Materials](docs/bom.md) | Prototype + production BOM, cost breakdown |
-| [Compatibility](docs/compatibility.md) | All supported devices and charge speeds |
-| [Production Roadmap](docs/production-roadmap.md) | Batch 1 laser cut → batch 2 mold → batch 3+ |
-| [Prototype Guide](docs/prototype-guide.md) | 4-week build plan, tools, checklist |
-| [Firmware Notes](docs/firmware-notes.md) | Night mode / sleep mode timing and behaviour |
-| [Marketability](docs/marketability.md) | Selling points, target markets, pricing rationale |
-| [Packaging](docs/packaging.md) | In-box contents, warranty card, bundled IEC cable |
-| [Wiring Notes](docs/wiring.md) | Schematic notes, pin assignments, PCB notes |
-
----
-
-## Target Build Cost
-
-| Quantity | Target BOM |
-|----------|-----------|
-| 20–50 units | ~$84–$92 (laser cut batch) |
-| 50 units | ~$79 (with bulk sourcing) |
-| 100+ units | ~$75 |
-
----
+| [Electronics Spec](docs/electronics.md) | Charging architecture and power budget |
+| [Bill of Materials](docs/bom.md) | Component and cost breakdown |
+| [UVP](docs/uvp.md) | Positioning, messaging, and claims |
+| [Component Positions](docs/component-positions.md) | Definitive X/Y/Z coordinates |
+| [Compatibility](docs/compatibility.md) | Device support matrix |
 
 *Built by GJATHASEnterprises*
