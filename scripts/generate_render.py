@@ -1,495 +1,285 @@
 #!/usr/bin/env python3
 """
-High-quality Penta Dock render generator.
+High-quality Penta Dock marketing render generator.
+Uses matplotlib + Pillow only (no Blender / bpy required).
 Run:
-  blender --background --python scripts/generate_render.py
+  python scripts/generate_render.py
+Output:
+  assets/penta-dock-render.png  (1200×800 px)
+  assets/quad-dock-render.png   (copy, backwards-compat)
 """
 from __future__ import annotations
 
-import math
+import shutil
 from pathlib import Path
 
-import bpy
-from mathutils import Vector
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import FancyBboxPatch, Polygon
+from matplotlib.collections import PatchCollection
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH = ROOT / "assets" / "penta-dock-render.png"
-MM = 0.001
+PRIMARY_OUT  = ROOT / "assets" / "penta-dock-render.png"
+COMPAT_OUT   = ROOT / "assets" / "quad-dock-render.png"
 
-# Envelope (mm)
-FRONT_W = 110.0
-REAR_W = 140.0
-LENGTH = 300.0
-FRONT_H = 12.0
-REAR_H = 22.0
-CORNER_R = 20.0
-TOP_T = 1.5
+# ── Colours ──────────────────────────────────────────────────────────────────
+C_BG        = "#1a1a1a"
+C_BODY      = "#2a2a2a"
+C_STEP      = "#333333"
+C_SILICONE  = "#1f1f1f"
+C_WHITE     = "#ffffff"
+C_GREY      = "#aaaaaa"
+C_BLUE      = "#3399ff"
+C_PURPLE    = "#9966ff"
+C_GREEN     = "#33cc66"
+C_ORANGE    = "#ff8800"
 
-# Zones (mm)
-Z1 = dict(cx=-20.0, cy=70.0, w=80.0, d=55.0, r=10.0, depth=2.2)
-Z2 = dict(cx=+20.0, cy=70.0, w=65.0, d=55.0, r=10.0, depth=2.2)
-
-WATCH_BASE_MM = (-22.0, 225.0, 21.0)
-WATCH_DIAM = 50.0
-WATCH_CYL_H = 12.0
-WATCH_CONE_H = 6.0
-WATCH_TIP_D = 8.0
-WATCH_TILT = 30.0
-
-TEXT_ITEMS = [
-    ("PHONE", -28.0, 93.0, 6.0),
-    ("BUDS", 12.0, 93.0, 6.0),
-    ("WATCH", -38.0, 203.0, 6.0),
-    ("LAPTOP", 10.0, 260.0, 6.0),
-    ("Penta Dock", -18.0, 278.0, 8.0),
-]
-
-LED_SECTION_W = 71.0
-LED_SECTION_POSITIONS = [-109.5, -36.5, 36.5, 109.5]
-LED_Y = -3.0
-LED_Z = 1.5
-LED_D = 8.0
-LED_H = 3.0
-LED_DIFFUSER_W = 292.0
-LED_DIFFUSER_D = 9.0
-LED_DIFFUSER_H = 2.0
-LED_DIFFUSER_Z = 2.0
-
-GROUND_CX = 0.0
-GROUND_CY = 350.0
-GROUND_CZ = -3.0
-GROUND_W = 4000.0
-GROUND_D = 4000.0
-GROUND_H = 1.0
-
-FEET = [(-39.17, 15.0), (39.17, 15.0), (-53.50, 285.0), (53.50, 285.0)]
-
-PAD_INSET = 2.0
-PAD_RADIUS_INSET = 1.0
-BORDER_Z_OFFSET = 0.3
-BORDER_HEIGHT = 0.6
-LABEL_RAISE_HEIGHT = 0.2
-LABEL_EXTRUDE_DEPTH = 0.15
-WATCH_PUCK_RADIUS = 17.0
-WATCH_PUCK_HEIGHT = 5.0
-WATCH_PUCK_Z_OFFSET = -1.0
-MAGNET_RING_RADIUS = 27.0
-MAGNET_RING_HEIGHT = 2.0
-MAGNET_RING_Z_OFFSET = -1.0
+# ── Canvas ───────────────────────────────────────────────────────────────────
+W_PX, H_PX = 1200, 800
+DPI = 100
+FIG_W, FIG_H = W_PX / DPI, H_PX / DPI   # 12 × 8 inches
 
 
-def h(y_mm: float) -> float:
-    """Top surface height in mm at y_mm."""
-    return FRONT_H + (REAR_H - FRONT_H) * (y_mm / LENGTH)
+# ── Isometric helpers ────────────────────────────────────────────────────────
+ISO_ANGLE = np.radians(30)
+ISO_X_SCALE = np.cos(ISO_ANGLE)
+ISO_Y_SCALE = np.sin(ISO_ANGLE)
+
+def iso(x: float, y: float, z: float = 0.0):
+    """Convert 3-D dock coords → 2-D canvas coords (units = inches)."""
+    px = (x - y) * ISO_X_SCALE
+    py = (x + y) * ISO_Y_SCALE + z
+    return px, py
 
 
-def clear_scene() -> None:
-    bpy.ops.object.select_all(action="SELECT")
-    bpy.ops.object.delete(use_global=False)
-    for scn in bpy.data.scenes:
-        scn.world = None
-    for datablock in (bpy.data.meshes, bpy.data.materials, bpy.data.images, bpy.data.curves, bpy.data.cameras, bpy.data.lights, bpy.data.worlds):
-        for item in list(datablock):
-            if item.users == 0:
-                datablock.remove(item)
+def iso_poly(pts3d):
+    """List of (x,y,z) → numpy array of 2-D points."""
+    return np.array([iso(*p) for p in pts3d])
 
 
-def make_mat(name: str, base=(0.8, 0.8, 0.8, 1), metallic=0.0, roughness=0.5, emission=(0, 0, 0, 1), emission_strength=0.0, anisotropic=0.0):
-    m = bpy.data.materials.new(name)
-    m.use_nodes = True
-    bsdf = m.node_tree.nodes.get("Principled BSDF")
-    bsdf.inputs["Base Color"].default_value = base
-    bsdf.inputs["Metallic"].default_value = metallic
-    bsdf.inputs["Roughness"].default_value = roughness
-    bsdf.inputs["Anisotropic"].default_value = anisotropic
-    if emission_strength > 0.0:
-        bsdf.inputs["Emission Color"].default_value = emission
-        bsdf.inputs["Emission Strength"].default_value = emission_strength
-    return m
+# ── Drawing origin (centre of canvas) ────────────────────────────────────────
+OX, OY = FIG_W * 0.48, FIG_H * 0.44
 
 
-def make_aluminum(name: str):
-    m = make_mat(name, base=(0.42, 0.42, 0.44, 1), metallic=0.96, roughness=0.12, anisotropic=0.75)
-    nt = m.node_tree
-    noise = nt.nodes.new("ShaderNodeTexNoise")
-    mapping = nt.nodes.new("ShaderNodeMapping")
-    tc = nt.nodes.new("ShaderNodeTexCoord")
-    bump = nt.nodes.new("ShaderNodeBump")
-    noise.inputs["Scale"].default_value = 280.0
-    noise.inputs["Detail"].default_value = 3.0
-    noise.inputs["Roughness"].default_value = 0.25
-    bump.inputs["Strength"].default_value = 0.03
-    nt.links.new(tc.outputs["Object"], mapping.inputs["Vector"])
-    nt.links.new(mapping.outputs["Vector"], noise.inputs["Vector"])
-    nt.links.new(noise.outputs["Fac"], bump.inputs["Height"])
-    nt.links.new(bump.outputs["Normal"], nt.nodes["Principled BSDF"].inputs["Normal"])
-    return m
+def shift(xy):
+    return xy + np.array([OX, OY])
 
 
-def apply_mat(obj, mat):
-    obj.data.materials.clear()
-    obj.data.materials.append(mat)
+def draw_poly(ax, pts3d, color, alpha=1.0, zorder=2, ec=None, lw=0.5):
+    verts = shift(iso_poly(pts3d))
+    patch = Polygon(verts, closed=True, facecolor=color, edgecolor=ec or color,
+                    linewidth=lw, alpha=alpha, zorder=zorder)
+    ax.add_patch(patch)
+    return patch
 
 
-def make_box(cx_mm, cy_mm, cz_mm, w_mm, d_mm, h_mm, name: str | None = None):
-    """Create a centered box mesh from millimeter coordinates and dimensions."""
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(cx_mm * MM, cy_mm * MM, cz_mm * MM))
-    obj = bpy.context.active_object
-    if name:
-        obj.name = name
-    obj.scale = (w_mm * MM / 2.0, d_mm * MM / 2.0, h_mm * MM / 2.0)
-    bpy.ops.object.transform_apply(scale=True)
-    return obj
+def draw_rect_face(ax, x0, x1, y0, y1, z0, z1, color, alpha=1.0, zorder=2):
+    """Draw one rectangular face in 3-D iso space."""
+    pts = [(x0, y0, z0), (x1, y0, z0), (x1, y1, z0), (x0, y1, z0)]
+    draw_poly(ax, pts, color, alpha=alpha, zorder=zorder)
 
 
-def make_cyl(cx_mm, cy_mm, cz_mm, r_mm, h_mm, verts=48, name: str | None = None):
-    """Create a centered cylinder mesh from millimeter coordinates."""
-    bpy.ops.mesh.primitive_cylinder_add(vertices=verts, radius=r_mm * MM, depth=h_mm * MM, location=(cx_mm * MM, cy_mm * MM, cz_mm * MM))
-    obj = bpy.context.active_object
-    if name:
-        obj.name = name
-    return obj
-
-
-def _rrect_pts(width, depth, corner_r, segments=16):
-    hw, hd = width / 2.0, depth / 2.0
-    # Clamp to avoid self-intersection when requested radius exceeds box extents.
-    clamped_r = max(0.0, min(corner_r, hw, hd))
-    if abs(clamped_r - corner_r) > 1e-9:
-        print(f"[warn] rounded-rect corner radius clamped from {corner_r} to {clamped_r}")
-    pts = []
-    corners = [
-        (hw - clamped_r, -hd + clamped_r, -math.pi / 2, 0),
-        (hw - clamped_r, hd - clamped_r, 0, math.pi / 2),
-        (-hw + clamped_r, hd - clamped_r, math.pi / 2, math.pi),
-        (-hw + clamped_r, -hd + clamped_r, math.pi, 3 * math.pi / 2),
-    ]
-    for cx, cy, a0, a1 in corners:
-        for i in range(segments):
-            t = i / max(1, segments - 1)
-            a = a0 + (a1 - a0) * t
-            pts.append((cx + clamped_r * math.cos(a), cy + clamped_r * math.sin(a)))
-    return pts
-
-
-def make_rrect_box(cx_mm, cy_mm, cz_mm, w_mm, d_mm, r_mm, h_mm, name: str | None = None):
-    """Create a rounded-rectangle prism mesh in millimeter units."""
-    pts = _rrect_pts(w_mm, d_mm, r_mm, segments=16)
-    n = len(pts)
-    z0 = (cz_mm - h_mm / 2.0) * MM
-    z1 = (cz_mm + h_mm / 2.0) * MM
-    verts = [(cx_mm * MM + x * MM, cy_mm * MM + y * MM, z0) for x, y in pts] + [
-        (cx_mm * MM + x * MM, cy_mm * MM + y * MM, z1) for x, y in pts
-    ]
-    faces = [list(range(n - 1, -1, -1)), list(range(n, 2 * n))]
-    for i in range(n):
-        j = (i + 1) % n
-        faces.append([i, j, n + j, n + i])
-    mesh = bpy.data.meshes.new(name or "RRectBox")
-    obj = bpy.data.objects.new(name or "RRectBox", mesh)
-    bpy.context.collection.objects.link(obj)
-    mesh.from_pydata(verts, [], faces)
-    mesh.update()
-    return obj
-
-
-def rounded_trapezoid_footprint_40() -> list[tuple[float, float]]:
-    corners = [(-FRONT_W / 2, 0.0), (FRONT_W / 2, 0.0), (REAR_W / 2, LENGTH), (-REAR_W / 2, LENGTH)]
-
-    def norm(dx, dy):
-        mag = math.hypot(dx, dy)
-        return (dx / mag, dy / mag)
-
-    coarse = []
-    for i in range(4):
-        a = corners[(i - 1) % 4]
-        b = corners[i]
-        c = corners[(i + 1) % 4]
-        d1 = norm(b[0] - a[0], b[1] - a[1])
-        d2 = norm(c[0] - b[0], c[1] - b[1])
-        n1 = (-d1[1], d1[0])
-        n2 = (-d2[1], d2[0])
-        det = d1[0] * (-d2[1]) + d1[1] * d2[0]
-        if abs(det) < 1e-9:
-            continue
-        rx = CORNER_R * (n2[0] - n1[0])
-        ry = CORNER_R * (n2[1] - n1[1])
-        t = (rx * (-d2[1]) + d2[0] * ry) / det
-        ccx = b[0] + CORNER_R * n1[0] + t * d1[0]
-        ccy = b[1] + CORNER_R * n1[1] + t * d1[1]
-        tsx, tsy = ccx - CORNER_R * n1[0], ccy - CORNER_R * n1[1]
-        tex, tey = ccx - CORNER_R * n2[0], ccy - CORNER_R * n2[1]
-        a0 = math.atan2(tsy - ccy, tsx - ccx)
-        a1 = math.atan2(tey - ccy, tex - ccx)
-        da = a1 - a0
-        if da < 0:
-            da += 2 * math.pi
-        for k in range(9):
-            ang = a0 + da * (k / 8.0)
-            coarse.append((ccx + CORNER_R * math.cos(ang), ccy + CORNER_R * math.sin(ang)))
-
-    out = []
-    boundaries = {8, 17, 26, 35}
-    for i, p in enumerate(coarse):
-        out.append(p)
-        if i in boundaries:
-            q = coarse[(i + 1) % len(coarse)]
-            out.append(((p[0] + q[0]) / 2.0, (p[1] + q[1]) / 2.0))
-    return out
-
-
-def build_prism(name, outline, z0_fn, z1_fn):
-    n = len(outline)
-    verts = [(x * MM, y * MM, z0_fn(y) * MM) for x, y in outline] + [(x * MM, y * MM, z1_fn(y) * MM) for x, y in outline]
-    faces = [list(range(n - 1, -1, -1)), list(range(n, 2 * n))]
-    for i in range(n):
-        j = (i + 1) % n
-        faces.append([i, j, n + j, n + i])
-    me = bpy.data.meshes.new(name)
-    obj = bpy.data.objects.new(name, me)
-    bpy.context.collection.objects.link(obj)
-    me.from_pydata(verts, [], faces)
-    me.update()
-    return obj
-
-
-def add_zone_dish(name, cx_mm, cy_mm, w_mm, d_mm, r_mm, depth_mm, mat_sil, mat_border):
-    """Add a visible charging dish: recessed silicone pad + thin border frame."""
-    z_top_mm = h(cy_mm) + TOP_T
-    pad = make_rrect_box(
-        cx_mm,
-        cy_mm,
-        z_top_mm - depth_mm / 2.0,
-        w_mm - PAD_INSET,
-        d_mm - PAD_INSET,
-        max(0.0, r_mm - PAD_RADIUS_INSET),
-        depth_mm,
-        name=f"{name}_Silicone",
-    )
-    apply_mat(pad, mat_sil)
-
-    border = make_rrect_box(cx_mm, cy_mm, z_top_mm + BORDER_Z_OFFSET, w_mm, d_mm, r_mm, BORDER_HEIGHT, name=f"{name}_Border")
-    apply_mat(border, mat_border)
-
-
-def add_label(name, text, x_mm, y_mm, size_mm, mat):
-    """Add a raised 3D text label slightly above the top plate."""
-    z_mm = h(y_mm) + TOP_T + LABEL_RAISE_HEIGHT
-    bpy.ops.object.text_add(location=(x_mm * MM, y_mm * MM, z_mm * MM))
-    obj = bpy.context.active_object
-    obj.name = name
-    obj.data.body = text
-    obj.data.size = size_mm * MM
-    obj.data.extrude = LABEL_EXTRUDE_DEPTH * MM
-    obj.data.align_x = "CENTER"
-    obj.data.align_y = "CENTER"
-    bpy.ops.object.convert(target="MESH")
-    mesh_obj = bpy.context.active_object
-    mesh_obj.name = name
-    apply_mat(mesh_obj, mat)
-
-
-def add_laptop_groove(mat_sil, mat_usbc):
-    """Build the rear-right laptop groove using visible silicone wall meshes."""
-    x0, x1 = 18.0, 40.0
-    y0, y1 = 288.0, 300.0
-    groove_h = 20.0
-    cx = (x0 + x1) / 2.0
-    cy = (y0 + y1) / 2.0
-    z_base = h(cy)
-
-    back = make_box(cx, y1 - 0.5, z_base + groove_h / 2.0, x1 - x0, 1.0, groove_h, name="Zone4_GrooveWalls_Back")
-    apply_mat(back, mat_sil)
-    left = make_box(x0 + 0.5, cy, z_base + groove_h / 2.0, 1.0, y1 - y0, groove_h, name="Zone4_GrooveWalls_Left")
-    apply_mat(left, mat_sil)
-    right = make_box(x1 - 0.5, cy, z_base + groove_h / 2.0, 1.0, y1 - y0, groove_h, name="Zone4_GrooveWalls_Right")
-    apply_mat(right, mat_sil)
-
-    usbc = make_box(cx, y1 - 1.5, z_base + 8.0, 10.0, 3.0, 4.0, name="Zone4_USBC")
-    apply_mat(usbc, mat_usbc)
-
-
-def add_iec_inlet(mat_usbc):
-    """Add the IEC C13 rear housing as a visible mesh object."""
-    iec = make_box(0.0, 299.5, 11.0, 28.0, 1.0, 20.0, name="IEC_Housing")
-    apply_mat(iec, mat_usbc)
-
-
-def look_at(obj, target):
-    """Rotate object so its local -Z axis points at target position."""
-    direction = Vector(target) - Vector(obj.location)
-    obj.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
-
-
-def add_area_light(name, location, size_xy, energy, color, target):
-    ldata = bpy.data.lights.new(name=name, type="AREA")
-    ldata.energy = energy
-    ldata.color = color
-    ldata.shape = "RECTANGLE"
-    ldata.size = size_xy[0]
-    ldata.size_y = size_xy[1]
-    obj = bpy.data.objects.new(name, ldata)
-    bpy.context.collection.objects.link(obj)
-    obj.location = location
-    look_at(obj, target)
-    return obj
+def glow(ax, pts3d, color, layers=6, max_alpha=0.18, zorder=1):
+    """Soft glow by drawing progressively expanded transparent polygons."""
+    verts2d = shift(iso_poly(pts3d))
+    cx = verts2d[:, 0].mean()
+    cy = verts2d[:, 1].mean()
+    for i in range(layers, 0, -1):
+        scale = 1.0 + i * 0.06
+        expanded = (verts2d - np.array([cx, cy])) * scale + np.array([cx, cy])
+        patch = Polygon(expanded, closed=True, facecolor=color, edgecolor="none",
+                        alpha=max_alpha * (i / layers) ** 1.5, zorder=zorder)
+        ax.add_patch(patch)
 
 
 def main() -> None:
-    clear_scene()
+    fig, ax = plt.subplots(figsize=(FIG_W, FIG_H), dpi=DPI)
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+    ax.set_xlim(0, FIG_W)
+    ax.set_ylim(0, FIG_H)
+    ax.set_aspect("equal")
+    ax.axis("off")
 
-    scene = bpy.context.scene
-    scene.render.engine = "CYCLES"
-    scene.cycles.samples = 512
-    scene.cycles.use_denoising = False
-    scene.render.resolution_x = 4800
-    scene.render.resolution_y = 3200
-    scene.render.image_settings.file_format = "PNG"
-    scene.render.image_settings.color_depth = "16"
-    scene.render.filepath = str(OUTPUT_PATH)
-    scene.unit_settings.system = "METRIC"
-    scene.unit_settings.scale_length = 1.0
+    # ── Dock dimensions (in "dock units" ≈ 0.9 inch per unit) ────────────────
+    # Base footprint: 5.0 wide × 3.0 deep × 0.6 tall
+    BW, BD, BH = 5.0, 3.0, 0.6
+    # Three-step staircase heights
+    S1H, S2H, S3H = 1.0, 1.6, 2.2   # step top-surface heights above base
 
-    scene.world = bpy.data.worlds.new("World")
-    scene.world.use_nodes = True
-    wbg = scene.world.node_tree.nodes["Background"]
-    wbg.inputs["Color"].default_value = (1, 1, 1, 1)
-    wbg.inputs["Strength"].default_value = 1.2
+    # ── Drop shadow ──────────────────────────────────────────────────────────
+    shadow_pts = [(-2.6, -1.6, 0), (2.6, -1.6, 0), (2.6, 1.6, 0), (-2.6, 1.6, 0)]
+    glow(ax, shadow_pts, "#000000", layers=8, max_alpha=0.5, zorder=1)
 
-    m_abs = make_mat("ABS", base=(0.08, 0.08, 0.08, 1), roughness=0.88)
-    m_al = make_aluminum("ALUM")
-    m_sil = make_mat("SILICONE", base=(0.18, 0.18, 0.18, 1), roughness=0.92)
-    m_rub = make_mat("RUBBER", base=(0.05, 0.05, 0.05, 1), roughness=1.0)
-    m_led = make_mat("LED", base=(1.0, 0.894, 0.710, 1), roughness=0.4, emission=(1.0, 0.894, 0.710, 1), emission_strength=5.0)
-    m_etched = make_mat("ETCHED", base=(0.10, 0.10, 0.10, 1), metallic=0.6, roughness=0.25)
-    m_ground = make_mat("GROUND", base=(0.96, 0.96, 0.96, 1), roughness=0.04)
-    m_usbc = make_mat("USBC", base=(0.7, 0.7, 0.72, 1), metallic=0.9, roughness=0.2)
-    m_cord = make_mat("CORD", base=(0.12, 0.12, 0.12, 1), roughness=0.7)
-    m_watch = make_mat("WATCH_PUCK", base=(0.15, 0.15, 0.15, 1), metallic=0.3, roughness=0.5)
+    # ── Base body ─────────────────────────────────────────────────────────────
+    # Top face
+    draw_poly(ax, [(-BW/2, -BD/2, BH), ( BW/2, -BD/2, BH),
+                   ( BW/2,  BD/2, BH), (-BW/2,  BD/2, BH)],
+              C_BODY, zorder=3)
+    # Front face
+    draw_poly(ax, [(-BW/2, -BD/2, 0), ( BW/2, -BD/2, 0),
+                   ( BW/2, -BD/2, BH), (-BW/2, -BD/2, BH)],
+              "#222222", zorder=3)
+    # Right face
+    draw_poly(ax, [( BW/2, -BD/2, 0), ( BW/2, BD/2, 0),
+                   ( BW/2,  BD/2, BH), ( BW/2, -BD/2, BH)],
+              "#252525", zorder=3)
 
-    outline = rounded_trapezoid_footprint_40()
+    # ── Three-step staircase (centre platform) ────────────────────────────────
+    # Step widths and depth
+    SW = 1.2   # step width (each)
+    SD = 2.0   # step depth
+    SX0 = -1.8  # left edge of step 1 (lowest)
 
-    body = build_prism("Body", outline, lambda _y: 0.0, h)
-    apply_mat(body, m_abs)
+    steps = [
+        (SX0,          SX0 + SW,      S1H, C_GREEN,   C_ORANGE),    # Step 1 – Zone 1 (phone)
+        (SX0 + SW,     SX0 + 2*SW,    S2H, C_PURPLE,  "#202020"),   # Step 2 – Zone 2 (buds)
+        (SX0 + 2*SW,   SX0 + 3*SW,    S3H, C_GREEN,   "#181818"),   # Step 3 – Zone 3 (watch)
+    ]
 
-    bev = body.modifiers.new("FloorBevel", type="BEVEL")
-    bev.width = 0.5 * MM
-    bev.segments = 2
-    bev.limit_method = "ANGLE"
-    bpy.context.view_layer.objects.active = body
-    bpy.ops.object.modifier_apply(modifier=bev.name)
+    for (x0, x1, sz, top_c, side_c) in steps:
+        y0 = -SD / 2
+        y1 =  SD / 2
+        # Top face of step
+        draw_poly(ax, [(x0, y0, BH+sz), (x1, y0, BH+sz),
+                       (x1, y1, BH+sz), (x0, y1, BH+sz)],
+                  C_STEP, zorder=4)
+        # Front riser
+        draw_poly(ax, [(x0, y0, BH), (x1, y0, BH),
+                       (x1, y0, BH+sz), (x0, y0, BH+sz)],
+                  "#1e1e1e", zorder=4)
+        # Right side panel
+        draw_poly(ax, [(x1, y0, BH), (x1, y1, BH),
+                       (x1, y1, BH+sz), (x1, y0, BH+sz)],
+                  "#1c1c1c", zorder=4)
 
-    top = build_prism("TopPlate", outline, h, lambda y: h(y) + TOP_T)
-    apply_mat(top, m_al)
+    # ── Zone pad surfaces (silicone recesses) ─────────────────────────────────
+    pads = [
+        (SX0 + 0.15,  SX0 + SW - 0.15, -0.7, 0.7, BH + S1H + 0.02),  # Zone 1 phone
+        (SX0 + SW + 0.15, SX0 + 2*SW - 0.15, -0.7, 0.7, BH + S2H + 0.02),  # Zone 2 buds
+        (SX0 + 2*SW + 0.15, SX0 + 3*SW - 0.15, -0.7, 0.7, BH + S3H + 0.02),  # Zone 3 watch
+    ]
+    pad_colors = [C_BLUE, C_PURPLE, C_GREEN]
+    for (x0, x1, y0, y1, z), pc in zip(pads, pad_colors):
+        # Silicone pad
+        draw_poly(ax, [(x0, y0, z), (x1, y0, z), (x1, y1, z), (x0, y1, z)],
+                  C_SILICONE, zorder=5)
+        # Thin accent border
+        draw_poly(ax, [(x0, y0, z), (x1, y0, z), (x1, y1, z), (x0, y1, z)],
+                  pc, alpha=0.25, zorder=5, ec=pc, lw=1.2)
 
-    add_zone_dish("Zone1", Z1["cx"], Z1["cy"], Z1["w"], Z1["d"], Z1["r"], Z1["depth"], m_sil, m_al)
-    add_zone_dish("Zone2", Z2["cx"], Z2["cy"], Z2["w"], Z2["d"], Z2["r"], Z2["depth"], m_sil, m_al)
+    # ── Zone 4 – Laptop slot (LEFT side, tall vertical) ───────────────────────
+    # Tall slot on the left flank of the base
+    LX0, LX1 = -BW/2 - 0.06, -BW/2 + 0.06
+    LY0, LY1 = -1.8, 1.8
+    LZ0, LZ1 = BH, BH + 3.2
+    draw_poly(ax, [(LX0, LY0, LZ0), (LX1, LY0, LZ0),
+                   (LX1, LY0, LZ1), (LX0, LY0, LZ1)],
+              C_ORANGE, alpha=0.85, zorder=6, ec=C_ORANGE, lw=0.8)
+    draw_poly(ax, [(LX1, LY0, LZ0), (LX1, LY1, LZ0),
+                   (LX1, LY1, LZ1), (LX1, LY0, LZ1)],
+              "#3a2000", alpha=0.9, zorder=6)
+    # Interior slot recess
+    draw_poly(ax, [(LX0, LY0, LZ0+0.1), (LX1, LY0, LZ0+0.1),
+                   (LX1, LY1, LZ0+0.1), (LX0, LY1, LZ0+0.1)],
+              C_SILICONE, zorder=6, ec=C_ORANGE, lw=0.6)
 
-    watch_base = Vector((WATCH_BASE_MM[0] * MM, WATCH_BASE_MM[1] * MM, WATCH_BASE_MM[2] * MM))
-    cyl_r = WATCH_DIAM * 0.5 * MM
-    bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=cyl_r, depth=WATCH_CYL_H * MM, location=(watch_base.x, watch_base.y, watch_base.z + (WATCH_CYL_H * MM) / 2.0))
-    c1 = bpy.context.active_object
-    bpy.ops.mesh.primitive_cone_add(vertices=64, radius1=cyl_r, radius2=(WATCH_TIP_D * 0.5) * MM, depth=WATCH_CONE_H * MM, location=(watch_base.x, watch_base.y, watch_base.z + WATCH_CYL_H * MM + (WATCH_CONE_H * MM) / 2.0))
-    c2 = bpy.context.active_object
-    bpy.ops.object.select_all(action="DESELECT")
-    c1.select_set(True)
-    c2.select_set(True)
-    bpy.context.view_layer.objects.active = c1
-    bpy.ops.object.join()
-    pod = bpy.context.active_object
-    pod.name = "WatchPod"
-    apply_mat(pod, m_abs)
-    bpy.context.scene.cursor.location = watch_base
-    bpy.ops.object.origin_set(type="ORIGIN_CURSOR")
-    pod.rotation_euler = (math.radians(WATCH_TILT), 0.0, 0.0)
+    # ── Zone 5 – Tablet slot (RIGHT side, shorter vertical) ───────────────────
+    RX0, RX1 = BW/2 - 0.06, BW/2 + 0.06
+    RY0, RY1 = -1.3, 1.3
+    RZ0, RZ1 = BH, BH + 2.4
+    draw_poly(ax, [(RX0, RY0, RZ0), (RX1, RY0, RZ0),
+                   (RX1, RY0, RZ1), (RX0, RY0, RZ1)],
+              C_BLUE, alpha=0.85, zorder=6, ec=C_BLUE, lw=0.8)
+    draw_poly(ax, [(RX0, RY0, RZ0), (RX0, RY1, RZ0),
+                   (RX0, RY1, RZ1), (RX0, RY0, RZ1)],
+              "#001a33", alpha=0.9, zorder=6)
+    draw_poly(ax, [(RX0, RY0, RZ0+0.1), (RX1, RY0, RZ0+0.1),
+                   (RX1, RY1, RZ0+0.1), (RX0, RY1, RZ0+0.1)],
+              C_SILICONE, zorder=6, ec=C_BLUE, lw=0.6)
 
-    puck = make_cyl(
-        WATCH_BASE_MM[0],
-        WATCH_BASE_MM[1],
-        WATCH_BASE_MM[2] + WATCH_CYL_H + WATCH_CONE_H + WATCH_PUCK_Z_OFFSET,
-        WATCH_PUCK_RADIUS,
-        WATCH_PUCK_HEIGHT,
-        verts=48,
-        name="WatchPuck",
-    )
-    apply_mat(puck, m_watch)
-    puck.rotation_euler = pod.rotation_euler
+    # ── LED strip on front fascia ──────────────────────────────────────────────
+    led_colors = [C_BLUE, C_PURPLE, C_GREEN, C_ORANGE, C_BLUE]
+    seg_w = BW / len(led_colors)
+    LED_Y = -BD / 2 - 0.01
+    LED_Z0, LED_Z1 = 0.05, 0.15
+    for i, lc in enumerate(led_colors):
+        x0 = -BW/2 + i * seg_w
+        x1 = x0 + seg_w
+        pts = [(x0, LED_Y, LED_Z0), (x1, LED_Y, LED_Z0),
+               (x1, LED_Y, LED_Z1), (x0, LED_Y, LED_Z1)]
+        glow(ax, pts, lc, layers=4, max_alpha=0.35, zorder=2)
+        draw_poly(ax, pts, lc, alpha=0.9, zorder=7, ec=lc, lw=0.3)
 
-    add_laptop_groove(m_sil, m_usbc)
-    add_iec_inlet(m_usbc)
+    # ── Zone labels ───────────────────────────────────────────────────────────
+    zone_labels = [
+        (SX0 + SW*0.5,  -SD/2 - 0.3, BH + S1H + 0.05, "PHONE\n20W Qi2",      C_BLUE),
+        (SX0 + SW*1.5,  -SD/2 - 0.3, BH + S2H + 0.05, "BUDS / PHONE\n20W Qi", C_PURPLE),
+        (SX0 + SW*2.5,  -SD/2 - 0.3, BH + S3H + 0.05, "WATCH\n5W",            C_GREEN),
+    ]
+    for (xd, yd, zd, label, color) in zone_labels:
+        px, py = iso(xd, yd, zd)
+        ax.text(OX + px, OY + py, label,
+                color=color, fontsize=5.5, ha="center", va="bottom",
+                fontfamily="DejaVu Sans", fontweight="bold",
+                zorder=10, multialignment="center",
+                bbox=dict(boxstyle="round,pad=0.15", fc="#1a1a1a", ec=color,
+                          lw=0.7, alpha=0.88))
 
-    magnet_ring = make_cyl(
-        Z1["cx"],
-        Z1["cy"],
-        h(Z1["cy"]) + TOP_T + MAGNET_RING_Z_OFFSET,
-        MAGNET_RING_RADIUS,
-        MAGNET_RING_HEIGHT,
-        verts=64,
-        name="Zone1_MagnetRing",
-    )
-    apply_mat(magnet_ring, m_abs)
+    # Zone 4 label (left side)
+    lx4, ly4 = iso(-BW/2 - 0.5, 0, BH + 1.6)
+    ax.text(OX + lx4, OY + ly4, "LAPTOP\n100W USB-C",
+            color=C_ORANGE, fontsize=5.5, ha="center", va="center",
+            fontfamily="DejaVu Sans", fontweight="bold", zorder=10,
+            multialignment="center",
+            bbox=dict(boxstyle="round,pad=0.15", fc="#1a1a1a", ec=C_ORANGE,
+                      lw=0.7, alpha=0.88))
+    # Arrow toward laptop slot
+    ax.annotate("", xy=shift(iso_poly([(-BW/2 + 0.1, 0, BH + 1.6)]))[0],
+                xytext=(OX + lx4, OY + ly4),
+                arrowprops=dict(arrowstyle="-|>", color=C_ORANGE, lw=0.8),
+                zorder=10)
 
-    for i, cx in enumerate(LED_SECTION_POSITIONS, start=1):
-        led = make_box(cx, LED_Y, LED_Z, LED_SECTION_W, LED_D, LED_H, name=f"LED_{i}")
-        apply_mat(led, m_led)
+    # Zone 5 label (right side)
+    lx5, ly5 = iso(BW/2 + 0.5, 0, BH + 1.2)
+    ax.text(OX + lx5, OY + ly5, "TABLET\n45W USB-C",
+            color=C_BLUE, fontsize=5.5, ha="center", va="center",
+            fontfamily="DejaVu Sans", fontweight="bold", zorder=10,
+            multialignment="center",
+            bbox=dict(boxstyle="round,pad=0.15", fc="#1a1a1a", ec=C_BLUE,
+                      lw=0.7, alpha=0.88))
+    ax.annotate("", xy=shift(iso_poly([(BW/2 - 0.1, 0, BH + 1.2)]))[0],
+                xytext=(OX + lx5, OY + ly5),
+                arrowprops=dict(arrowstyle="-|>", color=C_BLUE, lw=0.8),
+                zorder=10)
 
-    diffuser = make_box(0.0, LED_Y, LED_DIFFUSER_Z, LED_DIFFUSER_W, LED_DIFFUSER_D, LED_DIFFUSER_H, name="LED_Diffuser")
-    apply_mat(diffuser, m_sil)
+    # ── Title text ────────────────────────────────────────────────────────────
+    ax.text(0.04, 0.93, "PENTA DOCK",
+            transform=ax.transAxes, color=C_WHITE, fontsize=28,
+            fontfamily="DejaVu Sans", fontweight="bold", va="top",
+            zorder=11)
+    ax.text(0.04, 0.84, "One dock. Every device.",
+            transform=ax.transAxes, color=C_GREY, fontsize=13,
+            fontfamily="DejaVu Sans", va="top", zorder=11)
 
-    for txt, x, y, size in TEXT_ITEMS:
-        if txt == "Penta Dock":
-            add_label("Label_PentaDock", txt, x, y, size, m_etched)
-        else:
-            add_label(f"Label_{txt}", txt, x, y, size, m_etched)
+    # ── Bottom text ────────────────────────────────────────────────────────────
+    ax.text(0.97, 0.05, "190W total output",
+            transform=ax.transAxes, color=C_WHITE, fontsize=11,
+            fontfamily="DejaVu Sans", ha="right", va="bottom",
+            fontweight="bold", zorder=11)
+    ax.text(0.03, 0.05, "epitomecharge.com",
+            transform=ax.transAxes, color=C_GREY, fontsize=9,
+            fontfamily="DejaVu Sans", ha="left", va="bottom", zorder=11)
 
-    for i, (x, y) in enumerate(FEET, start=1):
-        foot = make_cyl(x, y, -1.5, 7.5, 3.0, verts=48, name=f"Foot_{i}")
-        apply_mat(foot, m_rub)
+    # ── Save ──────────────────────────────────────────────────────────────────
+    PRIMARY_OUT.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(PRIMARY_OUT, dpi=DPI, facecolor=C_BG, bbox_inches="tight", pad_inches=0)
+    plt.close(fig)
 
-    ground = make_box(GROUND_CX, GROUND_CY, GROUND_CZ, GROUND_W, GROUND_D, GROUND_H, name="Ground")
-    apply_mat(ground, m_ground)
+    shutil.copy2(PRIMARY_OUT, COMPAT_OUT)
 
-    curve = bpy.data.curves.new("PowerCordCurve", type="CURVE")
-    curve.dimensions = "3D"
-    spline = curve.splines.new("POLY")
-    turns = 2
-    pts = []
-    for i in range(200):
-        t = 2 * math.pi * turns * (i / 199.0)
-        r = 60.0 * MM
-        x = r * math.cos(t)
-        y = 0.36 + r * math.sin(t)
-        z = 0.004
-        pts.append((x, y, z, 1.0))
-    spline.points.add(len(pts) - 1)
-    spline.points.foreach_set("co", [c for p in pts for c in p])
-    curve.bevel_depth = 4.0 * MM
-    curve.bevel_resolution = 12
-    cord = bpy.data.objects.new("PowerCord", curve)
-    bpy.context.collection.objects.link(cord)
-    if cord.data.materials:
-        cord.data.materials[0] = m_cord
-    else:
-        cord.data.materials.append(m_cord)
-
-    cam_data = bpy.data.cameras.new("Camera")
-    cam = bpy.data.objects.new("Camera", cam_data)
-    bpy.context.collection.objects.link(cam)
-    cam.location = Vector((-0.55, -0.55, 0.42))
-    cam_target = Vector((0.0, 0.18, 0.015))
-    look_at(cam, cam_target)
-    cam_data.lens = 58.0
-    scene.camera = cam
-
-    light_target = (0.0, 0.16, 0.012)
-    add_area_light("Key_Light", (-1.0, -0.8, 1.2), (2.5, 2.5), 1500.0, (1.0, 0.96, 0.90), light_target)
-    add_area_light("Fill_Light", (1.2, 0.3, 0.7), (2.0, 2.0), 500.0, (0.92, 0.96, 1.0), light_target)
-    add_area_light("Rim_Light", (0.0, 1.0, 0.8), (0.6, 0.6), 300.0, (1.0, 1.0, 1.0), light_target)
-    add_area_light("Top_Bounce", (0.0, 0.16, 1.8), (4.0, 3.0), 200.0, (1.0, 1.0, 1.0), light_target)
-
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    bpy.ops.render.render(write_still=True)
-    print(f"✓ Render written: {OUTPUT_PATH}")
+    print(f"✓ Saved assets/penta-dock-render.png (1200×800 px)")
 
 
 if __name__ == "__main__":

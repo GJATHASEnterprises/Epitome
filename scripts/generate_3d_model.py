@@ -6,6 +6,7 @@ All geometry is generated from watertight trimesh primitives and concatenation.
 from __future__ import annotations
 
 import math
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -48,6 +49,16 @@ STL_TOP = EXPORT_DIR / "penta-dock-top-plate.stl"
 STL_FULL = EXPORT_DIR / "penta-dock-full-assembly.stl"
 DXF_TOP = EXPORT_DIR / "penta-dock-top-plate.dxf"
 SVG_TOP = EXPORT_DIR / "penta-dock-top-plate.svg"
+
+# Backwards-compat copies under old quad-dock-* names
+_COMPAT = {
+    STL_BASE:     EXPORT_DIR / "quad-dock-base.stl",
+    STL_INTERIOR: EXPORT_DIR / "quad-dock-base-interior.stl",
+    STL_TOP:      EXPORT_DIR / "quad-dock-top-plate.stl",
+    STL_FULL:     EXPORT_DIR / "quad-dock-full-assembly.stl",
+    DXF_TOP:      EXPORT_DIR / "quad-dock-top-plate.dxf",
+    SVG_TOP:      EXPORT_DIR / "quad-dock-top-plate.svg",
+}
 
 # New dock geometry — compact rectangular design
 DOCK_W = 250.0
@@ -356,6 +367,11 @@ def main() -> None:
     else:
         print("✓ Top Plate SVG   : skipped (ezdxf unavailable)")
     print(f"✓ Full Assembly   : {STL_FULL.relative_to(ROOT)}  ({kb(STL_FULL)} KB)")
+
+    # Write backwards-compat copies under quad-dock-* names
+    for src, dst in _COMPAT.items():
+        if src.exists():
+            shutil.copy2(src, dst)
 
 
 if __name__ == "__main__":

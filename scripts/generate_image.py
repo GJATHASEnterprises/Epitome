@@ -10,6 +10,7 @@ Output:
 from __future__ import annotations
 
 import math
+import shutil
 from pathlib import Path
 
 import matplotlib
@@ -18,7 +19,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH = ROOT / "assets" / "penta-dock-hero.png"
+OUTPUT_PATH        = ROOT / "assets" / "penta-dock-hero.png"
+COMPAT_OUTPUT_PATH = ROOT / "assets" / "quad-dock-hero.png"
 CANVAS_W, CANVAS_H = 1200, 800
 
 # Dimensions (mm)
@@ -175,4 +177,5 @@ if __name__ == "__main__":
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT_PATH, dpi=100, facecolor=C_BG, bbox_inches="tight", pad_inches=0)
     plt.close(fig)
+    shutil.copy2(OUTPUT_PATH, COMPAT_OUTPUT_PATH)
     print(f"✓ Render written: {OUTPUT_PATH.relative_to(ROOT)}")

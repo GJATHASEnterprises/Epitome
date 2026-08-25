@@ -7,6 +7,7 @@ Generates assets/penta-dock-product-sheet.png at 7200×5400px
 from __future__ import annotations
 
 import math
+import shutil
 from pathlib import Path
 
 import matplotlib
@@ -15,7 +16,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, FancyBboxPatch, Circle, Ellipse, Polygon
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH = ROOT / "assets" / "penta-dock-product-sheet.png"
+OUTPUT_PATH        = ROOT / "assets" / "penta-dock-product-sheet.png"
+COMPAT_OUTPUT_PATH = ROOT / "assets" / "quad-dock-product-sheet.png"
 
 # Palette
 PAGE_BG = "#0d0d1a"
@@ -393,4 +395,5 @@ def build_figure() -> None:
 
 if __name__ == "__main__":
     build_figure()
+    shutil.copy2(OUTPUT_PATH, COMPAT_OUTPUT_PATH)
     print(f"✓ Product sheet generated: {OUTPUT_PATH.relative_to(ROOT)}")
