@@ -153,9 +153,9 @@ def render(ax):
     # Callouts
     add_label(ax, 820, 180, "Zone 4: Laptop slot · 100W USB-C PD")
     add_label(ax, 840, 220, "On-edge insertion + captive top cable")
-    add_label(ax, 835, 320, "Zone 5: Tablet slot · 20W USB-C PD")
+    add_label(ax, 835, 320, "Zone 5: Tablet slot · 45W USB-C PD")
     add_label(ax, 730, 430, "Zone 3: Watch cradle · 5W")
-    add_label(ax, 620, 500, "Zone 2: Buds/Phone dish · 15W Qi")
+    add_label(ax, 620, 500, "Zone 2: Buds or second phone dish · 20W Qi")
     add_label(ax, 500, 560, "Zone 1: Phone pad · 20W Qi")
     add_label(ax, 680, 635, "20mm front fascia + WS2811 diffuser")
     add_label(ax, 850, 470, "25mm rear rail + centered IEC C13")

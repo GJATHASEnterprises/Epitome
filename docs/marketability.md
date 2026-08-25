@@ -43,7 +43,7 @@ See [compatibility.md](compatibility.md) for full list.
 
 - **Phones:** any Qi phone (plus USB-C wired charging on Zone 5)
 - **Laptops:** any USB-C PD laptop (Zone 4 up to 100W)
-- **Tablets:** any USB-C tablet (Zone 5 up to 20W)
+- **Tablets:** any USB-C tablet (Zone 5 up to 45W)
 - **Watches:** Apple Watch puck + Qi watch support in same zone
 
 ---
@@ -73,12 +73,12 @@ See [compatibility.md](compatibility.md) for full list.
 | Zone | Method | Max Power |
 |------|--------|-----------|
 | Zone 1 | Qi wireless | 20W |
-| Zone 2 | Qi wireless | 15W |
+| Zone 2 | Qi wireless | 20W |
 | Zone 3 | Watch puck + Qi (one active) | 5W |
 | Zone 4 | USB-C PD captive cable | 100W |
-| Zone 5 | USB-C PD captive cable | 20W |
+| Zone 5 | USB-C PD captive cable | 45W |
 
-**Total draw at full load: 155W** (**156W PSU Mean Well LRS-150-24, 1W headroom**; firmware soft cap at 150W).
+**Total draw at full load: 190W** (**201W PSU Mean Well LRS-200-24, 11W headroom**; 185W ATtiny85 soft cap).
 
 ---
 

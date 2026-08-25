@@ -21,7 +21,7 @@ The render brief should now include:
 - Captive USB-C cable indicators in Zone 4 and Zone 5 slots (Zone 4 cable is 220mm, hangs from top of slot)
 - 3-step tapered centre platform:
   - Step 1 (180×110×15) with 160×100 full silicone 20W phone surface
-  - Step 2 (140×100×15) with 90×65 buds/phone pad (15W)
+  - Step 2 (140×100×15) with 120×80 buds or second phone pad (20W)
   - Step 3 (100×80×15) with rear raised watch cradle (Apple puck + Qi)
 - All riser faces: matte ABS (no aluminium)
 - Devices on thin edge in slots (like books on a shelf), cable from top of each slot

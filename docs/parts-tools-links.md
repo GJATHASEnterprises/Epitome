@@ -23,7 +23,7 @@ Keep existing core tool set: soldering iron, solder, flux, multimeter, wire tool
 
 ### LCSC (combine into same AliExpress order if possible, otherwise separate)
 - INA3221 chip ×20 (2 per unit × 10 units = 20 chips, ~$1.20 each)
-- Mean Well LRS-150-24 PSU ×10 (~$13.85 each)
+- Mean Well LRS-200-24 PSU ×10 (~$13.85 each)
 - PTC fuse + passives
 
 ### JLCPCB
@@ -31,10 +31,10 @@ Keep existing core tool set: soldering iron, solder, flux, multimeter, wire tool
 
 ### Amazon US (domestic, no tariff, Prime shipping)
 - Qi 20W TX module (~$14)
-- Qi 15W TX module (~$11)
+- Qi 20W TX module (~$11)
 - Captive USB-C cable 220mm 100W braided (~$4)
-- Captive USB-C cable 200mm 20W braided (~$3)
-- Mean Well LRS-150-24 PSU alternative (~$22–25 if LCSC order delayed)
+- Captive USB-C cable 200mm 65W braided (~$3)
+- Mean Well LRS-200-24 PSU alternative (~$22–25 if LCSC order delayed)
 - Rigid kraft boxes ~300×150×120mm (~$3 each)
 - Rubber feet 100-pack (~$7)
 - M3 screw assortment kit (~$9)

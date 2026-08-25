@@ -29,18 +29,18 @@ Zone 4 uses USB-C PD up to 100W through a **captured 220mm braided USB-C cable**
 ### Zone 1 — 20W Qi Wireless
 All Qi-compatible phones are supported.
 
-### Zone 2 — 15W Qi Wireless
-All Qi-compatible phones and earbuds are supported. 90×65mm pad includes a subtle 68×48mm inner ridge for buds alignment.
+### Zone 2 — 20W Qi Wireless
+All Qi-compatible phones and earbuds are supported. 120×80mm pad includes a subtle 68×48mm inner ridge for buds alignment.
 
-### Zone 5 — USB-C PD (wired, up to 20W)
+### Zone 5 — USB-C PD (wired, up to 45W)
 Any USB-C phone is supported via captive cable.
 
 ### 3 Phones + 1 Laptop Simultaneously
 Supported configuration:
 - Zone 1: Phone (20W Qi)
-- Zone 2: Phone/earbuds (15W Qi)
+- Zone 2: Phone/earbuds (20W Qi)
 - Zone 4: Laptop (100W)
-- Zone 5: Phone/tablet (20W)
+- Zone 5: Phone/tablet (45W)
 
 ---
 
@@ -68,7 +68,7 @@ Any Qi-capable earbuds case is supported on Zones 1 or 2.
 
 ---
 
-## iPad Compatibility (Zone 5 — USB-C PD 20W)
+## iPad Compatibility (Zone 5 — USB-C PD 45W)
 
 Zone 5 supports USB-C tablets through the captive 200mm braided cable.
 
@@ -83,8 +83,8 @@ Slot fit update: **20mm slot width**, device on thin edge (like a book on a shel
 ## Power Limit Notes
 
 - Zone 4 max: 100W
-- Zone 5 max: 20W
+- Zone 5 max: 45W
 - Zone 1: 20W
-- Zone 2: 15W
+- Zone 2: 20W
 - Zone 3: 5W shared
-- System total: **155W** (156W PSU Mean Well LRS-150-24, 1W headroom, firmware cap 150W)
+- System total: **190W** (201W PSU Mean Well LRS-200-24, 11W headroom, ATtiny85 soft cap 185W)
