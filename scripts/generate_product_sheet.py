@@ -1,1120 +1,391 @@
 #!/usr/bin/env python3
-"""
-Epitome Penta — Comprehensive Multi-View Technical Product Sheet
-Generates assets/epitome-penta-product-sheet.png at 7200×5400px (dpi=300, figsize=(24,18)).
-Uses only matplotlib, numpy, math, pathlib.
+"""Epitome Penta — comprehensive multi-view technical product sheet.
+
+Generates assets/epitome-penta-product-sheet.png at 7200×5400px
+(dpi=300, figsize=(24,18)).
 """
 from __future__ import annotations
 
 import math
 from pathlib import Path
 
-import numpy as np
 import matplotlib
-
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from matplotlib.patches import (
-    Arc, Circle, FancyArrowPatch, FancyBboxPatch, Polygon, Rectangle,
-    Wedge, Ellipse,
-)
-from matplotlib.path import Path as MplPath
-from matplotlib.patches import PathPatch
-from matplotlib.collections import LineCollection
+from matplotlib.patches import Rectangle, FancyBboxPatch, Circle, Ellipse, Polygon
 
-
-# ─── Output path ────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = ROOT / "assets" / "epitome-penta-product-sheet.png"
 
-# ─── Colour palette ─────────────────────────────────────────────────────────
-PAGE_BG      = "#0d0d1a"   # deep navy/charcoal page background
-PANEL_BG     = "#1a1a2e"   # panel background
-PANEL_BORDER = "#2a2a4a"   # panel border
-TEXT_WHITE   = "#ffffff"
-TEXT_LIGHT   = "#cccccc"
-TEXT_DIM     = "#888899"
-GOLD         = "#c8a84b"   # accent / title colour
-RED_CONF     = "#cc3333"
+# Palette
+PAGE_BG = "#0d0d1a"
+PANEL_BG = "#1a1a2e"
+PANEL_BORDER = "#2a2a4a"
+TEXT_WHITE = "#ffffff"
+TEXT_LIGHT = "#cccccc"
+TEXT_DIM = "#8e90a8"
+GOLD = "#c8a84b"
+ABS_BODY = "#1a1a1a"
+ABS_LIGHT = "#2b2d34"
+ABS_DARK = "#111217"
+SIL = "#2d3137"
+LED_AMBER = "#ffb347"
 
-# Zone accent colours
-Z1_BLUE   = "#3a7bd5"   # Phone
-Z2_PURPLE = "#9b59b6"   # Buds
-Z3_GREEN  = "#27ae60"   # Watch
-Z4_ORANGE = "#e67e22"   # Laptop
-Z5_BLUE   = "#3a7bd5"   # iPad / Phone
+# Zone colours
+Z1_BLUE = "#3a7bd5"
+Z2_PURPLE = "#9b59b6"
+Z3_GREEN = "#27ae60"
+Z4_ORANGE = "#e67e22"
+Z5_BLUE = "#3a7bd5"
 
-# Material colours
-ALU_TOP  = "#8a9ba8"   # brushed aluminium
-ABS_BODY = "#1a1a1a"   # dark ABS
-LED_COL  = "#ffb347"   # warm amber LED
-
-ZONE_COLS = [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE, Z5_BLUE]
-
-
-# ─── Physical constants (mm) ─────────────────────────────────────────────────
-L   = 300.0   # length (Y-axis in top view)
-FW  = 110.0   # front width
-RW  = 140.0   # rear width
-FH  = 12.0    # front height
-RH  = 22.0    # rear height
-CR  = 20.0    # corner radius
-
-def hw(y: float) -> float:
-    """Half-width at Y position."""
-    return 55.0 + 15.0 * (y / 300.0)
-
-def body_h(y: float) -> float:
-    """Body height at Y position."""
-    return 12.0 + 10.0 * (y / 300.0)
-
-
-# ─── Helper: rounded trapezoid path ─────────────────────────────────────────
-def rounded_trapezoid_path(pts: np.ndarray, radius: float) -> MplPath:
-    """Build a rounded-corner closed path through pts."""
-    pts = np.asarray(pts, dtype=float)
-    n = len(pts)
-    verts: list[tuple[float, float]] = []
-    codes: list[int] = []
-    for i in range(n):
-        p_prev = pts[(i - 1) % n]
-        p_curr = pts[i]
-        p_next = pts[(i + 1) % n]
-        v1 = p_prev - p_curr
-        v2 = p_next - p_curr
-        l1 = np.linalg.norm(v1)
-        l2 = np.linalg.norm(v2)
-        rr = min(radius, l1 * 0.45, l2 * 0.45)
-        u1 = v1 / l1
-        u2 = v2 / l2
-        p1 = p_curr + u1 * rr
-        p2 = p_curr + u2 * rr
-        if i == 0:
-            verts.append((p1[0], p1[1]))
-            codes.append(MplPath.MOVETO)
-        else:
-            verts.append((p1[0], p1[1]))
-            codes.append(MplPath.LINETO)
-        verts.append((p_curr[0], p_curr[1]))
-        codes.append(MplPath.CURVE3)
-        verts.append((p2[0], p2[1]))
-        codes.append(MplPath.CURVE3)
-    verts.append((verts[0][0], verts[0][1]))
-    codes.append(MplPath.CLOSEPOLY)
-    return MplPath(verts, codes)
-
-
-def _trapezoid_pts() -> np.ndarray:
-    """Standard top-view trapezoid corners in mm coords (centred on X=0, Y=0..300)."""
-    return np.array([[-55, 0], [55, 0], [70, 300], [-70, 300]], dtype=float)
+# Geometry (mm)
+DOCK_W = 250.0
+DOCK_D = 100.0
+DOCK_H = 100.0
+LEFT_W = 35.0
+RIGHT_W = 20.0
+LEFT_H = 95.0
+RIGHT_H = 75.0
+RISER_H = 50.0
+STEP_H = 15.0
 
 
 def _panel_box(ax: plt.Axes, title: str) -> None:
-    """Style an axis as a dark panel and add title."""
     ax.set_facecolor(PANEL_BG)
     for spine in ax.spines.values():
         spine.set_edgecolor(PANEL_BORDER)
-        spine.set_linewidth(1.5)
-    ax.text(0.01, 0.99, title, transform=ax.transAxes,
-            ha="left", va="top", fontsize=8, color=GOLD,
-            fontweight="bold", fontfamily="monospace")
+        spine.set_linewidth(1.4)
+    ax.text(0.01, 0.99, title, transform=ax.transAxes, ha="left", va="top", fontsize=8,
+            color=GOLD, fontweight="bold", fontfamily="monospace")
 
 
-def _dim_arrow(ax: plt.Axes, x1: float, y1: float, x2: float, y2: float,
-               label: str, offset: tuple = (0, 0), fontsize: float = 6.5,
-               color: str = TEXT_DIM) -> None:
-    """Draw a dimension annotation with double-ended arrow and label."""
-    mx, my = (x1 + x2) / 2 + offset[0], (y1 + y2) / 2 + offset[1]
-    ax.annotate("", xy=(x2, y2), xytext=(x1, y1),
-                arrowprops=dict(arrowstyle="<->", color=color,
-                                lw=0.8, mutation_scale=6))
-    ax.text(mx, my, label, ha="center", va="center",
-            fontsize=fontsize, color=color,
-            bbox=dict(facecolor=PANEL_BG, edgecolor="none", pad=0.5))
+def _dim_arrow(ax: plt.Axes, x1: float, y1: float, x2: float, y2: float, label: str,
+               color: str = TEXT_DIM, fs: float = 6.5, offx: float = 0.0, offy: float = 0.0) -> None:
+    ax.annotate("", xy=(x2, y2), xytext=(x1, y1), arrowprops=dict(arrowstyle="<->", color=color, lw=0.8, mutation_scale=7))
+    ax.text((x1 + x2) / 2 + offx, (y1 + y2) / 2 + offy, label, color=color, fontsize=fs,
+            ha="center", va="center", bbox=dict(facecolor=PANEL_BG, edgecolor="none", pad=0.5))
 
 
-def _callout(ax: plt.Axes, xy: tuple, xytext: tuple, label: str,
-             color: str = TEXT_DIM, fontsize: float = 6) -> None:
-    ax.annotate(label, xy=xy, xytext=xytext,
-                arrowprops=dict(arrowstyle="->", color=color, lw=0.7,
-                                connectionstyle="arc3,rad=0.1"),
-                color=color, fontsize=fontsize, ha="center",
-                bbox=dict(facecolor=PANEL_BG, edgecolor=color, pad=1.5,
-                          linewidth=0.5))
-
-
-# ════════════════════════════════════════════════════════════════════════════
-#  VIEW 1 — TOP-DOWN VIEW
-# ════════════════════════════════════════════════════════════════════════════
 def draw_top_view(ax: plt.Axes) -> None:
-    # Illustration uses wider body so zones fit comfortably (illustration only, not physical spec)
-    ILL_FHW = 100.0   # illustration front half-width (200mm total front)
-    ILL_RHW = 120.0   # illustration rear half-width (240mm total rear)
-
-    def ill_hw(y: float) -> float:
-        return ILL_FHW + (ILL_RHW - ILL_FHW) * (y / 300.0)
-
-    ill_pts = np.array([[-ILL_FHW, 0], [ILL_FHW, 0], [ILL_RHW, 300], [-ILL_RHW, 300]], dtype=float)
-
-    ax.set_xlim(-150, 200)
-    ax.set_ylim(-35, 360)
+    ax.set_xlim(-20, 290)
+    ax.set_ylim(-25, 140)
     ax.set_aspect("equal")
     ax.axis("off")
-    _panel_box(ax, "TOP VIEW — 1:3 SCALE")
+    _panel_box(ax, "TOP VIEW — COMPACT RECTANGULAR DOCK")
 
-    # ── Dock body fill ──
-    body = PathPatch(rounded_trapezoid_path(ill_pts, radius=CR),
-                     facecolor="#252535", edgecolor="#4a4a6a", linewidth=1.5, zorder=2)
+    # Body
+    body = FancyBboxPatch((0, 0), DOCK_W, DOCK_D, boxstyle="round,pad=0,rounding_size=8",
+                          facecolor="#252535", edgecolor="#454a64", linewidth=1.6)
     ax.add_patch(body)
 
-    # ── Top plate (1.5mm aluminium) — same outline, slightly lighter ──
-    plate = PathPatch(rounded_trapezoid_path(ill_pts, radius=CR),
-                      facecolor="#2e3040", edgecolor=GOLD, linewidth=0.8,
-                      alpha=0.35, zorder=3)
-    ax.add_patch(plate)
+    # Section separators
+    ax.plot([LEFT_W, LEFT_W], [0, DOCK_D], color="#4c4f66", lw=1.0)
+    ax.plot([DOCK_W - RIGHT_W, DOCK_W - RIGHT_W], [0, DOCK_D], color="#4c4f66", lw=1.0)
 
-    # ── Y grid lines at zone centres ──
-    for yg, col in [(60, Z1_BLUE), (140, Z2_PURPLE), (225, Z3_GREEN), (150, Z4_ORANGE)]:
-        xw = ill_hw(yg)
-        ax.plot([-xw, xw], [yg, yg], color=col, linewidth=0.4,
-                linestyle="--", dashes=(3, 5), alpha=0.3, zorder=2)
+    # Left slot opening
+    ax.add_patch(Rectangle((0.8, 5), LEFT_W - 1.6, 90, facecolor="#0e1015", edgecolor=Z4_ORANGE, linewidth=1.0))
+    # Right slot opening
+    ax.add_patch(Rectangle((DOCK_W - RIGHT_W + 0.8, 15), RIGHT_W - 1.6, 70, facecolor="#0e1015", edgecolor=Z5_BLUE, linewidth=1.0))
 
-    # ── Centreline divider ──
-    ax.plot([8, 8], [10, 290], color=PANEL_BORDER, linewidth=1.0,
-            linestyle="--", alpha=0.5, zorder=5)
+    # Step outlines (top surfaces)
+    cx = DOCK_W / 2
+    ax.add_patch(Rectangle((cx - 90, 0), 180, 100, fill=False, edgecolor=Z1_BLUE, linewidth=1.4))
+    ax.add_patch(Rectangle((cx - 70, 0), 140, 100, fill=False, edgecolor=Z2_PURPLE, linewidth=1.2, linestyle="--"))
+    ax.add_patch(Rectangle((cx - 50, 0), 100, 80, fill=False, edgecolor=Z3_GREEN, linewidth=1.2, linestyle="--"))
 
-    # LED bar — inside front edge, full width clipped to illustration front edge
-    ax.add_patch(Rectangle((-ILL_FHW, 1), ILL_FHW * 2, 6,
-                            facecolor="#221800", edgecolor="#443300", linewidth=0.8, zorder=4))
-    seg_w = (ILL_FHW * 2) / 5
-    seg_centres = [-80, -40, 0, 40, 80]
-    for lx, lc in zip(seg_centres, [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE, Z5_BLUE]):
-        ax.add_patch(Rectangle((lx - seg_w / 2 + 1, 1.5), seg_w - 2, 5,
-                                facecolor=lc, alpha=0.85, linewidth=0, zorder=5))
-    for div_x in [-60, -20, 20, 60]:
-        ax.plot([div_x, div_x], [1, 7], color="#111122", linewidth=1.0, zorder=6)
-    ax.plot([-ILL_FHW + 2, ILL_FHW - 2], [4, 4],
-            color="#ffb347", linewidth=2.0, alpha=0.7, zorder=6)
+    # Zone labels
+    ax.text(LEFT_W / 2, 50, "ZONE 4\nLAPTOP\n100W PD", ha="center", va="center", color=TEXT_WHITE, fontsize=6.3)
+    ax.text(cx, 54, "ZONE 1\nPHONE\n20W Qi", ha="center", va="center", color=Z1_BLUE, fontsize=6.1, fontweight="bold")
+    ax.text(cx, 36, "ZONE 2\nBUDS/PHONE\n15W Qi", ha="center", va="center", color=Z2_PURPLE, fontsize=5.6, fontweight="bold")
+    ax.text(cx, 74, "ZONE 3\nWATCH\n5W", ha="center", va="center", color=Z3_GREEN, fontsize=5.6, fontweight="bold")
+    ax.text(DOCK_W - RIGHT_W / 2, 50, "ZONE 5\nTABLET\n20W PD", ha="center", va="center", color=TEXT_WHITE, fontsize=6.0)
 
-    ax.text(0, -5, "WS2812B LED STATUS BAR  ·  5-ZONE  ·  290×8mm",
-            ha="center", va="top", fontsize=5.5, color="#ffb347", zorder=6)
-
-    # ── Zone 1 — Phone Qi dish ──
-    z1_dish = FancyBboxPatch((-85, 32.5), 80, 55,
-                              boxstyle="round,pad=0,rounding_size=10",
-                              facecolor="#1c2a3a", edgecolor=Z1_BLUE,
-                              linewidth=1.4, zorder=6)
-    ax.add_patch(z1_dish)
-    z1_si = FancyBboxPatch((-84, 33.5), 78, 53,
-                            boxstyle="round,pad=0,rounding_size=9",
-                            facecolor="#162030", edgecolor=Z1_BLUE,
-                            linewidth=0.6, linestyle="--", zorder=7, alpha=0.7)
-    ax.add_patch(z1_si)
-    ax.add_patch(Circle((-45, 60), 27, facecolor="none",
-                         edgecolor=Z1_BLUE, linewidth=0.5, linestyle=":",
-                         alpha=0.5, zorder=7))
-    ax.add_patch(Circle((-45, 60), 27, facecolor="none",
-                         edgecolor="#4488ff", linewidth=1.0, alpha=0.25, zorder=7))
-    ax.text(-45, 60, "PHONE\nQi2 · 15W", ha="center", va="center",
-            fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
-
-    # ── Zone 2 — Buds Qi dish ──
-    z2_dish = FancyBboxPatch((-77.5, 112.5), 65, 55,
-                              boxstyle="round,pad=0,rounding_size=10",
-                              facecolor="#251a35", edgecolor=Z2_PURPLE,
-                              linewidth=1.4, zorder=6)
-    ax.add_patch(z2_dish)
-    z2_si = FancyBboxPatch((-76.5, 113.5), 63, 53,
-                            boxstyle="round,pad=0,rounding_size=9",
-                            facecolor="#1e1428", edgecolor=Z2_PURPLE,
-                            linewidth=0.6, linestyle="--", zorder=7, alpha=0.7)
-    ax.add_patch(z2_si)
-    ax.add_patch(Circle((-45, 140), 22, facecolor="none",
-                         edgecolor=Z2_PURPLE, linewidth=0.5, linestyle=":",
-                         alpha=0.5, zorder=7))
-    ax.text(-45, 140, "BUDS\nQi · 5W", ha="center", va="center",
-            fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
-
-    # ── Zone 3 — Watch cradle pod ──
-    z3 = Circle((-45, 225), 25, facecolor="#1a2a1a",
-                 edgecolor=Z3_GREEN, linewidth=1.4, zorder=6)
-    ax.add_patch(z3)
-    ax.add_patch(Ellipse((-45, 225), 34, 28, angle=0,
-                          facecolor="#152515", edgecolor=Z3_GREEN,
-                          linewidth=0.6, linestyle="--", zorder=7, alpha=0.8))
-    ax.text(-45, 225, "WATCH\nMagSafe 5W", ha="center", va="center",
-            fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=8)
-
-    # ── Zone 4 — Laptop right-half groove ──
-    z4 = FancyBboxPatch((10, 15), 45, 270,
-                         boxstyle="round,pad=0,rounding_size=8",
-                         facecolor="#2a1a0a", edgecolor=Z4_ORANGE,
-                         linewidth=1.8, zorder=6)
-    ax.add_patch(z4)
-    ax.add_patch(FancyBboxPatch((12, 17), 41, 266,
-                                boxstyle="round,pad=0,rounding_size=7",
-                                facecolor="#1e1208", edgecolor=Z4_ORANGE,
-                                linewidth=0.6, linestyle="--", zorder=7, alpha=0.7))
-    ax.add_patch(Rectangle((35, 30), 8, 250, facecolor="#1a0d05",
-                           edgecolor=Z4_ORANGE, linewidth=1.0, zorder=8))
-    ax.add_patch(Rectangle((34, 30), 1.5, 250, facecolor="#333333",
-                           edgecolor=Z4_ORANGE, linewidth=0.8, zorder=9))
-    ax.add_patch(Rectangle((43.5, 30), 1.5, 250, facecolor="#333333",
-                           edgecolor=Z4_ORANGE, linewidth=0.8, zorder=9))
-    ax.add_patch(FancyBboxPatch((33, 255), 14, 6, boxstyle="round,pad=0,rounding_size=1",
-                                facecolor="#444455", edgecolor="#aaaacc",
-                                linewidth=0.8, zorder=10))
-    ax.text(40, 258, "USB-C", ha="center", va="center", fontsize=4, color="#aaaacc", zorder=11)
-    ax.text(40, 130, "LAPTOP\nUSB-C 100W", ha="center", va="center",
-            fontsize=6.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
-    ax.text(40, 115, "22mm groove · silicone-lined\nlaptop stands vertically on spine",
-            ha="center", va="top", fontsize=4.5, color=Z4_ORANGE, zorder=10)
-
-    # ── Zone 5 — iPad/Phone groove ──
-    z5 = FancyBboxPatch((60, 15), 40, 270,
-                         boxstyle="round,pad=0,rounding_size=8",
-                         facecolor="#0a1a2a", edgecolor=Z5_BLUE,
-                         linewidth=1.8, zorder=6)
-    ax.add_patch(z5)
-    ax.add_patch(FancyBboxPatch((62, 17), 36, 266,
-                               boxstyle="round,pad=0,rounding_size=7",
-                               facecolor="#071218", edgecolor=Z5_BLUE,
-                               linewidth=0.6, linestyle="--", zorder=7, alpha=0.7))
-    ax.add_patch(Rectangle((72, 30), 6, 250, facecolor="#050e14",
-                          edgecolor=Z5_BLUE, linewidth=1.0, zorder=8))
-    ax.add_patch(Rectangle((71, 30), 1.5, 250, facecolor="#333333",
-                          edgecolor=Z5_BLUE, linewidth=0.8, zorder=9))
-    ax.add_patch(Rectangle((78.5, 30), 1.5, 250, facecolor="#333333",
-                          edgecolor=Z5_BLUE, linewidth=0.8, zorder=9))
-    ax.add_patch(FancyBboxPatch((70, 255), 12, 6,
-                               boxstyle="round,pad=0,rounding_size=1",
-                               facecolor="#444455", edgecolor="#aaaacc",
-                               linewidth=0.8, zorder=10))
-    ax.text(76, 258, "USB-C", ha="center", va="center", fontsize=4, color="#aaaacc", zorder=11)
-    ax.text(76, 130, "iPAD /\nPHONE\n20W", ha="center", va="center",
-            fontsize=5.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
-    ax.text(76, 113, "18mm groove · silicone-lined",
-            ha="center", va="top", fontsize=4, color=Z5_BLUE, zorder=10)
-    ax.text(76, 95, "iPAD", ha="center", va="center",
-            fontsize=6.0, color="#aaaacc", style="italic", zorder=8)
-
-    # ── IEC C13 inlet (rear wall) ──
-    iec = Rectangle((-20, 292), 28, 10, facecolor="#1a1a2a",
-                     edgecolor=GOLD, linewidth=1.0, zorder=6)
-    ax.add_patch(iec)
-    ax.text(-6, 305, "IEC C13", ha="center", va="bottom",
-            fontsize=5, color=GOLD, zorder=8)
-    ax.plot([-6, -6], [302, 305], color=GOLD, linewidth=0.5, linestyle="--", zorder=5)
-
-    # ── M3 screw holes ──
-    for sx, sy in [(-60, 150), (60, 150)]:
-        ax.add_patch(Circle((sx, sy), 1.6, facecolor="#0d0d1a",
-                             edgecolor=TEXT_DIM, linewidth=0.8, zorder=8))
-        ax.add_patch(Circle((sx, sy), 3.5, facecolor="none",
-                             edgecolor=TEXT_DIM, linewidth=0.4, linestyle=":",
-                             zorder=7, alpha=0.5))
-
-    # ── Etched labels ──
-    etched_labels = [
-        (-45, 78,  "PHONE",     6.0, "#aaaacc"),
-        (-45, 158, "BUDS",      6.0, "#aaaacc"),
-        (-45, 247, "WATCH",     6.0, "#aaaacc"),
-        ( 40, 95,  "LAPTOP",    6.0, "#aaaacc"),
-        ( 80, 95,  "iPAD",      6.0, "#aaaacc"),
-        (  0, 278, "Epitome Penta", 7.5, GOLD),
-    ]
-    for lx, ly, lt, lfs, lcol in etched_labels:
-        ax.text(lx + 0.4, ly - 0.4, lt, ha="center", va="center",
-                fontsize=lfs, color="#222233", style="italic", zorder=7)
-        ax.text(lx, ly, lt, ha="center", va="center",
-                fontsize=lfs, color=lcol, style="italic", zorder=8)
-
-    # ── PCB and ESP32 ghost outlines ──
-    ax.add_patch(Rectangle((-35 - 60, 110 - 40), 120, 80,
-                             facecolor="none", edgecolor="#2a4a2a",
-                             linewidth=0.5, linestyle=":", alpha=0.4, zorder=4))
-    ax.add_patch(Rectangle((-55 - 9, 95 - 10), 18, 20,
-                             facecolor="none", edgecolor="#3a6a3a",
-                             linewidth=0.4, linestyle=":", alpha=0.5, zorder=4))
-
-    # ── Dimension annotations ──
-    # Overall length (left side)
-    _dim_arrow(ax, -ILL_RHW - 15, 0, -ILL_RHW - 15, 300, "300mm", offset=(-4, 0),
-               fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-ILL_RHW - 15, -ILL_RHW], [0, 0], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([-ILL_RHW - 15, -ILL_RHW], [300, 300], color=TEXT_DIM, linewidth=0.5)
-
-    # Front width (bottom)
-    _dim_arrow(ax, -ILL_FHW, -22, ILL_FHW, -22, "110mm spec · 200mm shown", offset=(0, 0),
-               fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-ILL_FHW, -ILL_FHW], [-22, 0], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([ ILL_FHW,  ILL_FHW], [-22, 0], color=TEXT_DIM, linewidth=0.5)
-
-    # Rear width (top)
-    _dim_arrow(ax, -ILL_RHW, 313, ILL_RHW, 313, "140mm spec · 240mm shown", offset=(0, 0),
-               fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-ILL_RHW, -ILL_RHW], [300, 313], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([ ILL_RHW,  ILL_RHW], [300, 313], color=TEXT_DIM, linewidth=0.5)
-
-    # Zone 1 callout
-    _callout(ax, (-45, 87), (-130, 100), "80×55mm\nR10 · 2.5mm deep",
-             color=Z1_BLUE, fontsize=5)
-    _callout(ax, (-45, 167), (-130, 175), "65×55mm\nR10 · 2.5mm deep",
-             color=Z2_PURPLE, fontsize=5)
-    _callout(ax, (-45, 250), (-130, 255), "Ø50mm\n18mm tall · 30°",
-             color=Z3_GREEN, fontsize=5)
-    _callout(ax, (40, 270), (140, 265), "22mm groove\nvertical spine",
-             color=Z4_ORANGE, fontsize=5)
-    _callout(ax, (76, 270), (155, 260), "18mm groove\niPad/Phone",
-             color=Z5_BLUE, fontsize=5)
-    _callout(ax, (-60, 150), (-140, 165), "M3 × Ø3.2mm",
-             color=TEXT_DIM, fontsize=4.5)
+    _dim_arrow(ax, 0, -10, DOCK_W, -10, "250 mm overall width")
+    _dim_arrow(ax, 260, 0, 260, DOCK_D, "100 mm depth", offx=10)
+    _dim_arrow(ax, 0, 108, LEFT_W, 108, "35 mm")
+    _dim_arrow(ax, DOCK_W - RIGHT_W, 108, DOCK_W, 108, "20 mm")
 
 
-# ════════════════════════════════════════════════════════════════════════════
-#  VIEW 2 — FRONT ELEVATION
-# ════════════════════════════════════════════════════════════════════════════
+
 def draw_front_elevation(ax: plt.Axes) -> None:
-    ax.set_xlim(-80, 80)
-    ax.set_ylim(-20, 40)
+    ax.set_xlim(-20, 290)
+    ax.set_ylim(-10, 120)
     ax.set_aspect("equal")
     ax.axis("off")
-    _panel_box(ax, "FRONT ELEVATION")
+    _panel_box(ax, "FRONT ELEVATION — ZONE FACES + FASCIA")
 
-    # Body outline (front face): 110mm wide × 12mm tall
-    body = FancyBboxPatch((-55, 0), 110, 12,
-                           boxstyle="round,pad=0,rounding_size=2",
-                           facecolor="#252535", edgecolor="#4a4a6a",
-                           linewidth=1.5, zorder=2)
-    ax.add_patch(body)
+    # Front fascia + LED channel
+    ax.add_patch(Rectangle((0, 0), DOCK_W, 20, facecolor="#20242b", edgecolor="#4b5164", linewidth=1.2))
+    ax.add_patch(Rectangle((8, 7.5), DOCK_W - 16, 5, facecolor="#8a6a33", edgecolor="#f1c27a", linewidth=0.6, alpha=0.6))
+    for i, col in enumerate([Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE, Z5_BLUE]):
+        ax.add_patch(Rectangle((10 + i * 46, 8.1), 36, 3.8, facecolor=col, edgecolor="none", alpha=0.85))
 
-    # LED diffuser strip (290×8×3mm — only 110mm visible from front)
-    diffuser = FancyBboxPatch((-55, -3), 110, 3,
-                               boxstyle="round,pad=0,rounding_size=1",
-                               facecolor="#221800", edgecolor="#443300",
-                               linewidth=0.8, zorder=3)
-    ax.add_patch(diffuser)
+    # Left laptop slot face
+    ax.add_patch(Rectangle((0, 20), LEFT_W, LEFT_H - 20, facecolor=ABS_DARK, edgecolor="#41485b", linewidth=1.2))
+    ax.add_patch(Rectangle((3, 23), LEFT_W - 6, LEFT_H - 27, facecolor="#0a0e12", edgecolor="#262c36", linewidth=0.8))
 
-    # 5 LED sections with zone colours
-    zone_labels = ["PHONE", "BUDS", "WATCH", "LAPTOP", "iPAD"]
-    led_xs = [-4 * 110 / 10, -2 * 110 / 10, 0, 2 * 110 / 10, 4 * 110 / 10]
-    zone_cols_5 = [Z1_BLUE, Z2_PURPLE, Z3_GREEN, Z4_ORANGE, Z5_BLUE]
-    for i, (lx, zc, zl) in enumerate(zip(led_xs, zone_cols_5, zone_labels)):
-        seg_w = 110 / 5 - 1
-        # Frosted diffuser block (three translucent layers widening outward)
-        for alpha, width in [(0.15, seg_w + 4), (0.35, seg_w), (0.7, seg_w - 4)]:
-            ax.add_patch(Rectangle((lx - width / 2, -2.8),
-                                    width, 2.8,
-                                    facecolor=zc, alpha=alpha, linewidth=0, zorder=4))
-        # LED glow line
-        ax.plot([lx - seg_w / 2 + 1, lx + seg_w / 2 - 1], [-1.4, -1.4],
-                color=zc, linewidth=2.5, alpha=0.9, solid_capstyle="round", zorder=5)
-        # Divider
-        if i < 4:
-            ax.plot([lx + seg_w / 2 + 0.5, lx + seg_w / 2 + 0.5], [-3, 0],
-                    color="#111122", linewidth=0.8, zorder=6)
-        # Zone label below
-        ax.text(lx, -8, zl, ha="center", va="top",
-                fontsize=5.5, color=zc, fontweight="bold")
-        # Small dot indicator
-        ax.add_patch(Circle((lx, -6), 1.5, facecolor=zc, edgecolor="none",
-                             alpha=0.8, zorder=5))
+    # Right tablet slot face
+    ax.add_patch(Rectangle((DOCK_W - RIGHT_W, 20), RIGHT_W, RIGHT_H - 20, facecolor=ABS_DARK, edgecolor="#41485b", linewidth=1.2))
+    ax.add_patch(Rectangle((DOCK_W - RIGHT_W + 2, 23), RIGHT_W - 4, RIGHT_H - 27, facecolor="#0a0e12", edgecolor="#262c36", linewidth=0.8))
 
-    # Front edge radius indicators
-    ax.text(-59, 5, "R2", ha="right", va="center", fontsize=4.5, color=TEXT_DIM)
-    ax.text( 59, 5, "R2", ha="left",  va="center", fontsize=4.5, color=TEXT_DIM)
+    # Centre riser and steps
+    cx = DOCK_W / 2
+    ax.add_patch(Rectangle((cx - 90, 0), 180, RISER_H, facecolor="#191c22", edgecolor="#3d4458", linewidth=1.0, alpha=0.9))
+    ax.add_patch(Rectangle((cx - 90, RISER_H), 180, STEP_H, facecolor="#262b33", edgecolor=Z1_BLUE, linewidth=1.0))
+    ax.add_patch(Rectangle((cx - 70, RISER_H + STEP_H), 140, STEP_H, facecolor="#2d323a", edgecolor=Z2_PURPLE, linewidth=1.0))
+    ax.add_patch(Rectangle((cx - 50, RISER_H + 2 * STEP_H), 100, STEP_H, facecolor="#343941", edgecolor=Z3_GREEN, linewidth=1.0))
 
-    # Top aluminium plate line
-    ax.plot([-55, 55], [12, 12], color=ALU_TOP, linewidth=2.0, alpha=0.6, zorder=4)
-    ax.plot([-55, 55], [13.5, 13.5], color=ALU_TOP, linewidth=0.8,
-            alpha=0.3, zorder=4)
-    ax.text(0, 15, "1.5mm BRUSHED ALUMINIUM TOP PLATE", ha="center",
-            va="bottom", fontsize=4.5, color=ALU_TOP, alpha=0.8)
+    # Grommets + cable tails
+    ax.add_patch(Circle((LEFT_W / 2, LEFT_H - 2), 2.2, facecolor="#181d24", edgecolor="#6a7380", linewidth=0.8))
+    ax.add_patch(Circle((DOCK_W - RIGHT_W / 2, RIGHT_H - 2), 2.2, facecolor="#181d24", edgecolor="#6a7380", linewidth=0.8))
+    ax.plot([LEFT_W / 2, LEFT_W / 2 - 3, LEFT_W / 2 - 1], [LEFT_H - 2, LEFT_H - 14, LEFT_H - 21], color="#545f6f", lw=1.5)
+    ax.plot([DOCK_W - RIGHT_W / 2, DOCK_W - RIGHT_W / 2 + 2], [RIGHT_H - 2, RIGHT_H - 12], color="#545f6f", lw=1.2)
 
-    # Dimension: 110mm width
-    _dim_arrow(ax, -55, -15, 55, -15, "110mm", fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-55, -55], [-15, 0], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([55, 55],   [-15, 0], color=TEXT_DIM, linewidth=0.5)
-
-    # Dimension: 12mm height
-    _dim_arrow(ax, 62, 0, 62, 12, "12mm", offset=(8, 0),
-               fontsize=5.5, color=TEXT_DIM)
-    ax.plot([55, 62], [0, 0],   color=TEXT_DIM, linewidth=0.5)
-    ax.plot([55, 62], [12, 12], color=TEXT_DIM, linewidth=0.5)
-
-    # Corner radius callout
-    ax.text(0, 20, "FRONT FACE  ·  110 × 12mm  ·  LED BAR VISIBLE",
-            ha="center", va="bottom", fontsize=6, color=GOLD,
-            fontweight="bold")
-    ax.text(0, 17, "5-section frosted polycarbonate diffuser · WS2812B addressable",
-            ha="center", va="bottom", fontsize=5, color=TEXT_LIGHT)
+    ax.text(cx, 100, "Three-step centre platform (15 mm each)", color=TEXT_LIGHT, fontsize=5.7, ha="center")
+    _dim_arrow(ax, -10, 0, -10, LEFT_H, "95 mm", offx=-7)
+    _dim_arrow(ax, 265, 0, 265, RIGHT_H, "75 mm", offx=8)
+    _dim_arrow(ax, cx - 90, 106, cx + 90, 106, "Step 1 width 180 mm")
+    _dim_arrow(ax, 0, -4, DOCK_W, -4, "250 mm overall width")
 
 
-# ════════════════════════════════════════════════════════════════════════════
-#  VIEW 3 — PERSPECTIVE / ISOMETRIC VIEW
-# ════════════════════════════════════════════════════════════════════════════
+def _iso(x: float, y: float, z: float, scale: float = 1.9, ox: float = 115, oy: float = 60) -> tuple[float, float]:
+    a = math.radians(30)
+    sx = (x - y) * math.cos(a) * scale + ox
+    sy = (x + y) * math.sin(a) * scale - z * scale + oy
+    return sx, sy
+
+
+def _iso_poly(ax: plt.Axes, pts3d, fc, ec="#0b0d10", lw=0.5, alpha=1.0, z=3):
+    pts = [_iso(*p) for p in pts3d]
+    ax.add_patch(Polygon(pts, closed=True, facecolor=fc, edgecolor=ec, linewidth=lw, alpha=alpha, zorder=z))
+
+
+def _iso_box(ax: plt.Axes, x0, x1, y0, y1, z0, z1, ct=ABS_LIGHT, cr=ABS_BODY, cf=ABS_DARK, z=4):
+    _iso_poly(ax, [(x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1)], ct, z=z + 2)
+    _iso_poly(ax, [(x1, y0, z0), (x1, y1, z0), (x1, y1, z1), (x1, y0, z1)], cr, z=z + 1)
+    _iso_poly(ax, [(x0, y0, z0), (x1, y0, z0), (x1, y0, z1), (x0, y0, z1)], cf, z=z)
+
+
 def draw_perspective_view(ax: plt.Axes) -> None:
-    # Oblique projection: iso_x = x + 0.6*y, iso_y = z + 0.35*y
-    # Scale everything by s, offset to centre in panel
-    s = 0.95
-    ox, oy = 30.0, 10.0
-
-    def proj(x: float, y: float, z: float) -> tuple[float, float]:
-        px = ox + (x + 0.60 * y) * s
-        py = oy + (z + 0.38 * y) * s
-        return px, py
-
-    # Figure out bounds by projecting extremes
-    corners_3d = [
-        (-55, 0, 0), (55, 0, 0), (70, 300, 0), (-70, 300, 0),
-        (-55, 0, FH), (55, 0, FH), (70, 300, RH), (-70, 300, RH),
-    ]
-    all_proj = [proj(*c) for c in corners_3d]
-    xs = [p[0] for p in all_proj]
-    ys = [p[1] for p in all_proj]
-    margin = 20
-    ax.set_xlim(min(xs) - margin, max(xs) + margin + 80)
-    ax.set_ylim(min(ys) - margin - 10, max(ys) + margin + 20)
-    ax.set_aspect("equal")
+    ax.set_xlim(-140, 520)
+    ax.set_ylim(340, -80)
     ax.axis("off")
-    _panel_box(ax, "PERSPECTIVE VIEW")
+    _panel_box(ax, "PERSPECTIVE VIEW — COMPACT ABS ENCLOSURE")
 
-    FL = (-55.0, 0.0)
-    FR = (55.0, 0.0)
-    RR = (70.0, 300.0)
-    RL = (-70.0, 300.0)
+    # base + structural strips
+    _iso_box(ax, 0, DOCK_W, 0, DOCK_D, 0, 3, ct="#20242b", cr="#12161b", cf="#101318", z=2)
+    _iso_box(ax, 0, DOCK_W, 0, 3, 0, 20, ct="#232932", cr="#161c24", cf="#131820", z=5)
+    _iso_box(ax, 0, DOCK_W, 97, 100, 0, 25, ct="#20252c", cr="#151a20", cf="#12161b", z=4)
 
-    # ── Bottom face ──
-    bot = [proj(FL[0], FL[1], 0), proj(FR[0], FR[1], 0),
-           proj(RR[0], RR[1], 0), proj(RL[0], RL[1], 0)]
-    ax.add_patch(Polygon(bot, closed=True, facecolor="#0d0d17",
-                          edgecolor="#333344", linewidth=0.8, zorder=1))
+    # slots
+    _iso_box(ax, 0, 35, 5, 95, 0, 95, z=7)
+    _iso_poly(ax, [(3, 5, 8), (32, 5, 8), (32, 5, 86), (3, 5, 86)], "#0b0f14", ec="#27303a", z=10)
+    _iso_box(ax, 230, 250, 15, 85, 0, 75, z=7)
+    _iso_poly(ax, [(232, 15, 8), (248, 15, 8), (248, 15, 68), (232, 15, 68)], "#0b0f14", ec="#27303a", z=10)
 
-    # ── Side faces ──
-    # Front face
-    front_face = [proj(FL[0], FL[1], 0), proj(FR[0], FR[1], 0),
-                  proj(FR[0], FR[1], FH), proj(FL[0], FL[1], FH)]
-    ax.add_patch(Polygon(front_face, closed=True, facecolor="#1c1c2c",
-                          edgecolor="#3a3a5a", linewidth=1.0, zorder=3))
+    # centre steps
+    _iso_box(ax, 35, 215, 0, 100, 0, 50, ct="#1f242b", cr="#15191f", cf="#12161b", z=5)
+    _iso_box(ax, 35, 215, 0, 100, 50, 65, ct="#2a3038", cr="#1a1f26", cf="#171c22", z=8)
+    _iso_box(ax, 55, 195, 0, 100, 65, 80, ct="#313740", cr="#20252d", cf="#1d2229", z=9)
+    _iso_box(ax, 75, 175, 0, 80, 80, 95, ct="#383f48", cr="#252b33", cf="#222830", z=10)
 
-    # Right side face
-    right_face = [proj(FR[0], FR[1], 0), proj(RR[0], RR[1], 0),
-                  proj(RR[0], RR[1], RH), proj(FR[0], FR[1], FH)]
-    ax.add_patch(Polygon(right_face, closed=True, facecolor="#1a1a2a",
-                          edgecolor="#3a3a5a", linewidth=1.0, zorder=3))
+    # silicone surfaces
+    _iso_poly(ax, [(45, 8, 65.2), (205, 8, 65.2), (205, 96, 65.2), (45, 96, 65.2)], SIL, ec="#49505b", z=13)
+    _iso_poly(ax, [(80, 10, 80.2), (170, 10, 80.2), (170, 74, 80.2), (80, 74, 80.2)], "#2a2e35", ec="#565e6b", z=14)
 
-    # Left side face (slightly darker — in shadow)
-    left_face = [proj(FL[0], FL[1], 0), proj(RL[0], RL[1], 0),
-                 proj(RL[0], RL[1], RH), proj(FL[0], FL[1], FH)]
-    ax.add_patch(Polygon(left_face, closed=True, facecolor="#141420",
-                          edgecolor="#2a2a4a", linewidth=1.0, zorder=3))
+    # watch pod
+    pod_pts = []
+    for i in range(28):
+        t = 2 * math.pi * i / 28
+        pod_pts.append((125 + 25 * math.cos(t), 56 + 17 * math.sin(t), 103))
+    _iso_poly(ax, pod_pts, "#3d444f", ec="#626b77", z=16)
 
-    # Rear face
-    rear_face = [proj(RR[0], RR[1], 0), proj(RL[0], RL[1], 0),
-                 proj(RL[0], RL[1], RH), proj(RR[0], RR[1], RH)]
-    ax.add_patch(Polygon(rear_face, closed=True, facecolor="#111120",
-                          edgecolor="#2a2a4a", linewidth=0.8, zorder=3))
+    # cable tail + connector
+    cable = [_iso(17.5, 12, 95), _iso(17.5, 8, 90), _iso(17.5, 5, 85)]
+    ax.plot([p[0] for p in cable], [p[1] for p in cable], color="#5a6472", lw=2.2, zorder=20)
+    ax.plot([cable[-1][0] - 2, cable[-1][0] + 3], [cable[-1][1], cable[-1][1]], color="#a5afbc", lw=1.8, zorder=21)
 
-    # ── Top face (aluminium plate) with hatching ──
-    top_face = [proj(FL[0], FL[1], FH), proj(FR[0], FR[1], FH),
-                proj(RR[0], RR[1], RH), proj(RL[0], RL[1], RH)]
-    ax.add_patch(Polygon(top_face, closed=True, facecolor=ALU_TOP,
-                          edgecolor="#aabbcc", linewidth=1.2, zorder=4,
-                          hatch="////", alpha=0.9))
-    # Slightly brighter overlay for brushed effect
-    ax.add_patch(Polygon(top_face, closed=True, facecolor="#9ab0be",
-                          edgecolor="none", linewidth=0, zorder=5, alpha=0.2))
-
-    # ── LED bar on front face ──
-    led_y = 0.0
-    led_height = 3.0
-    led_pts = [proj(-53, led_y, FH - led_height),
-               proj(53, led_y, FH - led_height),
-               proj(53, led_y, FH + 0.5),
-               proj(-53, led_y, FH + 0.5)]
-    ax.add_patch(Polygon(led_pts, closed=True, facecolor="#1a1000",
-                          edgecolor="#332200", linewidth=0.6, zorder=6))
     # LED glow
-    for lx, zc in zip(
-            [-4 * 110 / 10, -2 * 110 / 10, 0, 2 * 110 / 10, 4 * 110 / 10], ZONE_COLS):
-        p0 = proj(lx - 9, 0, FH - 2)
-        p1 = proj(lx + 9, 0, FH - 2)
-        ax.plot([p0[0], p1[0]], [p0[1], p1[1]],
-                color=zc, linewidth=3.5, alpha=0.9,
-                solid_capstyle="round", zorder=7)
-        ax.plot([p0[0], p1[0]], [p0[1] + 1, p1[1] + 1],
-                color=zc, linewidth=6, alpha=0.15,
-                solid_capstyle="round", zorder=7)
+    p0 = _iso(10, 0.2, 10)
+    p1 = _iso(240, 0.2, 10)
+    for w, a in [(16, 0.05), (8, 0.12), (3, 0.38)]:
+        ax.plot([p0[0], p1[0]], [p0[1], p1[1]], color=LED_AMBER, lw=w, alpha=a, solid_capstyle="round", zorder=23)
 
-    # ── Zones on top face ──
-    # Zone 1 — Phone
-    z1_corners = [
-        proj(-45 - 40, 60 - 27.5, FH + 0.3),
-        proj(-45 + 40, 60 - 27.5, FH + 0.3),
-        proj(-45 + 40, 60 + 27.5, body_h(60) + 0.3),
-        proj(-45 - 40, 60 + 27.5, body_h(60) + 0.3),
-    ]
-    ax.add_patch(Polygon(z1_corners, closed=True, facecolor="#1c2a3a",
-                          edgecolor=Z1_BLUE, linewidth=1.0, zorder=8, alpha=0.9))
-    z1c = proj(-45, 60, FH + 0.5)
-    ax.text(z1c[0], z1c[1], "PHONE\nQi2 15W", ha="center", va="center",
-            fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
-
-    # Zone 2 — Buds
-    z2_corners = [
-        proj(-45 - 32.5, 140 - 27.5, FH + 0.3),
-        proj(-45 + 32.5, 140 - 27.5, FH + 0.3),
-        proj(-45 + 32.5, 140 + 27.5, body_h(140) + 0.3),
-        proj(-45 - 32.5, 140 + 27.5, body_h(140) + 0.3),
-    ]
-    ax.add_patch(Polygon(z2_corners, closed=True, facecolor="#251a35",
-                          edgecolor=Z2_PURPLE, linewidth=1.0, zorder=8, alpha=0.9))
-    z2c = proj(-45, 140, FH + 0.5)
-    ax.text(z2c[0], z2c[1], "BUDS\nQi 5W", ha="center", va="center",
-            fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
-
-    # Zone 4 — Laptop right half
-    z4_corners = [
-        proj(10, 15, FH + 0.3),
-        proj(55, 15, FH + 0.3),
-        proj(70, 285, body_h(285) + 0.3),
-        proj(10, 285, body_h(285) + 0.3),
-    ]
-    ax.add_patch(Polygon(z4_corners, closed=True, facecolor="#2a1a0a",
-                          edgecolor=Z4_ORANGE, linewidth=1.2, zorder=8, alpha=0.9))
-    z4c = proj(40, 150, body_h(150) + 0.5)
-    ax.text(z4c[0], z4c[1], "LAPTOP\n100W", ha="center", va="center",
-            fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
-
-    # Zone 5 — iPad/Phone groove right of laptop
-    z5_corners = [
-        proj(62, 15, FH + 0.3),
-        proj(100, 15, FH + 0.3),
-        proj(115, 285, body_h(285) + 0.3),
-        proj(62, 285, body_h(285) + 0.3),
-    ]
-    ax.add_patch(Polygon(z5_corners, closed=True, facecolor="#0a1a2a",
-                          edgecolor=Z5_BLUE, linewidth=1.2, zorder=8, alpha=0.9))
-    z5c = proj(80, 150, body_h(150) + 0.5)
-    ax.text(z5c[0], z5c[1], "iPAD\n20W", ha="center", va="center",
-            fontsize=4.5, color=TEXT_WHITE, fontweight="bold", zorder=10)
-
-    # Zone 3 — Watch cradle pod (raised cylinder + cone)
-    pod_z = body_h(225)
-    pod_ctr = proj(-45, 225, pod_z)
-    pod_r = 14.0
-    # Pod base circle (ellipse in projection)
-    theta = np.linspace(0, 2 * math.pi, 36)
-    pod_rim = [proj(-45 + pod_r * math.cos(t), 225 + pod_r * 0.4 * math.sin(t),
-                    pod_z + 0.5) for t in theta]
-    ax.add_patch(Polygon(pod_rim, closed=True, facecolor="#1a2a1a",
-                          edgecolor=Z3_GREEN, linewidth=1.0, zorder=9))
-    # Pod cone/spike (tilted 30°)
-    cone_base_l = proj(-45 - 6, 225, pod_z + 2)
-    cone_base_r = proj(-45 + 6, 225, pod_z + 2)
-    cone_tip    = proj(-45 - 10, 225, pod_z + 18)
-    ax.add_patch(Polygon([cone_base_l, cone_base_r, cone_tip],
-                          closed=True, facecolor="#2a3a2a",
-                          edgecolor=Z3_GREEN, linewidth=0.8, zorder=10))
-    ax.add_patch(Circle(cone_tip, 3.5, facecolor="#1f301f",
-                         edgecolor=Z3_GREEN, linewidth=0.8, zorder=11))
-    z3c = proj(-45, 225, pod_z + 1)
-    ax.text(z3c[0] + 5, z3c[1] - 2, "WATCH\n5W", ha="center", va="center",
-            fontsize=4, color=Z3_GREEN, fontweight="bold", zorder=12)
-
-    # ── Rubber feet (bottom corners) ──
-    for fx, fy in [(-39.17, 15), (39.17, 15), (-53.5, 285), (53.5, 285)]:
-        fp = proj(fx, fy, -3)
-        ax.add_patch(Ellipse(fp, 12, 5, facecolor="#0a0a12",
-                              edgecolor="#222233", linewidth=0.6, zorder=2))
-
-    # ── IEC C13 power cord ──
-    # IEC C13 socket housing on rear wall
-    iec_pt = proj(0, 299, 6)
-    socket_tl = proj(-5, 299, 10)
-    socket_tr = proj(5, 299, 10)
-    socket_bl = proj(-5, 299, 2)
-    socket_br = proj(5, 299, 2)
-    ax.add_patch(Polygon([socket_tl, socket_tr, socket_br, socket_bl],
-                          closed=True, facecolor="#1a1a2a", edgecolor=GOLD,
-                          linewidth=1.2, zorder=8))
-    # Cord leaving the socket
-    cord_start = proj(0, 300, 6)
-    cord_end = (cord_start[0] + 35, cord_start[1] + 4)
-    ax.plot([cord_start[0], cord_end[0]], [cord_start[1], cord_end[1]],
-            color="#2d2d38", linewidth=8, solid_capstyle="round", zorder=6)
-    ax.plot([cord_start[0], cord_end[0]], [cord_start[1], cord_end[1]],
-            color="#1e1e28", linewidth=5, solid_capstyle="round", zorder=7)
-    # Coil loops
-    for i in range(6):
-        ci_x = cord_end[0] + 5 + i * 14
-        ci_y = cord_end[1] + 2
-        ax.add_patch(Arc((ci_x, ci_y), 16 + i * 2, 10 + i,
-                          theta1=15, theta2=345,
-                          color="#2e2e3c", linewidth=2.0, zorder=7))
-    # Label
-    ax.text(cord_end[0] + 30, cord_end[1] + 12, "IEC C13\nPOWER",
-            ha="center", va="bottom", fontsize=4.5, color=GOLD, zorder=10)
-
-    # ── Shadow under dock ──
-    shadow = [proj(FL[0], FL[1], -2), proj(FR[0], FR[1], -2),
-              proj(RR[0], RR[1], -2), proj(RL[0], RL[1], -2)]
-    ax.add_patch(Polygon(shadow, closed=True, facecolor="#050508",
-                          edgecolor="none", linewidth=0, zorder=0, alpha=0.7))
-
-    # ── Labels ──
-    ax.text(proj(0, 150, RH + 5)[0], proj(0, 150, RH + 5)[1] + 18,
-            "PERSPECTIVE VIEW  ·  OBLIQUE PROJECTION",
-            ha="center", va="bottom", fontsize=6, color=GOLD,
-            fontweight="bold", zorder=15)
+    # labels
+    ax.text(340, 62, "Zone 4 laptop slot\n(on-edge, top cable)", color=Z4_ORANGE, fontsize=5.9, ha="left")
+    ax.text(370, 154, "Zone 5 tablet slot\n(on-edge, top cable)", color=Z5_BLUE, fontsize=5.9, ha="left")
+    ax.text(282, 228, "Zone 3 watch cradle", color=Z3_GREEN, fontsize=5.9)
+    ax.text(200, 260, "Zone 2 buds/phone · 15W Qi", color=Z2_PURPLE, fontsize=5.9)
+    ax.text(115, 292, "Zone 1 phone · 20W Qi", color=Z1_BLUE, fontsize=5.9)
+    ax.text(250, 307, "20 mm fascia with frosted diffuser", color=TEXT_LIGHT, fontsize=5.6)
+    ax.text(298, 111, "25 mm low rear rail", color=TEXT_LIGHT, fontsize=5.6)
 
 
-# ════════════════════════════════════════════════════════════════════════════
-#  VIEW 4 — SIDE ELEVATION / CROSS-SECTION
-# ════════════════════════════════════════════════════════════════════════════
 def draw_side_elevation(ax: plt.Axes) -> None:
-    ax.set_xlim(-30, 360)
-    ax.set_ylim(-20, 55)
+    ax.set_xlim(-20, 170)
+    ax.set_ylim(-8, 112)
     ax.set_aspect("equal")
     ax.axis("off")
-    _panel_box(ax, "SIDE ELEVATION — CROSS-SECTION")
+    _panel_box(ax, "SIDE CROSS-SECTION — RIGHT ELEVATION")
 
-    # ── Outer profile ──
-    # Y-axis = left→right (0=front, 300=rear), Z-axis = up
-    profile_pts = np.array([[0, 0], [300, 0], [300, RH], [0, FH]], dtype=float)
-    body_profile = PathPatch(
-        rounded_trapezoid_path(profile_pts, radius=5),
-        facecolor="#252535", edgecolor="#4a4a6a", linewidth=1.5, zorder=2,
-    )
-    ax.add_patch(body_profile)
+    # Stack outline
+    ax.add_patch(Rectangle((0, 0), 130, 3, facecolor="#252a34", edgecolor="#48506a", linewidth=1.0))
+    ax.add_patch(Rectangle((8, 3), 114, 30, facecolor="#1f2430", edgecolor="#59627d", linewidth=1.0))
+    ax.text(65, 18, "PSU 159×97×30 (Mean Well LRS-150-24)", color=TEXT_LIGHT, fontsize=5.2, ha="center")
 
-    # ── Top plate (1.5mm) ──
-    top_plate = FancyBboxPatch((0, FH), 300, 1.5,
-                                boxstyle="round,pad=0,rounding_size=1",
-                                facecolor=ALU_TOP, edgecolor="#aabbcc",
-                                linewidth=0.8, zorder=3)
-    ax.add_patch(top_plate)
+    ax.add_patch(Rectangle((8, 33), 114, 17, facecolor="#1a1f29", edgecolor="#3f4760", linewidth=1.0))
+    ax.text(65, 41.5, "Riser cavity + wiring\nESP32 / INA3221 shelf @ Z=35", color=TEXT_DIM, fontsize=5.1, ha="center", va="center")
 
-    # ── Interior components (ghost / cross-section style) ──
-    def ghost_rect(x: float, y: float, w: float, h: float,
-                   fc: str, ec: str, label: str = "", zorder: int = 5) -> None:
-        ax.add_patch(Rectangle((x, y), w, h,
-                                facecolor=fc, edgecolor=ec,
-                                linewidth=0.8, linestyle="--",
-                                alpha=0.65, zorder=zorder))
-        if label:
-            ax.text(x + w / 2, y + h / 2, label,
-                    ha="center", va="center",
-                    fontsize=4.0, color=ec, fontweight="bold", zorder=zorder + 1)
+    ax.add_patch(Rectangle((8, 50), 110, 15, facecolor="#2b313c", edgecolor=Z1_BLUE, linewidth=1.0))
+    ax.add_patch(Circle((52, 57.5), 6.0, facecolor="none", edgecolor=Z1_BLUE, linestyle=":", linewidth=1.0))
+    ax.text(86, 56.5, "Step 1\n20W Qi", color=Z1_BLUE, fontsize=5.5, ha="center")
 
-    # PSU block (150×35mm at Y=210-75..210+75, Z=5..40) — centred at Y=210
-    ghost_rect(210 - 75, 5, 150, 28, "#1a1a2a", "#4466cc", "PSU\n180W")
-    # PCB main (120mm wide at Y=110-60..170, 5mm thick)
-    ghost_rect(110 - 60, 5, 120, 5, "#1a2a1a", "#44aa44", "PCB MAIN")
-    # ESP32-C3 (18×20 at Y=85-9..85+9, Z=10)
-    ghost_rect(85 - 9, 10, 18, 4, "#2a2a1a", "#aaaa44", "ESP32")
-    # INA3221
-    ghost_rect(20 - 5, 10, 10, 4, "#2a1a1a", "#aa4444", "INA")
-    # Qi coil 1 cross-section at Y=70
-    ax.add_patch(Ellipse((70, 4 + 2.5), 10, 5,
-                          facecolor="#1a1a3a", edgecolor=Z1_BLUE,
-                          linewidth=0.8, linestyle="--", alpha=0.7, zorder=5))
-    ax.text(70, 4, "Qi", ha="center", va="center",
-            fontsize=3.5, color=Z1_BLUE, zorder=6)
-    # Watch puck at Y=225
-    ax.add_patch(Ellipse((225, 4 + 2.5), 10, 5,
-                          facecolor="#1a3a1a", edgecolor=Z3_GREEN,
-                          linewidth=0.8, linestyle="--", alpha=0.7, zorder=5))
-    ax.text(225, 4, "Ø34", ha="center", va="center",
-            fontsize=3.5, color=Z3_GREEN, zorder=6)
-    # USB-C PD board at Y=155
-    ghost_rect(155 - 15, 5, 30, 4, "#2a1a2a", "#aa44aa", "PD\n100W")
-    # IEC C13 cutout on rear wall
-    ax.add_patch(Rectangle((296, 6), 4, 8,
-                             facecolor="#0d0d1a", edgecolor=GOLD,
-                             linewidth=0.8, zorder=6))
-    # Vent slot suggestion
-    for vy in [25, 45, 65, 85]:
-        ax.add_patch(Rectangle((vy - 20, 0), 40, 1.5,
-                                 facecolor="#0d0d1a", edgecolor=TEXT_DIM,
-                                 linewidth=0.4, alpha=0.6, zorder=6))
+    ax.add_patch(Rectangle((8, 65), 100, 15, facecolor="#303741", edgecolor=Z2_PURPLE, linewidth=1.0))
+    ax.add_patch(Circle((48, 72.5), 5.5, facecolor="none", edgecolor=Z2_PURPLE, linestyle=":", linewidth=1.0))
+    ax.text(82, 72.0, "Step 2\n15W Qi", color=Z2_PURPLE, fontsize=5.4, ha="center")
 
-    # ── Dimension lines ──
-    # Total length
-    _dim_arrow(ax, 0, -12, 300, -12, "300mm total length",
-               fontsize=5, color=TEXT_DIM)
-    ax.plot([0, 0],     [-12, 0],  color=TEXT_DIM, linewidth=0.5)
-    ax.plot([300, 300], [-12, 0],  color=TEXT_DIM, linewidth=0.5)
+    ax.add_patch(Rectangle((8, 80), 80, 15, facecolor="#363e49", edgecolor=Z3_GREEN, linewidth=1.0))
+    ax.add_patch(Circle((36, 87.5), 4.8, facecolor="none", edgecolor=Z3_GREEN, linestyle=":", linewidth=1.0))
+    ax.add_patch(Ellipse((58, 87.5), 16, 8, facecolor="none", edgecolor=Z3_GREEN, linewidth=1.0))
+    ax.text(83, 87.5, "Step 3\nWatch puck + Qi", color=Z3_GREEN, fontsize=5.3, ha="center")
 
-    # Front height
-    _dim_arrow(ax, -12, 0, -12, FH, f"{int(FH)}mm",
-               offset=(-6, 0), fontsize=4.5, color=TEXT_DIM)
-    ax.plot([-12, 0], [0, 0],   color=TEXT_DIM, linewidth=0.5)
-    ax.plot([-12, 0], [FH, FH], color=TEXT_DIM, linewidth=0.5)
+    # Slot walls context
+    ax.plot([140, 140], [0, LEFT_H], color=Z4_ORANGE, lw=2)
+    ax.plot([152, 152], [0, RIGHT_H], color=Z5_BLUE, lw=2)
+    ax.text(140, LEFT_H + 2, "L slot wall 95mm", color=Z4_ORANGE, fontsize=5.0, ha="center")
+    ax.text(152, RIGHT_H + 2, "R slot wall 75mm", color=Z5_BLUE, fontsize=5.0, ha="center")
 
-    # Rear height
-    _dim_arrow(ax, 312, 0, 312, RH, f"{int(RH)}mm",
-               offset=(8, 0), fontsize=4.5, color=TEXT_DIM)
-    ax.plot([300, 312], [0, 0],   color=TEXT_DIM, linewidth=0.5)
-    ax.plot([300, 312], [RH, RH], color=TEXT_DIM, linewidth=0.5)
-
-    # Top plate callout
-    ax.annotate("1.5mm Al plate", xy=(150, FH + 0.75),
-                 xytext=(150, 32),
-                 arrowprops=dict(arrowstyle="->", color=ALU_TOP, lw=0.7),
-                 color=ALU_TOP, fontsize=4.5, ha="center", zorder=10)
-
-    # PSU callout
-    ax.text(210, 35, "PSU 180W\n150×80×35mm", ha="center", va="bottom",
-            fontsize=4.5, color="#4466cc")
-    ax.plot([210, 210], [33, 5 + 28], color="#4466cc", linewidth=0.4,
-            linestyle=":", alpha=0.6)
+    # Dimension arrows
+    _dim_arrow(ax, -8, 0, -8, 95, "95 mm", offx=-8)
+    _dim_arrow(ax, -2, 0, -2, 50, "50 mm", offx=-9)
+    _dim_arrow(ax, 130, 3, 130, 33, "PSU 30 mm", offx=9)
+    _dim_arrow(ax, 130, 50, 130, 65, "15 mm", offx=9)
+    _dim_arrow(ax, 130, 65, 130, 80, "15 mm", offx=9)
+    _dim_arrow(ax, 130, 80, 130, 95, "15 mm", offx=9)
 
 
-# ════════════════════════════════════════════════════════════════════════════
-#  VIEW 5 — BOTTOM VIEW
-# ════════════════════════════════════════════════════════════════════════════
 def draw_bottom_view(ax: plt.Axes) -> None:
-    ax.set_xlim(-110, 130)
-    ax.set_ylim(-35, 355)
+    ax.set_xlim(-20, 290)
+    ax.set_ylim(-25, 140)
     ax.set_aspect("equal")
     ax.axis("off")
-    _panel_box(ax, "BOTTOM VIEW")
+    _panel_box(ax, "BOTTOM VIEW — BASE / FEET / VENTS")
 
-    pts = _trapezoid_pts()
+    ax.add_patch(FancyBboxPatch((0, 0), DOCK_W, DOCK_D, boxstyle="round,pad=0,rounding_size=10",
+                                facecolor="#222838", edgecolor="#4f5870", linewidth=1.4))
 
-    # ── Dock body (bottom face) ──
-    body = PathPatch(rounded_trapezoid_path(pts, radius=CR),
-                     facecolor="#1a1a28", edgecolor="#3a3a5a",
-                     linewidth=1.5, zorder=2)
-    ax.add_patch(body)
+    # Vent slots
+    for y in [25, 40, 55, 70]:
+        ax.add_patch(Rectangle((95, y), 60, 5, facecolor="#0f131b", edgecolor="#2e3545", linewidth=0.7))
 
-    # Matte ABS texture label
-    ax.text(0, 150, "MATTE ABS — SOFT TOUCH", ha="center", va="center",
-            fontsize=8, color="#333344", fontweight="bold",
-            style="italic", zorder=3, alpha=0.5)
+    # M3 holes
+    m3 = [(18, 18), (232, 18), (18, 82), (232, 82)]
+    for x, y in m3:
+        ax.add_patch(Circle((x, y), 2.2, facecolor="#0b0e14", edgecolor="#8ea0c0", linewidth=0.8))
 
-    # ── Rubber feet (Ø15mm) ──
-    feet = [(-39.17, 15), (39.17, 15), (-53.5, 285), (53.5, 285)]
-    for fx, fy in feet:
-        ax.add_patch(Circle((fx, fy), 7.5, facecolor="#0d0d17",
-                             edgecolor="#444455", linewidth=1.0, zorder=5))
-        ax.add_patch(Circle((fx, fy), 5.0, facecolor="#111120",
-                             edgecolor="#333344", linewidth=0.5, zorder=6))
-        # Grip rings
-        for r in [6.5, 7.0]:
-            ax.add_patch(Circle((fx, fy), r, facecolor="none",
-                                 edgecolor="#222233", linewidth=0.3, zorder=6))
+    # Rubber feet
+    feet = [(12, 12), (238, 12), (12, 88), (238, 88)]
+    for x, y in feet:
+        ax.add_patch(Circle((x, y), 5.5, facecolor="#10151d", edgecolor="#4b5568", linewidth=0.9))
 
-    # Feet dimensions callout
-    _callout(ax, (-39.17, 22.5), (-85, 28), "Ø15×3mm\nrubber feet",
-             color=TEXT_DIM, fontsize=4.5)
+    ax.text(125, 53, "Vent slots", color=TEXT_DIM, fontsize=5.8, ha="center")
+    ax.text(50, 52, "M3\nmount", color=TEXT_DIM, fontsize=5.3, ha="center", va="center")
+    ax.text(205, 52, "M3\nmount", color=TEXT_DIM, fontsize=5.3, ha="center", va="center")
 
-    # ── Vent slots (8 total: X=±20, Y=25/45/65/85, each 40×4mm) ──
-    vent_cols = [-20, 20]
-    vent_rows = [25, 45, 65, 85]
-    for vx in vent_cols:
-        for vy in vent_rows:
-            ax.add_patch(FancyBboxPatch((vx - 20, vy - 2), 40, 4,
-                                        boxstyle="round,pad=0,rounding_size=1",
-                                        facecolor="#0d0d17",
-                                        edgecolor="#2a2a3a",
-                                        linewidth=0.7, zorder=5))
-
-    _callout(ax, (-20, 25), (-88, 42), "40×4mm vent slots\n(8 total)",
-             color=TEXT_DIM, fontsize=4.5)
-    _callout(ax, (20, 25), (85, 42), "2 rows · 4 per row",
-             color=TEXT_DIM, fontsize=4.5)
-
-    # ── M3 screw holes ──
-    for sx, sy in [(-35, 150), (30, 150)]:
-        ax.add_patch(Circle((sx, sy), 1.6, facecolor="#0d0d1a",
-                             edgecolor=TEXT_DIM, linewidth=0.8, zorder=8))
-        ax.add_patch(Circle((sx, sy), 3.5, facecolor="none",
-                             edgecolor=TEXT_DIM, linewidth=0.4, linestyle=":",
-                             zorder=7, alpha=0.5))
-    _callout(ax, (-35, 150), (-92, 165), "M3 × Ø3.2mm\nsnap-fit screw",
-             color=TEXT_DIM, fontsize=4.5)
-
-    # ── Dimension lines ──
-    _dim_arrow(ax, -82, 0, -82, 300, "300mm", offset=(-4, 0),
-               fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-82, -70], [0, 0],   color=TEXT_DIM, linewidth=0.5)
-    ax.plot([-82, -70], [300, 300], color=TEXT_DIM, linewidth=0.5)
-
-    _dim_arrow(ax, -55, -22, 55, -22, "110mm", fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-55, -55], [-22, 0], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([55, 55],   [-22, 0], color=TEXT_DIM, linewidth=0.5)
-
-    _dim_arrow(ax, -70, 313, 70, 313, "140mm", fontsize=5.5, color=TEXT_DIM)
-    ax.plot([-70, -70], [300, 313], color=TEXT_DIM, linewidth=0.5)
-    ax.plot([70, 70],   [300, 313], color=TEXT_DIM, linewidth=0.5)
+    _dim_arrow(ax, 0, -10, DOCK_W, -10, "250 mm")
+    _dim_arrow(ax, 260, 0, 260, DOCK_D, "100 mm", offx=9)
 
 
-# ════════════════════════════════════════════════════════════════════════════
-#  VIEW 6 — FEATURE SPEC PANEL
-# ════════════════════════════════════════════════════════════════════════════
 def draw_spec_panel(ax: plt.Axes) -> None:
     ax.axis("off")
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    ax.set_facecolor(PANEL_BG)
-    for spine in ax.spines.values():
-        spine.set_edgecolor(PANEL_BORDER)
-        spine.set_linewidth(1.5)
+    _panel_box(ax, "TECHNICAL SPECIFICATION PANEL")
 
-    def hline(y: float, lw: float = 0.8) -> None:
-        ax.plot([0.03, 0.97], [y, y], color=PANEL_BORDER, linewidth=lw, zorder=2)
+    x = 0.04
+    y = 0.94
+    lh = 0.047
 
-    def section_title(y: float, text: str) -> float:
-        hline(y + 0.005)
-        ax.text(0.05, y - 0.003, text, fontsize=7.5, color=GOLD,
-                fontweight="bold", va="top", fontfamily="monospace")
-        return y - 0.028
+    def write(line: str, color=TEXT_LIGHT, fs=8, weight="normal"):
+        nonlocal y
+        ax.text(x, y, line, transform=ax.transAxes, ha="left", va="top", color=color,
+                fontsize=fs, fontweight=weight, fontfamily="monospace")
+        y -= lh
 
-    def body_line(y: float, text: str, indent: float = 0.07,
-                  color: str = TEXT_LIGHT, fs: float = 6.2) -> float:
-        ax.text(indent, y, text, fontsize=fs, color=color, va="top")
-        return y - 0.020
+    write("PRE-ORDER — $249", color=GOLD, fs=11, weight="bold")
+    y -= 0.01
 
-    def zone_block(y: float, dot_col: str, title: str,
-                   lines: list[str]) -> float:
-        ax.add_patch(Circle((0.055, y - 0.008), 0.007,
-                             facecolor=dot_col, edgecolor="none", zorder=3))
-        ax.text(0.07, y, title, fontsize=6.8, color=TEXT_WHITE,
-                fontweight="bold", va="top")
-        y -= 0.022
-        for line in lines:
-            y = body_line(y, line, indent=0.09, color=TEXT_LIGHT, fs=5.8)
-        return y - 0.004
+    write("PHYSICAL", color=TEXT_WHITE, fs=8.7, weight="bold")
+    write("• Envelope: ~250 × 100 × 100 mm")
+    write("• Full ABS construction (no aluminium)")
+    write("• Matte black painted finish")
+    write("• Rear rail: 25 mm, centred IEC C13 inlet")
+    write("• Front fascia: 20 mm, frosted diffuser channel")
 
-    # ── Header ──
-    ax.text(0.5, 0.975, "EPITOME PENTA™", fontsize=16, color=GOLD,
-            fontweight="bold", ha="center", va="top",
-            fontfamily="monospace", zorder=3)
-    ax.text(0.5, 0.940, "5-Zone Desktop Charging Station",
-            fontsize=7, color=TEXT_LIGHT, ha="center", va="top")
-    hline(0.925, lw=1.2)
+    y -= 0.01
+    write("5 ZONES", color=TEXT_WHITE, fs=8.7, weight="bold")
+    write(f"• Zone 1 Phone — 20W Qi", color=Z1_BLUE)
+    write(f"• Zone 2 Buds/Phone — 15W Qi", color=Z2_PURPLE)
+    write(f"• Zone 3 Watch — 5W (Apple puck + Qi coil)", color=Z3_GREEN)
+    write(f"• Zone 4 Laptop slot — 100W USB-C PD", color=Z4_ORANGE)
+    write(f"• Zone 5 Tablet slot — 20W USB-C PD", color=Z5_BLUE)
 
-    y = 0.910
+    y -= 0.01
+    write("ELECTRONICS", color=TEXT_WHITE, fs=8.7, weight="bold")
+    write("• MCU: ESP32-C3 SuperMini (WiFi + BLE 5.0)")
+    write("• Power monitor: INA3221 ×2")
+    write("• PSU: Mean Well LRS-150-24, 156W")
+    write("• Output rail trimmed to 20V")
+    write("• LED: WS2811 strip, 12–15 LEDs, 250mm")
+    write("• Total load 155W, firmware soft cap 150W")
+    write("• Night mode: LEDs off 23:00–07:00")
 
-    # ── Charging Zones ──
-    y = section_title(y, "CHARGING ZONES")
-    y = zone_block(y, Z1_BLUE, "ZONE 1 — PHONE", [
-        "Protocol: Qi2 / MagSafe-compatible",
-        "Power:    15W max",
-        "Coil:     Ø54mm, embedded",
-        "Magnets:  N52 ring array",
-        "Dish:     80×55mm, 2.5mm recess",
-    ])
-    y = zone_block(y, Z2_PURPLE, "ZONE 2 — EARBUDS", [
-        "Protocol: Qi 5W",
-        "Power:    5W max",
-        "Coil:     Ø54mm, embedded",
-        "Dish:     65×55mm, 2.5mm recess",
-    ])
-    y = zone_block(y, Z3_GREEN, "ZONE 3 — APPLE WATCH", [
-        "Protocol: MagSafe puck",
-        "Power:    5W",
-        "Cradle:   30° tilt, Ø50 pod",
-        "Compat:   Series 1–9, SE, Ultra",
-    ])
-    y = zone_block(y, Z4_ORANGE, "ZONE 4 — LAPTOP / USB-C", [
-        "Protocol: USB-C PD",
-        "Power:    100W max",
-        "Groove:   22×12mm silicone-lined",
-        "Compat:   Any USB-C laptop (2018+)",
-    ])
-    y = zone_block(y, Z5_BLUE, "ZONE 5 — iPAD / PHONE (USB-C)", [
-        "Protocol: USB-C PD 2.0",
-        "Power:    20W max",
-        "Groove:   18×12mm silicone-lined",
-        "Compat:   iPad, Android, any USB-C device",
-    ])
+    y -= 0.01
+    write("MATERIAL / DESIGN NOTES", color=TEXT_WHITE, fs=8.7, weight="bold")
+    write("• On-edge laptop + tablet slot loading")
+    write("• Captive USB-C cable hangs from slot top")
+    write("• Silicone lining on slot floor + side walls")
+    write("• Centre 3-step ABS staircase charging platform")
 
-    y -= 0.005
-    y = section_title(y, "ELECTRONICS")
-    for line in [
-        "MCU:     ESP32-C3 Mini  (WiFi + BLE)",
-        "Monitors: INA3221 (Zones 1–3) + 2× INA219 (Zones 4–5)",
-        "Ambient: BH1750 lux sensor",
-        "LED:     WS2812B × 20  (4 per zone)",
-        "PSU:     Internal 180W AC/DC",
-        "Inlet:   IEC C13  (no external brick)",
-        "Outputs: 2×Qi, Watch puck, 2×USB-C PD",
-        "Surge:   Built-in protection",
-    ]:
-        y = body_line(y, line, fs=5.8)
-
-    y -= 0.005
-    y = section_title(y, "PHYSICAL DIMENSIONS")
-    physical_specs = [
-        ("Length",         "300mm"),
-        ("Width (front)",  "110mm"),
-        ("Width (rear)",   "140mm"),
-        ("Height (front)", " 12mm"),
-        ("Height (rear)",  " 22mm"),
-        ("Corner radius",  "R20mm"),
-        ("Top plate",      "1.5mm brushed aluminium"),
-        ("Body",           "Soft-touch matte ABS"),
-        ("Finish",         "Gunmetal Black / Silver White"),
-    ]
-    for k, v in physical_specs:
-        ax.text(0.07, y, k, fontsize=5.8, color=TEXT_DIM, va="top")
-        ax.text(0.48, y, v, fontsize=5.8, color=TEXT_LIGHT, va="top",
-                fontweight="bold")
-        y -= 0.018
-
-    y -= 0.005
-    y = section_title(y, "LED STATUS SYSTEM")
-    led_states = [
-        ("#cc3333", "Red   — Charging active"),
-        ("#33cc33", "Green — Fully charged"),
-        ("#555566", "Off   — No device detected"),
-    ]
-    for lc, lt in led_states:
-        ax.add_patch(Circle((0.055, y - 0.008), 0.006,
-                             facecolor=lc, edgecolor="none", zorder=3))
-        y = body_line(y, lt, indent=0.07, fs=5.8)
-    y = body_line(y, "5 independent zones · WS2812B addressable strip", fs=5.8)
-    y = body_line(y, "Frosted front-lip diffuser", fs=5.8)
-
-    y -= 0.005
-    y = section_title(y, "NIGHT MODE")
-    for line in [
-        "LEDs off 23:00–07:00 (configurable in app)",
-        "Alerts silenced overnight (configurable)",
-        "Active charging always visible regardless",
-    ]:
-        y = body_line(y, line, fs=5.8)
-
-    y -= 0.005
-    y = section_title(y, "ASSEMBLY")
-    for line in [
-        "Snap-fit ABS base + 2× M3 screws",
-        "Removable top plate (service access)",
-        "Rubber feet: 4× Ø15×3mm",
-    ]:
-        y = body_line(y, line, fs=5.8)
-
-    y -= 0.005
-    y = section_title(y, "IN-BOX CONTENTS")
-    for line in [
-        "Epitome Penta unit",
-        "1.5m braided IEC C13 power cable",
-        "Warranty registration card",
-        "Quick-start guide",
-    ]:
-        y = body_line(y, line, fs=5.8)
-
-    # ── Pricing & footer ──
-    hline(max(y - 0.020, 0.12))
-    y = max(y - 0.025, 0.115)
-    ax.text(0.5, y, "$189  USD", fontsize=13, color=GOLD,
-            fontweight="bold", ha="center", va="top")
-    y -= 0.030
-    ax.text(0.5, y, "Black or White Variant · 5-zone · plug-and-play",
-            fontsize=6.5, color=TEXT_LIGHT, ha="center", va="top")
-    y -= 0.022
-    ax.text(0.5, y, "GJATHASEnterprises © 2025",
-            fontsize=6, color=TEXT_DIM, ha="center", va="top")
-    y -= 0.018
-    ax.text(0.5, y, "CONFIDENTIAL — INVESTOR PREVIEW",
-            fontsize=6, color=RED_CONF, ha="center", va="top",
-            fontweight="bold")
+    ax.text(0.04, 0.03, "© 2026 GJATHASEnterprises · Epitome Penta", transform=ax.transAxes,
+            color=TEXT_DIM, fontsize=7, fontfamily="monospace")
 
 
-# ════════════════════════════════════════════════════════════════════════════
-#  HEADER
-# ════════════════════════════════════════════════════════════════════════════
 def draw_header(fig: plt.Figure) -> None:
-    # Header strip using figure-level text/artists
-    # Background rect
-    hdr = fig.add_axes([0, 0.945, 1, 0.055])
-    hdr.set_facecolor("#0a0a15")
-    hdr.axis("off")
-    for spine in hdr.spines.values():
-        spine.set_visible(False)
-
-    # Q logo (simple matplotlib patch)
-    q_ax = fig.add_axes([0.008, 0.950, 0.028, 0.044])
-    q_ax.set_xlim(0, 1)
-    q_ax.set_ylim(0, 1)
-    q_ax.axis("off")
-    q_ax.set_facecolor("#0a0a15")
-    # Draw Q shape using a ring + small tail
-    q_ax.add_patch(Wedge((0.5, 0.52), 0.38, 0, 360,
-                          width=0.13, facecolor=GOLD, edgecolor="none"))
-    q_ax.plot([0.62, 0.82], [0.20, 0.10], color=GOLD, linewidth=2.5,
-              solid_capstyle="round")
-
-    # Title
-    hdr.text(0.04, 0.5, "EPITOME PENTA™", fontsize=28, color=GOLD,
-             fontweight="bold", va="center", fontfamily="monospace",
-             transform=hdr.transAxes)
-
-    # Subtitle
-    hdr.text(0.04, 0.18,
-             "5-Zone Desktop Charging Station  ·  "
-             "Simultaneous Phone + Buds + Watch + Laptop + iPad",
-             fontsize=9, color=TEXT_LIGHT, va="center",
-             transform=hdr.transAxes)
-
-    # Confidential tag (right)
-    hdr.text(0.97, 0.5, "CONFIDENTIAL — INVESTOR PREVIEW",
-             fontsize=10, color=RED_CONF, fontweight="bold",
-             va="center", ha="right", transform=hdr.transAxes)
-
-    # Thin gold rule at bottom of header
-    fig.add_artist(plt.Line2D([0, 1], [0.944, 0.944],
-                               color=GOLD, linewidth=0.8,
-                               transform=fig.transFigure))
+    fig.text(0.03, 0.975, "EPITOME PENTA", color=TEXT_WHITE, fontsize=25, fontweight="bold", va="top")
+    fig.text(0.03, 0.952, "5-ZONE COMPACT CHARGING DOCK · CURRENT DESIGN", color=GOLD, fontsize=11, va="top")
+    fig.text(0.97, 0.973, "PRE-ORDER — $249", color=GOLD, fontsize=12, ha="right", va="top", fontweight="bold")
+    fig.text(0.97, 0.952, "FULL ABS · MATTE BLACK · 2026", color=TEXT_DIM, fontsize=9, ha="right", va="top")
 
 
-# ════════════════════════════════════════════════════════════════════════════
-#  MAIN FIGURE ASSEMBLY
-# ════════════════════════════════════════════════════════════════════════════
 def build_figure() -> None:
     fig = plt.figure(figsize=(24, 18), dpi=300, facecolor=PAGE_BG)
-
-    # 3-row × 2-column grid (below header at ~5.5% height)
-    # Spec panel spans all 3 rows in column 2
     gs = fig.add_gridspec(
-        3, 2,
-        left=0.010, right=0.995,
-        top=0.942, bottom=0.008,
-        hspace=0.035, wspace=0.025,
-        width_ratios=[1.15, 0.85],
-        height_ratios=[1, 0.45, 1],
+        3,
+        2,
+        left=0.03,
+        right=0.97,
+        top=0.94,
+        bottom=0.04,
+        width_ratios=[1.08, 0.92],
+        height_ratios=[1, 1, 1],
+        hspace=0.14,
+        wspace=0.08,
     )
 
-    ax_top   = fig.add_subplot(gs[0, 0])   # Top-down view
-    ax_front = fig.add_subplot(gs[1, 0])   # Front elevation
-    ax_persp = fig.add_subplot(gs[2, 0])   # Perspective
-    ax_side  = fig.add_subplot(gs[0, 1])   # Side cross-section
-    ax_bot   = fig.add_subplot(gs[1, 1])   # Bottom view (small)
-    ax_spec  = fig.add_subplot(gs[2, 1])   # Spec panel
+    ax_top = fig.add_subplot(gs[0, 0])
+    ax_front = fig.add_subplot(gs[1, 0])
+    ax_persp = fig.add_subplot(gs[2, 0])
+    ax_side = fig.add_subplot(gs[0, 1])
+    ax_bottom = fig.add_subplot(gs[1, 1])
+    ax_spec = fig.add_subplot(gs[2, 1])
 
-    # Style all panels
-    for ax in (ax_top, ax_front, ax_persp, ax_side, ax_bot, ax_spec):
-        ax.set_facecolor(PANEL_BG)
-        for spine in ax.spines.values():
-            spine.set_edgecolor(PANEL_BORDER)
-            spine.set_linewidth(1.2)
-
-    # Draw header
-    draw_header(fig)
-
-    # Draw each view
     draw_top_view(ax_top)
     draw_front_elevation(ax_front)
     draw_perspective_view(ax_persp)
     draw_side_elevation(ax_side)
-    draw_bottom_view(ax_bot)
+    draw_bottom_view(ax_bottom)
     draw_spec_panel(ax_spec)
+    draw_header(fig)
 
-    # Save
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT_PATH, dpi=300, facecolor=PAGE_BG)
     plt.close(fig)
@@ -1122,4 +393,4 @@ def build_figure() -> None:
 
 if __name__ == "__main__":
     build_figure()
-    print(f"Saved: {OUTPUT_PATH}")
+    print(f"✓ Product sheet generated: {OUTPUT_PATH.relative_to(ROOT)}")
