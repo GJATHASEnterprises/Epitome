@@ -9,7 +9,7 @@ Front fascia strip at full width (~250mm) carries the LED diffuser along the fro
 +------------------+-------------------------------+------------------+
 |  Z4 LAPTOP SLOT  |      3-STEP CENTRE STACK      |  Z5 TABLET SLOT  |
 | 400mm long       | Step 3 (100×80): WATCH 5W     | 290mm long       |
-| 90mm deep        | Step 2 (140×100): BUDS 15W    | 70mm deep        |
+| 90mm deep        | Step 2 (140×100): BUDS 20W    | 70mm deep        |
 | 35mm wide        | Step 1 (180×110): PHONE 20W   | 20mm wide        |
 | 95mm wall height | raised over PSU cavity        | 75mm wall height |
 | Captive USB-C    | coils embedded in step bodies | Captive USB-C    |
@@ -54,7 +54,7 @@ Z
 | Zone | Location | Device | Power | Notes |
 |---|---|---|---|---|
 | Zone 1 | Centre Step 1 (base) | Phone | Qi 20W | coil embedded in Step 1 body |
-| Zone 2 | Centre Step 2 (middle) | Buds or second phone | Qi 15W | coil embedded in Step 2 body |
+| Zone 2 | Centre Step 2 (middle) | Buds or second phone | Qi 20W | coil embedded in Step 2 body |
 | Zone 3 | Centre Step 3 rear (top) | Watch (Apple puck + Qi) | 5W shared | puck + Qi coil embedded in Step 3 body |
 | Zone 4 | Left slot | Laptop | USB-C PD 100W via captive 220mm cable | 35mm wide, 90mm deep, cable from top |
 | Zone 5 | Right slot | Tablet/Phone | USB-C PD 45W via captive 200mm cable | 20mm wide, 70mm deep, cable from top |

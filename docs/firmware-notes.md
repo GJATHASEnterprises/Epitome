@@ -12,7 +12,7 @@
 ## Power Budget Thresholds (Updated)
 
 - Zone 1 max: **20W**
-- Zone 2 max: **15W**
+- Zone 2 max: **20W**
 - Zone 3 max: **5W total shared budget**
 - Zone 4 max: **100W**
 - Zone 5 max: **45W**

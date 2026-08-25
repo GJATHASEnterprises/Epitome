@@ -14,7 +14,7 @@
        +----------------+----------------+----------------+----------------+----------------+
        |                |                |                |                |
    [Qi TX 1]        [Qi TX 2]      [Watch Branch]   [PD 100W]        [PD 20W]
-   Zone 1 20W       Zone 2 15W     Zone 3 5W shared  Zone 4          Zone 5
+   Zone 1 20W       Zone 2 20W     Zone 3 5W shared  Zone 4          Zone 5
                                      (Puck + Qi)      captive 220mm    captive 200mm
 ```
 
@@ -59,7 +59,7 @@
 ## INA3221 #1 — 3-Channel Power Monitor (Zones 1–3)
 
 - CH1 Zone 1 (20W)
-- CH2 Zone 2 (15W)
+- CH2 Zone 2 (20W)
 - CH3 Zone 3 (5W shared puck/Qi)
 
 ---
@@ -170,8 +170,8 @@ This section defines practical wiring execution from wall inlet to every electri
 ### Zone 1 (Qi 20W)
 `20V -> buck -> Qi TX 20W -> polyfuse -> NTC`
 
-### Zone 2 (Qi 15W)
-`20V -> buck -> Qi TX 15W -> polyfuse -> NTC`
+### Zone 2 (Qi 20W)
+`20V -> buck -> Qi TX 20W -> polyfuse -> NTC`
 
 ### Zone 3 (Watch 5W shared)
 `20V -> 5V buck -> (Apple puck OR Qi watch coil) -> polyfuse -> NTC`
@@ -180,7 +180,7 @@ This section defines practical wiring execution from wall inlet to every electri
 `20V -> PD 100W board -> INA3221 #2 CH1 -> polyfuse -> TVS -> captive USB-C cable (220mm)`
 
 ### Zone 5 (USB-C PD 45W)
-`20V -> PD 20W board -> INA3221 #2 CH2 -> polyfuse -> TVS -> captive USB-C cable (200mm)`
+`20V -> PD 45W board -> INA3221 #2 CH2 -> polyfuse -> TVS -> captive USB-C cable (200mm, 65W rated)`
 
 ## 5) I2C Bus Wiring
 
@@ -247,11 +247,11 @@ Star ground from PSU GND, with separate high-current returns merged at star poin
 
 ```text
 AC -> C13(RA) -> 201W PSU (Mean Well LRS-200-24, under centre platform cavity) -> 20V Bus
-  -> Z1 Qi20W
-  -> Z2 Qi15W
+  -> Z1 Qi 20W
+  -> Z2 Qi 20W
   -> Z3 Watch 5W (Puck + Qi, one active)
   -> Z4 PD100W -> Captive USB-C 220mm
-  -> Z5 PD20W -> Captive USB-C 200mm
+  -> Z5 PD45W -> Captive USB-C 200mm (65W rated)
 ```
 
 ## 16) Practical Integration Notes

@@ -93,7 +93,7 @@ Epitome Penta iOS App (SwiftUI)
 | GATT Characteristic | Direction | Data |
 |---------------------|-----------|------|
 | Zone 1 Power | Read/Notify | Voltage/current/watts (**20W max**) |
-| Zone 2 Power | Read/Notify | Voltage/current/watts (**15W max**) |
+| Zone 2 Power | Read/Notify | Voltage/current/watts (**20W max**) |
 | Zone 3 Power | Read/Notify | Voltage/current/watts (**5W max**) |
 | Zone 3 Mode | Read/Notify | `puck` or `qi_watch` |
 | Zone 4 Power | Read/Notify | Voltage/current/watts |

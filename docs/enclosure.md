@@ -71,7 +71,7 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 ### Zone 2 (Step 2)
 
 - Silicone dish: **120×80mm**
-- Qi TX: **15W**, embedded inside Step 2 body and centred under the dish
+- Qi TX: **20W**, embedded inside Step 2 body and centred under the dish
 - Slight phone overhang remains acceptable
 
 ### Zone 3 (Step 3)
@@ -99,11 +99,11 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 
 ## PSU Cavity
 
-PSU (**Mean Well LRS-200-24, 159×97×30mm**) sits flat on the base plate under the centre platform. The centre platform perimeter wall creates an enclosed PSU cavity, and the **20mm riser cavity above the PSU** carries all wiring to the coils and logic board.
+PSU (**Mean Well LRS-200-24, 199×98×30mm**) sits flat on the base plate under the centre platform. The centre platform perimeter wall creates an enclosed PSU cavity, and the **20mm riser cavity above the PSU** carries all wiring to the coils and logic board.
 
 Fit check:
-- PSU width: **159mm < 180mm** centre platform base footprint ✅
-- PSU depth: **97mm < 100mm** base footprint ✅
+- PSU width: **199mm** — requires full-width centred cavity support under the raised platform
+- PSU depth: **98mm < 100mm** base footprint ✅
 - PSU height: **30mm**, leaving **20mm** wiring cavity before Step 1 base ✅
 
 ---

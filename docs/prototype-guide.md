@@ -71,14 +71,14 @@ Standard mock dimensions:
 
 Placement checks:
 - Step 1 full-width 160×100 phone surface (20W)
-- Step 2 buds pad centred (120×80, 15W)
+- Step 2 buds pad centred (120×80, 20W)
 - Watch cradle at rear of Step 3
 - Cable hang point at top of each slot — verify cable reach to device port when fully inserted
 
 ### Week 3 — Electronics Bench Test
 
 - [ ] Verify Zone 1 at 20W
-- [ ] Verify Zone 2 at 15W
+- [ ] Verify Zone 2 at 20W
 - [ ] Verify Zone 3 puck mode charges Apple Watch
 - [ ] Verify Zone 3 Qi mode charges supported non-Apple watch
 - [ ] Verify only one Zone 3 path is active at a time
@@ -101,7 +101,7 @@ Placement checks:
 
 - [ ] PSU wired and outputting ~20V
 - [ ] Zone 1 Qi charging at 20W
-- [ ] Zone 2 Qi charging at 15W
+- [ ] Zone 2 Qi charging at 20W
 - [ ] Zone 3 puck + Qi watch modes validated
 - [ ] Zone 4 captive cable charging laptop
 - [ ] Zone 5 captive cable charging tablet/phone

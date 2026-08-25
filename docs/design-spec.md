@@ -92,9 +92,9 @@ Epitome
 
 | Dimension | Value |
 |---|---|
-| Pad dish size | **90 × 65mm**, landscape |
+| Pad dish size | **120 × 80mm**, landscape |
 | Inner alignment ridge | **1mm ridge around 68 × 48mm inner zone** |
-| Qi output | **15W** |
+| Qi output | **20W** |
 | Positioning | Front-middle of Step 2; slight phone overhang acceptable |
 
 ### Zone 3 (Step 3 top)
@@ -120,7 +120,7 @@ Epitome
 | Centre Step 3 | 100 × 80 × 15mm |
 | Centre column height | 95mm from base floor |
 | Zone 1 silicone surface | 160 × 100mm |
-| Zone 2 dish | 90 × 65mm |
+| Zone 2 dish | 120 × 80mm |
 
 > XL (Batch 2+): ~320mm wide × ~100mm deep × ~100mm tall, with the same 400mm slot length and platform geometry as Standard.
 
@@ -145,7 +145,7 @@ Epitome
 +------------------+------------------------------+------------------+
 | Laptop Slot Z4   |   3-Step Centre Platform    | iPad Slot Z5     |
 | 400mm long       | Step 3: Watch (rear) 5W     | 290mm long       |
-| 90mm deep        | Step 2: Buds 120×80, 15W     | 70mm deep        |
+| 90mm deep        | Step 2: Buds 120×80, 20W     | 70mm deep        |
 | 35mm wide        | Step 1: Phone 160×100, 20W  | 20mm wide        |
 | 95mm tall wall   | Raised over PSU cavity       | 75mm tall wall   |
 | cable from top   | coils embedded in step body  | cable from top   |
@@ -161,7 +161,7 @@ Front: full-width fascia strip with LED diffuser channel
 ### Zone 1 — Phone (Qi 20W)
 - 20W Qi + MagSafe-style alignment magnets
 
-### Zone 2 — Buds / Phone (Qi 15W)
+### Zone 2 — Buds / Phone (Qi 20W)
 - 120×80mm pad with 68×48mm inner ridge marker
 
 ### Zone 3 — Watch (Universal 5W)

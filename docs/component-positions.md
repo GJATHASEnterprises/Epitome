@@ -50,7 +50,7 @@ This file is the single source of truth for all physical placement coordinates.
 
 | Component | X (mm) | Y (mm) | Z (mm) | Notes |
 |---|---:|---:|---:|---|
-| 201W PSU module (Mean Well LRS-200-24) | 0.00 | 50.00 | 3.00 | Under centre platform, 159×97×30mm, centred |
+| 201W PSU module (Mean Well LRS-200-24) | 0.00 | 50.00 | 3.00 | Under centre platform, 199×98×30mm, centred |
 | PSU cavity perimeter wall | -45.00 | 50.00 | 26.50 | Supports raised centre platform body over PSU |
 | ESP32-C3 SuperMini | -22.00 | 42.00 | 40.00 | Mounted in riser cavity, keep antenna clear |
 | INA3221 #1 | -8.00 | 42.00 | 42.00 | Mounted in riser cavity for Zones 1–3 monitor |

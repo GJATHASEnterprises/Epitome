@@ -3,9 +3,10 @@
 ## Main Electronics
 
 - MCU: ESP32-C3 Mini
+- Power safety controller: ATtiny85 (enforces global 185W soft cap)
 - Monitoring: **INA3221 #1 (Zones 1–3) + INA3221 #2 (Zones 4–5 + spare/system)**
 - Ambient sensor: **Removed (BH1750 dropped for cost reduction)**
-- Power: internal **201W** AC/DC PSU (**Mean Well LRS-200-24, 201W, 24V output trim-adjusted to ~20V. Physical size: 159×97×30mm. Located under centre platform.**) + **right-angle IEC C13 inlet**
+- Power: internal **201W** AC/DC PSU (**Mean Well LRS-200-24, 201W, 24V output trim-adjusted to ~20V. Physical size: 199×98×30mm. Located under centre platform.**) + **right-angle IEC C13 inlet**
 - Outputs: 20W Qi2 (Zone 1), 20W Qi (Zone 2), Zone 3 dual charger (Apple puck + Qi coil sharing 5W), 2×USB-C PD branches (100W + 45W)
 - Lighting: WS2811 addressable strip
 
@@ -120,7 +121,7 @@ Architecture update highlights:
 | Parameter | Specification |
 |---|---|
 | Model baseline | Mean Well LRS-200-24 or equivalent (trim-adjusted to ~20V output target) |
-| Physical size | 159×97×30mm |
+| Physical size | 199×98×30mm |
 | Input | 100–240VAC |
 | Inlet | **Rear right-angle IEC C13** |
 | Nominal available output | **201W (Mean Well LRS-200-24)** |

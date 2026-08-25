@@ -69,7 +69,7 @@ Dot-pattern silicone on all charging surfaces.
 Rear rail, next to IEC C13. Cuts all zones. Tactile click. Matte black.
 
 ### LED status strip
-Frosted acrylic diffuser, front fascia. ATtiny85-controlled.
+Frosted acrylic diffuser, front fascia. ESP32-C3-controlled.
 
 Per-zone colours:
 - Zone 1 Phone: blue

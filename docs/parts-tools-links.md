@@ -31,9 +31,9 @@ Keep existing core tool set: soldering iron, solder, flux, multimeter, wire tool
 
 ### Amazon US (domestic, no tariff, Prime shipping)
 - Qi 20W TX module (~$14)
-- Qi 15W TX module (~$11)
+- Qi 20W TX module (~$11)
 - Captive USB-C cable 220mm 100W braided (~$4)
-- Captive USB-C cable 200mm 20W braided (~$3)
+- Captive USB-C cable 200mm 65W braided (~$3)
 - Mean Well LRS-200-24 PSU alternative (~$22–25 if LCSC order delayed)
 - Rigid kraft boxes ~300×150×120mm (~$3 each)
 - Rubber feet 100-pack (~$7)

@@ -85,6 +85,6 @@ Slot fit update: **20mm slot width**, device on thin edge (like a book on a shel
 - Zone 4 max: 100W
 - Zone 5 max: 45W
 - Zone 1: 20W
-- Zone 2: 15W
+- Zone 2: 20W
 - Zone 3: 5W shared
 - System total: **190W** (201W PSU Mean Well LRS-200-24, 11W headroom, ATtiny85 soft cap 185W)

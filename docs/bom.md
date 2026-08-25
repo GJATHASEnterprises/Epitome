@@ -142,3 +142,28 @@ TABLET   45W  USB-C
 
 **Break-even: 7 units sold.**
 **Budget note: $1,532.30 is $32.30 above the $1,500 target budget; secure at least one pre-order before purchasing to maintain margin safety.**
+
+---
+
+## Approved Suppliers
+
+| Supplier | Use For |
+|---|---|
+| AliExpress (verified sellers) | ESP32, PD boards, Apple Watch puck, Qi coil, WS2811, IEC inlet |
+| LCSC | Mean Well PSU, INA3221 chips, passives |
+| JLCPCB | Bare INA3221 breakout PCBs |
+| Amazon US (Prime, US warehouse) | Qi modules, cables, wiring, rubber feet, M3 hardware, silicone sheet |
+| Inventables (Chicago) | ABS sheet 3mm, frosted acrylic strip |
+| Pumping Station One (Chicago) | Laser cutting all ABS panels and acrylic diffuser |
+| School makerspace | 3D printing centre platform ×10 |
+| Home Depot / Walmart (Downers Grove) | Acetone, primer, paint, sandpaper |
+| Microcenter (Westmont IL) | Backup ESP32, soldering supplies |
+| Wise.com | International transfers to AliExpress/LCSC |
+
+---
+
+## Tariff Note (August 2026)
+
+- Section 301: **25% active** on Chinese electronics
+- Section 122: **EXPIRED July 24 2026** — no longer applied
+- All AliExpress/LCSC costs above already include **25% Section 301**
