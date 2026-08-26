@@ -61,10 +61,14 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 | Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle, Apple puck + Qi watch coil |
 
 - Centre platform body raised on perimeter wall over PSU cavity
-- Riser cavity: **20mm clearance** between PSU top and Step 1 base
+- Riser cavity: **17mm clearance** between PSU top and Step 1 base (Z=33 to Z=50)
 - All coils are embedded in the step bodies themselves
 - Wiring from all coils and watch modules routes down through the riser cavity to the PSU / PCB area
 - Total centre column height from base floor: **95mm**
+
+> Steps rise **front-to-back** (Y axis). Step 1 and Step 2 share the same front face (Y=0). Step 3 is set back 20mm (front face at Y=20). From the user's perspective, the three charging surfaces form a rising staircase of shelves, each face pointing directly toward the user.
+
+> All components in the 17mm riser cavity must be mounted flat (horizontal) against the cavity floor. Buck converters, ATtiny85, and relay must not stand upright to maintain clearance under Step 1 base.
 
 ### Zone 1 (Step 1)
 
@@ -94,7 +98,7 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 | Z=0 | Base plate floor |
 | Z=3 | Base plate top / PSU resting surface |
 | Z=33 | PSU top (30mm height) |
-| Z=50 | Step 1 base (20mm riser cavity above PSU) |
+| Z=50 | Step 1 base (17mm riser cavity above PSU) |
 | Z=65 | Step 2 base / Step 1 top |
 | Z=80 | Step 3 base / Step 2 top |
 | Z=95 | Step 3 top (watch cradle surface) |
@@ -104,12 +108,14 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 
 ## PSU Cavity
 
-PSU (**Mean Well LRS-200-24, 199×98×30mm**) sits flat on the base plate under the centre platform. The centre platform perimeter wall creates an enclosed PSU cavity, and the **20mm riser cavity above the PSU** carries all wiring to the coils and logic board.
+PSU (**Mean Well LRS-200-24, 199×98×30mm**) sits flat on the base plate under the centre platform. The centre platform perimeter wall creates an enclosed PSU cavity, and the **17mm riser cavity above the PSU** carries all wiring to the coils and logic board.
+
+> PSU is offset 6mm toward the laptop slot side (X=4 to X=203) to centre within the available internal width. This uses ~6mm of the laptop slot cavity but leaves 29mm internal laptop slot clearance — sufficient for all laptops up to 17" class (~28mm thick). The tablet slot is completely unaffected.
 
 Fit check:
 - PSU width: **199mm** — requires full-width centred cavity support under the raised platform
 - PSU depth: **98mm < 100mm** base footprint ✅
-- PSU height: **30mm**, leaving **20mm** wiring cavity before Step 1 base ✅
+- PSU height: **30mm**, leaving **17mm** wiring cavity before Step 1 base ✅
 
 ---
 
@@ -119,7 +125,7 @@ Fit check:
 - Material: **3mm ABS sheet**, laser cut at Pumping Station One
 - Size: **~250mm wide × ~100mm tall**
 - Bonded to the rear edges of the laptop slot wall set, centre platform rear, and tablet slot wall set with Weld-On #3 ABS cement
-- Carries the **28×20mm right-angle IEC C13 inlet cutout**, centred horizontally
+- Carries the **28×20mm right-angle IEC C13 inlet cutout**, in a rear-left position (X≈45mm from left edge)
 - Together with the base plate, this rear spine forms the primary anti-racking frame of the dock
 
 ---
@@ -137,7 +143,7 @@ Fit check:
 
 ## Rear Wall Features
 
-- **IEC C13 right-angle inlet:** 28×20mm cutout in the rear spine plate, centred horizontally
+- **IEC C13 right-angle inlet:** 28×20mm cutout in the rear spine plate, rear-left position (X≈45mm from left edge)
 - Rear spine doubles as the main rear wiring exit plane
 - Rear panel ties the laptop slot, centre platform, and tablet slot into one rigid body
 

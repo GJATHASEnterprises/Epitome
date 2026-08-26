@@ -75,7 +75,7 @@ Epitome Charge (epitomecharge.com)
 
 - Step dimensions are unchanged.
 - Centre platform body is raised over the PSU on a perimeter wall.
-- **20mm riser cavity** sits between PSU top and Step 1 base for coil/logic wiring.
+- **17mm riser cavity** sits between PSU top and Step 1 base for coil/logic wiring.
 - Total centre column height from base floor: **95mm**.
 
 ### Zone 1 (Step 1 base)
@@ -141,18 +141,19 @@ Epitome Charge (epitomecharge.com)
 ## Zone Layout Diagram
 
 ```text
-[TOP VIEW — Penta Standard ~250mm wide × ~100mm deep × ~100mm tall]
+[TOP VIEW — Penta Standard ~250mm wide × ~100mm deep]
 
-+------------------+------------------------------+------------------+
-| Laptop Slot Z4   |   3-Step Centre Platform    | iPad Slot Z5     |
-| 400mm long       | Step 3: Watch (rear) 5W     | 290mm long       |
-| 90mm deep        | Step 2: Buds 120×80, 20W     | 70mm deep        |
-| 35mm wide        | Step 1: Phone 160×100, 20W  | 20mm wide        |
-| 95mm tall wall   | Raised over PSU cavity       | 75mm tall wall   |
-| cable from top   | coils embedded in step body  | cable from top   |
-+------------------+------------------------------+------------------+
-Rear: full-width rear spine with centred IEC C13 cutout
-Front: full-width fascia strip with LED diffuser channel
++----------+--------------------------------------------+----------+
+| Z4       |         3-STEP CENTRE PLATFORM             | Z5       |
+| LAPTOP   | Step 1 (base):  180mm wide, full depth      | TABLET   |
+| SLOT     | Step 2 (mid):   140mm wide, full depth      | SLOT     |
+| 35mm     | Step 3 (top):   100mm wide, set back 20mm   | 20mm     |
+| wide     | Steps rise FRONT→BACK facing the user       | wide     |
+| 95mm     |                                             | 75mm     |
+| tall     | Riser cavity (17mm) over PSU below          | tall     |
++----------+--------------------------------------------+----------+
+REAR: full-width spine plate, IEC C13 inlet rear-left (~X=45mm)
+FRONT: full-width fascia strip with 250×15mm LED diffuser
 ```
 
 ---
@@ -195,7 +196,7 @@ Front: full-width fascia strip with LED diffuser channel
 See [electronics.md](electronics.md) for full spec.
 
 - **PSU:** Mean Well LRS-200-24 (201W, 24V, trim-adjusted to ~20V output), under centre platform cavity
-- **Inlet:** Rear right-angle IEC C13 in rear spine plate
+- **Inlet:** Rear right-angle IEC C13 in rear spine plate, rear-left (~X=45mm from left edge)
 - **Power budget:** **190W total load, 11W headroom**
 - **ATtiny85 soft cap:** global soft power cap at **185W**
 - **Certification planning required:** FCC, CE, UKCA, RCM before retail in target markets
@@ -209,7 +210,7 @@ See [electronics.md](electronics.md) for full spec.
 - All surfaces: sand → acetone vapour smooth → primer → Rust-Oleum 2X Matte Black → clear coat
 - No vacuum-formed parts. No aluminium. All ABS.
 
-Batch 1 enclosure target: **~$31.39/unit**.
+Batch 1 enclosure target: **~$33.79/unit**.
 
 ---
 

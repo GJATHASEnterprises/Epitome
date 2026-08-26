@@ -78,6 +78,7 @@ PLATFORM_W = 180.0
 PLATFORM_D = 110.0
 RISER_H = 50.0
 STEP_H = 15.0
+# Legacy per-step width delta (180→140→100); steps now rise front-to-back via Y setback.
 STEP_TAPER = 40.0
 
 # PSU cavity
@@ -182,37 +183,23 @@ def build_interior_features() -> trimesh.Trimesh:
     # Right tablet slot box 20×70×75
     parts.append(_u_slot(DOCK_W - TABLET_SLOT_W, DOCK_W, 15.0, 15.0 + tablet_slot_d, TABLET_SLOT_H, WALL_T))
 
-    # Centre riser base (solid for STL reference)
-    step1_x0 = (DOCK_W - PLATFORM_W) / 2.0
-    step1_x1 = step1_x0 + PLATFORM_W
-    # PLATFORM_D is 110 mm by design; we center it against the 100 mm body envelope
-    # so the overhang is symmetric (+/-5 mm) rather than only rearward.
-    step1_y0 = (DOCK_D - PLATFORM_D) / 2.0
-    step1_y1 = step1_y0 + PLATFORM_D
-    parts.append(
-        _box(((step1_x0 + step1_x1) / 2.0, (step1_y0 + step1_y1) / 2.0, RISER_H / 2.0), (PLATFORM_W, PLATFORM_D, RISER_H))
-    )
+    # PSU reference volume (offset toward laptop side): X=4..203, Y=1..99, Z=3..33
+    psu_cx = 103.0
+    psu_cy = 49.0
+    parts.append(_box((psu_cx, psu_cy, BASE_T + PSU_H / 2.0), (PSU_W, PSU_D, PSU_H)))
 
-    # Step 1
-    parts.append(
-        _box(((step1_x0 + step1_x1) / 2.0, (step1_y0 + step1_y1) / 2.0, RISER_H + STEP_H / 2.0), (PLATFORM_W, PLATFORM_D, STEP_H))
-    )
+    # Riser base + 3-step platform, rising front-to-back (Y axis)
+    step1_cx = DOCK_W / 2.0
+    step1_cy = 50.0
+    step1_d = min(100.0, DOCK_D)
+    parts.append(_box((step1_cx, step1_cy, RISER_H / 2.0), (180.0, step1_d, RISER_H)))
+    parts.append(_box((step1_cx, step1_cy, RISER_H + STEP_H / 2.0), (180.0, step1_d, STEP_H)))
 
-    # Step 2
-    step2_w = PLATFORM_W - STEP_TAPER
-    step2_d = 100.0
-    step2_x0 = (DOCK_W - step2_w) / 2.0
-    parts.append(
-        _box((step2_x0 + step2_w / 2.0, step2_d / 2.0, RISER_H + STEP_H + STEP_H / 2.0), (step2_w, step2_d, STEP_H))
-    )
+    step2_cy = 50.0
+    parts.append(_box((step1_cx, step2_cy, RISER_H + STEP_H + STEP_H / 2.0), (140.0, 100.0, STEP_H)))
 
-    # Step 3
-    step3_w = PLATFORM_W - 2.0 * STEP_TAPER
-    step3_d = 80.0
-    step3_x0 = (DOCK_W - step3_w) / 2.0
-    parts.append(
-        _box((step3_x0 + step3_w / 2.0, step3_d / 2.0, RISER_H + 2.0 * STEP_H + STEP_H / 2.0), (step3_w, step3_d, STEP_H))
-    )
+    step3_cy = 60.0  # Y=20..100
+    parts.append(_box((step1_cx, step3_cy, RISER_H + 2.0 * STEP_H + STEP_H / 2.0), (100.0, 80.0, STEP_H)))
 
     return trimesh.util.concatenate(parts)
 
@@ -224,11 +211,11 @@ def build_top_plate() -> trimesh.Trimesh:
     # Watch cradle pod as a raised oval on step 3
     pod = trimesh.creation.icosphere(subdivisions=2, radius=1.0)
     pod.apply_scale([25.0, 17.5, 4.0])
-    pod.apply_translation([DOCK_W / 2.0, 58.0, RISER_H + 3.0 * STEP_H + 4.0])
+    pod.apply_translation([DOCK_W / 2.0, 60.0, RISER_H + 3.0 * STEP_H + 4.0])
     parts.append(pod)
 
     # Silicone pad guides (thin raised references)
-    parts.append(_box((DOCK_W / 2.0, 52.0, RISER_H + STEP_H + 0.4), (160.0, 90.0, 0.8)))
+    parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + STEP_H + 0.4), (160.0, 90.0, 0.8)))
     parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + 2.0 * STEP_H + 0.4), (120.0, 80.0, 0.8)))
 
     # Slot cable grommet collars (top cap references)
@@ -276,14 +263,14 @@ def write_top_plate_dxf_and_svg() -> None:
     c = DOCK_W / 2.0
     step1 = [(c - 90, 0), (c + 90, 0), (c + 90, 100), (c - 90, 100), (c - 90, 0)]
     step2 = [(c - 70, 0), (c + 70, 0), (c + 70, 100), (c - 70, 100), (c - 70, 0)]
-    step3 = [(c - 50, 0), (c + 50, 0), (c + 50, 80), (c - 50, 80), (c - 50, 0)]
+    step3 = [(c - 50, 20), (c + 50, 20), (c + 50, 100), (c - 50, 100), (c - 50, 20)]
     msp.add_lwpolyline(step1, dxfattribs={"layer": "STEPS"})
     msp.add_lwpolyline(step2, dxfattribs={"layer": "STEPS"})
     msp.add_lwpolyline(step3, dxfattribs={"layer": "STEPS"})
 
-    # IEC C13 cutout on rear rail (28×20, centred)
-    iec_x0 = DOCK_W / 2.0 - 14.0
-    iec_x1 = DOCK_W / 2.0 + 14.0
+    # IEC C13 cutout on rear rail (28×20, rear-left)
+    iec_x0 = 31.0
+    iec_x1 = 59.0
     msp.add_lwpolyline([(iec_x0, 80), (iec_x1, 80), (iec_x1, 100), (iec_x0, 100), (iec_x0, 80)], dxfattribs={"layer": "OPENINGS"})
 
     # Cable grommet holes
@@ -302,7 +289,10 @@ def write_top_plate_dxf_and_svg() -> None:
     msp.add_text("100.0 mm overall depth", dxfattribs={"height": 3.8, "layer": "ANNOTATIONS"}).set_placement((DOCK_W + 8, 45))
     msp.add_text("L Slot 35 mm", dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"}).set_placement((4, 2))
     msp.add_text("R Slot 20 mm", dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"}).set_placement((DOCK_W - 38, 2))
-    msp.add_text("Step widths: 180 / 140 / 100 mm", dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"}).set_placement((65, 108))
+    msp.add_text(
+        "Step widths: 180 / 140 / 100 mm (front-to-back staircase, Step 3 set back 20mm)",
+        dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"},
+    ).set_placement((20, 108))
 
     # Title block (updated)
     tx = DOCK_W + 24
@@ -311,7 +301,7 @@ def write_top_plate_dxf_and_svg() -> None:
         "PENTA DOCK TOP VIEW",
         "Material: Full ABS (Matte Black)",
         "Outer: 250 x 100 mm | Corner R10",
-        "IEC C13 cutout: 28 x 20 mm centered (rear rail)",
+        "IEC C13 cutout: 28 x 20 mm rear-left (X=45 mm center)",
         "M3 mounting holes and slot grommets shown",
         "Rev: 2.0 | Date: 2026-08-25",
     ]
@@ -329,8 +319,8 @@ def write_top_plate_dxf_and_svg() -> None:
         f'<rect x="{DOCK_W - TABLET_SLOT_W}" y="15" width="{TABLET_SLOT_W}" height="70" fill="none" stroke="red" stroke-width="0.6"/>',
         f'<rect x="{DOCK_W / 2.0 - 90}" y="0" width="180" height="100" fill="none" stroke="blue" stroke-width="0.5"/>',
         f'<rect x="{DOCK_W / 2.0 - 70}" y="0" width="140" height="100" fill="none" stroke="blue" stroke-width="0.5"/>',
-        f'<rect x="{DOCK_W / 2.0 - 50}" y="0" width="100" height="80" fill="none" stroke="blue" stroke-width="0.5"/>',
-        f'<rect x="{DOCK_W / 2.0 - 14}" y="80" width="28" height="20" fill="none" stroke="purple" stroke-width="0.6"/>',
+        f'<rect x="{DOCK_W / 2.0 - 50}" y="20" width="100" height="80" fill="none" stroke="blue" stroke-width="0.5"/>',
+        '<rect x="31" y="80" width="28" height="20" fill="none" stroke="purple" stroke-width="0.6"/>',
         '</svg>',
     ]
     SVG_TOP.write_text("\n".join(svg), encoding="utf-8")

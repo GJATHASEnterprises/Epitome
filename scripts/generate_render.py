@@ -126,39 +126,24 @@ def main() -> None:
                    ( BW/2,  BD/2, BH), ( BW/2, -BD/2, BH)],
               "#252525", zorder=3)
 
-    # ── Three-step staircase (centre platform) ────────────────────────────────
-    # Step widths and depth
-    SW = 1.2   # step width (each)
-    SD = 2.0   # step depth
-    SX0 = -1.8  # left edge of step 1 (lowest)
-
+    # ── Three-step staircase (centre platform, rising front→back) ────────────
+    FRONT_Y, REAR_Y = -1.0, 1.0
     steps = [
-        (SX0,          SX0 + SW,      S1H, C_GREEN,   C_ORANGE),    # Step 1 – Zone 1 (phone)
-        (SX0 + SW,     SX0 + 2*SW,    S2H, C_PURPLE,  "#202020"),   # Step 2 – Zone 2 (buds)
-        (SX0 + 2*SW,   SX0 + 3*SW,    S3H, C_GREEN,   "#181818"),   # Step 3 – Zone 3 (watch)
+        (-1.8, 1.8, FRONT_Y, REAR_Y, S1H),   # Step 1: 180×100
+        (-1.4, 1.4, FRONT_Y, REAR_Y, S2H),   # Step 2: 140×100
+        (-1.0, 1.0, -0.6,    REAR_Y, S3H),   # Step 3: 100×80, set back 20mm
     ]
 
-    for (x0, x1, sz, top_c, side_c) in steps:
-        y0 = -SD / 2
-        y1 =  SD / 2
-        # Top face of step
-        draw_poly(ax, [(x0, y0, BH+sz), (x1, y0, BH+sz),
-                       (x1, y1, BH+sz), (x0, y1, BH+sz)],
-                  C_STEP, zorder=4)
-        # Front riser
-        draw_poly(ax, [(x0, y0, BH), (x1, y0, BH),
-                       (x1, y0, BH+sz), (x0, y0, BH+sz)],
-                  "#1e1e1e", zorder=4)
-        # Right side panel
-        draw_poly(ax, [(x1, y0, BH), (x1, y1, BH),
-                       (x1, y1, BH+sz), (x1, y0, BH+sz)],
-                  "#1c1c1c", zorder=4)
+    for (x0, x1, y0, y1, sz) in steps:
+        draw_poly(ax, [(x0, y0, BH + sz), (x1, y0, BH + sz), (x1, y1, BH + sz), (x0, y1, BH + sz)], C_STEP, zorder=4)
+        draw_poly(ax, [(x0, y0, BH), (x1, y0, BH), (x1, y0, BH + sz), (x0, y0, BH + sz)], "#1e1e1e", zorder=4)
+        draw_poly(ax, [(x1, y0, BH), (x1, y1, BH), (x1, y1, BH + sz), (x1, y0, BH + sz)], "#1c1c1c", zorder=4)
 
     # ── Zone pad surfaces (silicone recesses) ─────────────────────────────────
     pads = [
-        (SX0 + 0.15,  SX0 + SW - 0.15, -0.7, 0.7, BH + S1H + 0.02),  # Zone 1 phone
-        (SX0 + SW + 0.15, SX0 + 2*SW - 0.15, -0.7, 0.7, BH + S2H + 0.02),  # Zone 2 buds
-        (SX0 + 2*SW + 0.15, SX0 + 3*SW - 0.15, -0.7, 0.7, BH + S3H + 0.02),  # Zone 3 watch
+        (-1.6, 1.6, -0.8, 0.8, BH + S1H + 0.02),   # Zone 1 phone on Step 1
+        (-1.2, 1.2, -0.8, 0.8, BH + S2H + 0.02),   # Zone 2 buds/phone on Step 2
+        (-0.6, 0.6, -0.35, 0.65, BH + S3H + 0.02), # Zone 3 watch on Step 3 setback
     ]
     pad_colors = [C_BLUE, C_PURPLE, C_GREEN]
     for (x0, x1, y0, y1, z), pc in zip(pads, pad_colors):
@@ -199,6 +184,14 @@ def main() -> None:
                    (RX1, RY1, RZ0+0.1), (RX0, RY1, RZ0+0.1)],
               C_SILICONE, zorder=6, ec=C_BLUE, lw=0.6)
 
+    # ── Rear-left IEC inlet indicator (X≈45mm from left edge) ─────────────────
+    iec_x0, iec_x1 = -1.88, -1.32
+    iec_y = BD / 2
+    iec_z0, iec_z1 = 0.55, 1.0
+    draw_poly(ax, [(iec_x0, iec_y, iec_z0), (iec_x1, iec_y, iec_z0),
+                   (iec_x1, iec_y, iec_z1), (iec_x0, iec_y, iec_z1)],
+              C_PURPLE, alpha=0.9, zorder=6, ec=C_PURPLE, lw=0.8)
+
     # ── LED strip on front fascia ──────────────────────────────────────────────
     led_colors = [C_BLUE, C_PURPLE, C_GREEN, C_ORANGE, C_BLUE]
     seg_w = BW / len(led_colors)
@@ -214,9 +207,9 @@ def main() -> None:
 
     # ── Zone labels ───────────────────────────────────────────────────────────
     zone_labels = [
-        (SX0 + SW*0.5,  -SD/2 - 0.3, BH + S1H + 0.05, "PHONE\n20W Qi2",      C_BLUE),
-        (SX0 + SW*1.5,  -SD/2 - 0.3, BH + S2H + 0.05, "BUDS / PHONE\n20W Qi", C_PURPLE),
-        (SX0 + SW*2.5,  -SD/2 - 0.3, BH + S3H + 0.05, "WATCH\n5W",            C_GREEN),
+        (-1.0, -1.35, BH + S1H + 0.05, "PHONE\n20W Qi2", C_BLUE),
+        (0.2, -1.35, BH + S2H + 0.05, "BUDS / PHONE\n20W Qi", C_PURPLE),
+        (1.1, -0.95, BH + S3H + 0.05, "WATCH\n5W", C_GREEN),
     ]
     for (xd, yd, zd, label, color) in zone_labels:
         px, py = iso(xd, yd, zd)
