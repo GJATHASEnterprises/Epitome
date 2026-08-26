@@ -3,20 +3,18 @@
 ## Top View (Penta Standard ~250mm wide × ~100mm deep × ~100mm tall)
 
 ```text
-Rear spine plate at full width (~250mm) closes the back edge.
-Front fascia strip at full width (~250mm) carries the LED diffuser along the front base.
-
-+------------------+-------------------------------+------------------+
-|  Z4 LAPTOP SLOT  |      3-STEP CENTRE STACK      |  Z5 TABLET SLOT  |
-| 400mm long       | Step 3 (100×80): WATCH 5W     | 290mm long       |
-| 90mm deep        | Step 2 (140×100): BUDS 20W    | 70mm deep        |
-| 35mm wide        | Step 1 (180×110): PHONE 20W   | 20mm wide        |
-| 95mm wall height | raised over PSU cavity        | 75mm wall height |
-| Captive USB-C    | coils embedded in step bodies | Captive USB-C    |
-| 220mm, 100W      | 20mm riser cavity below       | 200mm, 45W       |
-| cable from top   |                               | cable from top   |
-+------------------+-------------------------------+------------------+
-        FRONT (fascia + diffuser)            REAR (spine + centred C13)
++----------+--------------------------------------------------+----------+
+| Z4       |           3-STEP CENTRE PLATFORM                | Z5       |
+| LAPTOP   | Step 1 (180mm wide) — Phone 20W Qi2             | TABLET   |
+| SLOT     | Step 2 (140mm wide) — Buds/Phone 20W Qi         | SLOT     |
+| 35mm     | Step 3 (100mm wide, rear 20mm setback) — Watch 5W | 20mm   |
+| 400mm L  | All step faces point TOWARD USER (front-facing) | 290mm L  |
+| 90mm D   | Steps rise front→back between the two slots    | 70mm D   |
+| 35mm W   | Riser cavity 17mm over PSU beneath             | 20mm W   |
+| 95mm H   |                                               | 75mm H   |
++----------+--------------------------------------------------+----------+
+REAR SPINE: full width, IEC C13 rear-left ~X=45mm
+FRONT FASCIA: full width, LED diffuser strip 250×15mm
 ```
 
 ## Front View
@@ -24,13 +22,16 @@ Front fascia strip at full width (~250mm) carries the LED diffuser along the fro
 ```text
 Standard width ~250mm
 
-+-----------+   +---------------------------------+   +-----------+
-|  LAPTOP   |   | Step 3: 100mm (Watch)           |   |  TABLET   |
-|   SLOT    |   | Step 2: 140mm (Buds or second phone)      |   |   SLOT    |
-| 35mm wide |   | Step 1: 180mm (Phone 20W)       |   | 20mm wide |
-| 95mm tall |   | top reaches Z=95mm              |   | 75mm tall |
-+-----------+   +---------------------------------+   +-----------+
-[==== 20mm FRONT FASCIA STRIP WITH 250×15 LED DIFFUSER CHANNEL ====]
++----------+   +------+   +-----------+   +------+   +----------+
+| LAPTOP   |   |      |   | Step 3    |   |      |   | TABLET   |
+| SLOT     |   |      |   | 100mm     |   |      |   | SLOT     |
+| 35mm     |   | Step |   +-----------+   | Step |   | 20mm     |
+| 95mm     |   |  2   |   Step 2          |  2   |   | 75mm     |
+| tall     |   | 140mm|   140mm wide      | 140mm|   | tall     |
+|          |   |      +-------------------+      |   |          |
+|          |   Step 1 — 180mm wide               |   |          |
++----------+---+-------------------------------------+-+----------+
+[============= 250mm FRONT FASCIA + LED DIFFUSER =============]
 ```
 
 ## Side View (centre platform)
@@ -49,6 +50,8 @@ Z
        rear spine                front fascia
 ```
 
+Side-view note: **17mm riser cavity (Z=33–50)**.
+
 ## Zone Quick Reference
 
 | Zone | Location | Device | Power | Notes |
@@ -58,3 +61,4 @@ Z
 | Zone 3 | Centre Step 3 rear (top) | Watch (Apple puck + Qi) | 5W shared | puck + Qi coil embedded in Step 3 body |
 | Zone 4 | Left slot | Laptop | USB-C PD 100W via captive 220mm cable | 35mm wide, 90mm deep, cable from top |
 | Zone 5 | Right slot | Tablet/Phone | USB-C PD 45W via captive 200mm cable | 20mm wide, 70mm deep, cable from top |
+| IEC inlet | Rear spine | AC input | IEC C13 | rear-left ~X=45mm |

@@ -104,7 +104,7 @@ This section defines practical wiring execution from wall inlet to every electri
 8. Zone 4: 20V → PD 100W board → polyfuse → TVS → captive 220mm cable (100W rated, 90° dock-end) → silicone strain relief boot at slot exit.
 9. Zone 5: 20V → PD 45W board → polyfuse → TVS → captive 200mm cable (65W rated, 90° dock-end) → silicone strain relief boot at slot exit.
 10. ATtiny85: 5V from 5V buck → controls WS2811 strip via data line.
-11. Route all PSU-to-zone wiring through the **20mm riser cavity (Z=33mm to Z=50mm)** under centre platform Step 1.
+11. Route all PSU-to-zone wiring through the **17mm riser cavity (Z=33mm to Z=50mm)** under centre platform Step 1.
 
 ## 2) AC Wiring Section
 
@@ -210,3 +210,4 @@ AC -> C13(RA) -> 201W PSU (Mean Well LRS-200-24, under centre platform cavity) -
 - Validate natural cable reach from top-of-slot hang point to common laptop/tablet port locations when device is fully inserted on thin edge.
 - Silicone strain relief boots prevent cable damage at exit point and maintain cable position at top of slot.
 - Microfibre lining on Zone 4 and Zone 5 inner walls applied after slot assembly.
+- Buck converters (12V ×2, 5V ×1) must be mounted **flat** in the riser cavity. Standing upright, typical modules are 12–14mm tall which leaves less than 5mm clearance — insufficient for safe installation. Mounted flat, modules are ~8mm tall leaving 9mm clearance ✅
