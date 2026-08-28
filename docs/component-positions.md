@@ -40,10 +40,10 @@ This file is the single source of truth for all physical placement coordinates.
 | Step 2 top centre (140×100) | 125.00 | 50.00 | 80.00 | Middle step top surface, same front face as Step 1 |
 | Step 3 top centre (100×80) | 125.00 | 60.00 | 95.00 | Top step, set back 20mm from front (Y=20 to Y=100) |
 | Zone 1 — Phone pad centre | 125.00 | 50.00 | 65.00 | 160×100mm silicone surface, 20W Qi2, 1mm recessed dish |
-| Zone 2 — Buds/phone dish centre | 125.00 | 50.00 | 80.00 | 120×80mm dish, 20W Qi, same front face as Step 1 |
+| Zone 2 — Buds/phone dish centre | 125.00 | 50.00 | 80.00 | 90×70mm dish, 20W Qi, same front face as Step 1 |
 | Zone 3 — Watch cradle | 125.00 | 60.00 | 95.00 | Apple puck + Qi watch coil, on Step 3 (set back) |
 | Zone 4 — Laptop slot centreline | 17.50 | 50.00 | 47.50 | X=0 to X=35, 35mm wide, 90mm deep, 95mm tall |
-| Zone 5 — Tablet slot centreline | 232.50 | 50.00 | 37.50 | X=215 to X=250, 20mm wide, 70mm deep, 75mm tall |
+| Zone 5 — Tablet slot centreline | 232.50 | 50.00 | 37.50 | X=215 to X=250, 20mm wide, 70mm deep, 80mm tall |
 | Rear spine plate | 125.00 | 99.00 | 49.00 | Full-width rear structural face |
 | Front fascia strip | 125.00 | 1.50 | 10.00 | Full-width front base strip |
 | IEC C13 inlet cutout | 45.00 | 99.00 | 49.00 | Rear-left position for short AC wire run |
@@ -60,7 +60,7 @@ This file is the single source of truth for all physical placement coordinates.
 | 12V buck ×2 (Zone 2 Qi) | 80.00 | 65.00 | 36.00 | Mounted flat in riser cavity |
 | 5V buck (Zone 3 + logic) | 100.00 | 55.00 | 36.00 | Mounted flat in riser cavity |
 | Qi2 coil (Zone 1 Phone) | 125.00 | 50.00 | 62.00 | Inside Step 1 body under recessed silicone |
-| Qi coil (Zone 2 Buds/phone) | 125.00 | 50.00 | 77.00 | Inside Step 2 body under 120×80 dish |
+| Qi coil (Zone 2 Buds/phone) | 125.00 | 50.00 | 77.00 | Inside Step 2 body under 90×70 dish |
 | Apple Watch puck module | 125.00 | 60.00 | 92.00 | Inside Step 3 body |
 | Qi watch coil (Zone 3) | 125.00 | 58.00 | 92.00 | Inside Step 3 body, adjacent to puck |
 | USB-C PD 100W board (Zone 4) | 17.50 | 70.00 | 60.00 | Inner wall of laptop slot, wired to captive cable at top |

@@ -6,7 +6,7 @@
 
 ## Budget Summary
 
-- **Total batch cost:** $1,416.20
+- **Total batch cost:** $1,419.20
 - **Budget:** $1,500
 - **Safety net without any pre-order:** $83.80
 - **Revenue (10 units × $249):** $2,490
@@ -22,26 +22,26 @@
 
 | Item | Cost |
 |---|---:|
-| Build cost (electronics + enclosure + packaging) | $120.91 |
+| Build cost (electronics + enclosure + packaging) | $121.21 |
 | Stripe fees (2.9% + $0.30 on $249) | $7.52 |
 | Defect buffer (10% of build cost) | $12.09 |
 | Domain epitomecharge.com ÷10 | $1.10 |
-| **Total per unit** | **$141.62** |
+| **Total per unit** | **$141.92** |
 
 ## Break-Even
 
 | Units Sold | Revenue | Total Cost | Profit/(Loss) |
 |---|---:|---:|---:|
-| 5 | $1,245 | $1,416 | ($171) |
-| **6** | **$1,494** | **$1,416** | **$78** ← break-even |
-| 7 | $1,743 | $1,416 | $327 |
-| 10 | $2,490 | $1,416 | **$1,074** |
+| 5 | $1,245 | $1,419 | ($174) |
+| **6** | **$1,494** | **$1,419** | **$75** ← break-even |
+| 7 | $1,743 | $1,419 | $324 |
+| 10 | $2,490 | $1,419 | **$1,071** |
 
 **Break-even: 6 units. Margin at full batch: 43%.**
 
 ## Pre-order Strategy
 
-Collect at least **1 pre-order at $249** before ordering any parts. Total batch cost is $1,416.20 — one pre-order covers most of the safety net requirement.
+Collect at least **1 pre-order at $249** before ordering any parts. Total batch cost is $1,419.20 — one pre-order covers most of the safety net requirement.
 
 ## Build Sequence
 

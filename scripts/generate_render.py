@@ -142,7 +142,7 @@ def main() -> None:
     # ── Zone pad surfaces (silicone recesses) ─────────────────────────────────
     pads = [
         (-1.6, 1.6, -0.8, 0.8, BH + S1H + 0.02),   # Zone 1 phone on Step 1
-        (-1.2, 1.2, -0.8, 0.8, BH + S2H + 0.02),   # Zone 2 buds/phone on Step 2
+        (-0.9, 0.9, -0.7, 0.7, BH + S2H + 0.02),   # Zone 2 buds/phone on Step 2
         (-0.6, 0.6, -0.35, 0.65, BH + S3H + 0.02), # Zone 3 watch on Step 3 setback
     ]
     pad_colors = [C_BLUE, C_PURPLE, C_GREEN]
@@ -173,7 +173,7 @@ def main() -> None:
     # ── Zone 5 – Tablet slot (RIGHT side, shorter vertical) ───────────────────
     RX0, RX1 = BW/2 - 0.06, BW/2 + 0.06
     RY0, RY1 = -1.3, 1.3
-    RZ0, RZ1 = BH, BH + 2.4
+    RZ0, RZ1 = BH, BH + 2.56
     draw_poly(ax, [(RX0, RY0, RZ0), (RX1, RY0, RZ0),
                    (RX1, RY0, RZ1), (RX0, RY0, RZ1)],
               C_BLUE, alpha=0.85, zorder=6, ec=C_BLUE, lw=0.8)

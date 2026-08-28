@@ -30,7 +30,7 @@ Zone 4 uses USB-C PD up to 100W through a **captured 220mm braided USB-C cable**
 Qi2 compatible devices (iPhone 13+, Pixel 8+, Samsung S24+ for Qi2; all Qi phones for standard Qi fallback).
 
 ### Zone 2 — 20W Qi Wireless
-All Qi-compatible phones and earbuds are supported. 120×80mm pad includes a subtle 68×48mm inner ridge for buds alignment.
+All Qi-compatible phones and earbuds are supported. 90×70mm pad includes a subtle 60×45mm inner ridge for buds alignment.
 
 ### Zone 5 — USB-C PD (wired, up to 45W)
 Any USB-C phone is supported via captive cable.

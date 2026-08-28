@@ -12,7 +12,7 @@ The only compact desktop dock that charges your laptop, tablet, phone, watch, an
 | Zone | Device | Power | Method |
 |---|---|---|---|
 | Zone 1 | Phone | 20W | Qi2 (magnetic alignment) |
-| Zone 2 | Buds or second phone | 20W | Qi (120×80mm dish) |
+| Zone 2 | Buds or second phone | 20W | Qi (90×70mm dish) |
 | Zone 3 | Apple Watch | 5W | Apple Watch puck + universal Qi coil |
 | Zone 4 | Laptop | 100W | USB-C PD captive braided cable |
 | Zone 5 | Tablet | 45W | USB-C PD captive braided cable |
@@ -32,7 +32,7 @@ iPad Pro from dead to full in 90 minutes. Most docks offer 20W tablet charging. 
 100W USB-C and full Qi simultaneously from one IEC cable into one wall socket. No power strip needed.
 
 ### 4. Charges two phones at once
-Zone 1 (20W Qi2) and Zone 2 (20W Qi, 120×80mm dish) both fit full-size phones. Two people, one dock.
+Zone 1 (20W Qi2) and Zone 2 (20W Qi, 90×70mm dish) both fit full-size phones. Two people, one dock.
 
 ### 5. Staircase platform — everything visible
 Three rising steps face the user. Phone on Step 1. Buds or second phone on Step 2. Watch on Step 3 at reading angle. Every device visible and reachable.

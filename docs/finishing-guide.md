@@ -92,7 +92,7 @@ Apply self-adhesive microfibre sheet to the inner walls of Zone 4 (laptop slot) 
 
 1. Measure the inner wall dimensions for each slot:
    - Zone 4 (laptop slot): two side walls 90mm × 95mm each, one rear wall 35mm × 95mm, floor 400mm × 90mm. Cut to size accordingly.
-   - Zone 5 (tablet slot): two side walls 70mm × 75mm each, one rear wall 20mm × 75mm, floor 290mm × 70mm.
+   - Zone 5 (tablet slot): two side walls 70mm × 80mm each, one rear wall 20mm × 80mm, floor 290mm × 70mm.
 2. Cut the microfibre sheet to each panel size. Add 1–2mm overlap where surfaces meet.
 3. Peel backing from one panel at a time.
 4. Press microfibre firmly onto inner wall surface from one edge to avoid bubbles.

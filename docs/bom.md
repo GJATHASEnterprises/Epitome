@@ -31,10 +31,10 @@
 | Zone | Function | Internal size (L × D × W) | Notes |
 |---|---|---|---|
 | Zone 1 | Phone Qi2 pad | 160×100mm surface | 20W, Qi2 certified, magnetic alignment N52 ring, recessed 1mm dish |
-| Zone 2 | Buds or second phone pad | 120×80mm dish | 20W Qi |
+| Zone 2 | Buds or second phone pad | 90×70mm dish | 20W Qi |
 | Zone 3 | Watch cradle | 50×50mm | Apple puck + Qi coil, hardware relay mutual exclusion |
 | Zone 4 | Laptop slot | **400×90×35mm** | 95mm tall wall, captive 220mm 100W braided cable, 90° angled dock-end |
-| Zone 5 | iPad slot | **290×70×20mm** | 75mm tall wall, captive 200mm 65W braided cable, 90° angled dock-end |
+| Zone 5 | iPad slot | **290×70×20mm** | 80mm tall wall, captive 200mm 65W braided cable, 90° angled dock-end |
 
 ---
 
@@ -43,7 +43,7 @@
 | Zone | Device | Power | Method |
 |---|---|---|---|
 | Zone 1 | Phone | 20W | Qi2 (magnetic alignment, N52 ring, recessed 1mm dish) |
-| Zone 2 | Buds or second phone | 20W | Qi (120×80mm dish) |
+| Zone 2 | Buds or second phone | 20W | Qi (90×70mm dish) |
 | Zone 3 | Watch | 5W | Apple Watch puck + universal Qi coil, hardware relay |
 | Zone 4 | Laptop | 100W | USB-C PD, captive 220mm 100W braided cable, 90° angled dock-end |
 | Zone 5 | Tablet | 45W | USB-C PD, captive 200mm 65W braided cable, 90° angled dock-end |
@@ -98,7 +98,7 @@ TABLET   45W  USB-C
 | 2 | Laser cut ABS base plate 250×100mm | $1.35 |
 | 3 | Laser cut ABS top panels ×2 | $1.35 |
 | 4 | Laser cut ABS laptop slot walls 400mm 95mm tall | $7.84 |
-| 5 | Laser cut ABS tablet slot walls 290mm 75mm tall | $5.05 |
+| 5 | Laser cut ABS tablet slot walls 290mm 80mm tall | $5.35 |
 | 6 | Laser cut ABS rear spine plate 250×100mm | $1.50 |
 | 7 | Laser cut ABS front fascia strip 250×20mm | $0.70 |
 | 8 | Frosted acrylic LED diffuser 250×15mm | $0.80 |
@@ -110,7 +110,7 @@ TABLET   45W  USB-C
 | 14 | ABS cement + primer + matte black paint + sandpaper | $2.50 |
 | 15 | Strain relief silicone boots ×2 (captive cables) | $0.60 |
 | 16 | Microfibre slot lining (Zones 4+5 inner walls) | $1.30 |
-| **Enclosure subtotal** | | **$33.79** |
+| **Enclosure subtotal** | | **$34.09** |
 
 ---
 
@@ -136,9 +136,9 @@ TABLET   45W  USB-C
 | Category | Per Unit |
 |---|---:|
 | Electronics | $72.17 |
-| Enclosure | $33.79 |
+| Enclosure | $34.09 |
 | Packaging | $14.95 |
-| **Total build cost per unit** | **$120.91** |
+| **Total build cost per unit** | **$121.21** |
 
 ---
 
@@ -146,12 +146,12 @@ TABLET   45W  USB-C
 
 | Item | Cost |
 |---|---:|
-| Build cost | $120.91 |
+| Build cost | $121.21 |
 | Stripe fees (2.9% + $0.30 on $249) | $7.52 |
 | Defect buffer (10% of build cost) | $12.09 |
 | Domain epitomecharge.com ÷10 | $1.10 |
-| **Total per unit** | **$141.62** |
-| **Total ×10 units** | **$1,416.20** |
+| **Total per unit** | **$141.92** |
+| **Total ×10 units** | **$1,419.20** |
 
 ---
 
@@ -159,17 +159,17 @@ TABLET   45W  USB-C
 
 | Units Sold | Revenue @ $249 | Total Cost | Profit/(Loss) |
 |---|---:|---:|---:|
-| 5 | $1,245 | $1,416 | ($171) |
-| 6 | $1,494 | $1,416 | $78 ← break-even |
-| 7 | $1,743 | $1,416 | $327 |
-| 8 | $1,992 | $1,416 | $576 |
-| 10 | $2,490 | $1,416 | **$1,074** |
+| 5 | $1,245 | $1,419 | ($174) |
+| 6 | $1,494 | $1,419 | $75 ← break-even |
+| 7 | $1,743 | $1,419 | $324 |
+| 8 | $1,992 | $1,419 | $573 |
+| 10 | $2,490 | $1,419 | **$1,071** |
 
 **Break-even: 6 units**
 **Profit at full batch (10 units): $1,074**
 **Margin: 43%**
 
-**Budget note:** Budget $1,500 — total batch cost $1,416 — **$84 safety net without any pre-order.**
+**Budget note:** Budget $1,500 — total batch cost $1,419 — **$81 safety net without any pre-order.**
 
 ---
 
