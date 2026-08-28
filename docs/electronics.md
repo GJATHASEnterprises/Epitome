@@ -4,7 +4,7 @@
 
 - LED logic controller: **ATtiny85** (programmed at assembly — zone LED logic + global 185W soft cap)
 - Power: internal **201W** AC/DC PSU (**Mean Well LRS-200-24, 201W, 24V output trim-adjusted to ~20V. Physical size: 199×98×30mm. Located under centre platform.**) + **right-angle IEC C13 inlet**
-- Outputs: 20W Qi2 (Zone 1), 20W Qi (Zone 2, 120×80mm dish), Zone 3 dual charger (Apple puck + Qi coil sharing 5W, hardware relay for mutual exclusion), 2×USB-C PD branches (100W + 45W)
+- Outputs: 20W Qi2 (Zone 1), 20W Qi (Zone 2, 90×70mm dish), Zone 3 dual charger (Apple puck + Qi coil sharing 5W, hardware relay for mutual exclusion), 2×USB-C PD branches (100W + 45W)
 - Lighting: WS2811 addressable LED strip (~15 LED, 250mm)
 - **NO ESP32, NO INA3221, NO BLE, NO WiFi, NO app hardware in Batch 1**
 
@@ -23,7 +23,7 @@ Key placement updates:
 `Right-angle IEC C13 -> 201W PSU (Mean Well LRS-200-24, under centre platform cavity) -> zone branches + regulation -> protections`
 
 - Zone 1: Qi2 20W TX module (Qi2 certified, magnetic alignment N52 ring, recessed 1mm dish) + polyfuse + thermistor
-- Zone 2: Qi 20W (120×80mm dish) + polyfuse + thermistor
+- Zone 2: Qi 20W (90×70mm dish) + polyfuse + thermistor
 - Zone 3: Apple puck + Qi watch coil, shared 5W policy (hardware relay enforces single active target)
 - Zone 4: USB-C PD 100W + captive 220mm cable harness (100W braided, 90° angled dock-end) + silicone strain relief boot at exit
 - Zone 5: USB-C PD 45W + captive 200mm cable harness (65W rated braided, 90° angled dock-end) + silicone strain relief boot at exit
@@ -33,7 +33,7 @@ Key placement updates:
 | Zone | Device | Power | Method |
 |---|---|---|---|
 | Zone 1 | Phone | 20W | Qi2 (magnetic alignment, N52 ring, recessed 1mm dish) |
-| Zone 2 | Buds or second phone | 20W | Qi (120×80mm dish) |
+| Zone 2 | Buds or second phone | 20W | Qi (90×70mm dish) |
 | Zone 3 | Watch | 5W | Apple Watch puck + Qi coil, hardware relay |
 | Zone 4 | Laptop | 100W | USB-C PD (captive 220mm braided cable) |
 | Zone 5 | Tablet | 45W | USB-C PD (captive 200mm braided cable, 65W rated) |
@@ -91,7 +91,7 @@ Penta Dock uses a centralised internal AC/DC supply to generate a 20V primary DC
 Architecture:
 - PSU is Mean Well LRS-200-24 (201W nominal) with a 185W ATtiny85 soft cap.
 - Zone 1: Qi2 certified, magnetic alignment N52 ring, recessed 1mm dish.
-- Zone 2: 20W Qi, 120×80mm dish.
+- Zone 2: 20W Qi, 90×70mm dish.
 - Zone 3 supports Apple Watch magnetic protocol plus generic Qi-watch charging in one cradle footprint; hardware relay enforces one active path.
 - Zone 4 and Zone 5 use captive braided cables with 90° angled dock-end connectors and silicone strain relief boots at exit points.
 - Microfibre lining applied to inner walls of Zone 4 (laptop slot) and Zone 5 (tablet slot).
@@ -134,7 +134,7 @@ PSU location: **under centre platform cavity**.
 `20V rail -> 12V buck -> Qi2 TX module (20W, magnetic alignment N52 ring, recessed 1mm dish)`
 
 ### Zone 2 — Qi 20W Path
-`20V rail -> 12V buck -> Qi TX module (20W, 120×80mm dish)`
+`20V rail -> 12V buck -> Qi TX module (20W, 90×70mm dish)`
 
 ### Zone 3 — Watch Universal 5W Path
 `20V rail -> 5V buck -> hardware relay -> (Apple puck OR Qi watch coil) [one active at a time]`
@@ -183,7 +183,7 @@ PSU location: **under centre platform cavity**.
 | Zone | Device | Power | Method |
 |---|---|---|---|
 | Zone 1 | Phone | 20W | Qi2 (magnetic alignment, N52 ring, recessed 1mm dish) |
-| Zone 2 | Buds or second phone | 20W | Qi (120×80mm dish) |
+| Zone 2 | Buds or second phone | 20W | Qi (90×70mm dish) |
 | Zone 3 | Watch | 5W | Apple Watch puck + Qi coil, hardware relay |
 | Zone 4 | Laptop | 100W | USB-C PD (captive 220mm braided cable) |
 | Zone 5 | Tablet | 45W | USB-C PD (captive 200mm braided cable, 65W rated) |

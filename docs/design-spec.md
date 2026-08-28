@@ -57,7 +57,7 @@ Epitome Charge (epitomecharge.com)
 | Slot length (left to right) | 290mm |
 | Slot depth (front to back, internal) | 70mm |
 | Slot width (opening thickness) | **20mm** |
-| Slot wall height | **75mm** |
+| Slot wall height | **80mm** |
 | Entry | Device slides in on its **thin edge** (like a book on a shelf) |
 | Charging interface | **Captive braided USB-C cable (200mm, 45W, 90° angled dock-end) hangs from top of slot + silicone strain relief boot at exit** |
 | Alignment | Cable at top of slot — device plugs in on insertion |
@@ -70,7 +70,7 @@ Epitome Charge (epitomecharge.com)
 | Step | Width | Depth | Height | Zone | Content |
 |---|---:|---:|---:|---|---|
 | Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle — Apple puck + Qi coil |
-| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad — 20W Qi, 120×80 landscape |
+| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad — 20W Qi, 90×70 landscape |
 | Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad — 20W Qi2, full-width silicone surface |
 
 - Step dimensions are unchanged.
@@ -115,7 +115,7 @@ Epitome Charge (epitomecharge.com)
 |---|---|
 | Overall dock | ~250 × 100 × 100mm |
 | Left (laptop) slot | 400mm long × 90mm deep × 35mm wide × 95mm tall |
-| Right (iPad) slot | 290mm long × 70mm deep × 20mm wide × 75mm tall |
+| Right (iPad) slot | 290mm long × 70mm deep × 20mm wide × 80mm tall |
 | Centre Step 1 | 180 × 110 × 15mm |
 | Centre Step 2 | 140 × 100 × 15mm |
 | Centre Step 3 | 100 × 80 × 15mm |
@@ -149,7 +149,7 @@ Epitome Charge (epitomecharge.com)
 | SLOT     | Step 2 (mid):   140mm wide, full depth      | SLOT     |
 | 35mm     | Step 3 (top):   100mm wide, set back 20mm   | 20mm     |
 | wide     | Steps rise FRONT→BACK facing the user       | wide     |
-| 95mm     |                                             | 75mm     |
+| 95mm     |                                             | 80mm     |
 | tall     | Riser cavity (17mm) over PSU below          | tall     |
 +----------+--------------------------------------------+----------+
 REAR: full-width spine plate, IEC C13 inlet rear-left (~X=45mm)
@@ -164,7 +164,7 @@ FRONT: full-width fascia strip with 250×15mm LED diffuser
 - 20W Qi2 + Qi2 magnetic alignment N52 ring, recessed 1mm dish
 
 ### Zone 2 — Buds / Phone (Qi 20W)
-- 120×80mm pad with 68×48mm inner ridge marker
+- 90×70mm pad with 60×45mm inner ridge marker
 
 ### Zone 3 — Watch (Universal 5W)
 - Apple Watch puck + Qi coil in same cradle, one device at a time
@@ -210,7 +210,7 @@ See [electronics.md](electronics.md) for full spec.
 - All surfaces: sand → acetone vapour smooth → primer → Rust-Oleum 2X Matte Black → clear coat
 - No vacuum-formed parts. No aluminium. All ABS.
 
-Batch 1 enclosure target: **~$33.79/unit**.
+Batch 1 enclosure target: **~$34.09/unit**.
 
 ---
 

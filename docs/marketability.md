@@ -75,7 +75,7 @@ See [compatibility.md](compatibility.md) for full list.
 | Zone | Method | Max Power |
 |------|--------|-----------|
 | Zone 1 | Qi2 wireless | 20W |
-| Zone 2 | Qi wireless (120×80mm dish — buds or second phone) | 20W |
+| Zone 2 | Qi wireless (90×70mm dish — buds or second phone) | 20W |
 | Zone 3 | Watch puck + Qi (one active) | 5W |
 | Zone 4 | USB-C PD captive cable | 100W |
 | Zone 5 | USB-C PD captive cable | 45W |

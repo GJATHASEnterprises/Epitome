@@ -27,7 +27,7 @@ CANVAS_W, CANVAS_H = 1200, 800
 DOCK_W, DOCK_D = 250.0, 100.0
 BASE_T = 3.0
 LAPTOP_SLOT_W, LAPTOP_SLOT_H = 35.0, 95.0
-TABLET_SLOT_W, TABLET_SLOT_H = 20.0, 75.0
+TABLET_SLOT_W, TABLET_SLOT_H = 20.0, 80.0
 RISER_H, STEP_H = 50.0, 15.0
 FASCIA_H, REAR_RAIL_H = 20.0, 25.0
 
@@ -105,7 +105,7 @@ def render(ax):
     # Tablet slot body (right)
     draw_box(ax, DOCK_W - 20, DOCK_W, 15, 85, 0, TABLET_SLOT_H, c_top="#242930", c_right="#161a20", c_front="#12161b", zorder=6)
     poly(ax, [(DOCK_W - 18, 15, 6), (DOCK_W - 2, 15, 6), (DOCK_W - 2, 15, 68), (DOCK_W - 18, 15, 68)], C_SLOT, ec="#20242a", z=12)
-    poly(ax, [(DOCK_W - 19, 18, 75), (DOCK_W - 1, 18, 75), (DOCK_W - 1, 82, 75), (DOCK_W - 19, 82, 75)], C_SLOT, ec="#20242a", z=12)
+    poly(ax, [(DOCK_W - 19, 18, TABLET_SLOT_H), (DOCK_W - 1, 18, TABLET_SLOT_H), (DOCK_W - 1, 82, TABLET_SLOT_H), (DOCK_W - 19, 82, TABLET_SLOT_H)], C_SLOT, ec="#20242a", z=12)
 
     # Centre riser and three steps
     sx0, sx1 = 35, 215
@@ -116,7 +116,7 @@ def render(ax):
 
     # Silicone surfaces on steps
     poly(ax, [(45, 8, RISER_H + STEP_H + 0.3), (205, 8, RISER_H + STEP_H + 0.3), (205, 96, RISER_H + STEP_H + 0.3), (45, 96, RISER_H + STEP_H + 0.3)], C_SIL, ec="#3a3f46", z=15)
-    poly(ax, [(80, 10, RISER_H + 2 * STEP_H + 0.3), (170, 10, RISER_H + 2 * STEP_H + 0.3), (170, 75, RISER_H + 2 * STEP_H + 0.3), (80, 75, RISER_H + 2 * STEP_H + 0.3)], "#2a2d33", ec="#4a4f57", z=16)
+    poly(ax, [(80, 10, RISER_H + 2 * STEP_H + 0.3), (170, 10, RISER_H + 2 * STEP_H + 0.3), (170, 80, RISER_H + 2 * STEP_H + 0.3), (80, 80, RISER_H + 2 * STEP_H + 0.3)], "#2a2d33", ec="#4a4f57", z=16)
 
     # Watch cradle pod (top step)
     pod = []
@@ -149,7 +149,7 @@ def render(ax):
     ax.plot([c2d[-1][0] - 3, c2d[-1][0] + 3], [c2d[-1][1], c2d[-1][1]], color="#aab3c0", linewidth=2.0, zorder=34)
 
     # C13 inlet on rear rail
-    c13 = [(111, 100, 6), (139, 100, 6), (139, 100, 24), (111, 100, 24)]
+    c13 = [(31, 100, 6), (59, 100, 6), (59, 100, 24), (31, 100, 24)]
     poly(ax, c13, "#0a0d11", ec="#2d3440", z=20)
 
     # Callouts
@@ -157,10 +157,10 @@ def render(ax):
     add_label(ax, 840, 220, "On-edge insertion + captive top cable")
     add_label(ax, 835, 320, "Zone 5: Tablet slot · 45W USB-C PD")
     add_label(ax, 730, 430, "Zone 3: Watch cradle · 5W")
-    add_label(ax, 620, 500, "Zone 2: Buds or second phone dish · 20W Qi")
+    add_label(ax, 620, 500, "Zone 2: Buds / phone · 20W Qi · 90×70mm")
     add_label(ax, 500, 560, "Zone 1: Phone pad · 20W Qi2")
     add_label(ax, 680, 635, "20mm front fascia + WS2811 diffuser")
-    add_label(ax, 850, 470, "25mm rear rail + centered IEC C13")
+    add_label(ax, 850, 470, "25mm rear rail + rear-left IEC C13")
 
 
 if __name__ == "__main__":

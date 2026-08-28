@@ -11,7 +11,7 @@
 | 400mm L  | All step faces point TOWARD USER (front-facing) | 290mm L  |
 | 90mm D   | Steps rise front→back between the two slots    | 70mm D   |
 | 35mm W   | Riser cavity 17mm over PSU beneath             | 20mm W   |
-| 95mm H   |                                               | 75mm H   |
+| 95mm H   |                                               | 80mm H   |
 +----------+--------------------------------------------------+----------+
 REAR SPINE: full width, IEC C13 rear-left ~X=45mm
 FRONT FASCIA: full width, LED diffuser strip 250×15mm
@@ -26,7 +26,7 @@ Standard width ~250mm
 | LAPTOP   |   |      |   | Step 3    |   |      |   | TABLET   |
 | SLOT     |   |      |   | 100mm     |   |      |   | SLOT     |
 | 35mm     |   | Step |   +-----------+   | Step |   | 20mm     |
-| 95mm     |   |  2   |   Step 2          |  2   |   | 75mm     |
+| 95mm     |   |  2   |   Step 2          |  2   |   | 80mm     |
 | tall     |   | 140mm|   140mm wide      | 140mm|   | tall     |
 |          |   |      +-------------------+      |   |          |
 |          |   Step 1 — 180mm wide               |   |          |

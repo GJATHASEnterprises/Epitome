@@ -33,7 +33,7 @@ Penta Dock is a 5-zone charging dock designed for **all Qi phones**, **all USB-C
 | Zone | What it charges | How |
 |---|---|---|
 | Zone 1 | Phone | **20W Qi2** on Step 1, recessed 1mm dish, N52 magnetic alignment |
-| Zone 2 | Buds or second phone | 20W Qi Step 2 pad (120×80mm dish) |
+| Zone 2 | Buds or second phone | 20W Qi Step 2 pad (90×70mm dish) |
 | Zone 3 | Watch | Apple Watch puck + Qi coil (5W, hardware relay) |
 | Zone 4 | USB-C laptop | Captive braided USB-C cable, 100W (220mm, 90° dock-end) |
 | Zone 5 | USB-C tablet/phone | Captive braided USB-C cable, 45W (200mm, 65W rated, 90° dock-end) |

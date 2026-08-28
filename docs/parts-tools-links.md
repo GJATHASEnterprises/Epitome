@@ -14,7 +14,7 @@ Keep existing core tool set: soldering iron, solder, flux, multimeter, wire stri
 
 ### AliExpress (single combined order — apply 25% Section 301 tariff)
 - Qi2 20W TX module (~$5.00 before tariff → ~$6.25)
-- Qi 20W TX module (120×80mm dish compatible) (~$4.40 before tariff → ~$5.50)
+- Qi 20W TX module (90×70mm dish compatible) (~$4.40 before tariff → ~$5.50)
 - Apple Watch magnetic puck PCBA (~$1.60 before tariff → ~$2.00)
 - Qi watch coil 5W module (~$5.00 before tariff → ~$6.25)
 - USB-C PD 100W trigger board (~$1.50 before tariff → ~$1.88)

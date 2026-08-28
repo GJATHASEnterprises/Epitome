@@ -99,7 +99,7 @@ This section defines practical wiring execution from wall inlet to every electri
 3. Convert AC to regulated ~20V DC.
 4. Split 20V bus into five protected zone branches + logic branch.
 5. Zone 1: 20V → 12V buck → Qi2 TX module (20W, magnetic alignment).
-6. Zone 2: 20V → 12V buck → Qi TX module (20W, 120×80mm dish).
+6. Zone 2: 20V → 12V buck → Qi TX module (20W, 90×70mm dish).
 7. Zone 3: 20V → 5V buck → hardware relay → Apple puck or Qi watch coil (one active).
 8. Zone 4: 20V → PD 100W board → polyfuse → TVS → captive 220mm cable (100W rated, 90° dock-end) → silicone strain relief boot at slot exit.
 9. Zone 5: 20V → PD 45W board → polyfuse → TVS → captive 200mm cable (65W rated, 90° dock-end) → silicone strain relief boot at slot exit.
@@ -145,7 +145,7 @@ This section defines practical wiring execution from wall inlet to every electri
 `20V -> 12V buck -> Qi2 TX 20W -> polyfuse -> NTC`
 
 ### Zone 2 (Qi 20W)
-`20V -> 12V buck -> Qi TX 20W (120×80mm dish) -> polyfuse -> NTC`
+`20V -> 12V buck -> Qi TX 20W (90×70mm dish) -> polyfuse -> NTC`
 
 ### Zone 3 (Watch 5W shared, hardware relay)
 `20V -> 5V buck -> hardware relay -> (Apple puck OR Qi watch coil) -> polyfuse`
@@ -197,7 +197,7 @@ ATtiny85 data pin + series resistor + 5V/GND + entry capacitor.
 ```text
 AC -> C13(RA) -> 201W PSU (Mean Well LRS-200-24, under centre platform cavity) -> 20V Bus
   -> Z1 Qi2 20W (12V buck -> Qi2 TX)
-  -> Z2 Qi 20W (12V buck -> Qi TX, 120×80mm dish)
+  -> Z2 Qi 20W (12V buck -> Qi TX, 90×70mm dish)
   -> Z3 Watch 5W (5V buck -> relay -> Puck OR Qi coil, one active)
   -> Z4 PD100W -> Captive USB-C 220mm (100W, 90° dock-end, strain relief boot)
   -> Z5 PD45W -> Captive USB-C 200mm (65W rated, 90° dock-end, strain relief boot)

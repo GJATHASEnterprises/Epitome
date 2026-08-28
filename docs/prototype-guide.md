@@ -69,9 +69,11 @@ Standard mock dimensions:
 - Step 2: **140×100×15mm**
 - Step 3: **100×80×15mm**
 
+> **Step 3 wall thickness — critical print setting:** When printing the centre platform, ensure **minimum 3mm wall thickness on all four sides of the Step 3 portion** of the body. Step 3 (100mm wide) does not reach either slot wall, so it relies entirely on the printed shell for lateral stiffness. Use at least 3 perimeters/walls in your slicer settings for the Step 3 section. Thinner walls will allow the top step to flex under device weight.
+
 Placement checks:
 - Step 1 full-width 160×100 phone surface (20W)
-- Step 2 buds pad centred (120×80, 20W)
+- Step 2 buds pad centred (90×70, 20W)
 - Watch cradle at rear of Step 3
 - Cable hang point at top of each slot — verify cable reach to device port when fully inserted
 

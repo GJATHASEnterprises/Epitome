@@ -43,7 +43,7 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 - Slot length: **290mm**
 - Slot width: **20mm**
 - Slot depth: **70mm** (internal)
-- Slot wall height: **75mm**
+- Slot wall height: **80mm**
 - Captive braided USB-C cable (**200mm, 65W rated, 90° angled dock-end**) hangs from the top of the slot
 - **Silicone strain relief boot** at cable exit point (top of slot)
 - **Microfibre lining** on inner slot walls (protects device edges on insertion)
@@ -57,7 +57,7 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 | Step | Width | Depth | Height | Zone | Content |
 |---|---:|---:|---:|---|---|
 | Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad, 20W Qi2, 160×100mm silicone surface (1mm recessed dish) |
-| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad, 20W Qi, 120×80mm dish |
+| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad, 20W Qi, 90×70mm dish |
 | Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle, Apple puck + Qi watch coil |
 
 - Centre platform body raised on perimeter wall over PSU cavity
@@ -67,6 +67,8 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 - Total centre column height from base floor: **95mm**
 
 > Steps rise **front-to-back** (Y axis). Step 1 and Step 2 share the same front face (Y=0). Step 3 is set back 20mm (front face at Y=20). From the user's perspective, the three charging surfaces form a rising staircase of shelves, each face pointing directly toward the user.
+
+> **Step 3 lateral support:** Step 3 (100mm wide) does not reach either slot wall. The laptop slot wall (95mm tall) reaches Step 3 height on the left side. The tablet slot wall (80mm tall) reaches the Step 3 base (Z=80) on the right side. To ensure Step 3 rigidity, the 3D printed centre platform body must have **minimum 3mm wall thickness on all four sides of the Step 3 portion**, forming internal vertical ribs that stiffen the top step against lateral flex. This is built into the print geometry — no extra parts required.
 
 > All components in the 17mm riser cavity must be mounted flat (horizontal) against the cavity floor. Buck converters, ATtiny85, and relay must not stand upright to maintain clearance under Step 1 base.
 
@@ -79,7 +81,7 @@ The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits f
 
 ### Zone 2 (Step 2)
 
-- Silicone dish: **120×80mm**
+- Silicone dish: **90×70mm**
 - Qi TX: **20W**, embedded inside Step 2 body and centred under the dish
 - Slight phone overhang remains acceptable
 
@@ -177,7 +179,7 @@ Fit check:
 | Laser cut ABS base plate 250×100mm | $1.35 |
 | Laser cut ABS top panels ×2 | $1.35 |
 | Laser cut ABS laptop slot walls 400mm 95mm tall | $7.84 |
-| Laser cut ABS tablet slot walls 290mm 75mm tall | $5.05 |
+| Laser cut ABS tablet slot walls 290mm 80mm tall | $5.35 |
 | Laser cut ABS rear spine plate 250×100mm | $1.50 |
 | Laser cut ABS front fascia strip 250×20mm | $0.70 |
 | Frosted acrylic LED diffuser strip 250×15mm | $0.80 |
@@ -189,7 +191,7 @@ Fit check:
 | ABS cement + primer + matte black paint + sandpaper | $2.50 |
 | Strain relief silicone boots ×2 (captive cables) | $0.60 |
 | Microfibre slot lining (Zones 4+5 inner walls) | $1.30 |
-| **Enclosure total** | **$33.79/unit** |
+| **Enclosure total** | **$34.09/unit** |
 
 ---
 

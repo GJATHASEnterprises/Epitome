@@ -71,7 +71,7 @@ LAPTOP_SLOT_L = 400.0
 LAPTOP_SLOT_H = 95.0
 TABLET_SLOT_W = 20.0
 TABLET_SLOT_L = 290.0
-TABLET_SLOT_H = 75.0
+TABLET_SLOT_H = 80.0
 
 # Centre platform
 PLATFORM_W = 180.0
@@ -216,7 +216,7 @@ def build_top_plate() -> trimesh.Trimesh:
 
     # Silicone pad guides (thin raised references)
     parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + STEP_H + 0.4), (160.0, 90.0, 0.8)))
-    parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + 2.0 * STEP_H + 0.4), (120.0, 80.0, 0.8)))
+    parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + 2.0 * STEP_H + 0.4), (90.0, 70.0, 0.8)))
 
     # Slot cable grommet collars (top cap references)
     parts.append(_cyl(4.0, 2.0, (LAPTOP_SLOT_W / 2.0, 84.0, LAPTOP_SLOT_H + 1.0), sections=30))
@@ -288,9 +288,9 @@ def write_top_plate_dxf_and_svg() -> None:
     msp.add_text("250.0 mm overall width", dxfattribs={"height": 3.8, "layer": "ANNOTATIONS"}).set_placement((80, -16))
     msp.add_text("100.0 mm overall depth", dxfattribs={"height": 3.8, "layer": "ANNOTATIONS"}).set_placement((DOCK_W + 8, 45))
     msp.add_text("L Slot 35 mm", dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"}).set_placement((4, 2))
-    msp.add_text("R Slot 20 mm", dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"}).set_placement((DOCK_W - 38, 2))
+    msp.add_text("R Slot 20mm wide · 80mm wall", dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"}).set_placement((DOCK_W - 38, 2))
     msp.add_text(
-        "Step widths: 180 / 140 / 100 mm (front-to-back staircase, Step 3 set back 20mm)",
+        "Step widths: 180/140/100mm · Zone 2 dish 90×70mm · Tablet wall 80mm",
         dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"},
     ).set_placement((20, 108))
 
