@@ -108,17 +108,13 @@ def main():
 
     # Scale for isometric view (mm → figure units)
     S = 0.025
-    def s(x, y, z): return iso(x*S, y*S, z*S)
-
-    # Re-define helpers scaled
-    def sp(x, y, z): return iso(x*S, y*S, z*S)
 
     # ── Build Step geometry ──────────────────────────────────────────────────
     # Coordinates in mm, scaled by S
 
     # Base plate: 165×100×3mm Z=0..3
-    ax.add_patch(face_front(0*S, 165*S, 0*S, 0, 3*S, facecolor=C_ABS, edgecolor="#2a2a2a", lw=0.3, zorder=1))
-    ax.add_patch(face_right(165*S, 0*S, 100*S, 0, 3*S, facecolor="#111", edgecolor="#2a2a2a", lw=0.3, zorder=1))
+    ax.add_patch(face_front(0*S, 165*S, 0*S, 0*S, 3*S, facecolor=C_ABS, edgecolor="#2a2a2a", lw=0.3, zorder=1))
+    ax.add_patch(face_right(165*S, 0*S, 100*S, 0*S, 3*S, facecolor="#111", edgecolor="#2a2a2a", lw=0.3, zorder=1))
 
     # Riser: 165×100×22mm Z=3..25
     ax.add_patch(face_front(0*S, 165*S, 0*S, 3*S, 25*S, facecolor=C_ABS, edgecolor="#2a2a2a", lw=0.4, zorder=2))

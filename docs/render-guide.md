@@ -18,7 +18,7 @@ All assets are generated using Python scripts with matplotlib and numpy. No Blen
 ## Running Scripts
 
 ```bash
-cd /path/to/quad-device-dock
+cd /path/to/repo
 
 # Marketing render (1200×800px dark)
 python scripts/generate_render.py
