@@ -1,98 +1,85 @@
-# Penta Dock — Parts, Tools & Direct Buy Links
+# Step — Parts, Tools & Buy Links
 
-Everything needed to build Penta Dock Batch 1.
-
----
-
-## SECTION 1 — TOOLS
-
-Keep existing core tool set: soldering iron, solder, flux, multimeter, wire strippers, hot glue gun, cutters, helping hands, safety glasses.
+Everything needed to build Step Batch 1 (10 units).
 
 ---
 
-## Verified US Suppliers — Batch 1 (August 2026)
+## Electronics (per unit)
 
-### AliExpress (single combined order — apply 25% Section 301 tariff)
-- Qi2 20W TX module (~$5.00 before tariff → ~$6.25)
-- Qi 20W TX module (90×70mm dish compatible) (~$4.40 before tariff → ~$5.50)
-- Apple Watch magnetic puck PCBA (~$1.60 before tariff → ~$2.00)
-- Qi watch coil 5W module (~$5.00 before tariff → ~$6.25)
-- USB-C PD 100W trigger board (~$1.50 before tariff → ~$1.88)
-- USB-C PD 45W trigger board (~$1.60 before tariff → ~$2.00)
-- WS2811 LED strip ~15 LED 250mm section (~$1.75 before tariff → ~$2.19)
-- IEC C13 right-angle inlet (~$3.00 before tariff → ~$3.75)
-- 12V buck converter ×2 (for Qi zones) (~$1.00 each before tariff → ~$1.25 each)
-- 5V buck converter ×1 (watch zone + ATtiny85) (~$1.00 before tariff → ~$1.25)
-
-### LCSC (combine if possible — same tariff rules)
-- Mean Well LRS-200-24 PSU ×10 (~$17.60 each before tariff → ~$22.00)
-
-### Amazon US (domestic, no tariff, Prime shipping)
-- ATtiny85 microcontroller (~$1.50 each)
-- Captive USB-C cable 220mm 100W braided 90° angled (~$4.00 each) — Zone 4
-- Captive USB-C cable 200mm 65W braided 90° angled (~$3.00 each) — Zone 5
-- Hardware relay module (~$1.50 each) — Zone 3 mutual exclusion
-- PTC fuse + polyfuses ×5 + TVS ×2 (~$2.50 lot)
-- NTC thermistors ×2 + thermal cutoff (~$1.50 lot)
-- Wiring / JST connectors / heat shrink bulk ÷10 (~$2.60)
-- 3M Bumpons SJ5023 100-pack (~$7)
-- M3 screw + heat-set insert + grommet assortment (~$9)
-- Silicone sheet 500×500mm textured dot (~$13)
-- Weld-On #3 ABS cement (~$8)
-- Physical power button rear rail type (~$1.50 each)
-- Strain relief silicone boots ×2 (sized for USB-C captive cable) (~$0.60)
-- Self-adhesive microfibre sheet dark grey, 400×300mm (~$5 for 10 units = $0.50/unit) → cut to $1.30/unit allocated
-- Velcro cable ties matte black (~$5 for 50)
-- Magnetic closure rigid boxes ~300×160×130mm matte black (~$5.50 each)
-- Black foam sheets for inserts (~$1.50 + $0.80 per unit)
-- Braided fabric IEC C13 cable 1.5m matte black (~$5.50 each)
-
-### Inventables (Chicago, fast to Downers Grove IL)
-- ABS sheet 3mm black (enough for all 10 units)
-- Frosted acrylic 3mm strip material
-- ABS sheet sized per enclosure.md: base and top panels 250×100mm; slot wall sizes per spec
-
-### Pumping Station One (Chicago makerspace)
-- Address: 3519 N. Elston Ave, Chicago IL
-- Membership: ~$50/month
-- Use: laser cutting all ABS panels and acrylic diffuser strips for all 10 units
-- Bring: DXF files of all panels (from generate_3d_model.py), own ABS sheet from Inventables
-
-### School makerspace
-- Use: 3D printing centre platform ×10
-- Bring: own ABS filament spool ($20, Bambu or Hatchbox ABS)
-- Print settings: 2.5mm walls, 20% infill, 0.2mm layer height
-- Print time: ~6–8 hours per part
-
-### Home Depot / Walmart (Downers Grove)
-- Acetone 1 litre
-- Rust-Oleum Filler Primer
-- Rust-Oleum 2X Matte Black
-- Rust-Oleum Matte Clear Coat
-- Sandpaper assortment
-- Spray adhesive (3M Super 77 or equivalent)
-
-### Microcenter (Westmont IL — 7 min from Downers Grove)
-- Backup source for electronics (ATtiny85 programmer, soldering supplies)
-- Do not pay Microcenter prices for parts cheaper on Amazon/AliExpress
-
-### Moo.com
-- Setup cards 85×55mm matte black — Penta Dock, zone reference, QR to epitomecharge.com
-- Order minimum 50 cards for cost efficiency
-
-### Payment / shipping
-- Wise.com: international bank transfer to AliExpress/LCSC (0.45% fee, much cheaper than PayPal)
-- Stripe: payment processing for customer orders (2.9% + $0.30 per transaction)
-- Shopify: storefront + Stripe integration + real-time shipping calculation (Pirateship integration)
-- Pirateship: discounted USPS/UPS Ground labels for customer shipping
+| Component | Source / Search term | Unit cost |
+|---|---|---:|
+| Qi2 20W TX module (N52 ring) | AliExpress "Qi2 20W wireless charging module" | $6.25 |
+| Qi 5W TX module | AliExpress "5W Qi wireless charging transmitter" | $2.50 |
+| Apple Watch puck PCBA | AliExpress "Apple Watch magnetic charging PCBA" | $2.00 |
+| Qi watch coil 5W | AliExpress "5W Qi coil watch wireless" | $6.25 |
+| Hardware relay 5V SPDT | AliExpress or Mouser "5V SPDT relay module" | $1.50 |
+| 12V buck converter | AliExpress "12V buck converter mini" | $1.25 |
+| 5V buck converter | AliExpress "5V 3A buck converter" | $1.25 |
+| ATtiny85 DIP-8 | DigiKey / Mouser "ATtiny85-20PU" | $1.50 |
+| WS2811 LED strip 8 LED 130mm | AliExpress "WS2811 LED strip 5V individual" | $1.20 |
+| DC barrel jack inlet 5.5/2.1mm | AliExpress "DC barrel jack panel mount" | $0.80 |
+| USB-C PD 60W trigger board | AliExpress "USB-C PD decoy 60W trigger" | $1.88 |
+| USB-C PD 30W trigger board | AliExpress "USB-C PD decoy 30W trigger" | $1.50 |
+| USB-C panel mount receptacles ×2 | AliExpress "USB-C panel mount female" | $1.20 |
+| Polyfuses ×5 + TVS diodes ×3 | DigiKey bulk | $2.10 |
+| NTC thermistors ×2 + thermal cutoff | DigiKey | $1.00 |
+| Wiring / JST / heat shrink | Local / AliExpress | $1.80 |
 
 ---
 
-## Parts NOT in This Build (Batch 2+ / Shelved)
+## Enclosure (per unit)
 
-These parts are explicitly excluded from Batch 1:
-- ~~ESP32-C3 SuperMini~~ — no wireless, no app in Batch 1
-- ~~INA3221 power monitor~~ — no per-zone power monitoring in Batch 1
-- ~~JLCPCB PCBs~~ — no custom PCBs in Batch 1
+| Component | Source | Unit cost |
+|---|---|---:|
+| ABS filament matte black 1kg | Amazon / Prusament | $2.20 (per unit ~180g) |
+| Walnut sheet 4mm | Local hardwood supplier or Inventables | $3.80 (faces + tops) |
+| Laser cut ABS rear spine | School makerspace | $0.60 |
+| Silicone sheet 1mm | AliExpress "1mm silicone rubber sheet" | $0.90 |
+| 3M Bumpons SJ-5302 ×4 | Amazon | $0.60 |
+| M3 screws + heat-set inserts | Amazon / Bolt Depot | $0.80 |
+| Rubio Monocoat oil | Home improvement (÷20 units) | $0.60 |
+| Frosted acrylic 130×10mm | Local plastics / Inventables | $0.40 |
 
-See [app-spec.md](app-spec.md) for future app hardware spec.
+---
+
+## Packaging (per unit)
+
+| Component | Source | Unit cost |
+|---|---|---:|
+| Rigid matte black box | Uline / Packlane | $3.50 |
+| Die-cut foam insert | Custom from foam supplier | $0.80 |
+| 65W USB-C power brick GaN | Amazon "65W GaN charger" | $6.00 |
+| USB-C to barrel 5.5/2.1mm 1m | Amazon | $1.50 |
+| Setup card 85×55mm matte | Moo.com / local print | $0.35 |
+| Belly band matte black | Local print | $0.35 |
+
+---
+
+## Tools Required
+
+| Tool | Location |
+|---|---|
+| FDM printer (ABS capable, enclosed) | School makerspace |
+| Laser cutter | Pumping Station One |
+| Soldering iron + solder | School makerspace |
+| Heat-set insert tool (soldering iron tip) | School makerspace |
+| USB power meter (for zone testing) | Amazon ~$10 |
+| Arduino Uno (ATtiny85 programmer) | School / own |
+| ISP programming header cable | School / Amazon |
+| Wire strippers / crimpers | School makerspace |
+| Hot glue gun | School makerspace |
+| Sandpaper 120/180/220 | Hardware store |
+| Tack cloth | Hardware store |
+
+---
+
+## Makerspace Notes
+
+### Pumping Station One (Chicago)
+- Laser cutter: Epilog or Glowforge — confirm bed size for walnut pieces
+- Walnut 4mm fits standard 12×24" bed
+- ABS rear spine can be cut in same job as walnut at different settings
+
+### School Makerspace
+- ABS print requires enclosed printer (Bambu, Prusa Enclosure, or similar)
+- If no enclosure: use PETG as ABS substitute (no enclosure required, similar stiffness)

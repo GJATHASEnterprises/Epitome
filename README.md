@@ -1,69 +1,84 @@
-# Penta Dock
+# Step
 
 ## Product Render
-![Penta Dock Render](assets/penta-dock-render.png)
+> Run `python scripts/generate_render.py` to generate `assets/step-render.png`.
 
-> Pre-generated. Regenerate at any time by running `blender --background --python scripts/generate_render.py`.
+**Charge everything. Touch nothing.**
 
-## 3D Model
-Open [`assets/penta-dock-model.glb`](assets/penta-dock-model.glb) to view the interactive 3D model in GitHub.
-
-**One dock. Every device.**
-
-*190W total output — laptop, tablet, phone, watch, buds, all at full speed.*
+*$89 — three-zone wireless charging stand, walnut + matte black ABS.*
 
 ---
 
 ## Overview
 
-Penta Dock is a 5-zone charging dock that powers laptop, tablet, phone, watch, and buds (or a second phone) simultaneously from a single wall outlet.
+Step is a compact three-step wireless charging stand. Phone, earbuds, and watch each have their own step. Two USB-C PD ports on the rear handle wired charging. One cable, one brick, no mess.
 
-## Power Budget
+---
 
-| Zone | Device | Power | Method |
-|---|---|---|---|
-| Zone 1 | Phone | 20W | Qi2 (magnetic alignment) |
-| Zone 2 | Buds or second phone | 20W | Qi |
-| Zone 3 | Watch | 5W | Apple Watch puck + Qi coil |
-| Zone 4 | Laptop | 100W | USB-C PD (captive braided cable) |
-| Zone 5 | Tablet | 45W | USB-C PD (captive braided cable) |
-| **Total worst case** | | **190W** | |
-| **PSU rated** | | **201W (Mean Well LRS-200-24)** | |
-| **Headroom** | | **11W** | |
-| **ATtiny85 soft cap** | | **185W** | |
+## Zones
 
-## Wattage Etch Labels
+| Zone | Standard | Max Power |
+|---|---|---|
+| ① Phone (Step 1) | Qi2 | 20W |
+| ② Buds (Step 2) | Qi | 5W |
+| ③ Watch (Step 3) | Apple Watch puck + Qi | 5W |
+| ④ USB-C Port A | PD | 60W |
+| ⑤ USB-C Port B | PD | 30W |
 
-```
-PHONE    20W  Qi2
-BUDS     20W  Qi
-WATCH     5W
-LAPTOP  100W  USB-C
-TABLET   45W  USB-C
-```
+---
 
-## Key Features
+## Dimensions
 
-- **190W simultaneous output** across 5 zones
-- **Zone 1:** 20W Qi2 with magnetic alignment
-- **Zone 2:** 20W Qi on an enlarged 120×80mm dish for buds or a second phone
-- **Zone 3:** 5W Apple Watch puck + Qi watch coil
-- **Zone 4:** 100W USB-C PD captive braided cable
-- **Zone 5:** 45W USB-C PD captive braided cable
-- **Zone 5 cable:** 200mm braided nylon, 65W rated
-- **Primary slogan:** **One dock. Every device.**
-- **Secondary tagline:** **190W. Five zones. One cable.**
+165mm × 100mm × 70mm
 
-> Zone 2's enlarged 120×80mm surface fits a buds case or a full-size phone — charge for two people from one dock.
+---
 
 ## Documentation
 
-| Doc | Contents |
-|-----|----------|
-| [Electronics Spec](docs/electronics.md) | Charging architecture and power budget |
-| [Bill of Materials](docs/bom.md) | Component and cost breakdown |
-| [UVP](docs/uvp.md) | Positioning, messaging, and claims |
-| [Component Positions](docs/component-positions.md) | Definitive X/Y/Z coordinates |
-| [Compatibility](docs/compatibility.md) | Device support matrix |
+| File | Contents |
+|---|---|
+| [docs/design-spec.md](docs/design-spec.md) | Full product specification |
+| [docs/electronics.md](docs/electronics.md) | Electronics reference |
+| [docs/bom.md](docs/bom.md) | Bill of materials + unit economics |
+| [docs/enclosure.md](docs/enclosure.md) | Enclosure specification |
+| [docs/component-positions.md](docs/component-positions.md) | XYZ coordinates for all components |
+| [docs/wiring.md](docs/wiring.md) | Wiring guide |
+| [docs/layout-diagram.md](docs/layout-diagram.md) | ASCII layout diagrams |
+| [docs/prototype-guide.md](docs/prototype-guide.md) | Batch 1 build guide |
+| [docs/pre-order-page.md](docs/pre-order-page.md) | Pre-order page copy |
+| [docs/marketability.md](docs/marketability.md) | Market positioning |
+| [docs/compatibility.md](docs/compatibility.md) | Device compatibility |
+| [docs/uvp.md](docs/uvp.md) | Unique value proposition |
+| [docs/firmware-notes.md](docs/firmware-notes.md) | ATtiny85 firmware notes |
+| [docs/app-spec.md](docs/app-spec.md) | Future features (shelved for Batch 1) |
 
-*Built by GJATHASEnterprises*
+---
+
+## Scripts
+
+| Script | Output |
+|---|---|
+| `python scripts/generate_render.py` | `assets/step-render.png` — marketing render |
+| `python scripts/generate_image.py` | `assets/step-hero.png` — hero product image |
+| `python scripts/generate_product_sheet.py` | `assets/step-product-sheet.png` — product sheet |
+| `python scripts/generate_3d_model.py` | `assets/step-top-view.dxf` + geometry summary |
+
+---
+
+## Unit Economics
+
+| | |
+|---|---|
+| Build cost | $56.38 |
+| Full cost per unit | $66.00 |
+| Sell price | $89 |
+| Profit per unit | $23 |
+| Margin | 26% |
+| Break-even | 8 units |
+| Profit at 10 units | $230 |
+
+---
+
+## Brand
+
+Epitome Charge — [epitomecharge.com](https://epitomecharge.com)

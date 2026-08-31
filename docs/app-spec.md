@@ -1,108 +1,64 @@
-> ⚠️ SHELVED — FUTURE REFERENCE ONLY
-> App development is not part of the current build plan. Preserved for potential Batch 2 revisitation. See docs/uvp.md for current product scope.
+# Step — Future Features (Shelved for Batch 1)
 
-# Penta Dock — Companion App Specification
-
----
-
-## App Name
-Epitome Penta
-
-## Platform
-- **iOS (iPhone)** — primary platform
-- Built with **Swift / SwiftUI**
-- Hardware remains fully functional without the app for iOS and Android users
-- Android companion app is optional future scope; charging compatibility is already universal at hardware level
-
-## Communication
-- **Bluetooth Low Energy (BLE)** — primary, local connection
-- **Firebase** — push notifications (FCM)
-- ESP32-C3 acts as BLE peripheral
+This document tracks features that have been considered and deliberately deferred from Batch 1 to keep scope, cost, and complexity manageable.
 
 ---
 
-## Features
+## Shelved Features
 
-### Dashboard
-- Real-time charge status per zone
-- Zone icons: 📱 PHONE, 🎧 BUDS/PHONE, ⌚ WATCH, 💻 LAPTOP, 📲 TABLET
-- Per-zone status: charging / full / empty
-- Zone compatibility labels: Qi universal / USB-C universal / watch dual-mode
+### Companion App / BLE Integration
+- Real-time power monitoring per zone via BLE
+- Zone enable/disable from phone
+- Charging history and usage stats
+- Firmware OTA updates
+- **Reason shelved:** Requires ESP32 or BLE-capable MCU, adds significant cost and firmware complexity. ATtiny85 is sufficient for Batch 1 LED logic and soft cap. Revisit for Batch 2+ if there is buyer demand.
 
-### Device Detection
-- Zone state inferred by per-zone power draw thresholds
-- Zone 3 reports **dual-mode source** (`puck` or `qi_watch`)
-- A dedicated **Zone 3 mode** field is surfaced in UI and telemetry exports
+### USB-A Ports
+- 1–2 USB-A ports on rear for legacy devices
+- **Reason shelved:** Adds BOM cost and rear spine complexity. USB-C PD ports cover the primary use case. BYOC with USB-C to USB-A adapter if needed.
 
-### LED Control
-- LED enable/disable
-- **Manual brightness slider (0–100%)**
-- Optional per-zone brightness presets
+### Laptop / Tablet Dock Slots
+- Vertical or angled slot for laptop passthrough charging
+- Tablet cradle
+- **Reason shelved:** Dramatically increases size, cost, and manufacturing complexity. The 3-zone wireless + 2× USB-C design is the right product for the market.
 
-### Theft Alert
-Three alert modes: Away / Night / Passive.
+### Touch or Button Controls
+- Physical button to toggle zones or adjust LED brightness
+- **Reason shelved:** Adds complexity with marginal benefit. ATtiny85 auto-detects device presence.
 
-### BLE Proximity Detection
-- Distance threshold settings
+### Multiple Finish Options
+- Aluminium base option
+- Oak or maple instead of walnut
+- **Reason shelved:** Batch 1 is walnut + ABS only. Single-finish production keeps tooling simple.
 
-### Notifications (Firebase FCM)
-- Theft alert
-- Charge complete
-- Weekly report
+### Custom Engraving
+- Laser engraving of customer name or logo on walnut surface
+- **Reason shelved:** Requires per-unit laser job customisation. Consider for Batch 3+.
 
-### Alert History Log
-- Timestamped events per zone
-
-### Weekly Charge Reports
-- Total charge time + energy summary
-
-### Voice Assistant Shortcuts
-- Siri shortcuts for status and LED controls
-
-### Onboarding Animation
-- Introduces updated zone map including 3-step centre platform, captive cables, and watch dual-mode charging
-
-### iPhone Home Screen Widget
-- Live per-zone state
-
-### Dark Mode UI
-- Full iOS dark mode support
-
-### Haptic Feedback
-- Zone complete / connect feedback
+### Wireless Charging for Laptop
+- Qi2 100W+ for laptop wireless
+- **Reason shelved:** Not a real standard yet. No practical laptop coil at this form factor.
 
 ---
 
-## App Architecture
+## Revisit Criteria
 
-```
-Epitome Penta iOS App (SwiftUI)
-    |
-    +-- BLE Service
-    |    +-- Zone telemetry read (Z1..Z5)
-    |    +-- Zone 3 source-mode read (puck / qi_watch)
-    |    +-- LED control + alert mode writes
-    |
-    +-- Firebase Service
-    +-- UI Screens
-    +-- Widget Extension
-    +-- Local Storage
-```
+A shelved feature moves to active development when:
+1. Batch 1 sells through (10 units) and break-even is achieved
+2. Buyers explicitly request the feature in feedback
+3. The feature does not increase unit cost above $75 build cost
+4. The feature can be added without redesigning the core enclosure
 
 ---
 
-## ESP32-C3 BLE Interface
+## Current Batch 1 Scope
 
-| GATT Characteristic | Direction | Data |
-|---------------------|-----------|------|
-| Zone 1 Power | Read/Notify | Voltage/current/watts (**20W max**) |
-| Zone 2 Power | Read/Notify | Voltage/current/watts (**20W max**) |
-| Zone 3 Power | Read/Notify | Voltage/current/watts (**5W max**) |
-| Zone 3 Mode | Read/Notify | `puck` or `qi_watch` |
-| Zone 4 Power | Read/Notify | Voltage/current/watts |
-| Zone 5 Power | Read/Notify | Voltage/current/watts |
-| LED Strip Status | Read/Notify | Per-zone color + brightness |
-| LED Control | Write | LED config |
-| Device Presence | Read/Notify | Per-zone booleans |
-| Theft Alert | Notify | Zone index |
-| System Status | Read/Notify | Firmware version + thermal flags |
+Batch 1 ships with:
+- Zone 1: Qi2 20W phone
+- Zone 2: Qi 5W buds
+- Zone 3: Apple Watch puck + Qi watch coil (relay)
+- USB-C Port A: 60W
+- USB-C Port B: 30W
+- ATtiny85 LED logic + 60W soft cap
+- Walnut + ABS enclosure
+- 65W brick included

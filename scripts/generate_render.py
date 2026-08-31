@@ -1,278 +1,204 @@
 #!/usr/bin/env python3
 """
-High-quality Penta Dock marketing render generator.
-Uses matplotlib + Pillow only (no Blender / bpy required).
+Step — marketing render generator.
+Uses matplotlib + Pillow only (no Blender required).
 Run:
   python scripts/generate_render.py
 Output:
-  assets/penta-dock-render.png  (1200×800 px)
-  assets/quad-dock-render.png   (copy, backwards-compat)
+  assets/step-render.png  (1200×800 px)
 """
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import FancyBboxPatch, Polygon
-from matplotlib.collections import PatchCollection
 
 ROOT = Path(__file__).resolve().parents[1]
-PRIMARY_OUT  = ROOT / "assets" / "penta-dock-render.png"
-COMPAT_OUT   = ROOT / "assets" / "quad-dock-render.png"
+OUT  = ROOT / "assets" / "step-render.png"
+OUT.parent.mkdir(exist_ok=True)
 
-# ── Colours ──────────────────────────────────────────────────────────────────
-C_BG        = "#1a1a1a"
-C_BODY      = "#2a2a2a"
-C_STEP      = "#333333"
-C_SILICONE  = "#1f1f1f"
-C_WHITE     = "#ffffff"
-C_GREY      = "#aaaaaa"
-C_BLUE      = "#3399ff"
-C_PURPLE    = "#9966ff"
-C_GREEN     = "#33cc66"
-C_ORANGE    = "#ff8800"
+# ── Colour palette ────────────────────────────────────────────────────────────
+C_BG        = "#111111"
+C_ABS       = "#1a1a1a"
+C_WALNUT    = "#8B6914"
+C_WALNUT_DK = "#5C4209"
+C_SILICONE  = "#222222"
+C_GLOW_1    = "#0044FF"   # Zone 1 phone — blue
+C_GLOW_2    = "#8800FF"   # Zone 2 buds — purple
+C_GLOW_3    = "#00CC44"   # Zone 3 watch — green
+C_GLOW_A    = "#FF6600"   # Port A — orange
+C_GLOW_B    = "#00BBAA"   # Port B — teal
+C_LED_STRIP = "#334466"
+C_TEXT      = "#EEEEEE"
+C_LABEL     = "#AAAAAA"
+C_ACCENT    = "#CCCCCC"
 
-# ── Canvas ───────────────────────────────────────────────────────────────────
-W_PX, H_PX = 1200, 800
-DPI = 100
-FIG_W, FIG_H = W_PX / DPI, H_PX / DPI   # 12 × 8 inches
+W, H = 12, 8  # figure size in inches at 100 dpi → 1200×800 px
 
-
-# ── Isometric helpers ────────────────────────────────────────────────────────
-ISO_ANGLE = np.radians(30)
-ISO_X_SCALE = np.cos(ISO_ANGLE)
-ISO_Y_SCALE = np.sin(ISO_ANGLE)
-
-def iso(x: float, y: float, z: float = 0.0):
-    """Convert 3-D dock coords → 2-D canvas coords (units = inches)."""
-    px = (x - y) * ISO_X_SCALE
-    py = (x + y) * ISO_Y_SCALE + z
+# ── Isometric helpers ─────────────────────────────────────────────────────────
+def iso(x, y, z, scale=1.0):
+    """Isometric projection: returns (px, py) in figure units."""
+    px = (x - y) * 0.6 * scale
+    py = (x + y) * 0.3 * scale + z * 0.6 * scale
     return px, py
 
+def face_top(x0, y0, x1, y1, z, **kw):
+    corners = [iso(x0,y0,z), iso(x1,y0,z), iso(x1,y1,z), iso(x0,y1,z)]
+    return Polygon(corners, closed=True, **kw)
 
-def iso_poly(pts3d):
-    """List of (x,y,z) → numpy array of 2-D points."""
-    return np.array([iso(*p) for p in pts3d])
+def face_front(x0, x1, y, z0, z1, **kw):
+    corners = [iso(x0,y,z0), iso(x1,y,z0), iso(x1,y,z1), iso(x0,y,z1)]
+    return Polygon(corners, closed=True, **kw)
 
-
-# ── Drawing origin (centre of canvas) ────────────────────────────────────────
-OX, OY = FIG_W * 0.48, FIG_H * 0.44
-
-
-def shift(xy):
-    return xy + np.array([OX, OY])
-
-
-def draw_poly(ax, pts3d, color, alpha=1.0, zorder=2, ec=None, lw=0.5):
-    verts = shift(iso_poly(pts3d))
-    patch = Polygon(verts, closed=True, facecolor=color, edgecolor=ec or color,
-                    linewidth=lw, alpha=alpha, zorder=zorder)
-    ax.add_patch(patch)
-    return patch
+def face_right(x, y0, y1, z0, z1, **kw):
+    corners = [iso(x,y0,z0), iso(x,y1,z0), iso(x,y1,z1), iso(x,y0,z1)]
+    return Polygon(corners, closed=True, **kw)
 
 
-def draw_rect_face(ax, x0, x1, y0, y1, z0, z1, color, alpha=1.0, zorder=2):
-    """Draw one rectangular face in 3-D iso space."""
-    pts = [(x0, y0, z0), (x1, y0, z0), (x1, y1, z0), (x0, y1, z0)]
-    draw_poly(ax, pts, color, alpha=alpha, zorder=zorder)
+def draw_step(ax, bx, ex, by, ey, z0, z1, walnut_top=True, alpha_top=1.0):
+    """Draw one step block: front face, right face, top face."""
+    ax.add_patch(face_front(bx, ex, by, z0, z1, facecolor=C_ABS, edgecolor="#333", lw=0.5, zorder=z1))
+    ax.add_patch(face_right(ex, by, ey, z0, z1, facecolor="#151515", edgecolor="#333", lw=0.5, zorder=z1))
+    top_color = C_WALNUT if walnut_top else C_ABS
+    ax.add_patch(face_top(bx, by, ex, ey, z1, facecolor=top_color, edgecolor=C_WALNUT_DK if walnut_top else "#333",
+                           lw=0.5, zorder=z1+0.5, alpha=alpha_top))
+    # Walnut grain lines on top
+    if walnut_top:
+        for g in np.linspace(by+2, ey-2, 8):
+            lx = [iso(bx+2, g, z1)[0], iso(ex-2, g, z1)[0]]
+            ly = [iso(bx+2, g, z1)[1], iso(ex-2, g, z1)[1]]
+            ax.plot(lx, ly, color=C_WALNUT_DK, lw=0.3, alpha=0.5, zorder=z1+0.6)
 
 
-def glow(ax, pts3d, color, layers=6, max_alpha=0.18, zorder=1):
-    """Soft glow by drawing progressively expanded transparent polygons."""
-    verts2d = shift(iso_poly(pts3d))
-    cx = verts2d[:, 0].mean()
-    cy = verts2d[:, 1].mean()
-    for i in range(layers, 0, -1):
-        scale = 1.0 + i * 0.06
-        expanded = (verts2d - np.array([cx, cy])) * scale + np.array([cx, cy])
-        patch = Polygon(expanded, closed=True, facecolor=color, edgecolor="none",
-                        alpha=max_alpha * (i / layers) ** 1.5, zorder=zorder)
-        ax.add_patch(patch)
+def draw_glow_ellipse(ax, cx, cy, z, color, rx=4, ry=2.5, zorder=20):
+    px, py = iso(cx, cy, z)
+    glow = mpatches.Ellipse((px, py), rx*2, ry*2, facecolor=color, alpha=0.25, zorder=zorder)
+    ax.add_patch(glow)
+    inner = mpatches.Ellipse((px, py), rx*0.8, ry*0.8, facecolor=color, alpha=0.4, zorder=zorder+0.1)
+    ax.add_patch(inner)
 
 
-def main() -> None:
-    fig, ax = plt.subplots(figsize=(FIG_W, FIG_H), dpi=DPI)
-    fig.patch.set_facecolor(C_BG)
+def draw_device(ax, cx, cy, z, w, d, h, color, label="", glow_color=None):
+    """Draw a simple device rectangle on top of a zone."""
+    bx, ex = cx - w/2, cx + w/2
+    by, ey = cy - d/2, cy + d/2
+    draw_step(ax, bx, ex, by, ey, z, z+h, walnut_top=False, alpha_top=0.85)
+    if glow_color:
+        draw_glow_ellipse(ax, cx, cy, z, glow_color, rx=w*0.35, ry=d*0.2, zorder=z+h+1)
+
+
+def add_label(ax, x, y, z, text, wattage=None, color=C_LABEL, offset_x=0.3, offset_y=0.0):
+    px, py = iso(x, y, z)
+    lx, ly = px + offset_x, py + offset_y
+    ax.annotate("", xy=(px, py), xytext=(lx, ly),
+                arrowprops=dict(arrowstyle="-", color=color, lw=0.8), zorder=50)
+    label_text = f"{text}  {wattage}" if wattage else text
+    ax.text(lx, ly, label_text, color=color, fontsize=7, va="center", ha="left",
+            fontfamily="monospace", zorder=51)
+
+
+def main():
+    fig, ax = plt.subplots(figsize=(W, H), facecolor=C_BG)
     ax.set_facecolor(C_BG)
-    ax.set_xlim(0, FIG_W)
-    ax.set_ylim(0, FIG_H)
     ax.set_aspect("equal")
     ax.axis("off")
 
-    # ── Dock dimensions (in "dock units" ≈ 0.9 inch per unit) ────────────────
-    # Base footprint: 5.0 wide × 3.0 deep × 0.6 tall
-    BW, BD, BH = 5.0, 3.0, 0.6
-    # Three-step staircase heights
-    S1H, S2H, S3H = 1.0, 1.6, 2.2   # step top-surface heights above base
+    # Scale for isometric view (mm → figure units)
+    S = 0.025
 
-    # ── Drop shadow ──────────────────────────────────────────────────────────
-    shadow_pts = [(-2.6, -1.6, 0), (2.6, -1.6, 0), (2.6, 1.6, 0), (-2.6, 1.6, 0)]
-    glow(ax, shadow_pts, "#000000", layers=8, max_alpha=0.5, zorder=1)
+    # ── Build Step geometry ──────────────────────────────────────────────────
+    # Coordinates in mm, scaled by S
 
-    # ── Base body ─────────────────────────────────────────────────────────────
-    # Top face
-    draw_poly(ax, [(-BW/2, -BD/2, BH), ( BW/2, -BD/2, BH),
-                   ( BW/2,  BD/2, BH), (-BW/2,  BD/2, BH)],
-              C_BODY, zorder=3)
-    # Front face
-    draw_poly(ax, [(-BW/2, -BD/2, 0), ( BW/2, -BD/2, 0),
-                   ( BW/2, -BD/2, BH), (-BW/2, -BD/2, BH)],
-              "#222222", zorder=3)
-    # Right face
-    draw_poly(ax, [( BW/2, -BD/2, 0), ( BW/2, BD/2, 0),
-                   ( BW/2,  BD/2, BH), ( BW/2, -BD/2, BH)],
-              "#252525", zorder=3)
+    # Base plate: 165×100×3mm Z=0..3
+    ax.add_patch(face_front(0*S, 165*S, 0*S, 0*S, 3*S, facecolor=C_ABS, edgecolor="#2a2a2a", lw=0.3, zorder=1))
+    ax.add_patch(face_right(165*S, 0*S, 100*S, 0*S, 3*S, facecolor="#111", edgecolor="#2a2a2a", lw=0.3, zorder=1))
 
-    # ── Three-step staircase (centre platform, rising front→back) ────────────
-    FRONT_Y, REAR_Y = -1.0, 1.0
-    steps = [
-        (-1.8, 1.8, FRONT_Y, REAR_Y, S1H),   # Step 1: 180×100
-        (-1.4, 1.4, FRONT_Y, REAR_Y, S2H),   # Step 2: 140×100
-        (-1.0, 1.0, -0.6,    REAR_Y, S3H),   # Step 3: 100×80, set back 20mm
+    # Riser: 165×100×22mm Z=3..25
+    ax.add_patch(face_front(0*S, 165*S, 0*S, 3*S, 25*S, facecolor=C_ABS, edgecolor="#2a2a2a", lw=0.4, zorder=2))
+    ax.add_patch(face_right(165*S, 0*S, 100*S, 3*S, 25*S, facecolor="#111", edgecolor="#2a2a2a", lw=0.3, zorder=2))
+    ax.add_patch(face_top(0*S, 0*S, 165*S, 100*S, 25*S, facecolor=C_ABS, edgecolor="#333", lw=0.3, zorder=2.5))
+
+    # LED diffuser strip: front face of riser, 130mm wide
+    led_x0, led_x1 = 17.5*S, 147.5*S
+    ax.add_patch(face_front(led_x0, led_x1, 0*S, 25*S, 33*S,
+                             facecolor=C_LED_STRIP, edgecolor="#446", lw=0.3, alpha=0.7, zorder=3))
+
+    # Step 1: 165×100×15mm Z=25..40
+    draw_step(ax, 0*S, 165*S, 0*S, 100*S, 25*S, 40*S, walnut_top=True)
+
+    # Step 2: 130×100×15mm Z=40..55 centred (X=17.5..147.5)
+    draw_step(ax, 17.5*S, 147.5*S, 0*S, 100*S, 40*S, 55*S, walnut_top=True)
+
+    # Step 3: 95×80×15mm Z=55..70, Y=20..100 setback
+    draw_step(ax, 35*S, 130*S, 20*S, 100*S, 55*S, 70*S, walnut_top=True)
+
+    # ── LED glow on front fascia ─────────────────────────────────────────────
+    for i, (gx, gc) in enumerate([(40*S, C_GLOW_1), (70*S, C_GLOW_2), (100*S, C_GLOW_3),
+                                    (125*S, C_GLOW_A), (140*S, C_GLOW_B)]):
+        px, py = iso(gx, 0*S, 29*S)
+        glow = mpatches.Ellipse((px, py), 0.12, 0.05, facecolor=gc, alpha=0.5, zorder=4)
+        ax.add_patch(glow)
+
+    # ── Device silhouettes ───────────────────────────────────────────────────
+    # Phone on Zone 1 (portrait, centred X=82.5, Y=50, Z=40)
+    draw_device(ax, 82.5*S, 50*S, 40*S, 37*S, 68*S, 5*S, "#2a2a2a", glow_color=C_GLOW_1)
+    # Buds case on Zone 2 (centred X=82.5, Y=50, Z=55)
+    draw_device(ax, 82.5*S, 50*S, 55*S, 45*S, 35*S, 4*S, "#222222", glow_color=C_GLOW_2)
+    # Watch on Zone 3 (centred X=82.5, Y=60, Z=70)
+    draw_device(ax, 82.5*S, 60*S, 70*S, 38*S, 38*S, 4*S, "#1e1e1e", glow_color=C_GLOW_3)
+
+    # ── Rear USB-C ports ─────────────────────────────────────────────────────
+    for px_mm, col in [(120, C_GLOW_A), (140, C_GLOW_B)]:
+        px, py = iso(px_mm*S, 100*S, 15*S)
+        circle = mpatches.Circle((px, py), 0.04, facecolor=col, alpha=0.6, zorder=30)
+        ax.add_patch(circle)
+
+    # ── Labels ───────────────────────────────────────────────────────────────
+    label_data = [
+        (82.5*S, 50*S, 45*S, "① PHONE", "Qi2 20W", C_GLOW_1, -0.5, 0.1),
+        (82.5*S, 50*S, 59*S, "② BUDS", "Qi 5W",  C_GLOW_2, -0.5, 0.1),
+        (82.5*S, 60*S, 74*S, "③ WATCH", "5W",    C_GLOW_3, -0.4, 0.1),
+        (120*S,  100*S, 22*S, "④ USB-C A", "60W", C_GLOW_A, 0.2,  0.1),
+        (140*S,  100*S, 22*S, "⑤ USB-C B", "30W", C_GLOW_B, 0.2, -0.1),
     ]
+    for lx, ly, lz, text, watts, col, ox, oy in label_data:
+        px, py = iso(lx, ly, lz)
+        epx, epy = px + ox, py + oy
+        ax.annotate("", xy=(px, py), xytext=(epx, epy),
+                    arrowprops=dict(arrowstyle="-", color=col, lw=0.7), zorder=50)
+        ax.text(epx, epy, f"{text}  {watts}", color=col, fontsize=6.5,
+                va="center", ha="left" if ox > 0 else "right",
+                fontfamily="monospace", zorder=51)
 
-    for (x0, x1, y0, y1, sz) in steps:
-        draw_poly(ax, [(x0, y0, BH + sz), (x1, y0, BH + sz), (x1, y1, BH + sz), (x0, y1, BH + sz)], C_STEP, zorder=4)
-        draw_poly(ax, [(x0, y0, BH), (x1, y0, BH), (x1, y0, BH + sz), (x0, y0, BH + sz)], "#1e1e1e", zorder=4)
-        draw_poly(ax, [(x1, y0, BH), (x1, y1, BH), (x1, y1, BH + sz), (x1, y0, BH + sz)], "#1c1c1c", zorder=4)
+    # ── Title and price ───────────────────────────────────────────────────────
+    ax.text(0.03, 0.93, "Step", transform=ax.transAxes,
+            color=C_TEXT, fontsize=32, fontweight="bold", va="top", zorder=60)
+    ax.text(0.03, 0.84, "Charge everything. Touch nothing.",
+            transform=ax.transAxes, color=C_LABEL, fontsize=9, va="top", zorder=60)
+    ax.text(0.97, 0.05, "$89", transform=ax.transAxes,
+            color=C_TEXT, fontsize=22, fontweight="bold", va="bottom", ha="right", zorder=60)
 
-    # ── Zone pad surfaces (silicone recesses) ─────────────────────────────────
-    pads = [
-        (-1.6, 1.6, -0.8, 0.8, BH + S1H + 0.02),   # Zone 1 phone on Step 1
-        (-0.9, 0.9, -0.7, 0.7, BH + S2H + 0.02),   # Zone 2 buds/phone on Step 2
-        (-0.6, 0.6, -0.35, 0.65, BH + S3H + 0.02), # Zone 3 watch on Step 3 setback
-    ]
-    pad_colors = [C_BLUE, C_PURPLE, C_GREEN]
-    for (x0, x1, y0, y1, z), pc in zip(pads, pad_colors):
-        # Silicone pad
-        draw_poly(ax, [(x0, y0, z), (x1, y0, z), (x1, y1, z), (x0, y1, z)],
-                  C_SILICONE, zorder=5)
-        # Thin accent border
-        draw_poly(ax, [(x0, y0, z), (x1, y0, z), (x1, y1, z), (x0, y1, z)],
-                  pc, alpha=0.25, zorder=5, ec=pc, lw=1.2)
+    # ── Fit and save ─────────────────────────────────────────────────────────
+    # Centre the isometric view
+    all_xs, all_ys = [], []
+    for x, y, z in [(0, 0, 0), (165*S, 0, 0), (165*S, 100*S, 0), (0, 100*S, 0),
+                    (82.5*S, 60*S, 80*S)]:
+        px, py = iso(x, y, z)
+        all_xs.append(px)
+        all_ys.append(py)
+    cx = (min(all_xs) + max(all_xs)) / 2
+    cy = (min(all_ys) + max(all_ys)) / 2
+    span = max(max(all_xs)-min(all_xs), max(all_ys)-min(all_ys)) * 0.75
+    ax.set_xlim(cx - span, cx + span)
+    ax.set_ylim(cy - span * 0.6, cy + span * 0.9)
 
-    # ── Zone 4 – Laptop slot (LEFT side, tall vertical) ───────────────────────
-    # Tall slot on the left flank of the base
-    LX0, LX1 = -BW/2 - 0.06, -BW/2 + 0.06
-    LY0, LY1 = -1.8, 1.8
-    LZ0, LZ1 = BH, BH + 3.2
-    draw_poly(ax, [(LX0, LY0, LZ0), (LX1, LY0, LZ0),
-                   (LX1, LY0, LZ1), (LX0, LY0, LZ1)],
-              C_ORANGE, alpha=0.85, zorder=6, ec=C_ORANGE, lw=0.8)
-    draw_poly(ax, [(LX1, LY0, LZ0), (LX1, LY1, LZ0),
-                   (LX1, LY1, LZ1), (LX1, LY0, LZ1)],
-              "#3a2000", alpha=0.9, zorder=6)
-    # Interior slot recess
-    draw_poly(ax, [(LX0, LY0, LZ0+0.1), (LX1, LY0, LZ0+0.1),
-                   (LX1, LY1, LZ0+0.1), (LX0, LY1, LZ0+0.1)],
-              C_SILICONE, zorder=6, ec=C_ORANGE, lw=0.6)
-
-    # ── Zone 5 – Tablet slot (RIGHT side, shorter vertical) ───────────────────
-    RX0, RX1 = BW/2 - 0.06, BW/2 + 0.06
-    RY0, RY1 = -1.3, 1.3
-    RZ0, RZ1 = BH, BH + 2.56
-    draw_poly(ax, [(RX0, RY0, RZ0), (RX1, RY0, RZ0),
-                   (RX1, RY0, RZ1), (RX0, RY0, RZ1)],
-              C_BLUE, alpha=0.85, zorder=6, ec=C_BLUE, lw=0.8)
-    draw_poly(ax, [(RX0, RY0, RZ0), (RX0, RY1, RZ0),
-                   (RX0, RY1, RZ1), (RX0, RY0, RZ1)],
-              "#001a33", alpha=0.9, zorder=6)
-    draw_poly(ax, [(RX0, RY0, RZ0+0.1), (RX1, RY0, RZ0+0.1),
-                   (RX1, RY1, RZ0+0.1), (RX0, RY1, RZ0+0.1)],
-              C_SILICONE, zorder=6, ec=C_BLUE, lw=0.6)
-
-    # ── Rear-left IEC inlet indicator (X≈45mm from left edge) ─────────────────
-    iec_x0, iec_x1 = -1.88, -1.32
-    iec_y = BD / 2
-    iec_z0, iec_z1 = 0.55, 1.0
-    draw_poly(ax, [(iec_x0, iec_y, iec_z0), (iec_x1, iec_y, iec_z0),
-                   (iec_x1, iec_y, iec_z1), (iec_x0, iec_y, iec_z1)],
-              C_PURPLE, alpha=0.9, zorder=6, ec=C_PURPLE, lw=0.8)
-
-    # ── LED strip on front fascia ──────────────────────────────────────────────
-    led_colors = [C_BLUE, C_PURPLE, C_GREEN, C_ORANGE, C_BLUE]
-    seg_w = BW / len(led_colors)
-    LED_Y = -BD / 2 - 0.01
-    LED_Z0, LED_Z1 = 0.05, 0.15
-    for i, lc in enumerate(led_colors):
-        x0 = -BW/2 + i * seg_w
-        x1 = x0 + seg_w
-        pts = [(x0, LED_Y, LED_Z0), (x1, LED_Y, LED_Z0),
-               (x1, LED_Y, LED_Z1), (x0, LED_Y, LED_Z1)]
-        glow(ax, pts, lc, layers=4, max_alpha=0.35, zorder=2)
-        draw_poly(ax, pts, lc, alpha=0.9, zorder=7, ec=lc, lw=0.3)
-
-    # ── Zone labels ───────────────────────────────────────────────────────────
-    zone_labels = [
-        (-1.0, -1.35, BH + S1H + 0.05, "PHONE\n20W Qi2", C_BLUE),
-        (0.2, -1.35, BH + S2H + 0.05, "BUDS / PHONE\n20W Qi", C_PURPLE),
-        (1.1, -0.95, BH + S3H + 0.05, "WATCH\n5W", C_GREEN),
-    ]
-    for (xd, yd, zd, label, color) in zone_labels:
-        px, py = iso(xd, yd, zd)
-        ax.text(OX + px, OY + py, label,
-                color=color, fontsize=5.5, ha="center", va="bottom",
-                fontfamily="DejaVu Sans", fontweight="bold",
-                zorder=10, multialignment="center",
-                bbox=dict(boxstyle="round,pad=0.15", fc="#1a1a1a", ec=color,
-                          lw=0.7, alpha=0.88))
-
-    # Zone 4 label (left side)
-    lx4, ly4 = iso(-BW/2 - 0.5, 0, BH + 1.6)
-    ax.text(OX + lx4, OY + ly4, "LAPTOP\n100W USB-C",
-            color=C_ORANGE, fontsize=5.5, ha="center", va="center",
-            fontfamily="DejaVu Sans", fontweight="bold", zorder=10,
-            multialignment="center",
-            bbox=dict(boxstyle="round,pad=0.15", fc="#1a1a1a", ec=C_ORANGE,
-                      lw=0.7, alpha=0.88))
-    # Arrow toward laptop slot
-    ax.annotate("", xy=shift(iso_poly([(-BW/2 + 0.1, 0, BH + 1.6)]))[0],
-                xytext=(OX + lx4, OY + ly4),
-                arrowprops=dict(arrowstyle="-|>", color=C_ORANGE, lw=0.8),
-                zorder=10)
-
-    # Zone 5 label (right side)
-    lx5, ly5 = iso(BW/2 + 0.5, 0, BH + 1.2)
-    ax.text(OX + lx5, OY + ly5, "TABLET\n45W USB-C",
-            color=C_BLUE, fontsize=5.5, ha="center", va="center",
-            fontfamily="DejaVu Sans", fontweight="bold", zorder=10,
-            multialignment="center",
-            bbox=dict(boxstyle="round,pad=0.15", fc="#1a1a1a", ec=C_BLUE,
-                      lw=0.7, alpha=0.88))
-    ax.annotate("", xy=shift(iso_poly([(BW/2 - 0.1, 0, BH + 1.2)]))[0],
-                xytext=(OX + lx5, OY + ly5),
-                arrowprops=dict(arrowstyle="-|>", color=C_BLUE, lw=0.8),
-                zorder=10)
-
-    # ── Title text ────────────────────────────────────────────────────────────
-    ax.text(0.04, 0.93, "PENTA DOCK",
-            transform=ax.transAxes, color=C_WHITE, fontsize=28,
-            fontfamily="DejaVu Sans", fontweight="bold", va="top",
-            zorder=11)
-    ax.text(0.04, 0.84, "One dock. Every device.",
-            transform=ax.transAxes, color=C_GREY, fontsize=13,
-            fontfamily="DejaVu Sans", va="top", zorder=11)
-
-    # ── Bottom text ────────────────────────────────────────────────────────────
-    ax.text(0.97, 0.05, "190W total output",
-            transform=ax.transAxes, color=C_WHITE, fontsize=11,
-            fontfamily="DejaVu Sans", ha="right", va="bottom",
-            fontweight="bold", zorder=11)
-    ax.text(0.03, 0.05, "epitomecharge.com",
-            transform=ax.transAxes, color=C_GREY, fontsize=9,
-            fontfamily="DejaVu Sans", ha="left", va="bottom", zorder=11)
-
-    # ── Save ──────────────────────────────────────────────────────────────────
-    PRIMARY_OUT.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(PRIMARY_OUT, dpi=DPI, facecolor=C_BG, bbox_inches="tight", pad_inches=0)
+    fig.tight_layout(pad=0)
+    fig.savefig(OUT, dpi=100, bbox_inches="tight", facecolor=C_BG)
     plt.close(fig)
-
-    shutil.copy2(PRIMARY_OUT, COMPAT_OUT)
-
-    print(f"✓ Saved assets/penta-dock-render.png (1200×800 px)")
+    print(f"Render saved: {OUT}")
 
 
 if __name__ == "__main__":

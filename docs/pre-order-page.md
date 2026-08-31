@@ -1,111 +1,91 @@
-# Penta Dock — Pre-Order Page Copy
+# Step — Pre-Order Page Copy
 
-> Use this copy for Shopify, Kickstarter, Indiegogo, or a direct pre-order landing page.
-
----
-
-## Headline
-
-**Penta Dock. One dock. Every device.**
+**Platform:** Shopify / Epitome Charge website
 
 ---
 
-## Subheadline
+## Hero Headline
 
-190W total output — laptop, tablet, phone, watch, buds, all at full speed. One IEC cable. Zero clutter.
+# Step
+### Charge everything. Touch nothing.
 
 ---
 
 ## Product Description
 
-### The problem with your desk right now
+Step is a three-zone wireless charging stand handcrafted from walnut and matte black ABS. Phone, earbuds, and watch — all wireless, all at once. Two USB-C PD ports on the rear handle everything else.
 
-Too many chargers, too many bricks, too many loose cables.
-
-**Penta Dock replaces that with one premium dock and one wall cable.**
+One cable. One brick. No mess.
 
 ---
 
-### What it is
+## Zone Features
 
-Penta Dock is a 5-zone charging dock designed for **all Qi phones**, **all USB-C laptops/tablets**, and **all Qi-enabled watches** (plus direct Apple Watch puck support).
+**① Phone — Qi2 20W**
+Full-speed MagSafe-compatible wireless charging for iPhone 13 and later. Backwards compatible with all Qi phones.
 
-| Zone | What it charges | How |
-|---|---|---|
-| Zone 1 | Phone | **20W Qi2** on Step 1, recessed 1mm dish, N52 magnetic alignment |
-| Zone 2 | Buds or second phone | 20W Qi Step 2 pad (90×70mm dish) |
-| Zone 3 | Watch | Apple Watch puck + Qi coil (5W, hardware relay) |
-| Zone 4 | USB-C laptop | Captive braided USB-C cable, 100W (220mm, 90° dock-end) |
-| Zone 5 | USB-C tablet/phone | Captive braided USB-C cable, 45W (200mm, 65W rated, 90° dock-end) |
+**② Earbuds — Qi 5W**
+Standard wireless charging for AirPods, Galaxy Buds, and any other Qi-compatible case. Sets back on its own step so you can reach it easily.
 
----
+**③ Watch — 5W Apple + Qi**
+Magnetic puck for Apple Watch. Universal Qi coil for Qi-compatible watches. Hardware-switched — no conflict, no guessing.
 
-### Built different
+**④ USB-C Port A — 60W**
+60W USB-C PD. Fast-charge a MacBook, iPad, or any USB-C device. Bring your own cable — plug it in once at setup and leave it.
 
-- **3-step tapered charging theatre:** dedicated phone, buds, and watch zones
-- **Captive slot cables** hang from top of each slot — device slides in on thin edge and plugs in naturally
-- **90° angled dock-end connectors** with silicone strain relief boots at exit
-- **Microfibre lining** on laptop and tablet slot inner walls
-- **Compact footprint:** ~250mm wide × ~100mm deep × ~100mm tall — fits any desk
-- **Universal watch support:** Apple puck + Qi coil in one cradle
-- **Right-angle IEC C13 inlet** keeps rear cable routing clean
-- **ATtiny85 LED logic** — per-zone status LEDs, no app required
+**⑤ USB-C Port B — 30W**
+30W USB-C PD. Secondary wired port for anything else.
 
 ---
 
-### Dimensions
+## Bring Your Own Cables
 
-- **Penta Standard:** ~250mm wide × ~100mm deep × ~100mm tall
-- Laptop slot: **400mm long × 35mm wide**, device on thin edge
-- Tablet slot: **290mm long × 20mm wide**, device on thin edge
-- Centre stack: three 15mm steps over a raised PSU cavity, **95mm total centre-column height**, tapered 180mm → 140mm → 100mm
+Step doesn't include USB-C cables for the rear ports. You probably already have the cables you want. Plug them in once at desk setup and forget them.
 
 ---
 
-## Pricing
+## What's in the Box
 
-| SKU | Price |
-|---|---:|
-| **Penta Standard** | **$249** |
-
-> $249 flat pre-order price. Shipping calculated at checkout — customer pays actual shipping at time of purchase.
-
----
-
-## FAQ
-
-**Does it work with Android?**
-Yes. Qi2/Qi pads support all Qi phones/earbuds, slots support all USB-C laptops/tablets, and Zone 3 supports Qi-enabled watches plus Apple Watch puck charging.
-
-**Does it still support Apple Watch magnetic charging?**
-Yes. Zone 3 keeps the Apple magnetic puck and adds Qi support in the same cradle via hardware relay.
-
-**Why captive cables in the slots?**
-Device slides in on its thin edge and the cable hanging from the top of the slot plugs in naturally. No blind port hunting, no loose cables, no damage risk. 90° angled connectors and strain relief boots protect both the cable and the device port.
-
-**Is there an XL version?**
-Yes, the XL is planned for Batch 2 and will accommodate laptops up to 17" class with a wider dock footprint (~320mm). Batch 1 is Standard SKU only.
-
-**Does it need a companion app?**
-No. Penta Dock works fully standalone. ATtiny85 handles LED logic on-device. App is a Batch 2+ consideration.
-
-**What about free shipping?**
-Shipping is not included in the price. Customer pays actual shipping at checkout via Shopify — you pay exactly what it costs to ship to your address.
+- Step charging stand
+- 65W USB-C power brick
+- USB-C to barrel adapter cable (1m)
+- Setup card
 
 ---
 
-## Pre-Order Legal Terms Note
+## Specs
 
-Before launch, publish legally reviewed pre-order Terms & Conditions on epitomecharge.com.
+| Feature | Detail |
+|---|---|
+| Dimensions | 165 × 100 × 70mm |
+| Zone 1 (phone) | Qi2 20W, 75×90mm portrait pad |
+| Zone 2 (buds) | Qi 5W, 65×50mm pad |
+| Zone 3 (watch) | Apple Watch puck + Qi 5W |
+| USB-C Port A | 60W PD |
+| USB-C Port B | 30W PD |
+| Power input | 65W USB-C brick (included) |
+| Materials | Walnut + matte black ABS |
+| Finish | Rubio Monocoat oiled walnut |
+| LED indicator | Front fascia, 5-zone colour-coded |
 
 ---
 
-## Closing Line
+## Price
 
-**Your setup is universal. Your dock should be too.**
-
-[Pre-order Penta Dock Standard — $249 + shipping]
+**$89**
 
 ---
 
-*By GJATHASEnterprises · epitomecharge.com*
+## Pre-Order CTA
+
+### [Pre-Order Now — $89]
+
+Ships in [insert date]. Batch 1 is limited to 10 units.
+
+Built by hand in Chicago.
+
+---
+
+## Footer Line
+
+*epitomecharge.com*

@@ -1,61 +1,66 @@
-# Generating the Penta Dock Renders and Product Sheet
+# Step — Render & Asset Generation Guide
 
-## Running All 4 Scripts
+All assets are generated using Python scripts with matplotlib and numpy. No Blender required.
+
+---
+
+## Scripts and Outputs
+
+| Script | Output | Purpose |
+|---|---|---|
+| `generate_render.py` | `assets/step-render.png` | Marketing render, dark background |
+| `generate_product_sheet.py` | `assets/step-product-sheet.png` | Two-panel product sheet |
+| `generate_image.py` | `assets/step-hero.png` | Hero product image, light background |
+| `generate_3d_model.py` | `assets/step-top-view.dxf` | DXF top-view layout |
+
+---
+
+## Running Scripts
 
 ```bash
-cd scripts
-pip install -r requirements.txt
-python generate_3d_model.py
-python generate_render.py
-python generate_product_sheet.py
-python generate_image.py
+cd /path/to/repo
+
+# Marketing render (1200×800px dark)
+python scripts/generate_render.py
+
+# Hero product image (1200×800px light)
+python scripts/generate_image.py
+
+# Product sheet (1200×800px, two-panel)
+python scripts/generate_product_sheet.py
+
+# DXF top view + geometry summary
+python scripts/generate_3d_model.py
 ```
 
-> **Note:** `generate_render.py` requires Blender. Run it with:
-> ```bash
-> blender --background --python scripts/generate_render.py
-> ```
-> The other three scripts (`generate_3d_model.py`, `generate_product_sheet.py`, `generate_image.py`) run with plain Python — no Blender required.
+---
 
-## Outputs
+## Dependencies
 
-All outputs appear in the `/output` folder (or `/assets/` for PNG renders and `/assets/export/` for STL/DXF):
+```
+matplotlib
+numpy
+```
 
-| Script | Output |
-|---|---|
-| `generate_render.py` | `assets/penta-dock-render.png` |
-| `generate_product_sheet.py` | `assets/penta-dock-product-sheet.png` |
-| `generate_image.py` | `assets/penta-dock-hero.png` |
-| `generate_3d_model.py` | `assets/export/penta-dock-base.stl`, `penta-dock-top-plate.dxf`, etc. |
+Install: `pip install matplotlib numpy`
 
-## What to Do With the Outputs
+See `scripts/requirements.txt` for pinned versions.
 
-- **penta-dock-render.png** — High-quality Blender render. Use for README header and marketing materials.
-- **penta-dock-product-sheet.png** — Technical product sheet. Use for social media posts and pre-order page.
-- **penta-dock-hero.png** — Lightweight isometric image. Use for quick social media posts.
-- **penta-dock-top-plate.dxf** — Laser cutting reference. Load in Inkscape or send to Pumping Station One.
-- **STL files** — 3D print reference geometry. Load in Bambu Studio or PrusaSlicer.
+---
 
-## Blender Render Details
+## Asset Descriptions
 
-- **Command:** `blender --background --python scripts/generate_render.py`
-- **Output:** `assets/penta-dock-render.png`
-- **Expected Runtime:** CPU-only: typically 45–180 minutes
+- **step-render.png** — Isometric marketing render. Dark background (#111111). Shows three-step dock with device silhouettes and zone colour glows. Use for README header and product listings.
+- **step-product-sheet.png** — Two-panel product sheet. Left panel: isometric dock render. Right panel: spec panel with zone list and pricing. Use for social media and pre-order page.
+- **step-hero.png** — Clean isometric view, light grey background. No text labels. Use for Etsy and Shopify product photos.
+- **step-top-view.dxf** — DXF top-view drawing with step outlines, zone pads, and port positions. Load in Inkscape or send to laser cutter as layout reference.
 
-## Scene Contents (generate_render.py)
+---
 
-- 3-step staircase geometry with Zone 4 laptop slot on left, Zone 5 tablet slot on right
-- Zone labels: PHONE 20W Qi2, BUDS/PHONE 20W Qi, WATCH 5W, LAPTOP 100W USB-C, TABLET 45W USB-C
-- Total output annotation: 190W
-- LED strip: per-zone colours (Zone 1 blue, Zone 2 purple, Zone 3 green, Zone 4 orange, Zone 5 blue)
-- Colour scheme: matte black / Obsidian
-- Title: "Penta Dock" and "One dock. Every device."
+## Coordinate System (Scripts)
 
-Coordinate source of truth: [component-positions.md](component-positions.md)
-
-## Troubleshooting
-
-- **ModuleNotFoundError:** Run `pip install [module name]` for the missing module, or run `pip install -r scripts/requirements.txt` to install all dependencies.
-- **Blender not found:** Install Blender from blender.org and ensure `blender` is in your PATH.
-- **ezdxf unavailable:** DXF/SVG export will be skipped with a warning. Install with `pip install ezdxf`.
-- **Output folder missing:** The scripts create the output directory automatically. If you see a permissions error, ensure you have write access to the `assets/` directory.
+All scripts use the same coordinate system as the design spec:
+- X=0 left edge, X=165 right edge
+- Y=0 front, Y=100 rear
+- Z=0 base floor, up = +Z
+- Scale factor S=0.025 in scripts (mm → figure units)

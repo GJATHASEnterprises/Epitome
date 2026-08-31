@@ -1,368 +1,215 @@
-#!/usr/bin/env python3
-"""Generate visual-reference STL/DXF/SVG exports for the Penta Dock.
-
-All geometry is generated from watertight trimesh primitives and concatenation.
 """
-from __future__ import annotations
+generate_3d_model.py — Step 3D model generator
 
-import math
-import shutil
-import subprocess
-import sys
-from pathlib import Path
+Generates:
+  - DXF top-view layout (assets/step-top-view.dxf)
+  - ASCII geometry summary
 
+Coordinate system:
+  X=0 left, X=165 right, centred at X=82.5
+  Y=0 front, Y=100 rear
+  Z=0 base floor, up = +Z
 
-def _ensure_deps() -> None:
-    """Auto-install required packages if missing."""
-    for pkg in ["trimesh", "numpy"]:
-        try:
-            __import__(pkg)
-        except ImportError:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg, "-q"])
+Dimensions (mm):
+  Base plate:  165 × 100 × 3    (Z=0  to Z=3)
+  Riser:       165 × 100 × 22   (Z=3  to Z=25)
+  Step 1:      165 × 100 × 15   (Z=25 to Z=40)  top surface Z=40
+  Step 2:      130 × 100 × 15   (Z=40 to Z=55)  top surface Z=55
+  Step 3:       95 ×  80 × 15   (Z=55 to Z=70)  top surface Z=70, Y=20 to Y=100
+"""
 
-    try:
-        import ezdxf  # noqa: F401
-    except ImportError:
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "ezdxf", "-q"])
-        except Exception:
-            pass
+import os
 
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-_ensure_deps()
+# ---------------------------------------------------------------------------
+# Geometry definitions
+# ---------------------------------------------------------------------------
 
-import numpy as np  # noqa: E402
-import trimesh  # noqa: E402
-
-try:
-    import ezdxf  # type: ignore  # noqa: E402
-except Exception:
-    ezdxf = None
-
-
-ROOT = Path(__file__).resolve().parents[1]
-EXPORT_DIR = ROOT / "assets" / "export"
-
-STL_BASE = EXPORT_DIR / "penta-dock-base.stl"
-STL_INTERIOR = EXPORT_DIR / "penta-dock-base-interior.stl"
-STL_TOP = EXPORT_DIR / "penta-dock-top-plate.stl"
-STL_FULL = EXPORT_DIR / "penta-dock-full-assembly.stl"
-DXF_TOP = EXPORT_DIR / "penta-dock-top-plate.dxf"
-SVG_TOP = EXPORT_DIR / "penta-dock-top-plate.svg"
-
-# Backwards-compat copies under old quad-dock-* names
-_COMPAT = {
-    STL_BASE:     EXPORT_DIR / "quad-dock-base.stl",
-    STL_INTERIOR: EXPORT_DIR / "quad-dock-base-interior.stl",
-    STL_TOP:      EXPORT_DIR / "quad-dock-top-plate.stl",
-    STL_FULL:     EXPORT_DIR / "quad-dock-full-assembly.stl",
-    DXF_TOP:      EXPORT_DIR / "quad-dock-top-plate.dxf",
-    SVG_TOP:      EXPORT_DIR / "quad-dock-top-plate.svg",
+BODIES = {
+    "base_plate": {
+        "x": 0, "y": 0, "z": 0,
+        "w": 165, "d": 100, "h": 3,
+        "desc": "Base plate",
+    },
+    "riser": {
+        "x": 0, "y": 0, "z": 3,
+        "w": 165, "d": 100, "h": 22,
+        "desc": "Riser / wiring cavity",
+    },
+    "step1": {
+        "x": 0, "y": 0, "z": 25,
+        "w": 165, "d": 100, "h": 15,
+        "desc": "Step 1 (phone) — top surface Z=40",
+    },
+    "step2": {
+        "x": 17.5, "y": 0, "z": 40,
+        "w": 130, "d": 100, "h": 15,
+        "desc": "Step 2 (buds) — top surface Z=55",
+    },
+    "step3": {
+        "x": 35, "y": 20, "z": 55,
+        "w": 95, "d": 80, "h": 15,
+        "desc": "Step 3 (watch) — top surface Z=70, setback Y=20",
+    },
 }
 
-# New dock geometry — compact rectangular design
-DOCK_W = 250.0
-DOCK_D = 100.0
-WALL_T = 3.0
+ZONES = {
+    "zone1_phone": {
+        "cx": 82.5, "cy": 50, "z": 40,
+        "w": 75, "d": 90,
+        "desc": "Zone 1 phone pad (Qi2 20W) — portrait 75×90mm",
+    },
+    "zone2_buds": {
+        "cx": 82.5, "cy": 50, "z": 55,
+        "w": 65, "d": 50,
+        "desc": "Zone 2 buds pad (Qi 5W) — 65×50mm",
+    },
+    "zone3_watch": {
+        "cx": 82.5, "cy": 60, "z": 70,
+        "w": 55, "d": 55,
+        "desc": "Zone 3 watch cradle — 55×55mm",
+    },
+}
 
-# Slot dimensions
-LAPTOP_SLOT_W = 35.0
-LAPTOP_SLOT_L = 400.0
-LAPTOP_SLOT_H = 95.0
-TABLET_SLOT_W = 20.0
-TABLET_SLOT_L = 290.0
-TABLET_SLOT_H = 80.0
+PORTS = {
+    "dc_jack":  {"x": 40,  "y": 100, "z": 15, "r": 5.5, "desc": "DC barrel jack inlet"},
+    "usbc_a":   {"x": 120, "y": 100, "z": 15, "r": 5.0, "desc": "USB-C Port A (60W)"},
+    "usbc_b":   {"x": 140, "y": 100, "z": 15, "r": 5.0, "desc": "USB-C Port B (30W)"},
+}
 
-# Centre platform
-PLATFORM_W = 180.0
-PLATFORM_D = 110.0
-RISER_H = 50.0
-STEP_H = 15.0
-# Legacy per-step width delta (180→140→100); steps now rise front-to-back via Y setback.
-STEP_TAPER = 40.0
-
-# PSU cavity
-PSU_W = 199.0
-PSU_D = 98.0
-PSU_H = 30.0
-
-# Rear rail and front fascia
-REAR_RAIL_H = 25.0
-FASCIA_H = 20.0
-CORNER_R = 10.0
-
-# Base and detailing
-BASE_T = 3.0
-FRONT_STRIP_D = 3.0
-REAR_STRIP_D = 3.0
-M3_HOLE_R = 1.6
+LED_DIFFUSER = {
+    "x": 17.5, "y": 0, "z": 27,
+    "w": 130, "h": 8,
+    "desc": "LED diffuser slot — front fascia, 130×8mm",
+}
 
 
 # ---------------------------------------------------------------------------
-# Primitive helpers
+# DXF writer (minimal, no external deps)
 # ---------------------------------------------------------------------------
 
-def _box(center: tuple[float, float, float], size: tuple[float, float, float]) -> trimesh.Trimesh:
-    mesh = trimesh.creation.box(extents=size)
-    mesh.apply_translation(center)
-    return mesh
+def dxf_header():
+    return "0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1009\n0\nENDSEC\n"
 
+def dxf_entities_start():
+    return "0\nSECTION\n2\nENTITIES\n"
 
-def _cyl(radius: float, height: float, center: tuple[float, float, float], sections: int = 48) -> trimesh.Trimesh:
-    mesh = trimesh.creation.cylinder(radius=radius, height=height, sections=sections)
-    mesh.apply_translation(center)
-    return mesh
+def dxf_entities_end():
+    return "0\nENDSEC\n0\nEOF\n"
 
-
-def _rounded_plate(w: float, d: float, t: float, r: float) -> trimesh.Trimesh:
-    """Rounded rectangle from overlapping watertight primitives (no booleans)."""
-    parts = [
-        _box((w / 2.0, d / 2.0, t / 2.0), (w - 2.0 * r, d, t)),
-        _box((w / 2.0, d / 2.0, t / 2.0), (w, d - 2.0 * r, t)),
+def dxf_rect(x, y, w, d, layer="0", color=7):
+    """Draw a rectangle as 4 LINE entities in DXF."""
+    lines = []
+    corners = [
+        (x, y), (x+w, y), (x+w, y+d), (x, y+d), (x, y)
     ]
-    for cx, cy in [
-        (r, r),
-        (w - r, r),
-        (w - r, d - r),
-        (r, d - r),
-    ]:
-        parts.append(_cyl(r, t, (cx, cy, t / 2.0), sections=40))
-    return trimesh.util.concatenate(parts)
+    for i in range(4):
+        x1, y1 = corners[i]
+        x2, y2 = corners[i+1]
+        lines.append(
+            f"0\nLINE\n8\n{layer}\n62\n{color}\n"
+            f"10\n{x1:.3f}\n20\n{y1:.3f}\n30\n0.0\n"
+            f"11\n{x2:.3f}\n21\n{y2:.3f}\n31\n0.0\n"
+        )
+    return "".join(lines)
 
-
-def _u_slot(x0: float, x1: float, y0: float, y1: float, h: float, wall_t: float) -> trimesh.Trimesh:
-    """Create a U-channel slot: bottom + two side walls + rear wall (front and top open)."""
-    w = x1 - x0
-    d = y1 - y0
-    parts = []
-
-    # Floor liner
-    parts.append(_box(((x0 + x1) / 2.0, (y0 + y1) / 2.0, BASE_T + wall_t / 2.0), (w, d, wall_t)))
-
-    wall_h = max(0.0, h - BASE_T)
-    zc = BASE_T + wall_h / 2.0
-
-    # Left wall
-    parts.append(_box((x0 + wall_t / 2.0, (y0 + y1) / 2.0, zc), (wall_t, d, wall_h)))
-    # Right wall
-    parts.append(_box((x1 - wall_t / 2.0, (y0 + y1) / 2.0, zc), (wall_t, d, wall_h)))
-    # Rear wall
-    parts.append(_box(((x0 + x1) / 2.0, y1 - wall_t / 2.0, zc), (w, wall_t, wall_h)))
-
-    return trimesh.util.concatenate(parts)
-
-
-# ---------------------------------------------------------------------------
-# Geometry builders
-# ---------------------------------------------------------------------------
-
-def build_base() -> trimesh.Trimesh:
-    parts = [_rounded_plate(DOCK_W, DOCK_D, BASE_T, CORNER_R)]
-
-    # Front fascia strip (full width, low strip at front)
-    parts.append(
-        _box((DOCK_W / 2.0, FRONT_STRIP_D / 2.0, FASCIA_H / 2.0), (DOCK_W, FRONT_STRIP_D, FASCIA_H))
+def dxf_circle(cx, cy, r, layer="0", color=3):
+    return (
+        f"0\nCIRCLE\n8\n{layer}\n62\n{color}\n"
+        f"10\n{cx:.3f}\n20\n{cy:.3f}\n30\n0.0\n"
+        f"40\n{r:.3f}\n"
     )
 
-    # Rear rail (full width, low rail at rear)
-    parts.append(
-        _box((DOCK_W / 2.0, DOCK_D - REAR_STRIP_D / 2.0, REAR_RAIL_H / 2.0), (DOCK_W, REAR_STRIP_D, REAR_RAIL_H))
+def dxf_text(x, y, text, height=4, layer="0", color=7):
+    return (
+        f"0\nTEXT\n8\n{layer}\n62\n{color}\n"
+        f"10\n{x:.3f}\n20\n{y:.3f}\n30\n0.0\n"
+        f"40\n{height:.1f}\n1\n{text}\n"
     )
-    return trimesh.util.concatenate(parts)
 
 
-def build_interior_features() -> trimesh.Trimesh:
-    parts: list[trimesh.Trimesh] = []
+def generate_dxf():
+    dxf = dxf_header() + dxf_entities_start()
 
-    laptop_slot_d = min(DOCK_D - 10.0, LAPTOP_SLOT_L)   # 90 mm rendered depth, 400 mm device-length reference
-    tablet_slot_d = min(DOCK_D - 30.0, TABLET_SLOT_L)   # 70 mm rendered depth, 290 mm device-length reference
+    # Step outlines (top-view footprints)
+    # Color coding: 7=white, 3=green, 5=blue, 6=magenta, 4=cyan
+    for name, b in BODIES.items():
+        color = {"base_plate": 8, "riser": 8, "step1": 7, "step2": 5, "step3": 3}.get(name, 7)
+        dxf += dxf_rect(b["x"], b["y"], b["w"], b["d"], layer=name, color=color)
+        mid_x = b["x"] + b["w"] / 2
+        mid_y = b["y"] + b["d"] / 2
+        dxf += dxf_text(mid_x - 15, mid_y, name.upper(), height=3, layer=name, color=color)
 
-    # Left laptop slot box 35×90×95
-    parts.append(_u_slot(0.0, LAPTOP_SLOT_W, 5.0, 5.0 + laptop_slot_d, LAPTOP_SLOT_H, WALL_T))
+    # Zone pads
+    for name, z in ZONES.items():
+        x0 = z["cx"] - z["w"] / 2
+        y0 = z["cy"] - z["d"] / 2
+        dxf += dxf_rect(x0, y0, z["w"], z["d"], layer="zones", color=1)
+        dxf += dxf_text(x0 + 2, y0 + 2, name, height=2.5, layer="zones", color=1)
 
-    # Right tablet slot box 20×70×75
-    parts.append(_u_slot(DOCK_W - TABLET_SLOT_W, DOCK_W, 15.0, 15.0 + tablet_slot_d, TABLET_SLOT_H, WALL_T))
+    # Rear ports (circles at Y=100 edge)
+    for name, p in PORTS.items():
+        dxf += dxf_circle(p["x"], p["y"], p["r"], layer="ports", color=6)
+        dxf += dxf_text(p["x"] - 5, p["y"] - 8, name, height=2.5, layer="ports", color=6)
 
-    # PSU reference volume (offset toward laptop side): X=4..203, Y=1..99, Z=3..33
-    psu_cx = 103.0
-    psu_cy = 49.0
-    parts.append(_box((psu_cx, psu_cy, BASE_T + PSU_H / 2.0), (PSU_W, PSU_D, PSU_H)))
+    # LED diffuser slot
+    ld = LED_DIFFUSER
+    dxf += dxf_rect(ld["x"], ld["y"], ld["w"], 2, layer="led_diffuser", color=4)
+    dxf += dxf_text(ld["x"] + 5, ld["y"] + 3, "LED DIFFUSER", height=2.5, layer="led_diffuser", color=4)
 
-    # Riser base + 3-step platform, rising front-to-back (Y axis)
-    step1_cx = DOCK_W / 2.0
-    step1_cy = 50.0
-    step1_d = min(100.0, DOCK_D)
-    parts.append(_box((step1_cx, step1_cy, RISER_H / 2.0), (180.0, step1_d, RISER_H)))
-    parts.append(_box((step1_cx, step1_cy, RISER_H + STEP_H / 2.0), (180.0, step1_d, STEP_H)))
-
-    step2_cy = 50.0
-    parts.append(_box((step1_cx, step2_cy, RISER_H + STEP_H + STEP_H / 2.0), (140.0, 100.0, STEP_H)))
-
-    step3_cy = 60.0  # Y=20..100
-    parts.append(_box((step1_cx, step3_cy, RISER_H + 2.0 * STEP_H + STEP_H / 2.0), (100.0, 80.0, STEP_H)))
-
-    return trimesh.util.concatenate(parts)
-
-
-def build_top_plate() -> trimesh.Trimesh:
-    """Top-surface features STL (kept output path for compatibility)."""
-    parts: list[trimesh.Trimesh] = []
-
-    # Watch cradle pod as a raised oval on step 3
-    pod = trimesh.creation.icosphere(subdivisions=2, radius=1.0)
-    pod.apply_scale([25.0, 17.5, 4.0])
-    pod.apply_translation([DOCK_W / 2.0, 60.0, RISER_H + 3.0 * STEP_H + 4.0])
-    parts.append(pod)
-
-    # Silicone pad guides (thin raised references)
-    parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + STEP_H + 0.4), (160.0, 90.0, 0.8)))
-    parts.append(_box((DOCK_W / 2.0, 50.0, RISER_H + 2.0 * STEP_H + 0.4), (90.0, 70.0, 0.8)))
-
-    # Slot cable grommet collars (top cap references)
-    parts.append(_cyl(4.0, 2.0, (LAPTOP_SLOT_W / 2.0, 84.0, LAPTOP_SLOT_H + 1.0), sections=30))
-    parts.append(_cyl(3.5, 2.0, (DOCK_W - TABLET_SLOT_W / 2.0, 74.0, TABLET_SLOT_H + 1.0), sections=30))
-
-    return trimesh.util.concatenate(parts)
+    dxf += dxf_entities_end()
+    return dxf
 
 
-def write_top_plate_dxf_and_svg() -> None:
-    if ezdxf is None:
-        print("[warn] ezdxf unavailable; skipping DXF/SVG export")
-        return
+def print_geometry_summary():
+    print("=" * 60)
+    print("STEP — Geometry Summary")
+    print("=" * 60)
+    for name, b in BODIES.items():
+        print(f"\n{name.upper()}: {b['desc']}")
+        print(f"  Origin:     X={b['x']}, Y={b['y']}, Z={b['z']}")
+        print(f"  Size:       {b['w']}W × {b['d']}D × {b['h']}H mm")
+        print(f"  Top face Z: {b['z'] + b['h']}")
 
-    doc = ezdxf.new("R2018")
-    msp = doc.modelspace()
-    layers = {
-        "OUTLINE": 7,
-        "OPENINGS": 1,
-        "STEPS": 5,
-        "HOLES": 3,
-        "ANNOTATIONS": 4,
-        "CENTER": 8,
-        "TITLE": 6,
-    }
-    for name, color in layers.items():
-        if name not in doc.layers:
-            doc.layers.new(name, dxfattribs={"color": color})
+    print("\n" + "=" * 60)
+    print("CHARGING ZONES")
+    print("=" * 60)
+    for name, z in ZONES.items():
+        print(f"\n{name.upper()}: {z['desc']}")
+        print(f"  Centre:  X={z['cx']}, Y={z['cy']}, Z={z['z']}")
+        print(f"  Size:    {z['w']} × {z['d']} mm")
 
-    # Outer rectangle
-    outline = [(0, 0), (DOCK_W, 0), (DOCK_W, DOCK_D), (0, DOCK_D), (0, 0)]
-    msp.add_lwpolyline(outline, dxfattribs={"layer": "OUTLINE"})
+    print("\n" + "=" * 60)
+    print("REAR PORTS")
+    print("=" * 60)
+    for name, p in PORTS.items():
+        print(f"  {name}: X={p['x']}, Y={p['y']}, Z={p['z']} — {p['desc']}")
 
-    # Slot openings (top-view references)
-    msp.add_lwpolyline([(0, 5), (LAPTOP_SLOT_W, 5), (LAPTOP_SLOT_W, 95), (0, 95), (0, 5)], dxfattribs={"layer": "OPENINGS"})
-    msp.add_lwpolyline([
-        (DOCK_W - TABLET_SLOT_W, 15),
-        (DOCK_W, 15),
-        (DOCK_W, 85),
-        (DOCK_W - TABLET_SLOT_W, 85),
-        (DOCK_W - TABLET_SLOT_W, 15),
-    ], dxfattribs={"layer": "OPENINGS"})
-
-    # Step outlines
-    c = DOCK_W / 2.0
-    step1 = [(c - 90, 0), (c + 90, 0), (c + 90, 100), (c - 90, 100), (c - 90, 0)]
-    step2 = [(c - 70, 0), (c + 70, 0), (c + 70, 100), (c - 70, 100), (c - 70, 0)]
-    step3 = [(c - 50, 20), (c + 50, 20), (c + 50, 100), (c - 50, 100), (c - 50, 20)]
-    msp.add_lwpolyline(step1, dxfattribs={"layer": "STEPS"})
-    msp.add_lwpolyline(step2, dxfattribs={"layer": "STEPS"})
-    msp.add_lwpolyline(step3, dxfattribs={"layer": "STEPS"})
-
-    # IEC C13 cutout on rear rail (28×20, rear-left)
-    iec_x0 = 31.0
-    iec_x1 = 59.0
-    msp.add_lwpolyline([(iec_x0, 80), (iec_x1, 80), (iec_x1, 100), (iec_x0, 100), (iec_x0, 80)], dxfattribs={"layer": "OPENINGS"})
-
-    # Cable grommet holes
-    msp.add_circle(center=(LAPTOP_SLOT_W / 2.0, 84.0), radius=4.0, dxfattribs={"layer": "HOLES"})
-    msp.add_circle(center=(DOCK_W - TABLET_SLOT_W / 2.0, 74.0), radius=3.5, dxfattribs={"layer": "HOLES"})
-
-    # M3 mounting holes
-    m3_pts = [(18.0, 18.0), (DOCK_W - 18.0, 18.0), (18.0, DOCK_D - 18.0), (DOCK_W - 18.0, DOCK_D - 18.0)]
-    for x, y in m3_pts:
-        msp.add_circle(center=(x, y), radius=M3_HOLE_R, dxfattribs={"layer": "HOLES"})
-
-    # Dimension/center annotations
-    msp.add_line((DOCK_W / 2.0, -12), (DOCK_W / 2.0, DOCK_D + 12), dxfattribs={"layer": "CENTER"})
-    msp.add_line((-12, DOCK_D / 2.0), (DOCK_W + 12, DOCK_D / 2.0), dxfattribs={"layer": "CENTER"})
-    msp.add_text("250.0 mm overall width", dxfattribs={"height": 3.8, "layer": "ANNOTATIONS"}).set_placement((80, -16))
-    msp.add_text("100.0 mm overall depth", dxfattribs={"height": 3.8, "layer": "ANNOTATIONS"}).set_placement((DOCK_W + 8, 45))
-    msp.add_text("L Slot 35 mm", dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"}).set_placement((4, 2))
-    msp.add_text("R Slot 20mm wide · 80mm wall", dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"}).set_placement((DOCK_W - 38, 2))
-    msp.add_text(
-        "Step widths: 180/140/100mm · Zone 2 dish 90×70mm · Tablet wall 80mm",
-        dxfattribs={"height": 3.2, "layer": "ANNOTATIONS"},
-    ).set_placement((20, 108))
-
-    # Title block (updated)
-    tx = DOCK_W + 24
-    ty = 96
-    title_lines = [
-        "PENTA DOCK TOP VIEW",
-        "Material: Full ABS (Matte Black)",
-        "Outer: 250 x 100 mm | Corner R10",
-        "IEC C13 cutout: 28 x 20 mm rear-left (X=45 mm center)",
-        "M3 mounting holes and slot grommets shown",
-        "Rev: 2.0 | Date: 2026-08-25",
-    ]
-    for i, line in enumerate(title_lines):
-        msp.add_text(line, dxfattribs={"height": 3.4, "layer": "TITLE"}).set_placement((tx, ty - i * 6))
-
-    doc.saveas(DXF_TOP)
-
-    # Simple SVG companion
-    svg = [
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -30 390 180" width="390mm" height="180mm">',
-        '<rect x="-20" y="-30" width="390" height="180" fill="white"/>',
-        f'<rect x="0" y="0" width="{DOCK_W}" height="{DOCK_D}" fill="none" stroke="black" stroke-width="0.8"/>',
-        f'<rect x="0" y="5" width="{LAPTOP_SLOT_W}" height="90" fill="none" stroke="red" stroke-width="0.6"/>',
-        f'<rect x="{DOCK_W - TABLET_SLOT_W}" y="15" width="{TABLET_SLOT_W}" height="70" fill="none" stroke="red" stroke-width="0.6"/>',
-        f'<rect x="{DOCK_W / 2.0 - 90}" y="0" width="180" height="100" fill="none" stroke="blue" stroke-width="0.5"/>',
-        f'<rect x="{DOCK_W / 2.0 - 70}" y="0" width="140" height="100" fill="none" stroke="blue" stroke-width="0.5"/>',
-        f'<rect x="{DOCK_W / 2.0 - 50}" y="20" width="100" height="80" fill="none" stroke="blue" stroke-width="0.5"/>',
-        '<rect x="31" y="80" width="28" height="20" fill="none" stroke="purple" stroke-width="0.6"/>',
-        '</svg>',
-    ]
-    SVG_TOP.write_text("\n".join(svg), encoding="utf-8")
-
-
-def kb(path: Path) -> int:
-    return int(round(path.stat().st_size / 1024.0)) if path.exists() else 0
-
-
-def main() -> None:
-    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
-
-    base = build_base()
-    interior = build_interior_features()
-    top = build_top_plate()
-    full = trimesh.util.concatenate([base, interior, top])
-
-    base.export(STL_BASE)
-    interior.export(STL_INTERIOR)
-    top.export(STL_TOP)
-    full.export(STL_FULL)
-
-    write_top_plate_dxf_and_svg()
-
-    print(f"✓ Base STL        : {STL_BASE.relative_to(ROOT)}           ({kb(STL_BASE)} KB)")
-    print(f"✓ Interior STL    : {STL_INTERIOR.relative_to(ROOT)}  ({kb(STL_INTERIOR)} KB)")
-    print(f"✓ Top Plate STL   : {STL_TOP.relative_to(ROOT)}      ({kb(STL_TOP)} KB)")
-    if DXF_TOP.exists():
-        print(f"✓ Top Plate DXF   : {DXF_TOP.relative_to(ROOT)}      ({kb(DXF_TOP)} KB)")
-    else:
-        print("✓ Top Plate DXF   : skipped (ezdxf unavailable)")
-    if SVG_TOP.exists():
-        print(f"✓ Top Plate SVG   : {SVG_TOP.relative_to(ROOT)}      ({kb(SVG_TOP)} KB)")
-    else:
-        print("✓ Top Plate SVG   : skipped (ezdxf unavailable)")
-    print(f"✓ Full Assembly   : {STL_FULL.relative_to(ROOT)}  ({kb(STL_FULL)} KB)")
-
-    # Write backwards-compat copies under quad-dock-* names
-    for src, dst in _COMPAT.items():
-        if src.exists():
-            shutil.copy2(src, dst)
+    print("\n" + "=" * 60)
+    print("ASCII SIDE VIEW")
+    print("=" * 60)
+    print("""
+Z=70 |            +--------+
+     |            | Step 3 |  15mm  (watch)
+Z=55 |      +-----+--------+
+     |      |  Step 2       |  15mm  (buds)
+Z=40 +------+---------------+
+     |   Step 1              |  15mm  (phone)
+Z=25 +-----------------------+
+     | ~~~~ riser cavity ~~~~ |  22mm
+Z=3  +=========================+
+     |  base plate             |  3mm
+Z=0  +=========================+
+     |<------ 165mm ---------->|
+""")
 
 
 if __name__ == "__main__":
-    main()
+    print_geometry_summary()
+
+    dxf_path = os.path.join(OUTPUT_DIR, "step-top-view.dxf")
+    with open(dxf_path, "w") as f:
+        f.write(generate_dxf())
+    print(f"\nDXF written to: {dxf_path}")

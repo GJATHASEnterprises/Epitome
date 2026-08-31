@@ -1,64 +1,104 @@
-# Penta Dock — Layout Diagram
+# Step — Layout Diagrams
 
-## Top View (Penta Standard ~250mm wide × ~100mm deep × ~100mm tall)
+Coordinate system: X=0 left, X=165 right, Y=0 front, Y=100 rear, Z=0 base
 
-```text
-+----------+--------------------------------------------------+----------+
-| Z4       |           3-STEP CENTRE PLATFORM                | Z5       |
-| LAPTOP   | Step 1 (180mm wide) — Phone 20W Qi2             | TABLET   |
-| SLOT     | Step 2 (140mm wide) — Buds/Phone 20W Qi         | SLOT     |
-| 35mm     | Step 3 (100mm wide, rear 20mm setback) — Watch 5W | 20mm   |
-| 400mm L  | All step faces point TOWARD USER (front-facing) | 290mm L  |
-| 90mm D   | Steps rise front→back between the two slots    | 70mm D   |
-| 35mm W   | Riser cavity 17mm over PSU beneath             | 20mm W   |
-| 95mm H   |                                               | 80mm H   |
-+----------+--------------------------------------------------+----------+
-REAR SPINE: full width, IEC C13 rear-left ~X=45mm
-FRONT FASCIA: full width, LED diffuser strip 250×15mm
+---
+
+## Top View
+
+```
+X=0                                           X=165
+|<------------------ 165mm ------------------>|
++---------------------------------------------+  Y=0 (FRONT)
+|                                             |
+|  +-----------------------------------------+
+|  |           Step 1 top (Z=40)             |
+|  |   +-------[  75×90mm phone pad  ]-------+
+|  |   |          centred X=82.5, Y=50       |
+|  +-----------------------------------------+
+|        +-------------------------------+
+|        |     Step 2 top (Z=55)        |
+|        |  [  65×50mm buds pad  ]      |
+|        |   centred X=82.5, Y=50       |
+|        +-------------------------------+
+|              +------------------+
+|              | Step 3 top (Z=70)|  <-- Y=20 setback
+|              | [55×55 watch pad]|
+|              | centred X=82.5   |
+|              +------------------+
+|                                             |
++---------------------------------------------+  Y=100 (REAR)
+       [DC IN]       [USB-A]  [USB-B]
+        X=40          X=120    X=140
 ```
 
-## Front View
+---
 
-```text
-Standard width ~250mm
+## Front View (staircase rising away from user)
 
-+----------+   +------+   +-----------+   +------+   +----------+
-| LAPTOP   |   |      |   | Step 3    |   |      |   | TABLET   |
-| SLOT     |   |      |   | 100mm     |   |      |   | SLOT     |
-| 35mm     |   | Step |   +-----------+   | Step |   | 20mm     |
-| 95mm     |   |  2   |   Step 2          |  2   |   | 80mm     |
-| tall     |   | 140mm|   140mm wide      | 140mm|   | tall     |
-|          |   |      +-------------------+      |   |          |
-|          |   Step 1 — 180mm wide               |   |          |
-+----------+---+-------------------------------------+-+----------+
-[============= 250mm FRONT FASCIA + LED DIFFUSER =============]
+```
+                         +----------+
+                         |  Step 3  |  Z=55–70, 95mm wide
+               +---------+  watch   |
+               |  Step 2  +----------+
+               |  buds    |            Z=40–55, 130mm wide
++----+---------+----------+
+|    |          Step 1 (phone)         Z=25–40, 165mm wide
+| B  +--[ === LED DIFFUSER === ]--+
+| A  |                             |
+| S  |   riser cavity (22mm)       |   Z=3–25
+| E  |                             |
++----+-----------------------------+   Z=0
+     |  base plate  3mm            |
+     +---------------------------------+
+
+     |<-------- 165mm ------------->|
 ```
 
-## Side View (centre platform)
+---
 
-```text
-Z
-^
-98mm  |
-95mm  |            +------------------+  Step 3 top (watch)
-80mm  |       +-----------------------+  Step 2 top
-65mm  |  +----------------------------+  Step 1 top
-50mm  |  +============================+  Step 1 base / riser cavity top
-33mm  |  |     PSU 199×98×30mm       |  PSU top
- 3mm  |  +============================+  PSU base / base plate top
- 0mm  |__|____________________________|____> depth (~100mm)
-       rear spine                front fascia
+## Side Cross-Section (left edge view, Y=50)
+
+```
+Z=70 |            +--------+
+     |            | Step 3 |  15mm walnut top
+     |            | (watch)|
+Z=55 |      +-----+--------+
+     |      |  Step 2       |  15mm
+     |      |  (buds)       |
+Z=40 +------+---------------+
+     |   Step 1              |  15mm
+     |   (phone)             |
+Z=25 +-----------------------+
+     | ~~~~riser cavity~~~~  |  22mm  <-- all PCBs + wiring here
+Z=3  +=======================+
+     |  base plate           |  3mm
+Z=0  +=======================+
+     |   bumpons ×4          |
 ```
 
-Side-view note: **17mm riser cavity (Z=33–50)**.
+---
 
-## Zone Quick Reference
+## Rear View
 
-| Zone | Location | Device | Power | Notes |
-|---|---|---|---|---|
-| Zone 1 | Centre Step 1 (base) | Phone | Qi2 20W | coil embedded in Step 1 body |
-| Zone 2 | Centre Step 2 (middle) | Buds or second phone | Qi 20W | coil embedded in Step 2 body |
-| Zone 3 | Centre Step 3 rear (top) | Watch (Apple puck + Qi) | 5W shared | puck + Qi coil embedded in Step 3 body |
-| Zone 4 | Left slot | Laptop | USB-C PD 100W via captive 220mm cable | 35mm wide, 90mm deep, cable from top |
-| Zone 5 | Right slot | Tablet/Phone | USB-C PD 45W via captive 200mm cable | 20mm wide, 70mm deep, cable from top |
-| IEC inlet | Rear spine | AC input | IEC C13 | rear-left ~X=45mm |
+```
++---------------------------------------------+
+|                                             |
+|                                             |
+|   [DC IN]              [USB-C A] [USB-C B]  |
+|   X=40, Z=15           X=120    X=140       |
+|   barrel jack           60W PD   30W PD     |
+|                         Z=15      Z=15      |
++---------------------------------------------+
+|<------------------ 165mm ------------------>|
+```
+
+---
+
+## Zone Summary
+
+| Zone | Step | Top Z | Width | Depth | Pad size |
+|---|---|---|---|---|---|
+| 1 — Phone | Step 1 | Z=40 | 165mm | 100mm | 75×90mm portrait |
+| 2 — Buds | Step 2 | Z=55 | 130mm | 100mm | 65×50mm |
+| 3 — Watch | Step 3 | Z=70 | 95mm | 80mm | 55×55mm |
