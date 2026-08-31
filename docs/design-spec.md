@@ -1,235 +1,196 @@
-# Penta Dock — Design Specification
+# Step — Design Specification
 
-> **Note:** This file provides a summary of the product spec. For detailed specifications see:
-> - [Enclosure Specification](enclosure.md)
-> - [Electronics Specification](electronics.md)
-> - [BOM](bom.md)
-> - [Packaging Specification](packaging.md)
-> - [Firmware Notes](firmware-notes.md)
+**Brand:** Epitome Charge (epitomecharge.com)
+**Product name:** Step
+**Tagline:** "Charge everything. Touch nothing."
+**Price:** $89
 
 ---
 
-## Product Name
-Penta Dock
+## Overview
 
-## Brand
-Epitome Charge (epitomecharge.com)
-
-## Color Variants
-- **Black** — Matte ABS, all surfaces (Batch 1)
-
-> White and Midnight Blue are planned for a future batch. Black only for Batch 1.
+Step is a three-step wireless charging stand made from walnut and matte black ABS. Three wireless charging zones are arranged on a rising staircase platform. Two USB-C PD ports on the rear allow wired charging for any device. An external 65W USB-C power brick is included. Users bring their own USB-C cables for the rear ports.
 
 ---
 
-## Overall Dimensions
-
-| SKU | Overall width | Overall depth | Overall height | Corner radius | Top plate material | Base material |
-|---|---:|---:|---:|---|---|---|
-| **Penta Standard** | **~250mm** | **~100mm** | **~100mm** | R10mm | 3mm matte ABS | Matte ABS |
-| **Penta XL** | ~320mm | ~100mm | ~100mm | R10mm | 3mm matte ABS | Matte ABS |
-
-> XL is Batch 2+. Standard launches first. No aluminium anywhere in Batch 1.
-
----
-
-## Slot Dimensions
-
-### Left Slot — Laptop (Zone 4)
-
-| Dimension | Standard |
-|---|---:|
-| Slot length (left to right) | 400mm |
-| Slot depth (front to back, internal) | 90mm |
-| Slot width (opening thickness) | **35mm** |
-| Slot wall height | **95mm** |
-| Entry | Device slides in on its **thin edge** (like a book on a shelf) |
-| Charging interface | **Captive braided USB-C cable (220mm, 100W, 90° angled dock-end) hangs from top of slot + silicone strain relief boot at exit** |
-| Alignment | Cable at top of slot — device plugs in on insertion |
-| Sized for | Any laptop up to 17" class (~28mm thick including case) |
-
-> XL (Batch 2+) has a wider overall dock footprint (~320mm wide); the slot length remains 400mm.
-
-### Right Slot — iPad (Zone 5)
-
-| Dimension | Standard |
-|---|---:|
-| Slot length (left to right) | 290mm |
-| Slot depth (front to back, internal) | 70mm |
-| Slot width (opening thickness) | **20mm** |
-| Slot wall height | **80mm** |
-| Entry | Device slides in on its **thin edge** (like a book on a shelf) |
-| Charging interface | **Captive braided USB-C cable (200mm, 45W, 90° angled dock-end) hangs from top of slot + silicone strain relief boot at exit** |
-| Alignment | Cable at top of slot — device plugs in on insertion |
-| Sized for | Any tablet up to iPad Pro 13" in case (~16mm thick) |
-
----
-
-## Centre Platform Dimensions — 3-Step Tapered Layout
-
-| Step | Width | Depth | Height | Zone | Content |
-|---|---:|---:|---:|---|---|
-| Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle — Apple puck + Qi coil |
-| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad — 20W Qi, 90×70 landscape |
-| Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad — 20W Qi2, full-width silicone surface |
-
-- Step dimensions are unchanged.
-- Centre platform body is raised over the PSU on a perimeter wall.
-- **17mm riser cavity** sits between PSU top and Step 1 base for coil/logic wiring.
-- Total centre column height from base floor: **95mm**.
-
-### Zone 1 (Step 1 base)
+## Physical Dimensions
 
 | Dimension | Value |
 |---|---|
-| Silicone charging area | 160 × 100mm (recessed 1mm dish) |
-| Qi output | **20W** |
-| Standard | Qi2 certified, magnetic alignment N52 ring |
-| Qi coil | Embedded in Step 1 body under silicone surface |
-| Magnets | N52 ring magnets for alignment |
-| Orientation intent | Landscape phone placement |
+| Overall footprint | 165mm × 100mm |
+| Overall height | 70mm |
+| Base plate | 165 × 100 × 3mm (Z=0 to Z=3) |
+| Riser/wiring cavity | 165 × 100 × 22mm (Z=3 to Z=25) |
+| Step 1 block | 165 × 100 × 15mm, top surface Z=40 |
+| Step 2 block | 130 × 100 × 15mm, top surface Z=55 |
+| Step 3 block | 95 × 80 × 15mm, top surface Z=70 |
+| Step 3 setback | 20mm from front (Y=20 to Y=100) |
 
-### Zone 2 (Step 2 middle)
+### Coordinate System
 
-| Dimension | Value |
-|---|---|
-| Pad dish size | **120 × 80mm**, landscape |
-| Inner alignment ridge | **1mm ridge around 68 × 48mm inner zone** |
-| Qi output | **20W** |
-| Positioning | Front-middle of Step 2; slight phone overhang acceptable |
+- X=0 left edge, X=165 right edge, centred at X=82.5
+- Y=0 front, Y=100 rear
+- Z=0 base floor, up = +Z
 
-### Zone 3 (Step 3 top)
+### Step Widths (centred at X=82.5)
 
-| Dimension | Value |
-|---|---|
-| Step area | 100 × 80mm |
-| Cradle location | Rear of Step 3, slightly raised |
-| Charging | Apple Watch magnetic puck + Qi coil embedded in Step 3 body |
-| Policy | 5W shared, one active watch path at a time |
+| Step | X range | Width | Y range |
+|---|---|---|---|
+| Step 1 (phone) | X=0 – X=165 | 165mm | Y=0 – Y=100 |
+| Step 2 (buds) | X=17.5 – X=147.5 | 130mm | Y=0 – Y=100 |
+| Step 3 (watch) | X=35 – X=130 | 95mm | Y=20 – Y=100 (setback) |
 
----
-
-## Full Dimensions Summary Table
-
-| Feature | Standard |
-|---|---|
-| Overall dock | ~250 × 100 × 100mm |
-| Left (laptop) slot | 400mm long × 90mm deep × 35mm wide × 95mm tall |
-| Right (iPad) slot | 290mm long × 70mm deep × 20mm wide × 80mm tall |
-| Centre Step 1 | 180 × 110 × 15mm |
-| Centre Step 2 | 140 × 100 × 15mm |
-| Centre Step 3 | 100 × 80 × 15mm |
-| Centre column height | 95mm from base floor |
-| Zone 1 silicone surface | 160 × 100mm |
-| Zone 2 dish | 120 × 80mm |
-
-> XL (Batch 2+): ~320mm wide × ~100mm deep × ~100mm tall, with the same 400mm slot length and platform geometry as Standard.
-
----
-
-## Device Sizing Reference
-
-| Device | Model sized for | Key dimension |
-|---|---|---|
-| Phone | iPhone 16 Pro Max | 163mm × 77mm |
-| Tablet | iPad Pro 13" in case | Up to ~16mm total thickness |
-| Laptop | 17" class (Standard slot 400mm) | Up to ~28mm slot clearance |
-| Watch | Apple Watch Ultra 2 + Qi watches | Step 3 raised cradle zone |
-
----
-
-## Zone Layout Diagram
-
-```text
-[TOP VIEW — Penta Standard ~250mm wide × ~100mm deep]
-
-+----------+--------------------------------------------+----------+
-| Z4       |         3-STEP CENTRE PLATFORM             | Z5       |
-| LAPTOP   | Step 1 (base):  180mm wide, full depth      | TABLET   |
-| SLOT     | Step 2 (mid):   140mm wide, full depth      | SLOT     |
-| 35mm     | Step 3 (top):   100mm wide, set back 20mm   | 20mm     |
-| wide     | Steps rise FRONT→BACK facing the user       | wide     |
-| 95mm     |                                             | 80mm     |
-| tall     | Riser cavity (17mm) over PSU below          | tall     |
-+----------+--------------------------------------------+----------+
-REAR: full-width spine plate, IEC C13 inlet rear-left (~X=45mm)
-FRONT: full-width fascia strip with 250×15mm LED diffuser
-```
+Each step narrows 17.5mm per side (165→130→95mm widths).
 
 ---
 
 ## Zone Specifications
 
-### Zone 1 — Phone (Qi2 20W)
-- 20W Qi2 + Qi2 magnetic alignment N52 ring, recessed 1mm dish
+### Zone 1 — Phone (Step 1 top, Z=40)
+- **Standard:** Qi2 20W TX (magnetic alignment, N52 ring)
+- **Pad size:** 75×90mm portrait, 1mm recessed silicone dish
+- **Centre:** X=82.5, Y=50, Z=40
 
-### Zone 2 — Buds / Phone (Qi 20W)
-- 90×70mm pad with 60×45mm inner ridge marker
+### Zone 2 — Buds / Small Phone (Step 2 top, Z=55)
+- **Standard:** Qi 5W TX
+- **Pad size:** 65×50mm silicone pad
+- **Centre:** X=82.5, Y=50, Z=55
 
-### Zone 3 — Watch (Universal 5W)
-- Apple Watch puck + Qi coil in same cradle, one device at a time
+### Zone 3 — Watch (Step 3 top, Z=70)
+- **Standard:** Apple Watch magnetic puck PCBA + universal Qi watch coil 5W
+- **Mutual exclusion:** Hardware relay (only one active at a time)
+- **Pad size:** 55×55mm cradle
+- **Centre:** X=82.5, Y=60, Z=70
+- **Note:** Step 3 is set back 20mm from front (front face at Y=20)
 
-### Zone 4 — Laptop (USB-C PD 100W)
-- Captive 220mm braided USB-C cable (100W rated, 90° angled dock-end) hangs from top of slot; device plugs in on insertion
-- Silicone strain relief boot at cable exit point
-- Microfibre lining on inner slot walls
-
-### Zone 5 — Tablet (USB-C PD 45W)
-- Captive 200mm braided USB-C cable (65W rated, 90° angled dock-end) hangs from top of slot; device plugs in on insertion
-- Silicone strain relief boot at cable exit point
-- Microfibre lining on inner slot walls
-
----
-
-## LED Status System
-
-| State | Colour | Meaning |
-|---|---|---|
-| Charging | Red | Device actively charging |
-| Full | Green | Device fully charged |
-| Idle | Off | No device detected |
+### USB-C Ports (rear face)
+- **Port A:** USB-C PD 60W, rear right (X=120, Y=100, Z=15)
+- **Port B:** USB-C PD 30W, rear right (X=140, Y=100, Z=15)
+- **BYOC:** User brings own USB-C cables
 
 ---
 
 ## Electronics Summary
 
-See [electronics.md](electronics.md) for full spec.
+- Qi2 20W TX module (Zone 1)
+- Qi 5W TX module (Zone 2)
+- Apple Watch puck PCBA + universal Qi 5W coil (Zone 3)
+- Hardware relay for Zone 3 mutual exclusion
+- 12V buck converter (Qi2 zone)
+- 5V buck converter (watch + logic)
+- ATtiny85: zone LED logic + soft power cap (60W)
+- WS2811 LED strip: 8 LEDs, 130mm, front fascia frosted diffuser
+- DC barrel jack rear inlet
+- USB-C PD 60W trigger board (Port A)
+- USB-C PD 30W trigger board (Port B)
+- Polyfuses + TVS diodes on all power outputs
 
-- **PSU:** Mean Well LRS-200-24 (201W, 24V, trim-adjusted to ~20V output), under centre platform cavity
-- **Inlet:** Rear right-angle IEC C13 in rear spine plate, rear-left (~X=45mm from left edge)
-- **Power budget:** **190W total load, 11W headroom**
-- **ATtiny85 soft cap:** global soft power cap at **185W**
-- **Certification planning required:** FCC, CE, UKCA, RCM before retail in target markets
-
----
-
-## Manufacturing Method (Batch 1)
-
-- 3D print ABS: centre platform only (raised 3-step geometry, school makerspace printer, own filament)
-- Laser cut ABS: slot walls, base plate, top panels, rear spine plate, front fascia strip (Pumping Station One, Chicago)
-- All surfaces: sand → acetone vapour smooth → primer → Rust-Oleum 2X Matte Black → clear coat
-- No vacuum-formed parts. No aluminium. All ABS.
-
-Batch 1 enclosure target: **~$34.09/unit**.
-
----
-
-## Packaging
-
-- Magnetic closure matte black rigid box (~300×160×130mm)
-- Black foam inserts ×2 (dock shape + cables)
-- Braided fabric IEC C13 cable 1.5m matte black
-- Setup card 85×55mm matte black (Moo.com), zone reference, QR to epitomecharge.com
-- Belly band "Penta Dock — One dock. Every device."
-- Printed inner lid insert (zone diagram + product name)
-- Velcro cable tie matte black
+### LED Colours
+| Zone | Colour |
+|---|---|
+| Zone 1 phone | Blue |
+| Zone 2 buds | Purple |
+| Zone 3 watch | Green |
+| Port A USB-C | Orange |
+| Port B USB-C | Teal |
 
 ---
 
-## Price
+## Material Specification
 
-| SKU | Price |
-|---|---:|
-| Penta Standard | **$249** |
+| Component | Material |
+|---|---|
+| Base / riser | 3D printed matte black ABS |
+| Step faces (×3) | Laser cut walnut, 4mm, Rubio Monocoat oiled |
+| Step top surfaces (×3) | Laser cut walnut, 4mm, Rubio Monocoat oiled |
+| Rear spine | Laser cut ABS, 165×35mm |
+| Charging pads | 1mm silicone sheet |
+| LED diffuser | Frosted acrylic, 130×10mm |
+| Feet | 3M Bumpons ×4 |
 
-> $249 flat — no early bird pricing, no retail tier. XL is Batch 2+ and not priced for Batch 1.
+---
+
+## ASCII Diagrams
+
+### Front View (3-step rising staircase)
+
+```
+       +--------+
+       | WATCH  |     Z=70 (Step 3)
+  +----+--------+----+
+  |    BUDS PAD      |  Z=55 (Step 2)
++-+------------------+-+
+|      PHONE PAD       |  Z=40 (Step 1)
++--[ LED DIFFUSER ]----+
+|   ==================  |  Riser / base
++----------------------+
+```
+
+### Top View
+
+```
+X=0                    X=165
+|<-------- 165mm -------->|
++-------------------------+   Y=0 (front)
+|  +-------------------+  |
+|  |  Step 1 (phone)   |  |
+|  | [  75x90mm pad  ] |  |
+|  +-------------------+  |
+|    +---------------+    |
+|    | Step 2 (buds) |    |
+|    | [65x50mm pad] |    |
+|    +---------------+    |
+|      +-----------+      |
+|      | Step 3    |      |
+|      | (watch)   |      |
+|      |[55x55 pad]|      |
+|      +-----------+      |   Y=100 (rear)
++-------------------------+
+```
+
+### Side View (cross-section, left edge)
+
+```
+Z=70 |        +--------+
+     |        | Step 3 |  15mm
+Z=55 |   +----+--------+
+     |   | Step 2      |  15mm
+Z=40 +---+-------------+
+     | Step 1           |  15mm
+Z=25 +------------------+
+     | Riser cavity     |  22mm
+Z=3  +==================+
+     | Base plate       |  3mm
+Z=0  +==================+
+```
+
+### Rear View
+
+```
++----------------------------+
+|                            |
+|  [DC IN]  [USB-A] [USB-B]  |
+|  X=40     X=120   X=140    |
+|                            |
++----------------------------+
+```
+
+---
+
+## Dimensions Table
+
+| Feature | Value |
+|---|---|
+| Overall width | 165mm |
+| Overall depth | 100mm |
+| Overall height | 70mm |
+| Step 1 top surface Z | 40mm |
+| Step 2 top surface Z | 55mm |
+| Step 3 top surface Z | 70mm |
+| Step 3 front setback | 20mm (Y=20) |
+| Riser cavity height | 22mm (Z=3 to Z=25) |
+| Base plate thickness | 3mm |
+| Zone 1 pad | 75×90mm portrait |
+| Zone 2 pad | 65×50mm |
+| Zone 3 cradle | 55×55mm |
+| LED diffuser | 130×8mm front fascia |

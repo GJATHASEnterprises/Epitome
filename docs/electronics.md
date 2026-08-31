@@ -1,197 +1,150 @@
-# Penta Dock — Electronics Specification
-
-## Main Electronics
-
-- LED logic controller: **ATtiny85** (programmed at assembly — zone LED logic + global 185W soft cap)
-- Power: internal **201W** AC/DC PSU (**Mean Well LRS-200-24, 201W, 24V output trim-adjusted to ~20V. Physical size: 199×98×30mm. Located under centre platform.**) + **right-angle IEC C13 inlet**
-- Outputs: 20W Qi2 (Zone 1), 20W Qi (Zone 2, 90×70mm dish), Zone 3 dual charger (Apple puck + Qi coil sharing 5W, hardware relay for mutual exclusion), 2×USB-C PD branches (100W + 45W)
-- Lighting: WS2811 addressable LED strip (~15 LED, 250mm)
-- **NO ESP32, NO INA3221, NO BLE, NO WiFi, NO app hardware in Batch 1**
-
-## Exact Placement Coordinates
-
-Exact interior/exterior positions are defined in [component-positions.md](component-positions.md).
-
-Key placement updates:
-- PSU now sits under the **centre platform cavity**
-- Zone 3 includes both Apple puck module and Qi watch coil in same cradle region
-- Zone 4 and Zone 5 terminate to captive cable harnesses
-- Centre platform uses three 15mm steps above a 20mm riser cavity
-
-## Power Path
-
-`Right-angle IEC C13 -> 201W PSU (Mean Well LRS-200-24, under centre platform cavity) -> zone branches + regulation -> protections`
-
-- Zone 1: Qi2 20W TX module (Qi2 certified, magnetic alignment N52 ring, recessed 1mm dish) + polyfuse + thermistor
-- Zone 2: Qi 20W (90×70mm dish) + polyfuse + thermistor
-- Zone 3: Apple puck + Qi watch coil, shared 5W policy (hardware relay enforces single active target)
-- Zone 4: USB-C PD 100W + captive 220mm cable harness (100W braided, 90° angled dock-end) + silicone strain relief boot at exit
-- Zone 5: USB-C PD 45W + captive 200mm cable harness (65W rated braided, 90° angled dock-end) + silicone strain relief boot at exit
-
-## Power Budget
-
-| Zone | Device | Power | Method |
-|---|---|---|---|
-| Zone 1 | Phone | 20W | Qi2 (magnetic alignment, N52 ring, recessed 1mm dish) |
-| Zone 2 | Buds or second phone | 20W | Qi (90×70mm dish) |
-| Zone 3 | Watch | 5W | Apple Watch puck + Qi coil, hardware relay |
-| Zone 4 | Laptop | 100W | USB-C PD (captive 220mm braided cable) |
-| Zone 5 | Tablet | 45W | USB-C PD (captive 200mm braided cable, 65W rated) |
-| **Total worst case** | | **190W** | |
-| **PSU rated** | | **201W (Mean Well LRS-200-24)** | |
-| **Headroom** | | **11W** | |
-| **ATtiny85 soft cap** | | **185W** | |
-
-## ATtiny85 LED Logic
-
-- ATtiny85 is the sole MCU — no ESP32, no wireless, no app
-- Programmed at assembly with zone LED logic
-- Controls WS2811 strip via single data line
-- Enforces global 185W soft power cap
-- Per-zone LED colours:
-  - Zone 1 Phone: blue
-  - Zone 2 Buds or second phone: purple
-  - Zone 3 Watch: green
-  - Zone 4 Laptop: orange
-  - Zone 5 Tablet: blue
-- LED behaviour: charging active = full brightness; fully charged = slow pulse; no device = off
-
-## Zone 3 — Watch Hardware Relay
-
-- Hardware relay provides mutual exclusion between Apple Watch puck and Qi watch coil
-- Only one watch charging path active at any time
-- Relay state is set on device detection; no firmware needed
-
-## Wattage Etch Labels
-
-```
-PHONE    20W  Qi2
-BUDS     20W  Qi
-WATCH     5W
-LAPTOP  100W  USB-C
-TABLET   45W  USB-C
-```
+# Step — Electronics Reference
 
 ---
 
-## Comprehensive Electronics Reference (Revision A)
+## Power Input
 
-This section is a full electrical reference intended for design review, prototype bring-up, and assembly.
+- **Connector:** DC barrel jack, rear centre-left (X=40, Y=100, Z=15)
+- **Included:** 65W USB-C power brick + USB-C to barrel adapter cable (1m)
+- **Soft cap:** 60W enforced by ATtiny85 — protects included brick
+- **High-power note:** For simultaneous high-power USB-C use (Port A + Port B both loaded), replace included brick with a 100W+ USB-C charger
 
-### Cross-Reference Documents
+---
 
-- Mechanical positions: [component-positions.md](component-positions.md)
-- Wiring implementation: [wiring.md](wiring.md)
-- Procurement and target parts: [bom.md](bom.md)
+## Zone-by-Zone Power Paths
 
-## 1) Full System Architecture
+### Zone 1 — Phone (Qi2 20W)
 
-Penta Dock uses a centralised internal AC/DC supply to generate a 20V primary DC rail. That rail is split into five protected zone branches plus a low-voltage logic branch.
+```
+DC jack → 12V buck converter → Qi2 20W TX module → N52 ring magnet array → phone coil
+                             → Polyfuse → NTC thermistor → overcurrent + thermal protection
+```
 
-Architecture:
-- PSU is Mean Well LRS-200-24 (201W nominal) with a 185W ATtiny85 soft cap.
-- Zone 1: Qi2 certified, magnetic alignment N52 ring, recessed 1mm dish.
-- Zone 2: 20W Qi, 90×70mm dish.
-- Zone 3 supports Apple Watch magnetic protocol plus generic Qi-watch charging in one cradle footprint; hardware relay enforces one active path.
-- Zone 4 and Zone 5 use captive braided cables with 90° angled dock-end connectors and silicone strain relief boots at exit points.
-- Microfibre lining applied to inner walls of Zone 4 (laptop slot) and Zone 5 (tablet slot).
+- Input: 12V from 12V buck converter
+- Max output: 20W to phone
+- Safety: polyfuse + NTC thermistor + thermal cutoff
 
-## 2) ATtiny85 Controller
+### Zone 2 — Buds / Small Phone (Qi 5W)
 
-| Parameter | Specification |
+```
+DC jack → 5V buck converter → Qi 5W TX module → buds pad
+                            → Polyfuse → overcurrent protection
+```
+
+- Input: 5V from 5V buck converter
+- Max output: 5W
+- Safety: polyfuse
+
+### Zone 3 — Watch (Apple Watch puck + Qi 5W)
+
+```
+DC jack → 5V buck converter → Hardware relay (mutual exclusion)
+                                ├─ Apple Watch magnetic puck PCBA (when relay = Apple)
+                                └─ Universal Qi 5W watch coil (when relay = Qi)
+```
+
+- **Mutual exclusion:** Hardware relay ensures only one coil is active at a time
+- Input: 5V from 5V buck converter
+- Max output: 5W
+- Safety: polyfuse on 5V line
+
+---
+
+## USB-C Ports
+
+### Port A — 60W (X=120, Y=100, Z=15)
+
+```
+DC jack → USB-C PD 60W trigger board → panel mount USB-C receptacle
+        → Polyfuse + TVS diode → ESD + overcurrent protection
+```
+
+- Max output: 60W PD
+- Protection: polyfuse + TVS
+
+### Port B — 30W (X=140, Y=100, Z=15)
+
+```
+DC jack → USB-C PD 30W trigger board → panel mount USB-C receptacle
+        → Polyfuse + TVS diode → ESD + overcurrent protection
+```
+
+- Max output: 30W PD
+- Protection: polyfuse + TVS
+
+**BYOC:** Users bring their own USB-C cables. No cables included for these ports.
+
+---
+
+## ATtiny85 — Zone LED Logic + Soft Power Cap
+
+### Role
+- Monitors power draw estimates from zone enable signals
+- Drives WS2811 LED strip (8 LEDs, 130mm, front fascia)
+- Enforces 60W soft power cap: if estimated load approaches 60W, disables lowest-priority active zone
+- Priority order: Port A > Port B > Zone 1 > Zone 2 > Zone 3
+
+### Connections
+| Pin | Function |
 |---|---|
-| MCU | ATtiny85 8-bit AVR |
-| Role | Zone LED logic, WS2811 data output, global 185W soft cap |
-| Programming | Programmed at assembly (no field updates) |
-| Power | 5V from 5V buck converter |
+| PB0 | WS2811 data out |
+| PB1 | Zone 1 sense / enable |
+| PB2 | Zone 2 sense / enable |
+| PB3 | Zone 3 relay control |
+| PB4 | USB-C Port A sense |
+| PB5 (RESET) | USB-C Port B sense |
+| VCC | 5V from 5V buck |
+| GND | Common ground |
 
-## 3) Main Power Supply Unit
+### LED Strip — WS2811 8 LEDs 130mm
 
-| Parameter | Specification |
-|---|---|
-| Model | Mean Well LRS-200-24 |
-| Physical size | 199×98×30mm |
-| Input | 100–240VAC |
-| Inlet | **Rear right-angle IEC C13** |
-| Nominal available output | **201W** |
-| Output voltage | 24V, trim-adjusted to ~20V |
-| System full-load design | **190W total branch budget** |
-| Headroom | **11W** |
-| ATtiny85 global cap | **185W** |
+| Segment | Zone | Colour |
+|---|---|---|
+| LEDs 1–2 | Zone 1 phone | Blue (#0044FF) |
+| LEDs 3–4 | Zone 2 buds | Purple (#8800FF) |
+| LEDs 5–6 | Zone 3 watch | Green (#00CC44) |
+| LED 7 | Port A USB-C | Orange (#FF6600) |
+| LED 8 | Port B USB-C | Teal (#00BBAA) |
 
-PSU location: **under centre platform cavity**.
+LEDs illuminate when the corresponding zone/port has a device present and is actively charging.
 
-## 4) Power Architecture and Distribution
+---
 
-### Primary Distribution
-1. AC enters through right-angle IEC C13 inlet.
-2. PSU converts AC to regulated ~20V DC.
-3. 20V rail feeds bulk capacitor and main distribution bus.
-4. Bus branches split into 5 independent zone paths plus logic regulation branch.
-5. Per-zone polyfuses provide overcurrent protection.
+## Power Budget
 
-### Zone 1 — Qi2 20W Path
-`20V rail -> 12V buck -> Qi2 TX module (20W, magnetic alignment N52 ring, recessed 1mm dish)`
+| Zone | Max draw |
+|---|---:|
+| Phone Qi2 (Zone 1) | 20W |
+| Buds Qi (Zone 2) | 5W |
+| Watch (Zone 3) | 5W |
+| USB-C Port A | 60W |
+| USB-C Port B | 30W |
+| Logic + LEDs | 2W |
+| **Worst case total** | **122W** |
+| **Typical real load** | ~50–65W |
+| **Included brick** | 65W |
+| **Soft cap** | 60W |
 
-### Zone 2 — Qi 20W Path
-`20V rail -> 12V buck -> Qi TX module (20W, 90×70mm dish)`
+---
 
-### Zone 3 — Watch Universal 5W Path
-`20V rail -> 5V buck -> hardware relay -> (Apple puck OR Qi watch coil) [one active at a time]`
+## Safety Systems
 
-### Zone 4 — USB-C PD 100W Path
-`20V rail -> USB-C PD 100W board -> polyfuse -> TVS -> captive 220mm braided cable (90° dock-end, silicone strain relief boot at exit)`
+| System | Location | Purpose |
+|---|---|---|
+| Polyfuse | Zone 1, Zone 2, Zone 3, Port A, Port B | Overcurrent protection per zone |
+| TVS diode | Port A, Port B | ESD / voltage spike protection |
+| NTC thermistor | Zone 1 (Qi2 module) | Thermal monitoring |
+| Thermal cutoff | Zone 1 | Hard thermal shutoff |
+| ATtiny85 soft cap | System-level | 60W aggregate cap — protects brick |
+| Hardware relay | Zone 3 | Mutual exclusion — prevents dual-coil conflict |
 
-### Zone 5 — USB-C PD 45W Path
-`20V rail -> USB-C PD 45W board -> polyfuse -> TVS -> captive 200mm braided cable (65W rated, 90° dock-end, silicone strain relief boot at exit)`
+---
 
-## 5) Logic Rail
+## Buck Converters
 
-`20V rail -> 5V buck -> ATtiny85 + WS2811 strip VCC`
+| Converter | Output voltage | Feeds |
+|---|---|---|
+| 12V buck | 12V | Zone 1 Qi2 module |
+| 5V buck | 5V | Zone 2 Qi module, Zone 3 relay + coils, ATtiny85, LED strip |
 
-## 6) WS2811 LED Strip
-
-- ~15 LEDs, 250mm length
-- ATtiny85 data line -> 300–470Ω -> WS2811 DIN
-- 5V rail -> LED strip VCC
-- Common GND
-- 100µF capacitor at strip entry
-
-## 7) Safety Systems
-
-- Polyfuse per zone output
-- TVS on PD outputs (Zones 4 and 5)
-- NTC thermistor feedback in heat-prone zones
-- Thermal cutoff on PSU branch
-- PTC fuse on main protection path
-
-## 8) Thermal Management
-
-- PSU under centre platform, physically separated from slot zones
-- 20mm riser cavity for wiring clearance above PSU
-- 11W power headroom (190W load, 201W PSU), backed by 185W ATtiny85 soft cap
-
-## 9) Mechanical Notes
-
-- Add silicone strain relief boots at captive cable exit points (Zone 4 and Zone 5 top of slot)
-- Apply microfibre lining to inner walls of Zone 4 (laptop slot) and Zone 5 (tablet slot)
-- Zone 1 silicone surface: 1mm recessed dish for Qi2 magnetic alignment
-- Captive cable strain relief anchors: mechanical anchoring at top of each slot
-
-## 10) Power Budget Table (Final Reference)
-
-| Zone | Device | Power | Method |
-|---|---|---|---|
-| Zone 1 | Phone | 20W | Qi2 (magnetic alignment, N52 ring, recessed 1mm dish) |
-| Zone 2 | Buds or second phone | 20W | Qi (90×70mm dish) |
-| Zone 3 | Watch | 5W | Apple Watch puck + Qi coil, hardware relay |
-| Zone 4 | Laptop | 100W | USB-C PD (captive 220mm braided cable) |
-| Zone 5 | Tablet | 45W | USB-C PD (captive 200mm braided cable, 65W rated) |
-| **Total worst case** | | **190W** | |
-| **PSU rated** | | **201W (Mean Well LRS-200-24)** | |
-| **Headroom** | | **11W** | |
-| **ATtiny85 soft cap** | | **185W** | |
-
-## 11) Future Batch 2 Considerations (Shelved)
-
-App hardware (ESP32-C3, INA3221 power monitoring, BLE, WiFi) is preserved for potential Batch 2 revisitation. See [app-spec.md](app-spec.md) and [firmware-notes.md](firmware-notes.md). Not part of the current build.
+Both converters fed from DC barrel jack rail.

@@ -1,212 +1,148 @@
-# Penta Dock — Enclosure Specification
-
-## Core Envelope
-
-| SKU | Overall width | Overall depth | Overall height | Material system | Notes |
-|---|---:|---:|---:|---|---|
-| Penta Standard | ~250mm | ~100mm | ~100mm | Full ABS enclosure, no aluminium | Rear spine + front fascia unify the structure |
+# Step — Enclosure Specification
 
 ---
 
-## Structural Layout
+## Overview
 
-The enclosure is a compact three-zone body tied together by two continuous structural panels:
-
-1. **Left slot** — laptop bay (**Zone 4**)
-2. **Centre platform** — three-step charging platform (**Zones 1–3**) raised over the PSU cavity
-3. **Right slot** — tablet bay (**Zone 5**)
-4. **Rear spine plate** — full-width structural rear panel tying both slot walls and the centre platform rear together
-5. **Front fascia strip** — full-width front base panel carrying the LED diffuser and visually unifying the dock
-
-The Mean Well LRS-200-24 PSU no longer sits under the laptop slot. It now sits flat on the base plate under the centre platform footprint, with the centre platform body raised on a perimeter wall above it.
+The enclosure consists of a 3D printed matte black ABS structural base/riser and laser-cut walnut faces and top surfaces for each of the three steps. The stepped geometry is the defining visual feature of the product.
 
 ---
 
-## Left Slot (Laptop — Zone 4)
+## 3D Printed ABS Base / Riser
 
-- Entry: device slides in **on its thin edge** (screen facing forward)
-- Slot length: **400mm**
-- Slot width: **35mm**
-- Slot depth: **90mm** (internal, front fascia to rear spine)
-- Slot wall height: **95mm**
-- Captive braided USB-C cable (**220mm, 100W, 90° angled dock-end**) hangs from the top of the slot
-- **Silicone strain relief boot** at cable exit point (top of slot)
-- **Microfibre lining** on inner slot walls (protects device edges on insertion)
-- No stop shelf; device rests on the lined floor and natural cable reach is validated at full insertion
-- Silicone lining on slot floor
+- **Material:** ABS (matte black)
+- **Print method:** FDM at school makerspace
+- **Dimensions:** 165mm wide × 100mm deep × 25mm tall (base plate Z=0–3 + riser cavity Z=3–25)
+- **Riser cavity:** 165 × 100 × 22mm internal void (Z=3 to Z=25) — houses all wiring and PCBs
+- **Clearance:** 22mm maximum component height in riser; flat-mount all boards
+- **Wall thickness:** ≥3mm all external walls; ≥3mm internal ribs
+- **Finish:** Sanded to 220 grit, acetone-smoothed for matte texture
 
----
-
-## Right Slot (Tablet — Zone 5)
-
-- Entry: device slides in **on its thin edge**
-- Slot length: **290mm**
-- Slot width: **20mm**
-- Slot depth: **70mm** (internal)
-- Slot wall height: **80mm**
-- Captive braided USB-C cable (**200mm, 65W rated, 90° angled dock-end**) hangs from the top of the slot
-- **Silicone strain relief boot** at cable exit point (top of slot)
-- **Microfibre lining** on inner slot walls (protects device edges on insertion)
-- No stop shelf; device rests on the lined floor
-- Silicone lining on slot floor
+### Print Settings (ABS)
+- Layer height: 0.2mm
+- Infill: 30% gyroid
+- Perimeters: 3 shells
+- Bed: 90°C, enclosure required
+- Nozzle: 240°C
+- Support: Yes on overhang areas
 
 ---
 
-## Centre Platform — 3-Step Tapered Geometry
+## Walnut Step Faces
 
-| Step | Width | Depth | Height | Zone | Content |
-|---|---:|---:|---:|---|---|
-| Step 1 (base) | 180mm | 110mm | 15mm | Zone 1 | Phone pad, 20W Qi2, 160×100mm silicone surface (1mm recessed dish) |
-| Step 2 (middle) | 140mm | 100mm | 15mm | Zone 2 | Buds or second phone pad, 20W Qi, 90×70mm dish |
-| Step 3 (top) | 100mm | 80mm | 15mm | Zone 3 | Watch cradle, Apple puck + Qi watch coil |
-
-- Centre platform body raised on perimeter wall over PSU cavity
-- Riser cavity: **17mm clearance** between PSU top and Step 1 base (Z=33 to Z=50)
-- All coils are embedded in the step bodies themselves
-- Wiring from all coils and watch modules routes down through the riser cavity to the PSU / PCB area
-- Total centre column height from base floor: **95mm**
-
-> Steps rise **front-to-back** (Y axis). Step 1 and Step 2 share the same front face (Y=0). Step 3 is set back 20mm (front face at Y=20). From the user's perspective, the three charging surfaces form a rising staircase of shelves, each face pointing directly toward the user.
-
-> **Step 3 lateral support:** Step 3 (100mm wide) does not reach either slot wall. The laptop slot wall (95mm tall) reaches Step 3 height on the left side. The tablet slot wall (80mm tall) reaches the Step 3 base (Z=80) on the right side. To ensure Step 3 rigidity, the 3D printed centre platform body must have **minimum 3mm wall thickness on all four sides of the Step 3 portion**, forming internal vertical ribs that stiffen the top step against lateral flex. This is built into the print geometry — no extra parts required.
-
-> All components in the 17mm riser cavity must be mounted flat (horizontal) against the cavity floor. Buck converters, ATtiny85, and relay must not stand upright to maintain clearance under Step 1 base.
-
-### Zone 1 (Step 1)
-
-- Flat silicone charging surface: **160×100mm**
-- **1mm recessed dish** in silicone surface for Qi2 magnetic alignment
-- Qi TX: **20W Qi2**, embedded inside Step 1 body directly under the silicone surface
-- Magnetic alignment ring (N52) included
-
-### Zone 2 (Step 2)
-
-- Silicone dish: **90×70mm**
-- Qi TX: **20W**, embedded inside Step 2 body and centred under the dish
-- Slight phone overhang remains acceptable
-
-### Zone 3 (Step 3)
-
-- Apple Watch puck + Qi watch coil embedded inside Step 3 body
-- Shared **5W** watch charging budget
-- Rear watch presentation preserved despite the PSU move because the step dimensions remain unchanged
+- **Material:** Walnut, 4mm nominal thickness
+- **Cut method:** Laser cut (Pumping Station One)
+- **Pieces:** ×3 step front faces
+  - Step 1 face: 165mm wide × 15mm tall
+  - Step 2 face: 130mm wide × 15mm tall
+  - Step 3 face: 95mm wide × 15mm tall
+- **Finish:** Rubio Monocoat — thin coat, buffed, 1hr cure minimum
 
 ---
 
-## Z Height Stack
+## Walnut Step Top Surfaces
 
-| Z position | What is here |
-|---|---|
-| Z=0 | Base plate floor |
-| Z=3 | Base plate top / PSU resting surface |
-| Z=33 | PSU top (30mm height) |
-| Z=50 | Step 1 base (17mm riser cavity above PSU) |
-| Z=65 | Step 2 base / Step 1 top |
-| Z=80 | Step 3 base / Step 2 top |
-| Z=95 | Step 3 top (watch cradle surface) |
-| Z=98 | Approximate overall dock height |
+- **Material:** Walnut, 4mm nominal thickness
+- **Cut method:** Laser cut (Pumping Station One)
+- **Pieces:** ×3 step tops
+  - Step 1 top: 165mm wide × 100mm deep (full step top)
+  - Step 2 top: 130mm wide × 100mm deep
+  - Step 3 top: 95mm wide × 80mm deep (setback piece)
+- **Cutouts:** Silicone charging pad recesses on each top
+- **Finish:** Rubio Monocoat — thin coat, buffed, 1hr cure minimum
 
 ---
 
-## PSU Cavity
+## Step Geometry
 
-PSU (**Mean Well LRS-200-24, 199×98×30mm**) sits flat on the base plate under the centre platform. The centre platform perimeter wall creates an enclosed PSU cavity, and the **17mm riser cavity above the PSU** carries all wiring to the coils and logic board.
+```
+Step 1 (bottom): 165mm wide × 100mm deep × 15mm tall  (top surface Z=40)
+Step 2 (middle): 130mm wide × 100mm deep × 15mm tall  (top surface Z=55)
+Step 3 (top):     95mm wide ×  80mm deep × 15mm tall  (top surface Z=70)
+```
 
-> PSU is offset 6mm toward the laptop slot side (X=4 to X=203) to centre within the available internal width. This uses ~6mm of the laptop slot cavity but leaves 29mm internal laptop slot clearance — sufficient for all laptops up to 17" class (~28mm thick). The tablet slot is completely unaffected.
+Step widths centred at X=82.5:
+- Step 1: X=0 to X=165
+- Step 2: X=17.5 to X=147.5
+- Step 3: X=35 to X=130
 
-Fit check:
-- PSU width: **199mm** — requires full-width centred cavity support under the raised platform
-- PSU depth: **98mm < 100mm** base footprint ✅
-- PSU height: **30mm**, leaving **17mm** wiring cavity before Step 1 base ✅
+Step 3 is set back 20mm from the front: Y=20 to Y=100. This exposes the front face of Step 2 and creates the staircase visual.
 
----
+### Step 3 Lateral Support Note
 
-## Rear Spine Plate
-
-- Continuous rear ABS structural panel running the full dock width
-- Material: **3mm ABS sheet**, laser cut at Pumping Station One
-- Size: **~250mm wide × ~100mm tall**
-- Bonded to the rear edges of the laptop slot wall set, centre platform rear, and tablet slot wall set with Weld-On #3 ABS cement
-- Carries the **28×20mm right-angle IEC C13 inlet cutout**, in a rear-left position (X≈45mm from left edge)
-- Together with the base plate, this rear spine forms the primary anti-racking frame of the dock
+Step 3 is narrower (95mm) and elevated (Z=70). The internal ABS rib supporting Step 3 must be ≥3mm wall thickness to prevent flex under watch cradle load. Add vertical ribs at X=35 and X=130 in the ABS print.
 
 ---
 
-## Front Fascia Strip
+## Riser Cavity
 
-- Continuous front ABS panel running the full dock width at the front base
-- Material: **3mm ABS sheet**, laser cut at Pumping Station One
-- Size: **~250mm wide × 20mm tall**
-- Bonded across the front of the laptop slot base, centre platform base, and tablet slot base
-- Contains the routed channel for the **250×15mm frosted acrylic LED diffuser strip**
-- WS2811 LED strip runs behind the diffuser to create a single unified front light band
+- **Dimensions:** 165 × 100 × 22mm (Z=3 to Z=25)
+- **Purpose:** Houses all PCBs, wiring, JST connectors, and buck converters
+- **Rule:** All components must be flat-mounted (no upright components over 22mm tall)
+- **Access:** Removable base plate secured with M3 heat-set inserts ×4
 
 ---
 
-## Rear Wall Features
+## Rear Spine
 
-- **IEC C13 right-angle inlet:** 28×20mm cutout in the rear spine plate, rear-left position (X≈45mm from left edge)
-- Rear spine doubles as the main rear wiring exit plane
-- Rear panel ties the laptop slot, centre platform, and tablet slot into one rigid body
-
----
-
-## Fastening and Base Features
-
-- 4× rubber feet at the base corners
-- M3 screws secure serviceable joins and centre platform mounting points
-- Snap-fit locating features used where possible, then reinforced with ABS cement
-- Base plate + rear spine provide the primary structural frame
-- Silicone-lined slot floors support devices directly; no separate stop shelves
+- **Material:** Laser cut ABS, 165×35mm
+- **Cutouts:** DC barrel jack (X=40), USB-C Port A (X=120), USB-C Port B (X=140)
+- **Port positions (all at Z=15):**
+  - DC barrel jack: X=40, Y=100, Z=15
+  - USB-C Port A: X=120, Y=100, Z=15
+  - USB-C Port B: X=140, Y=100, Z=15
 
 ---
 
-## Manufacturing Method
+## LED Diffuser
 
-- **3D printed centre platform:** school makerspace printer, ABS only
-- **Laser cut ABS panels:** base plate, top panels, laptop slot walls, tablet slot walls, rear spine plate, and front fascia strip at Pumping Station One
-- **LED front detail:** frosted acrylic diffuser strip laser cut to match fascia opening
-- **Finish:** sand, prep, prime, and matte black finish across the full ABS enclosure
-- **Assembly:** dry-fit tabs, bond structural seams with Weld-On #3 ABS cement, then install screws/feet after cure
+- **Material:** Frosted acrylic, 130mm × 10mm × 2mm
+- **Position:** Front face of Step 1 riser, 130mm wide × 8mm tall slot
+- **Purpose:** Diffuses WS2811 LED strip glow across front fascia
 
 ---
 
-## Batch 1 Enclosure Cost
+## Silicone Pads
 
-| Part | Unit cost |
-|---|---:|
-| 3D printed centre platform (school, own filament) | $2.00 |
-| Laser cut ABS base plate 250×100mm | $1.35 |
-| Laser cut ABS top panels ×2 | $1.35 |
-| Laser cut ABS laptop slot walls 400mm 95mm tall | $7.84 |
-| Laser cut ABS tablet slot walls 290mm 80mm tall | $5.35 |
-| Laser cut ABS rear spine plate 250×100mm | $1.50 |
-| Laser cut ABS front fascia strip 250×20mm | $0.70 |
-| Frosted acrylic LED diffuser strip 250×15mm | $0.80 |
-| Silicone sheet textured dot ~1,150cm² | $3.70 |
-| 3M Bumpons SJ5023 ×4 | $0.60 |
-| Physical power button rear rail | $1.50 |
-| M3 fasteners + heat-set inserts + grommets | $2.00 |
-| Laser cutting setup fee amortised ÷10 | $1.50 |
-| ABS cement + primer + matte black paint + sandpaper | $2.50 |
-| Strain relief silicone boots ×2 (captive cables) | $0.60 |
-| Microfibre slot lining (Zones 4+5 inner walls) | $1.30 |
-| **Enclosure total** | **$34.09/unit** |
+- **Material:** 1mm silicone sheet, ~500cm² total
+- **Pieces:**
+  - Zone 1: 75×90mm portrait pad with 1mm recess on Step 1 top
+  - Zone 2: 65×50mm pad on Step 2 top
+  - Zone 3: 55×55mm cradle on Step 3 top
 
 ---
 
-## Materials
+## Feet
 
-| Part | Material | Finish |
-|---|---|---|
-| Base plate | 3mm ABS sheet | Matte black |
-| Top panels | 3mm ABS sheet | Matte black |
-| Slot walls | 3mm ABS sheet | Matte black |
-| Rear spine plate | 3mm ABS sheet | Matte black |
-| Front fascia strip | 3mm ABS sheet | Matte black |
-| Centre platform | 3D printed ABS | Matte black |
-| Slot and pad lining | Silicone sheet | Dark grey anti-slip |
-| LED diffuser | Frosted acrylic | Diffused |
-| Feet | Rubber | Matte black |
+- 3M Bumpons ×4, placed at corners of base plate underside
 
-No aluminium is used anywhere in the Batch 1 enclosure.
+---
+
+## Fasteners
+
+- M3 screws + heat-set inserts for base plate removal and rear spine attachment
+
+---
+
+## Walnut Finishing Instructions
+
+1. Sand walnut pieces to 220 grit along grain direction
+2. Wipe clean with tack cloth
+3. Apply thin coat of Rubio Monocoat oil with lint-free cloth — use less than you think you need
+4. Work into grain, wipe off excess within 3 minutes
+5. Buff with clean cloth until no residue
+6. Allow 1 hour minimum cure before assembly
+7. Do not apply heat or water for 24 hours after finishing
+
+---
+
+## Assembly Notes
+
+1. Press heat-set inserts into ABS riser with soldering iron
+2. Mount all PCBs and wiring in riser cavity (flat-mount, max 22mm height)
+3. Route cables through internal channels before closing
+4. Attach walnut faces to step fronts with a thin bead of wood glue and M3 screws from inside
+5. Install LED diffuser strip in front fascia slot
+6. Attach rear spine with M3 screws — verify port alignment before tightening
+7. Apply feet to base corners
+8. Final test all zones before boxing

@@ -1,116 +1,184 @@
-# Penta Dock — Prototype Guide
+# Step — Prototype Build Guide (Batch 1, 10 Units)
+
+School makerspace build guide.
 
 ---
 
-## Goal of the Prototype
+## Materials List
 
-Not a sellable unit — a functional proof of concept to verify:
+### Per Unit
+- ABS filament (matte black): ~180g
+- Walnut sheet 4mm: ~600cm²
+- Silicone sheet 1mm: ~500cm²
+- Frosted acrylic 2mm: 130×10mm strip
+- Electronics (see BOM)
+- Fasteners: M3 screws ×8, M3 heat-set inserts ×8
+- Wood glue
+- Rubio Monocoat oil (shared between units)
 
-- ✅ All 5 zones charge correctly
-- ✅ Captive cable slot UX works naturally for laptop/tablet
-- ✅ Zone 3 dual watch mode (Apple puck + Qi) behaves correctly
-- ✅ Standard SKU footprint is desk-friendly
-- ✅ Thermal behavior remains stable with PSU under centre platform cavity and 185W ATtiny85 soft cap
-
-Definitive placement coordinates are in [component-positions.md](component-positions.md).
-
----
-
-## Budget: $500
-
-| Category | Low | High |
-|----------|-----|------|
-| Electronics (breakout boards + new cable/Qi parts) | $93 | $177 |
-| Enclosure (hybrid prototype parts) | $40 | $62 |
-| Shipping / process overhead | $15 | $35 |
-| Tools (if needed) | $51 | $84 |
-| Buffer for mistakes + spares | $50 | $80 |
-| **Total** | **~$249** | **~$438** |
-
-> Electronics high-end estimate reflects wide vendor spread for PSU, watch modules, and early-batch shipping-loaded breakout sourcing.
+### For Batch (10 units, ordered once)
+- 1.8kg ABS filament
+- 6000cm² walnut sheet (order extra for waste)
+- 5000cm² silicone sheet
+- 1300×100mm frosted acrylic strip (cut per unit)
+- Rubber feet (3M Bumpons ×40)
+- Sandpaper 120, 180, 220 grit
 
 ---
 
-## Tools Needed
+## Step 1: 3D Print ABS Base
 
-Soldering iron, multimeter, wire strippers, hot glue gun, cutters, helping hands.
+### Print Settings
+- Slicer: PrusaSlicer or Cura
+- Material: ABS
+- Layer height: 0.2mm
+- Infill: 30% gyroid
+- Perimeters: 3 shells
+- Bed temp: 90°C
+- Nozzle temp: 240°C
+- Enclosure: required (ABS warps without it)
+- Support: yes on overhangs >45°
+- Estimated print time: ~4 hours per unit
 
----
-
-## Prototype BOM (AliExpress + LCSC)
-
-Use [bom.md](bom.md) as the source-of-truth list and pricing.
-
-Additions for this revision:
-- Captive braided USB-C cable **220mm** (100W)
-- Captive braided USB-C cable 200mm (65W rated, 45W Zone 5)
-- Qi watch coil 5W for Zone 3
-- Right-angle IEC C13 inlet
-- Step-riser reinforcement insert/rib material (3 risers)
-- Hardware relay for Zone 3 mutual exclusion (Apple puck vs Qi coil)
-
----
-
-## 4-Week Build Plan
-
-### Week 1 — Order Everything
-- Order all electronics and mechanical parts
-- Order Standard enclosure parts with hybrid method (3D centre + laser slots + laser base)
-
-### Week 2 — Cardboard Mock
-
-**Goal:** Validate ergonomics and slot clearances before fabrication.
-
-Standard mock dimensions:
-- Base: **250×100mm**
-- Laptop slot: **400mm long × 35mm wide × 90mm deep**, device on thin edge
-- Tablet slot: **290mm long × 20mm wide × 70mm deep**, device on thin edge
-- Step 1: **180×110×15mm**
-- Step 2: **140×100×15mm**
-- Step 3: **100×80×15mm**
-
-> **Step 3 wall thickness — critical print setting:** When printing the centre platform, ensure **minimum 3mm wall thickness on all four sides of the Step 3 portion** of the body. Step 3 (100mm wide) does not reach either slot wall, so it relies entirely on the printed shell for lateral stiffness. Use at least 3 perimeters/walls in your slicer settings for the Step 3 section. Thinner walls will allow the top step to flex under device weight.
-
-Placement checks:
-- Step 1 full-width 160×100 phone surface (20W)
-- Step 2 buds pad centred (90×70, 20W)
-- Watch cradle at rear of Step 3
-- Cable hang point at top of each slot — verify cable reach to device port when fully inserted
-
-### Week 3 — Electronics Bench Test
-
-- [ ] Verify Zone 1 at 20W
-- [ ] Verify Zone 2 at 20W
-- [ ] Verify Zone 3 puck mode charges Apple Watch
-- [ ] Verify Zone 3 Qi mode charges supported non-Apple watch
-- [ ] Verify only one Zone 3 path is active at a time
-- [ ] Verify Zone 4 captive cable delivers up to 100W (220mm lead)
-- [ ] Verify Zone 5 captive cable delivers up to 45W (65W rated cable)
-- [ ] Validate full-load envelope at 190W total and ATtiny85 soft cap at 185W
-
-### Week 4 — Full Assembly
-
-- [ ] Mount PSU under centre platform cavity
-- [ ] Install right-angle C13 inlet
-- [ ] Populate PCB PTC resettable fuse protection
-- [ ] Route captive cables from top of each slot
-- [ ] Confirm captive cable reach to device port when fully inserted
-- [ ] Confirm thermal stability under simultaneous high-load test
+### Print Notes
+- Print base/riser as one part
+- Do not print walnut faces — these are laser cut separately
+- Check all wall thicknesses ≥3mm, especially at Step 3 lateral ribs
+- Acetone-smooth after print for matte surface
 
 ---
 
-## Full Assembly Checklist (Quick Reference)
+## Step 2: Laser Cut Walnut (Pumping Station One)
 
-- [ ] PSU wired and outputting ~20V
-- [ ] Zone 1 Qi2 charging at 20W
-- [ ] Zone 2 Qi charging at 20W
-- [ ] Zone 3 puck + Qi watch modes validated
-- [ ] Zone 4 captive cable charging laptop
-- [ ] Zone 5 captive cable charging tablet/phone
-- [ ] ATtiny85 LED logic functional (per-zone colours, status indicators)
+### Walnut Laser Settings (4mm walnut)
+- Speed: 15mm/s
+- Power: 80%
+- Passes: 2–3 (test on scrap first)
+- Air assist: on
+- Focus: set for 4mm material
+
+### Parts to Cut
+Per unit:
+- Step 1 face: 165×15mm
+- Step 2 face: 130×15mm
+- Step 3 face: 95×15mm
+- Step 1 top: 165×100mm (with pad recess cutout)
+- Step 2 top: 130×100mm (with pad recess cutout)
+- Step 3 top: 95×80mm (with pad recess cutout)
+
+Per unit (ABS rear spine):
+- Rear spine: 165×35mm with port cutouts (DC jack, USB-C ×2)
+
+### Laser Notes
+- Always do test cut on offcut first
+- Walnut grain should run along the long axis of each piece
+- Clean laser bed before walnut cuts to prevent scorching
+- Wipe cut edges with damp cloth before finishing
 
 ---
 
-## Budget Breakdown
+## Step 3: Walnut Finishing
 
-Use [bom.md](bom.md) cost tables as the latest baseline.
+1. Sand all walnut pieces: 120 → 180 → 220 grit, with grain
+2. Blow dust off with compressed air, wipe with tack cloth
+3. Apply Rubio Monocoat oil with lint-free cloth — very thin coat
+4. Work into grain, wipe off all excess within 3 minutes
+5. Buff dry with clean cloth
+6. Allow 1 hour minimum cure before assembly
+7. Do not get oil on mating/glue surfaces
+
+---
+
+## Step 4: Electronics Assembly
+
+Assembly order:
+1. Solder polyfuses and TVS diodes to PD boards
+2. Install heat-set inserts into ABS riser base (soldering iron method)
+3. Mount 12V buck converter in riser cavity (flat-mount, hot glue or M3)
+4. Mount 5V buck converter next to 12V buck
+5. Mount ATtiny85 board in riser cavity
+6. Install USB-C PD 60W board and 30W board near rear spine
+7. Install hardware relay (Zone 3)
+8. Route wiring using JST connectors per wiring guide
+9. Feed Zone 3 wiring up through Zone 2 step before mounting Step 3 electronics
+10. Mount Qi2 TX board under Step 1 top surface
+11. Mount Qi 5W TX board under Step 2 top surface
+12. Mount Apple Watch puck PCBA + Qi coil under Step 3 top surface
+13. Install WS2811 LED strip behind frosted acrylic diffuser slot
+14. Connect LED strip to ATtiny85
+
+### Flat-Mount Rule
+All boards in the riser cavity must be flat. Maximum height: 22mm. Check every component before closing the cavity.
+
+### Step 3 Wall Thickness Note
+Verify the ABS ribs at X=35 and X=130 are ≥3mm. These support Step 3 laterally. If thinner, do not proceed — reprint that unit.
+
+---
+
+## Step 5: Testing Checklist (per unit)
+
+Run all tests before assembly of walnut faces.
+
+### Power-on test
+- [ ] Connect 65W brick + barrel cable
+- [ ] No smoke, sparks, or excessive heat
+- [ ] LED strip illuminates on power-on sequence
+
+### Zone 1 — Phone
+- [ ] Place Qi2 phone on Zone 1 pad
+- [ ] Phone charges (verify on phone screen)
+- [ ] Zone 1 LED (blue) illuminates
+- [ ] Remove phone — LED extinguishes
+
+### Zone 2 — Buds
+- [ ] Place AirPods case on Zone 2 pad
+- [ ] Case charges
+- [ ] Zone 2 LED (purple) illuminates
+
+### Zone 3 — Watch (Apple Watch)
+- [ ] Place Apple Watch on Zone 3 cradle
+- [ ] Watch charges
+- [ ] Zone 3 LED (green) illuminates
+- [ ] Relay switches to Apple Watch puck mode
+
+### Zone 3 — Watch (Qi)
+- [ ] Place Qi-compatible watch on Zone 3
+- [ ] Watch charges via Qi coil
+- [ ] Relay mutual exclusion: only one coil active at a time
+
+### USB-C Port A
+- [ ] Connect USB-C device to Port A
+- [ ] Device charges at 60W (verify with USB meter)
+- [ ] Port A LED (orange) illuminates
+
+### USB-C Port B
+- [ ] Connect USB-C device to Port B
+- [ ] Device charges at 30W (verify with USB meter)
+- [ ] Port B LED (teal) illuminates
+
+### Soft cap test
+- [ ] Load all zones simultaneously
+- [ ] Monitor total draw — verify ATtiny85 caps at 60W by disabling low-priority zones
+
+---
+
+## Step 6: Final Assembly
+
+1. Glue walnut top surfaces onto step tops with wood glue + M3 screws from inside
+2. Press silicone charging pads into recesses
+3. Attach walnut step faces
+4. Install frosted acrylic LED diffuser in front slot
+5. Attach rear ABS spine with port cutouts aligned to PD boards
+6. Close base plate with M3 screws
+7. Apply 3M Bumpons to base corners
+8. Final visual inspection
+
+---
+
+## Packaging
+
+1. Place unit in foam insert
+2. Place in rigid matte black box
+3. Include: 65W USB-C brick + USB-C to barrel cable (1m)
+4. Include: setup card + belly band
+5. Box closed and banded

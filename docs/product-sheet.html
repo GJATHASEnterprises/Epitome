@@ -1,136 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Penta Dock — Product Sheet</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,Arial,sans-serif;background:#0d0d1a;color:#e8e8e8;padding:32px;max-width:1200px;margin:0 auto}
-.header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #2b2b42;padding-bottom:20px;margin-bottom:24px}
-.brand{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#8f90a4}
-h1{font-size:42px;font-weight:300;letter-spacing:7px;text-transform:uppercase}
-.price{font-size:32px;font-weight:300;color:#c8a84b;text-align:right}
-.price-note{font-size:11px;color:#a8adba;text-align:right;margin-top:4px;line-height:1.4}
-.scene{background:#171826;border:1px solid #2a2a4a;border-radius:12px;padding:20px;margin-bottom:18px}
-.dock{display:flex;gap:16px;align-items:flex-end;min-height:280px;position:relative;padding:18px;background:linear-gradient(165deg,#1a1b2a,#111321);border-radius:10px}
-.fascia{position:absolute;left:16px;right:16px;bottom:16px;height:16px;background:#1f222b;border:1px solid #384056;border-radius:5px}
-.fascia:after{content:'';position:absolute;left:10px;right:10px;top:5px;height:5px;border-radius:3px;background:linear-gradient(90deg,#3a7bd5 0 20%,#9b59b6 20% 40%,#27ae60 40% 60%,#e67e22 60% 80%,#3a7bd5 80% 100%);box-shadow:0 0 10px rgba(255,179,71,.55)}
-.slot{width:90px;border-radius:8px 8px 0 0;background:linear-gradient(170deg,#252832,#171a22);border:1px solid #3a4052;padding:10px;height:220px;position:relative}
-.slot.small{height:190px;width:72px}
-.slot:before{content:'';position:absolute;left:10px;right:10px;top:16px;bottom:8px;background:#0d1117;border:1px solid #232b39;border-radius:4px}
-.slot h3,.slot p{position:relative;z-index:1}
-.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:0;position:relative;z-index:1}
-.step{border:1px solid #3a4256;border-bottom:none;background:linear-gradient(170deg,#252a33,#1c2129);padding:8px 10px}
-.step1{width:240px}
-.step2{width:190px}
-.step3{width:140px}
-.zone{font-size:12px;font-weight:600;display:flex;justify-content:space-between}
-.z1{color:#3a7bd5}.z2{color:#9b59b6}.z3{color:#27ae60}.z4{color:#e67e22}.z5{color:#3a7bd5}
-.dim{font-size:10px;color:#a3a9b8;line-height:1.4;margin-top:2px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
-.card{background:#161729;border:1px solid #2a2e45;border-radius:8px;padding:14px}
-.card h3{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#a1a6ba;margin-bottom:10px}
-.row{display:flex;justify-content:space-between;border-bottom:1px solid #20243a;padding:6px 0;font-size:12px}
-.row:last-child{border-bottom:none}
-.tbl{background:#161729;border:1px solid #2a2e45;border-radius:8px;padding:16px}
-.tbl h2{font-size:10px;letter-spacing:2px;color:#a1a6ba;text-transform:uppercase;margin-bottom:10px}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th,td{padding:8px;border-bottom:1px solid #20243a;text-align:left}
-th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#a1a6ba}
-tr:last-child td{border-bottom:none}
-.footer{display:flex;justify-content:space-between;border-top:1px solid #2a2e45;padding-top:12px;margin-top:14px;font-size:11px;color:#9ea4b2}
-@media(max-width:900px){.grid{grid-template-columns:1fr}.dock{flex-direction:column}.step1,.step2,.step3{width:100%}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step — Product Sheet</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      color: #eee;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .sheet {
+      width: 1200px;
+      height: 800px;
+      background: #111;
+      display: flex;
+      overflow: hidden;
+    }
+    .left {
+      width: 55%;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .left .placeholder {
+      color: #444;
+      font-size: 14px;
+      text-align: center;
+    }
+    .right {
+      width: 45%;
+      background: #1a1a1a;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px solid #333;
+    }
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .title { font-size: 36px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+    .price { font-size: 28px; font-weight: bold; color: #fff; }
+    .tagline { font-size: 11px; color: #888; margin-top: 6px; }
+    hr { border: none; border-top: 1px solid #333; margin: 16px 0; }
+    .zone-list { flex: 1; }
+    .zone-row {
+      display: flex;
+      align-items: center;
+      padding: 7px 0;
+      font-size: 13px;
+    }
+    .zone-num  { width: 20px; font-size: 10px; }
+    .zone-name { flex: 1; color: #ddd; }
+    .zone-w    { width: 48px; text-align: right; font-size: 16px; font-weight: bold; color: #fff; }
+    .zone-std  { width: 90px; padding-left: 10px; color: #888; font-size: 11px; }
+    .z1 { color: #0044FF; }
+    .z2 { color: #8800FF; }
+    .z3 { color: #00CC44; }
+    .z4 { color: #FF6600; }
+    .z5 { color: #00BBAA; }
+    .detail-block { font-size: 11px; color: #888; line-height: 1.8; }
+    .footer { font-size: 11px; color: #ccc; letter-spacing: 1px; }
+  </style>
 </head>
 <body>
-<div class="header">
-  <div>
-    <div class="brand">epitomecharge.com</div>
-    <h1>Penta</h1>
-  </div>
-  <div>
-    <div class="price">PRE-ORDER — $249</div>
-    <div class="price-note">Flat pricing · pre-order only<br>No early-bird or XL tier</div>
-  </div>
-</div>
-
-<div class="scene">
-  <div class="dock">
-    <div class="slot">
-      <h3 class="z4">Zone 4 · Laptop Slot</h3>
-      <p class="dim">35mm wide × 95mm wall height<br>On-edge insertion, top USB-C cable</p>
+<div class="sheet">
+  <div class="left">
+    <div class="placeholder">
+      [Run python scripts/generate_render.py<br>to produce assets/step-render.png]
     </div>
-
-    <div class="center">
-      <div class="step step3">
-        <div class="zone z3"><span>Zone 3 · Watch</span><span>5W</span></div>
-        <div class="dim">100×80mm top step · Apple puck + Qi coil</div>
+  </div>
+  <div class="right">
+    <div>
+      <div class="title-row">
+        <div class="title">STEP</div>
+        <div class="price">$89</div>
       </div>
-      <div class="step step2">
-        <div class="zone z2"><span>Zone 2 · Buds or second phone</span><span>20W Qi</span></div>
-        <div class="dim">140×100mm · silicone dish 90×70mm</div>
+      <div class="tagline">Charge everything. Touch nothing.</div>
+    </div>
+    <hr>
+    <div class="zone-list">
+      <div class="zone-row">
+        <span class="zone-num z1">1</span>
+        <span class="zone-name">PHONE</span>
+        <span class="zone-w">20W</span>
+        <span class="zone-std">Qi2</span>
       </div>
-      <div class="step step1">
-        <div class="zone z1"><span>Zone 1 · Phone</span><span>20W Qi2</span></div>
-        <div class="dim">180×110mm · silicone pad 160×100mm</div>
+      <div class="zone-row">
+        <span class="zone-num z2">2</span>
+        <span class="zone-name">BUDS</span>
+        <span class="zone-w">5W</span>
+        <span class="zone-std">Qi</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num z3">3</span>
+        <span class="zone-name">WATCH</span>
+        <span class="zone-w">5W</span>
+        <span class="zone-std">Apple + Qi</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num z4">4</span>
+        <span class="zone-name">USB-C A</span>
+        <span class="zone-w">60W</span>
+        <span class="zone-std">Port A</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num z5">5</span>
+        <span class="zone-name">USB-C B</span>
+        <span class="zone-w">30W</span>
+        <span class="zone-std">Port B</span>
       </div>
     </div>
-
-    <div class="slot small">
-      <h3 class="z5">Zone 5 · Tablet Slot</h3>
-      <p class="dim">20mm wide × 80mm wall height<br>On-edge insertion, top USB-C cable</p>
+    <hr>
+    <div class="detail-block">
+      Walnut + matte black ABS<br>
+      165 × 100 × 70mm<br>
+      65W USB-C brick included<br>
+      Bring your own USB-C cables
     </div>
-    <div class="fascia"></div>
+    <hr>
+    <div class="footer">epitomecharge.com &nbsp;·&nbsp; PRE-ORDER</div>
   </div>
-</div>
-
-<div class="grid">
-  <div class="card">
-    <h3>Physical</h3>
-    <div class="row"><span>Overall size</span><span>~250×100×100mm</span></div>
-    <div class="row"><span>Body material</span><span>Full ABS</span></div>
-    <div class="row"><span>Finish</span><span>Matte black paint</span></div>
-    <div class="row"><span>Rear rail</span><span>25mm (full width)</span></div>
-    <div class="row"><span>Front fascia</span><span>20mm with diffuser channel</span></div>
-  </div>
-  <div class="card">
-    <h3>Electronics</h3>
-    <div class="row"><span>MCU</span><span>ATtiny85 (LED logic + 185W soft cap)</span></div>
-    
-    <div class="row"><span>PSU</span><span>Mean Well LRS-200-24 (201W)</span></div>
-    <div class="row"><span>LED</span><span>WS2811, 12–15 LEDs</span></div>
-    <div class="row"><span>Power cap</span><span>185W ATtiny85 soft cap</span></div>
-  </div>
-  <div class="card">
-    <h3>Load & Controls</h3>
-    <div class="row"><span>Total load</span><span>190W</span></div>
-    <div class="row"><span>Zone 4</span><span>100W USB-C PD</span></div>
-    <div class="row"><span>Zone 5</span><span>45W USB-C PD</span></div>
-    
-    <div class="row"><span>Inlet</span><span>IEC C13 right-angle</span></div>
-  </div>
-</div>
-
-<div class="tbl">
-  <h2>Zone Specifications</h2>
-  <table>
-    <thead>
-      <tr><th>Zone</th><th>Device</th><th>Method</th><th>Power</th><th>Details</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>01</td><td>Phone</td><td>Qi2</td><td>20W</td><td>Step 1 silicone pad (magnetic alignment)</td></tr>
-      <tr><td>02</td><td>Buds or second phone</td><td>Qi</td><td>20W</td><td>Step 2 silicone dish (90×70mm)</td></tr>
-      <tr><td>03</td><td>Watch</td><td>Apple puck + Qi coil</td><td>5W</td><td>Step 3 raised cradle pod</td></tr>
-      <tr><td>04</td><td>Laptop</td><td>USB-C PD captive cable</td><td>100W</td><td>Vertical left slot, top-fed cable</td></tr>
-      <tr><td>05</td><td>Tablet</td><td>USB-C PD captive cable</td><td>45W</td><td>Vertical right slot, top-fed cable (65W-rated captive cable)</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="footer">
-  <div>Penta Dock · epitomecharge.com · One dock. Every device.</div>
-  <div>© 2026 GJATHASEnterprises</div>
 </div>
 </body>
 </html>

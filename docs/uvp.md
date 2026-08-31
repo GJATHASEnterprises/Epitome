@@ -1,124 +1,53 @@
-# Penta Dock — UVP and Product Positioning
+# Step — Unique Value Proposition
 
-## Slogan
-**"One dock. Every device."**
+---
 
-*190W total output — laptop, tablet, phone, watch, buds, all at full speed.*
+## What is Step?
 
-## The Claim
-The only compact desktop dock that charges your laptop, tablet, phone, watch, and earbuds simultaneously — wirelessly where possible, at full speed, from a single wall socket.
+A three-zone wireless charging stand made from walnut and matte black ABS. Phone, earbuds, and watch on three rising steps. Two USB-C PD ports on the rear. One cable in. $89.
 
-## 190W Total Output
-| Zone | Device | Power | Method |
-|---|---|---|---|
-| Zone 1 | Phone | 20W | Qi2 (magnetic alignment) |
-| Zone 2 | Buds or second phone | 20W | Qi (90×70mm dish) |
-| Zone 3 | Apple Watch | 5W | Apple Watch puck + universal Qi coil |
-| Zone 4 | Laptop | 100W | USB-C PD captive braided cable |
-| Zone 5 | Tablet | 45W | USB-C PD captive braided cable |
-| **Total** | | **190W worst case** | |
-| **PSU** | | **201W rated — 11W headroom** | |
-| **ATtiny85 soft cap** | | **185W** | |
+---
 
 ## What Makes It Different
 
-### 1. Vertical laptop charging — built in
-No other multi-device dock stands your laptop on its spine with a built-in captive 100W USB-C cable. Laptop charges vertically, minimal desk footprint, cable never gets lost.
+### It looks different
 
-### 2. 45W tablet charging
-iPad Pro from dead to full in 90 minutes. Most docks offer 20W tablet charging. Penta Dock delivers 45W — more than double.
+Every other 3-in-1 charger is flat. Anker's folds out. Belkin's has arms. Amazon's are pads. Step is a staircase — three surfaces rising away from you, each device on its own level. You can see all three devices charging at a glance. It reads like furniture, not a gadget.
 
-### 3. 100W laptop + full wireless simultaneously
-100W USB-C and full Qi simultaneously from one IEC cable into one wall socket. No power strip needed.
+### It uses real materials
 
-### 4. Charges two phones at once
-Zone 1 (20W Qi2) and Zone 2 (20W Qi, 90×70mm dish) both fit full-size phones. Two people, one dock.
+The surfaces are oiled walnut. Not wood-look texture. Not a veneer. Real walnut, laser cut, Rubio Monocoat finished. The same wood you see on $300 Grovemade monitor risers. The base is matte black ABS — clean, minimal, disappears behind the wood.
 
-### 5. Staircase platform — everything visible
-Three rising steps face the user. Phone on Step 1. Buds or second phone on Step 2. Watch on Step 3 at reading angle. Every device visible and reachable.
+### It does more
 
-### 6. One cable in. Everything out.
-One IEC C13 to the wall. Five zones charge. No power strip. No cable management. No five separate chargers.
+Two USB-C PD ports on the rear (60W and 30W). Most 3-in-1 wireless chargers have zero wired ports. Step adds real utility for laptop and secondary device charging without adding cables to the front face.
 
-## Physical Premium Details
+### It's handmade in small batch
 
-### Wattage etched on step faces
-```
-PHONE    20W  Qi2
-BUDS     20W  Qi
-WATCH     5W
-LAPTOP  100W  USB-C
-TABLET   45W  USB-C
-```
+Not a factory product. Built by hand at a school makerspace in Chicago. Each unit is individually assembled and tested. That story matters to the buyer who cares about where things come from.
 
-### Braided captive cables
-- Zone 4: 220mm braided nylon, 100W rated, 90° angled dock-end connector
-- Zone 5: 200mm braided nylon, 65W rated, 90° angled dock-end connector
-- Colour: matte black matching dock finish
-- Silicone strain relief boots at cable exit points (Zones 4 and 5)
+---
 
-### Microfibre slot lining
-- Zone 4 (laptop slot) inner walls: self-adhesive microfibre lining
-- Zone 5 (tablet slot) inner walls: self-adhesive microfibre lining
-- Protects device edges from scratching on insertion
+## Who It's For
 
-### Magnetic phone alignment — Zone 1
-Qi2 magnetic ring on Step 1 silicone. Phone snaps to charging position instantly.
+**The desk person.** They already have a good keyboard, a nice desk lamp, maybe a Grovemade pen cup. They've looked at Anker and Belkin and both looked too generic. They want charging to look as intentional as the rest of their desk.
 
-### Watch at viewing angle — Zone 3
-Cradle pod on Step 3 tilts Apple Watch toward user. Face visible while charging.
+**The nightstand person.** Phone, watch, and earbuds all charging overnight. One object replaces three separate chargers. Walnut looks right on a wooden nightstand.
 
-### Textured silicone surfaces
-Dot-pattern silicone on all charging surfaces.
+**The Apple ecosystem user.** iPhone + Apple Watch + AirPods. Every device has a dedicated zone. Nothing is a compromise.
 
-### Physical power button
-Rear rail, next to IEC C13. Cuts all zones. Tactile click. Matte black.
+---
 
-### LED status strip
-Frosted acrylic diffuser, front fascia. ATtiny85-controlled.
+## Why $89
 
-Per-zone colours:
-- Zone 1 Phone: blue
-- Zone 2 Buds or second phone: purple
-- Zone 3 Watch: green
-- Zone 4 Laptop: orange
-- Zone 5 Tablet: blue
+- Under the $100 psychological barrier
+- $41 cheaper than Belkin 3-in-1 ($130)
+- More capable than Anker MagGo ($80) — adds wired ports and walnut
+- Premium enough to signal quality — not a $40 Amazon product
+- Real margin: covers build cost at 8 units
 
-Behaviour:
-- Charging active: full brightness
-- Fully charged: slow pulse every 3 seconds
-- No device: off
+---
 
-### Laser-etched product name
-"PENTA DOCK" on rear panel above IEC C13 inlet.
+## The Pitch (one sentence)
 
-### Rubber feet
-3M Bumpons SJ5023 ×4.
-
-## Colour Variants
-| Variant | Finish | Availability |
-|---|---|---|
-| Penta Dock Obsidian | Matte black ABS, dark silicone | Batch 1 |
-| Penta Dock Arctic | Matte white ABS, light grey silicone | Batch 2 |
-
-## Packaging
-- Magnetic closure matte black rigid box (~300×160×130mm)
-- Black foam insert cut to dock shape
-- Black foam insert — separate cutouts for IEC cable and accessories
-- Braided fabric IEC C13 cable 1.5m matte black
-- Setup card 85×55mm matte black (Moo.com), zone reference, QR to epitomecharge.com
-- Belly band: "Penta Dock — One dock. Every device."
-- Printed inner lid insert: zone diagram + product name, glued to inside of box lid
-- Velcro cable tie matte black
-
-## Pricing
-- **$249 USD**
-- Shipping calculated at checkout (customer pays actual shipping via Shopify/Pirateship)
-- Pre-order — ships [date TBD]
-- Obsidian only at launch
-
-## Website
-epitomecharge.com
-
-## Future Features (shelved — Batch 2 consideration)
-Companion app with BLE zone monitoring, theft alert, night mode scheduling, and zone dashboard. Full spec preserved in docs/app-spec.md.
+**Step is the charging stand for people who care what their desk looks like.**

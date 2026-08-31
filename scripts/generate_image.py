@@ -1,181 +1,166 @@
 #!/usr/bin/env python3
-"""Generate a 3/4 isometric render of the compact Penta Dock.
-
-Usage:
-    python scripts/generate_image.py
-
+"""
+Step — hero product image generator.
+Light grey background, clean isometric view, no text labels.
+Run:
+  python scripts/generate_image.py
 Output:
-    assets/penta-dock-hero.png  (1200×800 px)
+  assets/step-hero.png  (1200×800 px)
 """
 from __future__ import annotations
 
-import math
-import shutil
 from pathlib import Path
 
-import matplotlib
-matplotlib.use("Agg")
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.patches import Polygon
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_PATH        = ROOT / "assets" / "penta-dock-hero.png"
-COMPAT_OUTPUT_PATH = ROOT / "assets" / "quad-dock-hero.png"
-CANVAS_W, CANVAS_H = 1200, 800
+OUT  = ROOT / "assets" / "step-hero.png"
+OUT.parent.mkdir(exist_ok=True)
 
-# Dimensions (mm)
-DOCK_W, DOCK_D = 250.0, 100.0
-BASE_T = 3.0
-LAPTOP_SLOT_W, LAPTOP_SLOT_H = 35.0, 95.0
-TABLET_SLOT_W, TABLET_SLOT_H = 20.0, 80.0
-RISER_H, STEP_H = 50.0, 15.0
-FASCIA_H, REAR_RAIL_H = 20.0, 25.0
+# ── Palette ───────────────────────────────────────────────────────────────────
+C_BG        = "#f0f0f0"
+C_ABS       = "#2a2a2a"
+C_ABS_SIDE  = "#1a1a1a"
+C_WALNUT    = "#8B6914"
+C_WALNUT_DK = "#5C4209"
+C_WALNUT_LT = "#A87B1E"
+C_SILICONE  = "#3a3a3a"
+C_SHADOW    = "#d8d8d8"
 
-# Colors
-C_BG = "#eef1f4"
-C_ABS = "#1a1b1d"
-C_ABS_LIGHT = "#272a2f"
-C_ABS_DARK = "#0f1114"
-C_SIL = "#2b2f35"
-C_SLOT = "#0c0f12"
-C_LED = "#ffb347"
-C_Z1 = "#3a7bd5"
-C_Z2 = "#9b59b6"
-C_Z3 = "#27ae60"
-C_Z4 = "#e67e22"
-C_Z5 = "#3a7bd5"
+W, H = 12, 8
 
+# ── Isometric projection ──────────────────────────────────────────────────────
+def iso(x, y, z):
+    px = (x - y) * 0.6
+    py = (x + y) * 0.3 + z * 0.6
+    return px, py
 
-# Isometric projection
-ANGLE = math.radians(30.0)
-SCALE = 2.6
-OX, OY = 370, 470
+def face_top(x0, y0, x1, y1, z, **kw):
+    c = [iso(x0,y0,z), iso(x1,y0,z), iso(x1,y1,z), iso(x0,y1,z)]
+    return Polygon(c, closed=True, **kw)
 
+def face_front(x0, x1, y, z0, z1, **kw):
+    c = [iso(x0,y,z0), iso(x1,y,z0), iso(x1,y,z1), iso(x0,y,z1)]
+    return Polygon(c, closed=True, **kw)
 
-def iso(x: float, y: float, z: float) -> tuple[float, float]:
-    sx = (x - y) * math.cos(ANGLE) * SCALE + OX
-    sy = (x + y) * math.sin(ANGLE) * SCALE - z * SCALE + OY
-    return sx, sy
+def face_right(x, y0, y1, z0, z1, **kw):
+    c = [iso(x,y0,z0), iso(x,y1,z0), iso(x,y1,z1), iso(x,y0,z1)]
+    return Polygon(c, closed=True, **kw)
 
 
-def poly(ax, pts3d, fc, ec="#0a0c0f", lw=0.8, alpha=1.0, z=2):
-    pts2d = [iso(*p) for p in pts3d]
-    ax.add_patch(Polygon(pts2d, closed=True, facecolor=fc, edgecolor=ec, linewidth=lw, alpha=alpha, zorder=z))
+def draw_block(ax, bx, ex, by, ey, z0, z1, walnut_top=False, zbase=None):
+    if zbase is None:
+        zbase = z1
+    # Front face
+    ax.add_patch(face_front(bx, ex, by, z0, z1,
+                             facecolor=C_ABS, edgecolor=C_ABS_SIDE, lw=0.4, zorder=zbase))
+    # Right face
+    ax.add_patch(face_right(ex, by, ey, z0, z1,
+                             facecolor=C_ABS_SIDE, edgecolor=C_ABS_SIDE, lw=0.4, zorder=zbase))
+    # Top face
+    top_c = C_WALNUT if walnut_top else C_ABS
+    top_edge = C_WALNUT_DK if walnut_top else C_ABS_SIDE
+    ax.add_patch(face_top(bx, by, ex, ey, z1,
+                           facecolor=top_c, edgecolor=top_edge, lw=0.4, zorder=zbase+0.5))
+
+    # Walnut grain (hatching lines across Y axis on top)
+    if walnut_top:
+        for g in np.linspace(by + (ey-by)*0.05, ey - (ey-by)*0.05, 10):
+            p0 = iso(bx + (ex-bx)*0.02, g, z1)
+            p1 = iso(ex - (ex-bx)*0.02, g, z1)
+            ax.plot([p0[0], p1[0]], [p0[1], p1[1]],
+                    color=C_WALNUT_DK, lw=0.25, alpha=0.45, zorder=zbase+0.6)
 
 
-def draw_box(ax, x0, x1, y0, y1, z0, z1, c_top=C_ABS_LIGHT, c_right=C_ABS, c_front=C_ABS_DARK, zorder=3):
-    # top
-    poly(ax, [(x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1)], c_top, z=zorder + 2)
-    # right
-    poly(ax, [(x1, y0, z0), (x1, y1, z0), (x1, y1, z1), (x1, y0, z1)], c_right, z=zorder + 1)
-    # front
-    poly(ax, [(x0, y0, z0), (x1, y0, z0), (x1, y0, z1), (x0, y0, z1)], c_front, z=zorder)
+def draw_pad(ax, cx, cy, z, w, d, zorder=25):
+    bx, ex = cx - w/2, cx + w/2
+    by, ey = cy - d/2, cy + d/2
+    ax.add_patch(face_top(bx, by, ex, ey, z,
+                           facecolor=C_SILICONE, edgecolor="#444", lw=0.3, zorder=zorder, alpha=0.85))
 
 
-def add_label(ax, x, y, text, color="#6d7784"):
-    ax.text(x, y, text, fontsize=10, color=color, ha="left", va="center", zorder=20)
+def draw_ground_shadow(ax, S):
+    """Soft shadow on the ground plane."""
+    sx0, sx1 = iso(0*S, 0*S, 0), iso(165*S, 100*S, 0)
+    # Draw a stretched ellipse under the dock
+    cx = (sx0[0] + sx1[0]) / 2
+    cy = (sx0[1] + sx1[1]) / 2 - 0.05
+    shadow = mpatches.Ellipse((cx, cy - 0.08), 1.8, 0.35,
+                               facecolor=C_SHADOW, alpha=0.5, zorder=0)
+    ax.add_patch(shadow)
 
 
-def render(ax):
-    # soft shadow
-    poly(
-        ax,
-        [(8, 5, -1), (DOCK_W + 18, 5, -1), (DOCK_W + 10, DOCK_D + 8, -1), (-2, DOCK_D + 8, -1)],
-        "#000000",
-        ec="none",
-        alpha=0.16,
-        z=1,
-    )
+def main():
+    S = 0.025   # mm → figure units
 
-    # Base plate
-    draw_box(ax, 0, DOCK_W, 0, DOCK_D, 0, BASE_T, c_top="#22262c", c_right="#15181d", c_front="#111317", zorder=2)
+    fig, ax = plt.subplots(figsize=(W, H), facecolor=C_BG)
+    ax.set_facecolor(C_BG)
+    ax.set_aspect("equal")
+    ax.axis("off")
 
-    # Front fascia strip
-    draw_box(ax, 0, DOCK_W, 0, 3, 0, FASCIA_H, c_top="#22272c", c_right="#171b20", c_front="#13161a", zorder=5)
+    draw_ground_shadow(ax, S)
 
-    # Rear rail
-    draw_box(ax, 0, DOCK_W, 97, 100, 0, REAR_RAIL_H, c_top="#20242a", c_right="#15191e", c_front="#12161b", zorder=4)
+    # ── Base plate ───────────────────────────────────────────────────────────
+    draw_block(ax, 0*S, 165*S, 0*S, 100*S, 0, 3*S, walnut_top=False, zbase=1)
 
-    # Laptop slot body (left)
-    draw_box(ax, 0, 35, 5, 95, 0, LAPTOP_SLOT_H, c_top="#242930", c_right="#161a20", c_front="#12161b", zorder=6)
-    # open front and top hint
-    poly(ax, [(3, 5, 6), (32, 5, 6), (32, 5, 86), (3, 5, 86)], C_SLOT, ec="#20242a", z=12)
-    poly(ax, [(4, 8, 95), (31, 8, 95), (31, 92, 95), (4, 92, 95)], C_SLOT, ec="#20242a", z=12)
+    # ── Riser ────────────────────────────────────────────────────────────────
+    draw_block(ax, 0*S, 165*S, 0*S, 100*S, 3*S, 25*S, walnut_top=False, zbase=2)
 
-    # Tablet slot body (right)
-    draw_box(ax, DOCK_W - 20, DOCK_W, 15, 85, 0, TABLET_SLOT_H, c_top="#242930", c_right="#161a20", c_front="#12161b", zorder=6)
-    poly(ax, [(DOCK_W - 18, 15, 6), (DOCK_W - 2, 15, 6), (DOCK_W - 2, 15, 68), (DOCK_W - 18, 15, 68)], C_SLOT, ec="#20242a", z=12)
-    poly(ax, [(DOCK_W - 19, 18, TABLET_SLOT_H), (DOCK_W - 1, 18, TABLET_SLOT_H), (DOCK_W - 1, 82, TABLET_SLOT_H), (DOCK_W - 19, 82, TABLET_SLOT_H)], C_SLOT, ec="#20242a", z=12)
+    # LED diffuser strip on front face
+    ax.add_patch(face_front(17.5*S, 147.5*S, 0*S, 26*S, 33*S,
+                             facecolor="#445566", edgecolor="#556677", lw=0.3, alpha=0.6, zorder=3))
 
-    # Centre riser and three steps
-    sx0, sx1 = 35, 215
-    draw_box(ax, sx0, sx1, 0, 100, 0, RISER_H, c_top="#20242a", c_right="#14181d", c_front="#111419", zorder=5)
-    draw_box(ax, sx0, sx1, 0, 100, RISER_H, RISER_H + STEP_H, c_top="#2a2f36", c_right="#1a1e24", c_front="#171b20", zorder=8)
-    draw_box(ax, 55, 195, 0, 100, RISER_H + STEP_H, RISER_H + 2 * STEP_H, c_top="#2f343b", c_right="#1d2127", c_front="#1a1d23", zorder=9)
-    draw_box(ax, 75, 175, 0, 80, RISER_H + 2 * STEP_H, RISER_H + 3 * STEP_H, c_top="#343941", c_right="#21252b", c_front="#1e2228", zorder=10)
+    # ── Step 1 ───────────────────────────────────────────────────────────────
+    draw_block(ax, 0*S, 165*S, 0*S, 100*S, 25*S, 40*S, walnut_top=True, zbase=4)
+    draw_pad(ax, 82.5*S, 50*S, 40*S, 75*S, 90*S, zorder=5)
 
-    # Silicone surfaces on steps
-    poly(ax, [(45, 8, RISER_H + STEP_H + 0.3), (205, 8, RISER_H + STEP_H + 0.3), (205, 96, RISER_H + STEP_H + 0.3), (45, 96, RISER_H + STEP_H + 0.3)], C_SIL, ec="#3a3f46", z=15)
-    poly(ax, [(80, 10, RISER_H + 2 * STEP_H + 0.3), (170, 10, RISER_H + 2 * STEP_H + 0.3), (170, 80, RISER_H + 2 * STEP_H + 0.3), (80, 80, RISER_H + 2 * STEP_H + 0.3)], "#2a2d33", ec="#4a4f57", z=16)
+    # ── Step 2 ───────────────────────────────────────────────────────────────
+    draw_block(ax, 17.5*S, 147.5*S, 0*S, 100*S, 40*S, 55*S, walnut_top=True, zbase=6)
+    draw_pad(ax, 82.5*S, 50*S, 55*S, 65*S, 50*S, zorder=7)
 
-    # Watch cradle pod (top step)
-    pod = []
-    for a in range(36):
-        t = 2 * math.pi * a / 36
-        x = 125 + 25 * math.cos(t)
-        y = 55 + 17 * math.sin(t)
-        pod.append((x, y, RISER_H + 3 * STEP_H + 8))
-    poly(ax, pod, "#3a3f46", ec="#5a616d", z=18)
+    # ── Step 3 ───────────────────────────────────────────────────────────────
+    draw_block(ax, 35*S, 130*S, 20*S, 100*S, 55*S, 70*S, walnut_top=True, zbase=8)
+    draw_pad(ax, 82.5*S, 60*S, 70*S, 55*S, 55*S, zorder=9)
 
-    # Front LED diffuser glow strip
-    p0 = iso(10, 0.2, 10)
-    p1 = iso(DOCK_W - 10, 0.2, 10)
-    for lw, a in [(18, 0.06), (10, 0.12), (4, 0.38)]:
-        ax.plot([p0[0], p1[0]], [p0[1], p1[1]], color=C_LED, linewidth=lw, alpha=a, solid_capstyle="round", zorder=30)
+    # ── Rear USB-C port indicators ────────────────────────────────────────────
+    for px_mm, col in [(120, "#FF8833"), (140, "#22CCBB")]:
+        px, py = iso(px_mm*S, 100*S, 15*S)
+        circle = mpatches.Circle((px, py), 0.035, facecolor=col, alpha=0.7, zorder=15)
+        ax.add_patch(circle)
 
-    # Zone LED segments
-    seg = [C_Z1, C_Z2, C_Z3, C_Z4, C_Z5]
-    for i, col in enumerate(seg):
-        x0 = 15 + i * 46
-        x1 = x0 + 38
-        s0 = iso(x0, 0.1, 10)
-        s1 = iso(x1, 0.1, 10)
-        ax.plot([s0[0], s1[0]], [s0[1], s1[1]], color=col, linewidth=3.0, alpha=0.95, solid_capstyle="round", zorder=31)
+    # ── Rear DC jack ─────────────────────────────────────────────────────────
+    px, py = iso(40*S, 100*S, 15*S)
+    circle = mpatches.Circle((px, py), 0.04, facecolor="#888", alpha=0.6, zorder=15)
+    ax.add_patch(circle)
 
-    # Captive USB-C cable tails from slot tops
-    cable_pts = [(17.5, 12.0, 95), (17.5, 7.0, 90), (17.5, 5.0, 84)]
-    c2d = [iso(*p) for p in cable_pts]
-    ax.plot([p[0] for p in c2d], [p[1] for p in c2d], color="#353c46", linewidth=2.8, zorder=33)
-    ax.plot([c2d[-1][0] - 3, c2d[-1][0] + 3], [c2d[-1][1], c2d[-1][1]], color="#aab3c0", linewidth=2.0, zorder=34)
+    # ── Minimal callout dots (no text) ───────────────────────────────────────
+    for cx_mm, cy_mm, z_mm, col in [
+        (82.5, 50, 42, "#0044FF"),
+        (82.5, 50, 57, "#8800FF"),
+        (82.5, 60, 72, "#00CC44"),
+    ]:
+        px, py = iso(cx_mm*S, cy_mm*S, z_mm*S)
+        dot = mpatches.Circle((px, py), 0.025, facecolor=col, alpha=0.5, zorder=20)
+        ax.add_patch(dot)
 
-    # C13 inlet on rear rail
-    c13 = [(31, 100, 6), (59, 100, 6), (59, 100, 24), (31, 100, 24)]
-    poly(ax, c13, "#0a0d11", ec="#2d3440", z=20)
+    # ── Fit view ─────────────────────────────────────────────────────────────
+    pts = [(0,0,0),(165*S,0,0),(0,100*S,0),(165*S,100*S,0),(82.5*S,60*S,80*S)]
+    xs = [iso(*p)[0] for p in pts]
+    ys = [iso(*p)[1] for p in pts]
+    cx = (min(xs)+max(xs))/2
+    cy = (min(ys)+max(ys))/2
+    span = max(max(xs)-min(xs), max(ys)-min(ys)) * 0.7
+    ax.set_xlim(cx - span, cx + span)
+    ax.set_ylim(cy - span*0.6, cy + span*0.9)
 
-    # Callouts
-    add_label(ax, 820, 180, "Zone 4: Laptop slot · 100W USB-C PD")
-    add_label(ax, 840, 220, "On-edge insertion + captive top cable")
-    add_label(ax, 835, 320, "Zone 5: Tablet slot · 45W USB-C PD")
-    add_label(ax, 730, 430, "Zone 3: Watch cradle · 5W")
-    add_label(ax, 620, 500, "Zone 2: Buds / phone · 20W Qi · 90×70mm")
-    add_label(ax, 500, 560, "Zone 1: Phone pad · 20W Qi2")
-    add_label(ax, 680, 635, "20mm front fascia + WS2811 diffuser")
-    add_label(ax, 850, 470, "25mm rear rail + rear-left IEC C13")
+    fig.tight_layout(pad=0)
+    fig.savefig(OUT, dpi=100, bbox_inches="tight", facecolor=C_BG)
+    plt.close(fig)
+    print(f"Hero image saved: {OUT}")
 
 
 if __name__ == "__main__":
-    fig = plt.figure(figsize=(CANVAS_W / 100, CANVAS_H / 100), dpi=100)
-    fig.patch.set_facecolor(C_BG)
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_facecolor(C_BG)
-    ax.set_xlim(0, CANVAS_W)
-    ax.set_ylim(CANVAS_H, 0)
-    ax.axis("off")
-
-    render(ax)
-
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUTPUT_PATH, dpi=100, facecolor=C_BG, bbox_inches="tight", pad_inches=0)
-    plt.close(fig)
-    shutil.copy2(OUTPUT_PATH, COMPAT_OUTPUT_PATH)
-    print(f"✓ Render written: {OUTPUT_PATH.relative_to(ROOT)}")
+    main()
