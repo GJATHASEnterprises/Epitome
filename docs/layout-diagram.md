@@ -1,104 +1,93 @@
-# Step — Layout Diagrams
+# Epitome Step — Layout Diagrams
 
-Coordinate system: X=0 left, X=165 right, Y=0 front, Y=100 rear, Z=0 base
+Geometry is identical for both models. LED colour differences noted.
 
 ---
 
-## Top View
+## Top view (looking down, Z = 40+)
 
 ```
-X=0                                           X=165
-|<------------------ 165mm ------------------>|
-+---------------------------------------------+  Y=0 (FRONT)
-|                                             |
-|  +-----------------------------------------+
-|  |           Step 1 top (Z=40)             |
-|  |   +-------[  75×90mm phone pad  ]-------+
-|  |   |          centred X=82.5, Y=50       |
-|  +-----------------------------------------+
-|        +-------------------------------+
-|        |     Step 2 top (Z=55)        |
-|        |  [  65×50mm buds pad  ]      |
-|        |   centred X=82.5, Y=50       |
-|        +-------------------------------+
-|              +------------------+
-|              | Step 3 top (Z=70)|  <-- Y=20 setback
-|              | [55×55 watch pad]|
-|              | centred X=82.5   |
-|              +------------------+
-|                                             |
-+---------------------------------------------+  Y=100 (REAR)
-       [DC IN]       [USB-A]  [USB-B]
-        X=40          X=120    X=140
+←──────────────────── 165 mm ────────────────────→
+┌─────────────────────────────────────────────────┐  Y=0 (front)
+│                                                 │
+│        [ Phone — Zone 1 — Qi2 20W ]             │
+│          75×90 mm silicone pad                  │
+│                                                 │
+│    ┌─────────────────────────────────────┐      │
+│    │   [ Buds — Zone 2 — Qi 5W ]        │      │
+│    │     65×50 mm silicone pad           │      │
+│    │                                     │      │
+│    │   ┌──────────────────────────┐     │      │
+│    │   │  [Watch — Zone 3 — 5W]  │     │      │  Y=20
+│    │   │   55×55 mm cradle        │     │      │
+│    │   │                          │     │      │
+│    │   └──────────────────────────┘     │      │
+│    └─────────────────────────────────────┘      │
+└─────────────────────────────────────────────────┘  Y=100 (rear)
+  ↑                                            ↑
+X=0                                         X=165
 ```
 
 ---
 
-## Front View (staircase rising away from user)
+## Front view
 
 ```
-                         +----------+
-                         |  Step 3  |  Z=55–70, 95mm wide
-               +---------+  watch   |
-               |  Step 2  +----------+
-               |  buds    |            Z=40–55, 130mm wide
-+----+---------+----------+
-|    |          Step 1 (phone)         Z=25–40, 165mm wide
-| B  +--[ === LED DIFFUSER === ]--+
-| A  |                             |
-| S  |   riser cavity (22mm)       |   Z=3–25
-| E  |                             |
-+----+-----------------------------+   Z=0
-     |  base plate  3mm            |
-     +---------------------------------+
+←──────────────────────── 165 mm ─────────────────────────→
+                ┌────────────────────────┐  Z=70 ← Watch top
+                │  Zone 3 · Watch · 5W   │  (95mm wide)
+          ┌─────┴────────────────────────┴─────┐  Z=55 ← Buds top
+          │      Zone 2 · Buds · Qi 5W         │  (130mm wide)
+┌─────────┴─────────────────────────────────────┴──┐  Z=40 ← Phone top
+│              Zone 1 · Phone · Qi2 20W             │  (165mm wide)
+│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│  Z=36 ← LED diffuser top
+│░░░░░░░░░░░░░░░ LED diffuser ░░░░░░░░░░░░░░░░░░│  Z=26 ← LED diffuser btm
+│           Riser / wiring cavity                  │  Z=3 to Z=25
+└──────────────────────────────────────────────────┘  Z=3
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔  Z=0 (base, 3mm)
 
-     |<-------- 165mm ------------->|
-```
-
----
-
-## Side Cross-Section (left edge view, Y=50)
-
-```
-Z=70 |            +--------+
-     |            | Step 3 |  15mm walnut top
-     |            | (watch)|
-Z=55 |      +-----+--------+
-     |      |  Step 2       |  15mm
-     |      |  (buds)       |
-Z=40 +------+---------------+
-     |   Step 1              |  15mm
-     |   (phone)             |
-Z=25 +-----------------------+
-     | ~~~~riser cavity~~~~  |  22mm  <-- all PCBs + wiring here
-Z=3  +=======================+
-     |  base plate           |  3mm
-Z=0  +=======================+
-     |   bumpons ×4          |
+Walnut model:  LED glow = warm white (#FFD6A0), step faces = walnut grain
+Obsidian model: LED glow = vivid RGB (cycles), step faces = matte black ABS
 ```
 
 ---
 
-## Rear View
+## Side cross-section (X = 82.5, looking right)
 
 ```
-+---------------------------------------------+
-|                                             |
-|                                             |
-|   [DC IN]              [USB-C A] [USB-C B]  |
-|   X=40, Z=15           X=120    X=140       |
-|   barrel jack           60W PD   30W PD     |
-|                         Z=15      Z=15      |
-+---------------------------------------------+
-|<------------------ 165mm ------------------>|
+70 ┤         ┌──────┐
+   │         │Watch │  95×80mm
+55 ┤      ┌──┘      │
+   │      │  Buds   │  130×100mm
+40 ┤   ┌──┘         │
+   │   │   Phone    │  165×100mm
+36 ┤   │ ┌──diffus─┐│
+26 ┤   │ └──────────┘│
+25 ┤   │  ─ ─ ─ ─ ─ │  ← Step 1 floor
+   │   │   Riser     │
+ 3 ┤   │   cavity    │
+ 0 ┤   └─────────────┘
+   └────────────────────→
+       0    Y=0      Y=100
 ```
 
 ---
 
-## Zone Summary
+## Rear view
 
-| Zone | Step | Top Z | Width | Depth | Pad size |
-|---|---|---|---|---|---|
-| 1 — Phone | Step 1 | Z=40 | 165mm | 100mm | 75×90mm portrait |
-| 2 — Buds | Step 2 | Z=55 | 130mm | 100mm | 65×50mm |
-| 3 — Watch | Step 3 | Z=70 | 95mm | 80mm | 55×55mm |
+```
+←──────────────────── 165 mm ────────────────────→
+┌──────────────────────────────────────────────────┐  Z=70
+│                                                  │
+│                                                  │
+│                                                  │
+│──────────────────────────────────────────────────│  Z=25 ← riser top
+│  [DC 5.5mm]                [USB-C A]  [USB-C B]  │  Z=15
+│  X=40, Z=15               X=120,Z=15 X=140,Z=15  │
+│                                                  │
+│──────────────────────────────────────────────────│  Z=3
+└──────────────────────────────────────────────────┘  Z=0
+
+Obsidian model also has mode button at X=82.5, Z=35, centred on rear spine.
+```
+

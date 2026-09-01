@@ -1,66 +1,115 @@
-# Step — Render & Asset Generation Guide
+# Epitome Step — Render Guide
 
-All assets are generated using Python scripts with matplotlib and numpy. No Blender required.
-
----
-
-## Scripts and Outputs
-
-| Script | Output | Purpose |
-|---|---|---|
-| `generate_render.py` | `assets/step-render.png` | Marketing render, dark background |
-| `generate_product_sheet.py` | `assets/step-product-sheet.png` | Two-panel product sheet |
-| `generate_image.py` | `assets/step-hero.png` | Hero product image, light background |
-| `generate_3d_model.py` | `assets/step-top-view.dxf` | DXF top-view layout |
+How to run all four render scripts and use the outputs.
 
 ---
 
-## Running Scripts
+## Setup
 
 ```bash
-cd /path/to/repo
-
-# Marketing render (1200×800px dark)
-python scripts/generate_render.py
-
-# Hero product image (1200×800px light)
-python scripts/generate_image.py
-
-# Product sheet (1200×800px, two-panel)
-python scripts/generate_product_sheet.py
-
-# DXF top view + geometry summary
-python scripts/generate_3d_model.py
+cd scripts
+pip install -r requirements.txt
 ```
+
+All scripts use only standard Python + `Pillow` (PIL). No Blender, no 3D renderer, no external tools required.
 
 ---
 
-## Dependencies
+## Scripts and outputs
 
+### 1. `generate_render.py` — Marketing render
+
+Produces labelled isometric renders with device silhouettes, LED glow, and zone labels.
+
+```bash
+python generate_render.py              # both models
+python generate_render.py --model walnut
+python generate_render.py --model obsidian
 ```
-matplotlib
-numpy
-```
 
-Install: `pip install matplotlib numpy`
+**Output:**
+- `assets/step-walnut-render.png` — 1200 × 800 px, dark background (#111111)
+- `assets/step-obsidian-render.png` — 1200 × 800 px, dark background (#0a0a0a)
 
-See `scripts/requirements.txt` for pinned versions.
+**Use for:** Etsy listing secondary image, Reddit post, product page gallery.
 
 ---
 
-## Asset Descriptions
+### 2. `generate_image.py` — Hero product image
 
-- **step-render.png** — Isometric marketing render. Dark background (#111111). Shows three-step dock with device silhouettes and zone colour glows. Use for README header and product listings.
-- **step-product-sheet.png** — Two-panel product sheet. Left panel: isometric dock render. Right panel: spec panel with zone list and pricing. Use for social media and pre-order page.
-- **step-hero.png** — Clean isometric view, light grey background. No text labels. Use for Etsy and Shopify product photos.
-- **step-top-view.dxf** — DXF top-view drawing with step outlines, zone pads, and port positions. Load in Inkscape or send to laser cutter as layout reference.
+Clean isometric product shot. No labels, no text. Pure product photography style.
+
+```bash
+python generate_image.py              # both models
+python generate_image.py --model walnut
+python generate_image.py --model obsidian
+```
+
+**Output:**
+- `assets/step-walnut-hero.png` — 1200 × 800 px, warm light background (#F5F0E8)
+- `assets/step-obsidian-hero.png` — 1200 × 800 px, dark background (#0d0d0d)
+
+**Use for:** Etsy listing primary image, Shopify product hero, Instagram.
 
 ---
 
-## Coordinate System (Scripts)
+### 3. `generate_product_sheet.py` — Product sheet
 
-All scripts use the same coordinate system as the design spec:
-- X=0 left edge, X=165 right edge
-- Y=0 front, Y=100 rear
-- Z=0 base floor, up = +Z
-- Scale factor S=0.025 in scripts (mm → figure units)
+Two-panel layout: left panel is dock render with labels, right panel is spec sheet text. Fully readable at 1200 × 800 px.
+
+```bash
+python generate_product_sheet.py              # both models
+python generate_product_sheet.py --model walnut
+python generate_product_sheet.py --model obsidian
+```
+
+**Output:**
+- `assets/step-walnut-product-sheet.png` — 1200 × 800 px
+- `assets/step-obsidian-product-sheet.png` — 1200 × 800 px
+
+**Use for:** Shopify product description, Etsy listing image 2–4, social media comparison post.
+
+---
+
+### 4. `generate_3d_model.py` — Technical diagrams
+
+Engineering drawing style. Dimension arrows, zone labels, exact mm measurements.
+
+```bash
+python generate_3d_model.py
+```
+
+**Output:**
+- `assets/step-technical-top.png` — 1200 × 900 px top view with dimensions
+- `assets/step-technical-side.png` — 900 × 900 px side cross-section with dimensions
+
+**Use for:** Design documentation, prototype guide, supplier communication.
+
+---
+
+## How to use the outputs
+
+| Image | Platform | Purpose |
+|---|---|---|
+| `step-walnut-hero.png` | Etsy listing image 1, Shopify hero | Primary product shot |
+| `step-walnut-render.png` | Etsy image 2, Reddit post | Labelled render showing zones |
+| `step-walnut-product-sheet.png` | Etsy image 3, Shopify gallery | Spec sheet for informed buyers |
+| `step-obsidian-hero.png` | Obsidian Etsy/Shopify primary | Dark product shot |
+| `step-obsidian-render.png` | Reddit battlestations, Instagram | RGB glow visible |
+| `step-obsidian-product-sheet.png` | Obsidian spec sheet | |
+| `step-technical-top.png` | Docs, supplier PDFs | Engineering reference |
+| `step-technical-side.png` | Docs, supplier PDFs | Engineering reference |
+
+---
+
+## Regenerating after design changes
+
+If you change the physical dimensions in `docs/design-spec.md`, update the corresponding constants at the top of each script before regenerating:
+
+- `generate_render.py` — `STEP_W`, `STEP_D`, `STEP_H` constants
+- `generate_image.py` — same constants
+- `generate_product_sheet.py` — same constants
+- `generate_3d_model.py` — `DIM_*` constants
+
+All four scripts share the same geometry. Change them consistently.
+

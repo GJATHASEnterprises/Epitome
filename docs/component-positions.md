@@ -1,66 +1,77 @@
-# Step — Component Positions
+# Epitome Step — Component Positions
 
-All coordinates use the Step coordinate system:
-- X=0 left edge, X=165 right edge, centred at X=82.5
-- Y=0 front, Y=100 rear
-- Z=0 base floor, up = +Z
+All coordinates in mm. Origin at bottom-left-front corner of base plate.
+X: left → right | Y: front → rear | Z: bottom → top
+
+Both models use identical positions. LED strip type noted where different.
 
 ---
 
-## Charging Zones
+## Riser cavity components (Z = 3 to Z = 25, flat-mounted)
+
+| Component | X centre | Y centre | Z (board bottom) | Notes |
+|---|---:|---:|---:|---|
+| 12V buck converter | 20 | 50 | 5 | Flat, max 8 mm tall |
+| 5V buck converter | 55 | 50 | 5 | Flat, max 8 mm tall |
+| ATtiny85 (DIP-8 on strip socket) | 90 | 30 | 5 | |
+| USB-C PD 60W trigger board | 120 | 70 | 5 | Aligned to Port A rear cutout |
+| USB-C PD 30W trigger board | 140 | 70 | 5 | Aligned to Port B rear cutout |
+| Zone 3 relay board | 82 | 80 | 5 | |
+| Polyfuse strip (×5) | 30 | 20 | 5 | Laid horizontal |
+
+---
+
+## Rear face ports (Y = 100, Z = 15)
+
+| Port | X | Z | Notes |
+|---|---:|---:|---|
+| DC barrel jack inlet | 40 | 15 | Panel-mount, male 5.5/2.5 mm |
+| USB-C Port A (60W) | 120 | 15 | Panel-mount receptacle |
+| USB-C Port B (30W) | 140 | 15 | Panel-mount receptacle |
+
+---
+
+## Charging zone components
+
+| Component | X centre | Y centre | Z | Notes |
+|---|---:|---:|---:|---|
+| Qi2 20W coil (Zone 1) | 82.5 | 50 | 30 | Beneath Step 1 surface |
+| Zone 1 silicone pad | 82.5 | 50 | 40 | 75 × 90 mm, 1 mm recess |
+| NTC thermistor Zone 1 | 82.5 | 50 | 28 | Glued to coil underside |
+| Qi 5W coil (Zone 2) | 82.5 | 50 | 44 | Beneath Step 2 surface |
+| Zone 2 silicone pad | 82.5 | 50 | 55 | 65 × 50 mm flat |
+| Apple Watch PCBA (Zone 3) | 75 | 60 | 59 | Beneath cradle |
+| Qi watch coil (Zone 3) | 95 | 60 | 59 | Adjacent to Watch PCBA, relay-switched |
+| Zone 3 watch cradle | 82.5 | 60 | 70 | 55 × 55 mm with lip |
+
+---
+
+## LED strip and diffuser
+
+| Component | X start | X end | Z | Notes |
+|---|---:|---:|---:|---|
+| LED strip | 17.5 | 147.5 | 27 | 130 mm, 8 LEDs, behind diffuser |
+| Frosted acrylic diffuser | 17.5 | 147.5 | 26 | 130 × 10 × 3 mm, front face of riser |
+
+- **Walnut model:** WS2811 warm white strip
+- **Obsidian model:** WS2812B RGB strip
+
+---
+
+## Obsidian-only: mode button
 
 | Component | X | Y | Z | Notes |
-|---|---|---|---|---|
-| Zone 1 phone pad centre | 82.5 | 50 | 40 | 75×90mm portrait, Step 1 top |
-| Zone 2 buds pad centre | 82.5 | 50 | 55 | 65×50mm, Step 2 top |
-| Zone 3 watch cradle centre | 82.5 | 60 | 70 | 55×55mm, Step 3 top (set back) |
+|---|---:|---:|---:|---|
+| Rear mode button (tactile) | 82.5 | 100 | 35 | Rear spine, centred |
 
 ---
 
-## Rear Face Connectors
+## Bumpons
 
-| Component | X | Y | Z | Notes |
-|---|---|---|---|---|
-| DC barrel jack inlet | 40 | 100 | 15 | Rear centre-left |
-| USB-C Port A (60W) | 120 | 100 | 15 | Rear right |
-| USB-C Port B (30W) | 140 | 100 | 15 | Rear right, outboard of Port A |
+| Bumpon | X | Y | Z | Notes |
+|---|---:|---:|---:|---|
+| Front-left | 10 | 10 | 0 | Base underside |
+| Front-right | 155 | 10 | 0 | Base underside |
+| Rear-left | 10 | 90 | 0 | Base underside |
+| Rear-right | 155 | 90 | 0 | Base underside |
 
----
-
-## Front Fascia
-
-| Component | X | Y | Z | Notes |
-|---|---|---|---|---|
-| LED diffuser strip | 17.5–147.5 | 0 | ~32 | 130mm wide × 8mm tall, front face of Step 1 riser |
-
----
-
-## Internal (Riser Cavity, Z=3 to Z=25)
-
-All internal components are flat-mounted in the riser cavity. Clearance: 22mm maximum height.
-
-| Component | X (approx) | Y (approx) | Z | Notes |
-|---|---|---|---|---|
-| 12V buck converter | 20 | 20 | 3 | Flat mount |
-| 5V buck converter | 20 | 50 | 3 | Flat mount |
-| ATtiny85 | 82.5 | 30 | 3 | Flat mount, centred |
-| Qi2 20W TX board | 82.5 | 50 | 25 | Under Step 1 top surface |
-| Qi 5W TX board | 82.5 | 50 | 40 | Under Step 2 top surface |
-| Apple Watch puck PCBA | 82.5 | 60 | 55 | Under Step 3 surface |
-| Qi watch coil | 82.5 | 60 | 55 | Under Step 3, relay-switched |
-| Hardware relay | 82.5 | 60 | 3 | Riser cavity, flat mount |
-| USB-C PD 60W board | 110 | 90 | 3 | Riser cavity, near rear spine |
-| USB-C PD 30W board | 130 | 90 | 3 | Riser cavity, near rear spine |
-| WS2811 LED strip | 17.5–147.5 | 2 | 27 | Behind LED diffuser |
-
----
-
-## Step Geometry Reference
-
-| Feature | X range | Y range | Z range |
-|---|---|---|---|
-| Base plate | 0–165 | 0–100 | 0–3 |
-| Riser cavity | 0–165 | 0–100 | 3–25 |
-| Step 1 block | 0–165 | 0–100 | 25–40 |
-| Step 2 block | 17.5–147.5 | 0–100 | 40–55 |
-| Step 3 block | 35–130 | 20–100 | 55–70 |

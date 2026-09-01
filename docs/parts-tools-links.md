@@ -1,85 +1,105 @@
-# Step — Parts, Tools & Buy Links
-
-Everything needed to build Step Batch 1 (10 units).
+# Epitome Step — Parts, Tools, and Supplier Links
 
 ---
 
-## Electronics (per unit)
+## Key electronics suppliers
 
-| Component | Source / Search term | Unit cost |
-|---|---|---:|
-| Qi2 20W TX module (N52 ring) | AliExpress "Qi2 20W wireless charging module" | $6.25 |
-| Qi 5W TX module | AliExpress "5W Qi wireless charging transmitter" | $2.50 |
-| Apple Watch puck PCBA | AliExpress "Apple Watch magnetic charging PCBA" | $2.00 |
-| Qi watch coil 5W | AliExpress "5W Qi coil watch wireless" | $6.25 |
-| Hardware relay 5V SPDT | AliExpress or Mouser "5V SPDT relay module" | $1.50 |
-| 12V buck converter | AliExpress "12V buck converter mini" | $1.25 |
-| 5V buck converter | AliExpress "5V 3A buck converter" | $1.25 |
-| ATtiny85 DIP-8 | DigiKey / Mouser "ATtiny85-20PU" | $1.50 |
-| WS2811 LED strip 8 LED 130mm | AliExpress "WS2811 LED strip 5V individual" | $1.20 |
-| DC barrel jack inlet 5.5/2.1mm | AliExpress "DC barrel jack panel mount" | $0.80 |
-| USB-C PD 60W trigger board | AliExpress "USB-C PD decoy 60W trigger" | $1.88 |
-| USB-C PD 30W trigger board | AliExpress "USB-C PD decoy 30W trigger" | $1.50 |
-| USB-C panel mount receptacles ×2 | AliExpress "USB-C panel mount female" | $1.20 |
-| Polyfuses ×5 + TVS diodes ×3 | DigiKey bulk | $2.10 |
-| NTC thermistors ×2 + thermal cutoff | DigiKey | $1.00 |
-| Wiring / JST / heat shrink | Local / AliExpress | $1.80 |
-
----
-
-## Enclosure (per unit)
-
-| Component | Source | Unit cost |
-|---|---|---:|
-| ABS filament matte black 1kg | Amazon / Prusament | $2.20 (per unit ~180g) |
-| Walnut sheet 4mm | Local hardwood supplier or Inventables | $3.80 (faces + tops) |
-| Laser cut ABS rear spine | School makerspace | $0.60 |
-| Silicone sheet 1mm | AliExpress "1mm silicone rubber sheet" | $0.90 |
-| 3M Bumpons SJ-5302 ×4 | Amazon | $0.60 |
-| M3 screws + heat-set inserts | Amazon / Bolt Depot | $0.80 |
-| Rubio Monocoat oil | Home improvement (÷20 units) | $0.60 |
-| Frosted acrylic 130×10mm | Local plastics / Inventables | $0.40 |
+| Part | Supplier | Search / notes |
+|---|---|---|
+| Qi2 20W TX module | AliExpress / LCSC | Search "Qi2 transmitter module 20W" — verify MPP spec |
+| Qi 5W TX module | AliExpress | Search "5W Qi wireless charging module PCBA" |
+| Apple Watch PCBA | AliExpress | Search "Apple Watch wireless charger PCBA module" |
+| Qi watch coil 5W | AliExpress | Search "universal Qi watch coil 5W" |
+| Hardware relay SPDT | LCSC / Digi-Key | IM03TS or equivalent, 5V coil |
+| 12V buck converter | AliExpress / LCSC | MP1584 or LM2596 module, compact |
+| 5V buck converter | AliExpress / LCSC | MP2307 or similar, <10 mm tall |
+| ATtiny85 DIP-8 | Digi-Key / Mouser | ATtiny85-20PU |
+| WS2811 LED strip | AliExpress | "WS2811 warm white 30LED/m" — cut to 8 LEDs, 130 mm |
+| WS2812B LED strip | AliExpress | "WS2812B 60LED/m black PCB" — cut to 8 LEDs, 130 mm |
+| DC barrel jack 5.5/2.5 mm | Amazon / AliExpress | Panel-mount female, straight |
+| USB-C PD 60W trigger board | AliExpress | Search "USB-C PD 60W trigger module" |
+| USB-C PD 30W trigger board | AliExpress | Search "USB-C PD 30W trigger module" |
+| USB-C panel-mount receptacle | AliExpress | USB-C female panel mount, solder type |
+| Polyfuses ×5 | Digi-Key | Littelfuse 0ZCJ0110AF2E or 1A/1.5A/2A/3A variants |
+| TVS diodes ×2 | Digi-Key | SMAJ5.0A or 3.3V bidirectional |
+| NTC thermistor 10kΩ | Digi-Key | 10kΩ NTC, 0603 or through-hole |
+| Thermal cutoff | AliExpress | 70°C thermal fuse, axial |
+| JST-XH 2.54 mm kit | Amazon | Assorted connectors and housings |
+| 22 AWG silicone wire | Amazon | Red/black, 25 ft each |
+| 26 AWG stranded wire | Amazon | Signal wire, assorted colours |
 
 ---
 
-## Packaging (per unit)
+## Enclosure materials
 
-| Component | Source | Unit cost |
-|---|---|---:|
-| Rigid matte black box | Uline / Packlane | $3.50 |
-| Die-cut foam insert | Custom from foam supplier | $0.80 |
-| 65W USB-C power brick GaN | Amazon "65W GaN charger" | $6.00 |
-| USB-C to barrel 5.5/2.1mm 1m | Amazon | $1.50 |
-| Setup card 85×55mm matte | Moo.com / local print | $0.35 |
-| Belly band matte black | Local print | $0.35 |
+| Part | Supplier | Notes |
+|---|---|---|
+| Walnut sheet 4 mm | Woodcraft / local hardwood | 300 × 300 mm minimum per step set |
+| ABS sheet 4 mm black | TAP Plastics / Amazon | "ABS plastic sheet 4mm black" |
+| ABS filament (matte black) | Printed Solid / Amazon | For 3D printing base and riser |
+| Frosted acrylic 3 mm | TAP Plastics / Amazon | "Frosted white acrylic sheet" — cut to 130 × 10 mm |
+| Silicone sheet 1.5 mm | Amazon | "Black silicone sheet 1.5mm food grade" |
+| Rubio Monocoat Pure | Woodcraft / Amazon | 100 mL tin, enough for ~20 step sets |
+| M3 heat-set inserts | Amazon | "M3 × 4 mm brass heat-set inserts" |
+| M3 button head screws | Amazon | M3 × 8 mm, M3 × 12 mm mix |
+| 3M Bumpons SJ5012 | Amazon | Clear or black, 4 per unit |
+| Matte black spray paint | Hardware store | Rust-Oleum 2X Matte Black #249127 |
+| Grey sandable primer | Hardware store | Rust-Oleum Sandable Primer Grey |
+| Thermal epoxy | Amazon | "thermal epoxy adhesive" for NTC |
+| Cable ties 3 mm | Amazon | Small, black |
+| Adhesive foam tape 1 mm | Amazon | For mounting PCBs flat |
 
 ---
 
-## Tools Required
+## Packaging suppliers
 
-| Tool | Location |
+| Part | Supplier | Notes |
+|---|---|---|
+| Rigid matte black box | Papermart / Uline | ~200 × 130 × 90 mm two-piece |
+| EVA foam insert | Amazon / eFoam | Black EVA 20 mm, cut to size |
+| 100W USB-C GaN brick | Amazon | Anker 100W GaN, 45W Ugreen, or equivalent |
+| USB-C to barrel cable 1 m | AliExpress / Amazon | 5.5/2.5 mm DC output, USB-C input |
+| USB-C cables 1 m ×3 | Amazon | USB-C to USB-C, braided |
+| Setup cards | Vistaprint / Printify | 85 × 55 mm, matte black, white print |
+| Belly bands | Printify / local print shop | 620 × 80 mm, 300 gsm |
+
+---
+
+## Tools required
+
+### School makerspace
+- FDM 3D printer (Bambu P1P / Prusa MK4 / similar) — ABS capable
+- CO₂ laser cutter (40W+ for walnut; 30W for ABS) — with ventilation
+- Soldering iron with fine tip + heat-set tip (or brass barrel)
+- Multimeter
+- Flush cutters, needle-nose pliers
+- USB programmer (USBasp) for ATtiny85
+- Laptop with Arduino IDE
+
+### Hand tools
+- 220, 320, 400-grit sandpaper
+- Lint-free cloths ×10
+- Latex gloves
+- Spray booth or outdoor area
+- Cable tie gun (optional, speeds assembly)
+- M3 hex key
+- Tweezers
+
+### Pumping Station One (Chicago makerspace) — specific tools
+- Epilog Fusion Pro laser cutter (walnut: 65% power, 15 mm/s)
+- Ultimaker S5 for ABS (enclosed printer with heated chamber)
+- Hakko FX-888D soldering station
+- Rigol DP832 bench PSU for zone testing
+
+---
+
+## Test equipment
+
+| Tool | Purpose |
 |---|---|
-| FDM printer (ABS capable, enclosed) | School makerspace |
-| Laser cutter | Pumping Station One |
-| Soldering iron + solder | School makerspace |
-| Heat-set insert tool (soldering iron tip) | School makerspace |
-| USB power meter (for zone testing) | Amazon ~$10 |
-| Arduino Uno (ATtiny85 programmer) | School / own |
-| ISP programming header cable | School / Amazon |
-| Wire strippers / crimpers | School makerspace |
-| Hot glue gun | School makerspace |
-| Sandpaper 120/180/220 | Hardware store |
-| Tack cloth | Hardware store |
+| Benchtop PSU (12V 3A) | Zone testing before final assembly |
+| USB-C power meter (FNIRSI or similar) | Verify PD negotiation on both ports |
+| Qi charging tester | Verify zone 1 and 2 output |
+| Multimeter | Continuity, fuse check, thermistor reading |
+| USBasp programmer | Flash ATtiny85 |
 
----
-
-## Makerspace Notes
-
-### Pumping Station One (Chicago)
-- Laser cutter: Epilog or Glowforge — confirm bed size for walnut pieces
-- Walnut 4mm fits standard 12×24" bed
-- ABS rear spine can be cut in same job as walnut at different settings
-
-### School Makerspace
-- ABS print requires enclosed printer (Bambu, Prusa Enclosure, or similar)
-- If no enclosure: use PETG as ABS substitute (no enclosure required, similar stiffness)

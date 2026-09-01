@@ -1,165 +1,143 @@
-#!/usr/bin/env python3
 """
-Step — hero product image generator.
-Light grey background, clean isometric view, no text labels.
-Run:
-  python scripts/generate_image.py
-Output:
-  assets/step-hero.png  (1200×800 px)
+Epitome Step — Hero Product Image
+Clean isometric renders. No labels, no text. Pure product shot.
+
+Usage:
+    python generate_image.py                 # both models
+    python generate_image.py --model walnut
+    python generate_image.py --model obsidian
 """
-from __future__ import annotations
 
-from pathlib import Path
+import argparse
+import math
+import os
+from PIL import Image, ImageDraw, ImageFilter
 
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.patches import Polygon
+OUTPUT_W, OUTPUT_H = 1200, 800
 
-ROOT = Path(__file__).resolve().parents[1]
-OUT  = ROOT / "assets" / "step-hero.png"
-OUT.parent.mkdir(exist_ok=True)
-
-# ── Palette ───────────────────────────────────────────────────────────────────
-C_BG        = "#f0f0f0"
-C_ABS       = "#2a2a2a"
-C_ABS_SIDE  = "#1a1a1a"
-C_WALNUT    = "#8B6914"
-C_WALNUT_DK = "#5C4209"
-C_WALNUT_LT = "#A87B1E"
-C_SILICONE  = "#3a3a3a"
-C_SHADOW    = "#d8d8d8"
-
-W, H = 12, 8
-
-# ── Isometric projection ──────────────────────────────────────────────────────
-def iso(x, y, z):
-    px = (x - y) * 0.6
-    py = (x + y) * 0.3 + z * 0.6
-    return px, py
-
-def face_top(x0, y0, x1, y1, z, **kw):
-    c = [iso(x0,y0,z), iso(x1,y0,z), iso(x1,y1,z), iso(x0,y1,z)]
-    return Polygon(c, closed=True, **kw)
-
-def face_front(x0, x1, y, z0, z1, **kw):
-    c = [iso(x0,y,z0), iso(x1,y,z0), iso(x1,y,z1), iso(x0,y,z1)]
-    return Polygon(c, closed=True, **kw)
-
-def face_right(x, y0, y1, z0, z1, **kw):
-    c = [iso(x,y0,z0), iso(x,y1,z0), iso(x,y1,z1), iso(x,y0,z1)]
-    return Polygon(c, closed=True, **kw)
+CONFIGS = {
+    "walnut": {
+        "bg": (245, 240, 232),
+        "base": (30, 30, 30),
+        "riser": (28, 28, 28),
+        "step_top": (135, 95, 38),
+        "step_face_light": (155, 115, 52),
+        "step_face_dark": (110, 78, 18),
+        "led_glow": (255, 214, 160),
+        "shadow_col": (180, 170, 160),
+    },
+    "obsidian": {
+        "bg": (13, 13, 13),
+        "base": (18, 18, 18),
+        "riser": (16, 16, 16),
+        "step_top": (28, 28, 28),
+        "step_face_light": (38, 38, 38),
+        "step_face_dark": (18, 18, 18),
+        "led_glow": (51, 153, 255),
+        "shadow_col": (5, 5, 10),
+    },
+}
 
 
-def draw_block(ax, bx, ex, by, ey, z0, z1, walnut_top=False, zbase=None):
-    if zbase is None:
-        zbase = z1
-    # Front face
-    ax.add_patch(face_front(bx, ex, by, z0, z1,
-                             facecolor=C_ABS, edgecolor=C_ABS_SIDE, lw=0.4, zorder=zbase))
-    # Right face
-    ax.add_patch(face_right(ex, by, ey, z0, z1,
-                             facecolor=C_ABS_SIDE, edgecolor=C_ABS_SIDE, lw=0.4, zorder=zbase))
-    # Top face
-    top_c = C_WALNUT if walnut_top else C_ABS
-    top_edge = C_WALNUT_DK if walnut_top else C_ABS_SIDE
-    ax.add_patch(face_top(bx, by, ex, ey, z1,
-                           facecolor=top_c, edgecolor=top_edge, lw=0.4, zorder=zbase+0.5))
-
-    # Walnut grain (hatching lines across Y axis on top)
-    if walnut_top:
-        for g in np.linspace(by + (ey-by)*0.05, ey - (ey-by)*0.05, 10):
-            p0 = iso(bx + (ex-bx)*0.02, g, z1)
-            p1 = iso(ex - (ex-bx)*0.02, g, z1)
-            ax.plot([p0[0], p1[0]], [p0[1], p1[1]],
-                    color=C_WALNUT_DK, lw=0.25, alpha=0.45, zorder=zbase+0.6)
+def iso_pt(x_mm, y_mm, z_mm, cx, cy, s=2.2):
+    a = math.radians(30)
+    px = (x_mm - y_mm) * math.cos(a)
+    py = (x_mm + y_mm) * math.sin(a) - z_mm
+    return cx + px * s, cy + py * s
 
 
-def draw_pad(ax, cx, cy, z, w, d, zorder=25):
-    bx, ex = cx - w/2, cx + w/2
-    by, ey = cy - d/2, cy + d/2
-    ax.add_patch(face_top(bx, by, ex, ey, z,
-                           facecolor=C_SILICONE, edgecolor="#444", lw=0.3, zorder=zorder, alpha=0.85))
+def face4(draw, pts, fill, outline=None):
+    draw.polygon(pts, fill=fill, outline=outline)
 
 
-def draw_ground_shadow(ax, S):
-    """Soft shadow on the ground plane."""
-    sx0, sx1 = iso(0*S, 0*S, 0), iso(165*S, 100*S, 0)
-    # Draw a stretched ellipse under the dock
-    cx = (sx0[0] + sx1[0]) / 2
-    cy = (sx0[1] + sx1[1]) / 2 - 0.05
-    shadow = mpatches.Ellipse((cx, cy - 0.08), 1.8, 0.35,
-                               facecolor=C_SHADOW, alpha=0.5, zorder=0)
-    ax.add_patch(shadow)
+def build_hero(model: str) -> Image.Image:
+    c = CONFIGS[model]
+    img = Image.new("RGB", (OUTPUT_W, OUTPUT_H), c["bg"])
+    draw = ImageDraw.Draw(img, "RGBA")
+
+    cx = OUTPUT_W * 0.48
+    cy = OUTPUT_H * 0.66
+
+    def pt(x, y, z):
+        return iso_pt(x, y, z, cx, cy)
+
+    # Shadow ellipse
+    shadow_layer = Image.new("RGBA", (OUTPUT_W, OUTPUT_H), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(shadow_layer)
+    if model == "walnut":
+        sd.ellipse([cx - 180, cy - 30, cx + 180, cy + 40],
+                   fill=(150, 140, 130, 60))
+    else:
+        sd.ellipse([cx - 180, cy - 30, cx + 180, cy + 40],
+                   fill=(0, 0, 0, 120))
+    shadow_layer = shadow_layer.filter(ImageFilter.GaussianBlur(20))
+    img.paste(shadow_layer, mask=shadow_layer)
+    draw = ImageDraw.Draw(img, "RGBA")
+
+    # Base
+    face4(draw, [pt(0, 0, 3), pt(165, 0, 3), pt(165, 100, 3), pt(0, 100, 3)], c["base"])
+    face4(draw, [pt(0, 0, 0), pt(165, 0, 0), pt(165, 0, 3), pt(0, 0, 3)],
+          tuple(max(0, v - 10) for v in c["riser"]))
+
+    # Riser
+    face4(draw, [pt(0, 0, 25), pt(165, 0, 25), pt(165, 100, 25), pt(0, 100, 25)], c["riser"])
+    face4(draw, [pt(0, 0, 3), pt(165, 0, 3), pt(165, 0, 25), pt(0, 0, 25)],
+          tuple(max(0, v - 15) for v in c["riser"]))
+    face4(draw, [pt(165, 0, 3), pt(165, 100, 3), pt(165, 100, 25), pt(165, 0, 25)],
+          tuple(max(0, v - 30) for v in c["riser"]))
+
+    # LED glow on front riser
+    glow_layer = Image.new("RGBA", (OUTPUT_W, OUTPUT_H), (0, 0, 0, 0))
+    gd = ImageDraw.Draw(glow_layer)
+    gd.polygon([pt(17.5, 0, 26), pt(147.5, 0, 26),
+                pt(147.5, 0, 36), pt(17.5, 0, 36)],
+               fill=c["led_glow"] + (90,))
+    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(8))
+    img.paste(Image.alpha_composite(img.convert("RGBA"), glow_layer).convert("RGB"))
+    draw = ImageDraw.Draw(img, "RGBA")
+
+    # Step 1
+    face4(draw, [pt(0, 0, 40), pt(165, 0, 40), pt(165, 100, 40), pt(0, 100, 40)],
+          c["step_top"])
+    face4(draw, [pt(0, 0, 25), pt(165, 0, 25), pt(165, 0, 40), pt(0, 0, 40)],
+          c["step_face_light"])
+    face4(draw, [pt(165, 0, 25), pt(165, 100, 25), pt(165, 100, 40), pt(165, 0, 40)],
+          c["step_face_dark"])
+
+    # Step 2
+    face4(draw, [pt(17.5, 0, 55), pt(147.5, 0, 55), pt(147.5, 100, 55), pt(17.5, 100, 55)],
+          c["step_top"])
+    face4(draw, [pt(17.5, 0, 40), pt(147.5, 0, 40), pt(147.5, 0, 55), pt(17.5, 0, 55)],
+          c["step_face_light"])
+    face4(draw, [pt(147.5, 0, 40), pt(147.5, 100, 40), pt(147.5, 100, 55), pt(147.5, 0, 55)],
+          c["step_face_dark"])
+
+    # Step 3
+    face4(draw, [pt(35, 20, 70), pt(130, 20, 70), pt(130, 100, 70), pt(35, 100, 70)],
+          c["step_top"])
+    face4(draw, [pt(35, 20, 55), pt(130, 20, 55), pt(130, 20, 70), pt(35, 20, 70)],
+          c["step_face_light"])
+    face4(draw, [pt(130, 20, 55), pt(130, 100, 55), pt(130, 100, 70), pt(130, 20, 70)],
+          c["step_face_dark"])
+
+    return img
 
 
 def main():
-    S = 0.025   # mm → figure units
+    parser = argparse.ArgumentParser(description="Generate Epitome Step hero images")
+    parser.add_argument("--model", choices=["walnut", "obsidian", "both"], default="both")
+    args = parser.parse_args()
 
-    fig, ax = plt.subplots(figsize=(W, H), facecolor=C_BG)
-    ax.set_facecolor(C_BG)
-    ax.set_aspect("equal")
-    ax.axis("off")
+    os.makedirs("../assets", exist_ok=True)
+    os.makedirs("assets", exist_ok=True)
 
-    draw_ground_shadow(ax, S)
-
-    # ── Base plate ───────────────────────────────────────────────────────────
-    draw_block(ax, 0*S, 165*S, 0*S, 100*S, 0, 3*S, walnut_top=False, zbase=1)
-
-    # ── Riser ────────────────────────────────────────────────────────────────
-    draw_block(ax, 0*S, 165*S, 0*S, 100*S, 3*S, 25*S, walnut_top=False, zbase=2)
-
-    # LED diffuser strip on front face
-    ax.add_patch(face_front(17.5*S, 147.5*S, 0*S, 26*S, 33*S,
-                             facecolor="#445566", edgecolor="#556677", lw=0.3, alpha=0.6, zorder=3))
-
-    # ── Step 1 ───────────────────────────────────────────────────────────────
-    draw_block(ax, 0*S, 165*S, 0*S, 100*S, 25*S, 40*S, walnut_top=True, zbase=4)
-    draw_pad(ax, 82.5*S, 50*S, 40*S, 75*S, 90*S, zorder=5)
-
-    # ── Step 2 ───────────────────────────────────────────────────────────────
-    draw_block(ax, 17.5*S, 147.5*S, 0*S, 100*S, 40*S, 55*S, walnut_top=True, zbase=6)
-    draw_pad(ax, 82.5*S, 50*S, 55*S, 65*S, 50*S, zorder=7)
-
-    # ── Step 3 ───────────────────────────────────────────────────────────────
-    draw_block(ax, 35*S, 130*S, 20*S, 100*S, 55*S, 70*S, walnut_top=True, zbase=8)
-    draw_pad(ax, 82.5*S, 60*S, 70*S, 55*S, 55*S, zorder=9)
-
-    # ── Rear USB-C port indicators ────────────────────────────────────────────
-    for px_mm, col in [(120, "#FF8833"), (140, "#22CCBB")]:
-        px, py = iso(px_mm*S, 100*S, 15*S)
-        circle = mpatches.Circle((px, py), 0.035, facecolor=col, alpha=0.7, zorder=15)
-        ax.add_patch(circle)
-
-    # ── Rear DC jack ─────────────────────────────────────────────────────────
-    px, py = iso(40*S, 100*S, 15*S)
-    circle = mpatches.Circle((px, py), 0.04, facecolor="#888", alpha=0.6, zorder=15)
-    ax.add_patch(circle)
-
-    # ── Minimal callout dots (no text) ───────────────────────────────────────
-    for cx_mm, cy_mm, z_mm, col in [
-        (82.5, 50, 42, "#0044FF"),
-        (82.5, 50, 57, "#8800FF"),
-        (82.5, 60, 72, "#00CC44"),
-    ]:
-        px, py = iso(cx_mm*S, cy_mm*S, z_mm*S)
-        dot = mpatches.Circle((px, py), 0.025, facecolor=col, alpha=0.5, zorder=20)
-        ax.add_patch(dot)
-
-    # ── Fit view ─────────────────────────────────────────────────────────────
-    pts = [(0,0,0),(165*S,0,0),(0,100*S,0),(165*S,100*S,0),(82.5*S,60*S,80*S)]
-    xs = [iso(*p)[0] for p in pts]
-    ys = [iso(*p)[1] for p in pts]
-    cx = (min(xs)+max(xs))/2
-    cy = (min(ys)+max(ys))/2
-    span = max(max(xs)-min(xs), max(ys)-min(ys)) * 0.7
-    ax.set_xlim(cx - span, cx + span)
-    ax.set_ylim(cy - span*0.6, cy + span*0.9)
-
-    fig.tight_layout(pad=0)
-    fig.savefig(OUT, dpi=100, bbox_inches="tight", facecolor=C_BG)
-    plt.close(fig)
-    print(f"Hero image saved: {OUT}")
+    models = ["walnut", "obsidian"] if args.model == "both" else [args.model]
+    for model in models:
+        img = build_hero(model)
+        out_dir = "../assets" if os.path.isdir("../assets") else "assets"
+        path = os.path.join(out_dir, f"step-{model}-hero.png")
+        img.save(path)
+        print(f"Saved: {path}")
 
 
 if __name__ == "__main__":

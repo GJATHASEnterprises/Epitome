@@ -1,53 +1,77 @@
-# Step — Unique Value Proposition
+# Epitome Step — Unique Value Proposition
 
 ---
 
-## What is Step?
+## The problem
 
-A three-zone wireless charging stand made from walnut and matte black ABS. Phone, earbuds, and watch on three rising steps. Two USB-C PD ports on the rear. One cable in. $89.
+You have an iPhone, AirPods, and an Apple Watch. You charge them every day. You've tried:
 
----
+- The $25 Amazon flat pad: ugly, charges one thing at a time, slides around
+- The $130 Belkin stand: clinical white plastic that belongs in an office supply catalogue
+- Three separate chargers: a tangle of cables that ruins whatever aesthetic you've built
 
-## What Makes It Different
-
-### It looks different
-
-Every other 3-in-1 charger is flat. Anker's folds out. Belkin's has arms. Amazon's are pads. Step is a staircase — three surfaces rising away from you, each device on its own level. You can see all three devices charging at a glance. It reads like furniture, not a gadget.
-
-### It uses real materials
-
-The surfaces are oiled walnut. Not wood-look texture. Not a veneer. Real walnut, laser cut, Rubio Monocoat finished. The same wood you see on $300 Grovemade monitor risers. The base is matte black ABS — clean, minimal, disappears behind the wood.
-
-### It does more
-
-Two USB-C PD ports on the rear (60W and 30W). Most 3-in-1 wireless chargers have zero wired ports. Step adds real utility for laptop and secondary device charging without adding cables to the front face.
-
-### It's handmade in small batch
-
-Not a factory product. Built by hand at a school makerspace in Chicago. Each unit is individually assembled and tested. That story matters to the buyer who cares about where things come from.
+None of these are acceptable if you care about your space.
 
 ---
 
-## Who It's For
+## The solution
 
-**The desk person.** They already have a good keyboard, a nice desk lamp, maybe a Grovemade pen cup. They've looked at Anker and Belkin and both looked too generic. They want charging to look as intentional as the rest of their desk.
+**Epitome Step.** A three-zone wireless charging stand shaped like a staircase. Each step charges one category of device. Designed around two real aesthetics — warm walnut for minimal desks, all-black RGB for gaming setups.
 
-**The nightstand person.** Phone, watch, and earbuds all charging overnight. One object replaces three separate chargers. Walnut looks right on a wooden nightstand.
+Small: 165 × 100 × 70 mm. About the footprint of a hardback book.
 
-**The Apple ecosystem user.** iPhone + Apple Watch + AirPods. Every device has a dedicated zone. Nothing is a compromise.
+Charges: phone (Qi2 20W), buds (Qi 5W), watch (Apple Watch + Qi 5W), plus two USB-C ports (60W + 30W).
 
----
-
-## Why $89
-
-- Under the $100 psychological barrier
-- $41 cheaper than Belkin 3-in-1 ($130)
-- More capable than Anker MagGo ($80) — adds wired ports and walnut
-- Premium enough to signal quality — not a $40 Amazon product
-- Real margin: covers build cost at 8 units
+No app. No Bluetooth. No setup. Plug in and charge.
 
 ---
 
-## The Pitch (one sentence)
+## Two models — one reason for each
 
-**Step is the charging stand for people who care what their desk looks like.**
+### Step Walnut — $99
+You have a nice desk. You care about materials. You'd rather spend $99 on something that looks like it belongs there than $130 on something that looks like it belongs in a hospital.
+
+Oiled walnut step faces. Matte black ABS base. Warm white LEDs, barely visible in daylight. Handmade in small batches.
+
+**This is for the desk that already has a Grovemade keyboard and a plant.**
+
+### Step Obsidian — $79
+Your setup is dark. You have RGB. You want the charger to match — not a beige plastic thing sitting next to your keyboard.
+
+Full matte black ABS, sharp angular edges, full RGB LED strip cycling through 8 colours with a single rear button.
+
+**This is for the battlestation. Under $80.**
+
+---
+
+## Why these two models
+
+Because "wireless charger" means two completely different things to two completely different buyers. The Walnut buyer is offended by RGB. The Obsidian buyer thinks walnut is boring. The same electronics, the same zones, the same functionality — wrapped in the material language of each market.
+
+One product line. Two audiences. Neither product exists at this price and quality level currently.
+
+---
+
+## Why $79 and $99
+
+- **$79** is under the "think carefully" threshold for an impulse desk upgrade purchase
+- **$99** is under the $100 psychological barrier while landing in premium handmade desk accessory territory
+- Both are cheaper than the Belkin Boost Charge Pro ($130) while offering more zones and USB-C ports
+- Both include a 100W GaN brick + 3× USB-C cables — zero friction to start using immediately
+
+---
+
+## Who buys Epitome
+
+Not everyone. People who:
+1. Care about what their desk or nightstand looks like
+2. Have at least phone + watch or phone + buds to charge simultaneously
+3. Have been frustrated by the existing options (ugly, too expensive, or underbuilt)
+4. Are willing to pay a small premium for something handmade that they're proud to own
+
+That's a real, purchasable, addressable market. It's exactly who buys Grovemade, Ugmonk, and similar desk goods.
+
+---
+
+## epitomecharge.com
+

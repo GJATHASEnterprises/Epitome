@@ -1,4 +1,4 @@
-# Step — Device Compatibility
+# Epitome Step — Device Compatibility
 
 ---
 
@@ -6,74 +6,80 @@
 
 | Device | Compatible | Notes |
 |---|---|---|
-| iPhone 13 | ✓ | Qi2 20W |
-| iPhone 14 / 14 Pro | ✓ | Qi2 20W |
-| iPhone 15 / 15 Pro | ✓ | Qi2 20W |
-| iPhone 16 / 16 Pro | ✓ | Qi2 20W |
-| Any Qi2-certified phone | ✓ | 20W |
-| Samsung Galaxy (any) | ✓ | 15W Qi |
-| Google Pixel (any) | ✓ | 15W Qi |
-| Any Qi-compatible phone | ✓ | Standard Qi (5–15W depending on phone) |
+| iPhone 13, 13 Pro, 13 Pro Max, 13 mini | ✅ | Qi2 magnetic alignment |
+| iPhone 14, 14 Plus, 14 Pro, 14 Pro Max | ✅ | Qi2 magnetic alignment |
+| iPhone 15, 15 Plus, 15 Pro, 15 Pro Max | ✅ | Qi2 magnetic alignment |
+| iPhone 16, 16 Plus, 16 Pro, 16 Pro Max | ✅ | Qi2 magnetic alignment |
+| All Qi-enabled Android phones | ✅ | Standard Qi fallback (up to 15W) |
+| Samsung Galaxy S series | ✅ | Qi compatible |
+| Google Pixel (Qi-enabled) | ✅ | Qi compatible |
+| AirPods with wireless charging case | ✅ | Qi, fits on Zone 1 if Zone 2 occupied |
 
-Zone 1 uses a Qi2 20W TX module with N52 magnetic alignment ring. Qi2 phones charge at up to 20W. Standard Qi phones charge at their maximum Qi rate.
+**Pad size:** 75 × 90 mm portrait. Phones may overhang top and bottom — the coil centres at mid-phone, which is all that matters for wireless charging.
 
 ---
 
-## Zone 2 — Buds / Small Phone (Qi 5W)
+## Zone 2 — Buds / small phone (Qi 5W)
 
 | Device | Compatible | Notes |
 |---|---|---|
-| AirPods (2nd gen, Pro, 3rd gen, 4th gen) | ✓ | Requires Qi charging case |
-| AirPods Max | ✗ | Not Qi compatible |
-| Samsung Galaxy Buds | ✓ | Qi 5W |
-| Google Pixel Buds | ✓ | Qi 5W |
-| Any earbuds case with Qi | ✓ | 5W |
-| Small Qi phone | ✓ | 5W max on this zone |
+| AirPods Pro (1st, 2nd gen) | ✅ | Qi case |
+| AirPods (2nd, 3rd gen with wireless case) | ✅ | Qi case |
+| AirPods Max (Lightning / USB-C) | ❌ | No Qi charging |
+| Samsung Galaxy Buds (Qi case models) | ✅ | Qi case |
+| Google Pixel Buds Pro | ✅ | Qi case |
+| Any Qi-enabled buds case | ✅ | Standard Qi |
+| Small Android phone (up to 65 × 45 mm) | ✅ | May need Zone 1 for larger phones |
 
-Zone 2 is a standard Qi 5W pad. Works with any device that supports Qi charging and physically fits the 65×50mm pad.
+**Pad size:** 65 × 50 mm. Most buds cases are ≤ 60 × 45 mm and fit easily.
 
 ---
 
-## Zone 3 — Watch
-
-### Apple Watch (magnetic puck)
+## Zone 3 — Watch (Apple Watch + Qi)
 
 | Device | Compatible | Notes |
 |---|---|---|
-| Apple Watch Series 1–9 | ✓ | Via magnetic puck PCBA |
-| Apple Watch Ultra / Ultra 2 | ✓ | Via magnetic puck PCBA |
-| Apple Watch SE | ✓ | Via magnetic puck PCBA |
+| Apple Watch Series 1 – 9 | ✅ | Apple Watch magnetic PCBA |
+| Apple Watch SE (1st, 2nd gen) | ✅ | Apple Watch magnetic PCBA |
+| Apple Watch Ultra, Ultra 2 | ✅ | Apple Watch magnetic PCBA, 49 mm fits in 55 mm cradle |
+| Qi-enabled smart watches | ✅ | Universal Qi watch coil (relay-switched) |
+| Garmin (Qi models) | ✅ | Qi coil |
+| Samsung Galaxy Watch (Qi) | ✅ | Qi coil |
 
-Step's Zone 3 includes Apple's magnetic charging puck PCBA. All Apple Watch models that use the standard magnetic charger are compatible.
+**Cradle:** 55 × 55 mm with 3 mm raised lip. Apple Watch Ultra 2 (49 × 44 mm) fits. Hardware relay ensures Apple Watch PCBA and Qi coil are never simultaneously active.
 
-### Other Watches (Qi universal coil)
+---
 
-| Device | Compatible | Notes |
+## USB-C Ports (rear)
+
+| Port | Protocol | Compatible devices |
 |---|---|---|
-| Garmin (Qi-compatible models) | ✓ | Via Qi coil |
-| Samsung Galaxy Watch (Qi) | ✓ | Via Qi coil |
-| Fitbit (Qi-compatible models) | ✓ | Via Qi coil |
-| Any Qi-compatible watch | ✓ | Via Qi coil, 5W |
+| Port A (60W) | USB-C PD | Laptops, tablets, phones — any USB-C PD device |
+| Port B (30W) | USB-C PD | Phones, earbuds, small tablets, accessories |
 
-**Relay mutual exclusion:** Only one of the Apple Watch puck or Qi coil is active at a time. The ATtiny85 controls the relay. When an Apple Watch is detected, the puck activates. Otherwise the Qi coil is active. There is no conflict between the two.
+**BYOC (Bring Your Own Cable):** The Epitome Step includes **3× USB-C cables** in the box (one for the included brick, two for your devices). The ports are BYOC — you plug in cables at setup and leave them in. They become dedicated charging ports for your most-used accessories.
 
----
+### Compatible devices for Port A (60W)
+- MacBook Air M1/M2 (up to 35W via MagSafe-equivalent PD)
+- MacBook Pro 14" (30–67W, partial charge at 60W)
+- iPad Pro, iPad Air (USB-C)
+- Any USB-C laptop drawing ≤ 60W
+- Steam Deck, gaming handhelds
 
-## USB-C Ports (Rear)
-
-| Device | Port A (60W) | Port B (30W) | Notes |
-|---|---|---|---|
-| MacBook Air M-series | ✓ | ✓ | 60W for Air, 30W for slower charge |
-| MacBook Pro 14" | ✓ | — | Needs 60W+ for full speed |
-| iPad Pro (USB-C) | ✓ | ✓ | Either port works |
-| Any USB-C laptop | ✓ | Depends | 60W for most laptops |
-| Any USB-C phone | ✓ | ✓ | Both ports more than sufficient |
-| Any USB-C device | ✓ | ✓ | Universal USB-C PD |
-
-**BYOC — Bring Your Own Cables:** Step does not include USB-C cables for the rear ports. The user provides their own USB-C cables. Cable standard: USB-C to USB-C, any length, rated for PD charging.
+### Compatible devices for Port B (30W)
+- iPhone 15+ (fast charge, USB-C PD)
+- iPad mini, iPad standard (USB-C)
+- Samsung Galaxy phones (25W PD)
+- Any USB-C phone
 
 ---
 
-## Power Note
+## What is not supported
 
-For simultaneous high-power use of both USB-C ports (60W + 30W), the included 65W brick is not sufficient. Replace the included brick with a 100W+ USB-C charger. The ATtiny85 soft cap will limit total draw to 60W with the included brick, which means heavy USB-C use may throttle wireless zones.
+| Device / scenario | Reason |
+|---|---|
+| USB-A accessories | No USB-A ports. Use a USB-A to USB-C cable if your device is USB-C |
+| Laptops requiring > 60W to charge at full rate | Port A is 60W — charging will be slower than native but will still charge |
+| Garmin watches using proprietary charger | Proprietary connector only — not Qi compatible |
+| MagSafe at full 15W on non-iPhone Qi2 devices | Qi2 20W available; non-Qi2 devices fall back to standard Qi rates |
+
