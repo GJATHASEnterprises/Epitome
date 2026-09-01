@@ -1,148 +1,163 @@
-# Step — Enclosure Specification
+# Epitome Step — Enclosure Specification
 
 ---
 
-## Overview
+## Shared base and riser — 3D print spec
 
-The enclosure consists of a 3D printed matte black ABS structural base/riser and laser-cut walnut faces and top surfaces for each of the three steps. The stepped geometry is the defining visual feature of the product.
+The base plate and riser/wiring cavity are identical across both models.
 
----
+| Parameter | Value |
+|---|---|
+| Material | ABS (not PLA — dimensional stability needed) |
+| Infill | 40% |
+| Wall perimeters | 3 (minimum 1.2 mm wall thickness) |
+| Layer height | 0.2 mm |
+| Colour | Matte black filament |
+| Printer | School FDM printer (Bambu, Prusa, or equivalent) |
+| Print time estimate | ~4 h per unit |
+| Post-processing | Light sanding (220 grit), no paint needed (already matte black) |
 
-## 3D Printed ABS Base / Riser
+### Base plate (Z = 0 to Z = 3)
+- 165 × 100 × 3 mm
+- Four 3M Bumpon recesses in corners (underside)
+- Single cable channel at rear (X = 0 to X = 165, Z = 3)
 
-- **Material:** ABS (matte black)
-- **Print method:** FDM at school makerspace
-- **Dimensions:** 165mm wide × 100mm deep × 25mm tall (base plate Z=0–3 + riser cavity Z=3–25)
-- **Riser cavity:** 165 × 100 × 22mm internal void (Z=3 to Z=25) — houses all wiring and PCBs
-- **Clearance:** 22mm maximum component height in riser; flat-mount all boards
-- **Wall thickness:** ≥3mm all external walls; ≥3mm internal ribs
-- **Finish:** Sanded to 220 grit, acetone-smoothed for matte texture
-
-### Print Settings (ABS)
-- Layer height: 0.2mm
-- Infill: 30% gyroid
-- Perimeters: 3 shells
-- Bed: 90°C, enclosure required
-- Nozzle: 240°C
-- Support: Yes on overhang areas
-
----
-
-## Walnut Step Faces
-
-- **Material:** Walnut, 4mm nominal thickness
-- **Cut method:** Laser cut (Pumping Station One)
-- **Pieces:** ×3 step front faces
-  - Step 1 face: 165mm wide × 15mm tall
-  - Step 2 face: 130mm wide × 15mm tall
-  - Step 3 face: 95mm wide × 15mm tall
-- **Finish:** Rubio Monocoat — thin coat, buffed, 1hr cure minimum
+### Riser / wiring cavity (Z = 3 to Z = 25)
+- Internal cavity: 159 × 94 × 18 mm (6 mm wall all sides)
+- All boards flat-mounted, max component height 18 mm
+- Rear wall has three cutouts: barrel jack X = 40, USB-C A X = 120, USB-C B X = 140
+- Front face of riser: 130 × 10 mm slot for frosted acrylic LED diffuser (Z = 26 to Z = 36)
+- Two M3 heat-set inserts per side for step face attachment
 
 ---
 
-## Walnut Step Top Surfaces
+## Step 1 — Phone (Z = 25 to Z = 40)
 
-- **Material:** Walnut, 4mm nominal thickness
-- **Cut method:** Laser cut (Pumping Station One)
-- **Pieces:** ×3 step tops
-  - Step 1 top: 165mm wide × 100mm deep (full step top)
-  - Step 2 top: 130mm wide × 100mm deep
-  - Step 3 top: 95mm wide × 80mm deep (setback piece)
-- **Cutouts:** Silicone charging pad recesses on each top
-- **Finish:** Rubio Monocoat — thin coat, buffed, 1hr cure minimum
+- 165 × 100 × 15 mm outer dimensions
+- Top surface: 75 × 90 mm silicone pad recess, 1 mm deep, centred
+- Qi2 coil pocket: 60 × 60 mm, 8 mm deep, beneath pad recess
+- Wire chase through riser via JST connector
+- **Walnut:** walnut face + top panels, ABS internal block
+- **Obsidian:** ABS face + top panels
 
 ---
 
-## Step Geometry
+## Step 2 — Buds (Z = 40 to Z = 55)
 
-```
-Step 1 (bottom): 165mm wide × 100mm deep × 15mm tall  (top surface Z=40)
-Step 2 (middle): 130mm wide × 100mm deep × 15mm tall  (top surface Z=55)
-Step 3 (top):     95mm wide ×  80mm deep × 15mm tall  (top surface Z=70)
-```
-
-Step widths centred at X=82.5:
-- Step 1: X=0 to X=165
-- Step 2: X=17.5 to X=147.5
-- Step 3: X=35 to X=130
-
-Step 3 is set back 20mm from the front: Y=20 to Y=100. This exposes the front face of Step 2 and creates the staircase visual.
-
-### Step 3 Lateral Support Note
-
-Step 3 is narrower (95mm) and elevated (Z=70). The internal ABS rib supporting Step 3 must be ≥3mm wall thickness to prevent flex under watch cradle load. Add vertical ribs at X=35 and X=130 in the ABS print.
+- 130 × 100 × 15 mm outer
+- Centred at X = 82.5 (X = 17.5 to X = 147.5)
+- Top surface: 65 × 50 mm silicone pad, no recess
+- Qi 5W coil pocket, 6 mm deep
 
 ---
 
-## Riser Cavity
+## Step 3 — Watch (Z = 55 to Z = 70)
 
-- **Dimensions:** 165 × 100 × 22mm (Z=3 to Z=25)
-- **Purpose:** Houses all PCBs, wiring, JST connectors, and buck converters
-- **Rule:** All components must be flat-mounted (no upright components over 22mm tall)
-- **Access:** Removable base plate secured with M3 heat-set inserts ×4
-
----
-
-## Rear Spine
-
-- **Material:** Laser cut ABS, 165×35mm
-- **Cutouts:** DC barrel jack (X=40), USB-C Port A (X=120), USB-C Port B (X=140)
-- **Port positions (all at Z=15):**
-  - DC barrel jack: X=40, Y=100, Z=15
-  - USB-C Port A: X=120, Y=100, Z=15
-  - USB-C Port B: X=140, Y=100, Z=15
+- 95 × 80 × 15 mm outer
+- Centred at X = 82.5 (X = 35 to X = 130), Y = 20 to Y = 100
+- **Minimum 3 mm wall thickness on front face** (above Step 2 level) for lateral support
+- Top surface: 55 × 55 mm watch cradle with raised 3 mm lip
+- Apple Watch puck pocket + Qi watch coil pocket side-by-side (relay selects active coil)
+- Set-back 20 mm from front provides structural shelf and conceals wiring
 
 ---
 
-## LED Diffuser
+## Walnut model — step face spec
 
-- **Material:** Frosted acrylic, 130mm × 10mm × 2mm
-- **Position:** Front face of Step 1 riser, 130mm wide × 8mm tall slot
-- **Purpose:** Diffuses WS2811 LED strip glow across front fascia
+### Material
+- Sheet: 4 mm Baltic birch plywood or walnut veneer MDF, min 4 mm
+- Preferred: solid walnut 4 mm sheet (Woodcraft / school laser)
+- Grain direction: horizontal (grain runs left-right)
 
----
+### Laser cut settings (walnut)
+- Power: 70–80% (vary by laser — test cut first)
+- Speed: 15 mm/s
+- Passes: 2–3 until clean cut
+- Kerf allowance: 0.1 mm
 
-## Silicone Pads
+### Finishing — Rubio Monocoat
+1. Sand all faces to 180 grit, then 220 grit (with grain)
+2. Wipe clean, no dust
+3. Apply thin coat of Rubio Monocoat Pure with lint-free cloth
+4. Work into grain, remove excess immediately — do not let pool
+5. Cure 1 hour at room temperature (20°C+)
+6. Buff lightly with clean cloth
+7. Do not apply second coat — single coat saturates walnut fully
+8. Curing fully hardens in 24 hours; handle carefully during first hour
 
-- **Material:** 1mm silicone sheet, ~500cm² total
-- **Pieces:**
-  - Zone 1: 75×90mm portrait pad with 1mm recess on Step 1 top
-  - Zone 2: 65×50mm pad on Step 2 top
-  - Zone 3: 55×55mm cradle on Step 3 top
-
----
-
-## Feet
-
-- 3M Bumpons ×4, placed at corners of base plate underside
-
----
-
-## Fasteners
-
-- M3 screws + heat-set inserts for base plate removal and rear spine attachment
-
----
-
-## Walnut Finishing Instructions
-
-1. Sand walnut pieces to 220 grit along grain direction
-2. Wipe clean with tack cloth
-3. Apply thin coat of Rubio Monocoat oil with lint-free cloth — use less than you think you need
-4. Work into grain, wipe off excess within 3 minutes
-5. Buff with clean cloth until no residue
-6. Allow 1 hour minimum cure before assembly
-7. Do not apply heat or water for 24 hours after finishing
+### Edge profile — Walnut
+- Front face of each step: **hand-sand to soft radius**, ~1.5 mm radius
+- Rear and side edges: 0.5 mm break (single sanding pass)
+- Top surface edges: soft radius 1 mm
 
 ---
 
-## Assembly Notes
+## Obsidian model — step face spec
 
-1. Press heat-set inserts into ABS riser with soldering iron
-2. Mount all PCBs and wiring in riser cavity (flat-mount, max 22mm height)
-3. Route cables through internal channels before closing
-4. Attach walnut faces to step fronts with a thin bead of wood glue and M3 screws from inside
-5. Install LED diffuser strip in front fascia slot
-6. Attach rear spine with M3 screws — verify port alignment before tightening
-7. Apply feet to base corners
-8. Final test all zones before boxing
+### Material
+- Sheet: 4 mm matte black ABS sheet
+- Same dimensions as walnut faces
+
+### Laser cut settings (ABS)
+- Power: 60–70%
+- Speed: 20 mm/s
+- Passes: 1–2
+- **Ventilate well** — ABS fumes are irritating
+- Kerf allowance: 0.1 mm
+
+### Finishing — matte black paint
+1. Light sanding of cut edges with 320 grit
+2. Wipe clean, isopropyl alcohol wipe
+3. Light primer coat (grey sandable primer)
+4. Cure 30 minutes
+5. Matte black spray coat (Rust-Oleum 2X matte or equivalent)
+6. Cure 1 hour
+7. Optional: second coat for even coverage
+8. Final cure 24 hours before assembly
+
+### Edge profile — Obsidian
+- All edges: **sharp angular, no rounding**
+- Single light deburr pass to remove laser slag only
+- Target: industrial, crisp, precise look
+
+---
+
+## LED diffuser mounting
+
+- Frosted acrylic: 130 × 10 × 3 mm
+- Friction-fit into riser front face slot
+- LED strip sits behind diffuser on rear face of slot, adhesive-backed
+- Diffuser face flush with riser front face
+
+---
+
+## Rear spine
+
+- Material: laser-cut ABS, 165 × 35 × 3 mm
+- Covers rear face of riser from Z = 3 to Z = 38
+- Three cutouts: barrel jack (X = 35–45), USB-C A (X = 116–126), USB-C B (X = 136–146)
+- Friction-fit + 2× M3 screws
+
+---
+
+## Assembly order
+
+1. Install heat-set inserts (M3) in riser side walls — soldering iron at 200°C
+2. Flat-mount all electronics boards in riser cavity, cable-tie bundles
+3. Snap LED strip into diffuser slot, connect JST to ATtiny85
+4. Press-fit rear spine, route cables through cutouts
+5. Attach Step 1 block — lower walnut/ABS face, screw M3, add silicone pad
+6. Attach Step 2 — same
+7. Attach Step 3 — same, ensure relay JST seated
+8. Place Bumpons in base underside recesses
+9. Final check: all JST connectors seated, no pinched wires
+
+### Assembly differences per model
+
+| Step | Walnut | Obsidian |
+|---|---|---|
+| Step faces | Glue pre-oiled walnut panels to ABS block, clamp 30 min | Snap pre-painted ABS panels onto ABS block |
+| Edge profile | Confirm radius before gluing | Confirm sharp edges before attaching |
+| Button | Not installed | Install rear tactile button PCB in rear spine slot |
+| LED strip | WS2811 warm white | WS2812B RGB |
+

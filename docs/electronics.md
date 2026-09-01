@@ -1,150 +1,135 @@
-# Step — Electronics Reference
+# Epitome Step — Electronics Reference
+
+Both models share identical electronics except for the LED strip type and the Obsidian rear mode button.
 
 ---
 
-## Power Input
+## Shared schematic overview
 
-- **Connector:** DC barrel jack, rear centre-left (X=40, Y=100, Z=15)
-- **Included:** 65W USB-C power brick + USB-C to barrel adapter cable (1m)
-- **Soft cap:** 60W enforced by ATtiny85 — protects included brick
-- **High-power note:** For simultaneous high-power USB-C use (Port A + Port B both loaded), replace included brick with a 100W+ USB-C charger
+```
+DC barrel jack inlet (rear)
+        │
+        ├──→ 12V buck converter ──→ Qi2 20W TX (Zone 1)
+        │
+        ├──→ 5V buck converter ──→ Qi 5W TX (Zone 2)
+        │                     ──→ Apple Watch PCBA / Qi watch coil (Zone 3, via relay)
+        │                     ──→ ATtiny85
+        │
+        ├──→ USB-C PD 60W trigger board (Port A, rear X=120)
+        │
+        └──→ USB-C PD 30W trigger board (Port B, rear X=140)
+```
 
 ---
 
-## Zone-by-Zone Power Paths
+## Zone-by-zone power paths
 
 ### Zone 1 — Phone (Qi2 20W)
+- Feed: 12V from DC rail via 12V buck converter
+- TX module: Qi2 20W (magnetic alignment, iPhone 13+ snaps on, all Qi devices work)
+- Protection: polyfuse (1.5A) + NTC thermistor on TX coil + thermal cutoff
+- Silicone dish: 75 × 90 mm portrait, 1 mm recess
 
-```
-DC jack → 12V buck converter → Qi2 20W TX module → N52 ring magnet array → phone coil
-                             → Polyfuse → NTC thermistor → overcurrent + thermal protection
-```
+### Zone 2 — Buds / small phone (Qi 5W)
+- Feed: 5V from 5V buck converter
+- TX module: standard Qi 5W
+- Protection: polyfuse (1A)
+- Pad: 65 × 50 mm flat silicone
 
-- Input: 12V from 12V buck converter
-- Max output: 20W to phone
-- Safety: polyfuse + NTC thermistor + thermal cutoff
+### Zone 3 — Watch (Apple Watch + Qi 5W)
+- Feed: 5V from 5V buck converter
+- TX: Apple Watch magnetic puck PCBA (all models) + universal Qi watch coil 5W
+- Mutual exclusion: hardware relay ensures only one coil active at a time
+- Cradle: 55 × 55 mm with raised lip
 
-### Zone 2 — Buds / Small Phone (Qi 5W)
+### USB-C Port A (rear X = 120)
+- Trigger board: USB-C PD 60W
+- Panel-mount USB-C receptacle
+- Protection: polyfuse (3A) + TVS diode
+- Feed: DC barrel rail
 
-```
-DC jack → 5V buck converter → Qi 5W TX module → buds pad
-                            → Polyfuse → overcurrent protection
-```
-
-- Input: 5V from 5V buck converter
-- Max output: 5W
-- Safety: polyfuse
-
-### Zone 3 — Watch (Apple Watch puck + Qi 5W)
-
-```
-DC jack → 5V buck converter → Hardware relay (mutual exclusion)
-                                ├─ Apple Watch magnetic puck PCBA (when relay = Apple)
-                                └─ Universal Qi 5W watch coil (when relay = Qi)
-```
-
-- **Mutual exclusion:** Hardware relay ensures only one coil is active at a time
-- Input: 5V from 5V buck converter
-- Max output: 5W
-- Safety: polyfuse on 5V line
+### USB-C Port B (rear X = 140)
+- Trigger board: USB-C PD 30W
+- Panel-mount USB-C receptacle
+- Protection: polyfuse (2A) + TVS diode
+- Feed: DC barrel rail
 
 ---
 
-## USB-C Ports
+## ATtiny85 — role and pin assignments
 
-### Port A — 60W (X=120, Y=100, Z=15)
+The ATtiny85 handles LED control, soft power cap, and night mode. It does **not** communicate externally (no BLE, no Wi-Fi, no app).
 
-```
-DC jack → USB-C PD 60W trigger board → panel mount USB-C receptacle
-        → Polyfuse + TVS diode → ESD + overcurrent protection
-```
-
-- Max output: 60W PD
-- Protection: polyfuse + TVS
-
-### Port B — 30W (X=140, Y=100, Z=15)
-
-```
-DC jack → USB-C PD 30W trigger board → panel mount USB-C receptacle
-        → Polyfuse + TVS diode → ESD + overcurrent protection
-```
-
-- Max output: 30W PD
-- Protection: polyfuse + TVS
-
-**BYOC:** Users bring their own USB-C cables. No cables included for these ports.
-
----
-
-## ATtiny85 — Zone LED Logic + Soft Power Cap
-
-### Role
-- Monitors power draw estimates from zone enable signals
-- Drives WS2811 LED strip (8 LEDs, 130mm, front fascia)
-- Enforces 60W soft power cap: if estimated load approaches 60W, disables lowest-priority active zone
-- Priority order: Port A > Port B > Zone 1 > Zone 2 > Zone 3
-
-### Connections
-| Pin | Function |
+| Pin | Assignment |
 |---|---|
-| PB0 | WS2811 data out |
-| PB1 | Zone 1 sense / enable |
-| PB2 | Zone 2 sense / enable |
-| PB3 | Zone 3 relay control |
-| PB4 | USB-C Port A sense |
-| PB5 (RESET) | USB-C Port B sense |
+| PB0 | WS2811 / WS2812B data out |
+| PB1 | Zone 1 detect (NTC threshold — HIGH when phone present) |
+| PB2 | Zone 2 detect |
+| PB3 | Zone 3 detect |
+| PB4 | Obsidian only: RGB mode button input (active LOW, internal pull-up) |
 | VCC | 5V from 5V buck |
 | GND | Common ground |
 
-### LED Strip — WS2811 8 LEDs 130mm
+---
 
-| Segment | Zone | Colour |
+## LED differences per model
+
+| Parameter | Walnut | Obsidian |
 |---|---|---|
-| LEDs 1–2 | Zone 1 phone | Blue (#0044FF) |
-| LEDs 3–4 | Zone 2 buds | Purple (#8800FF) |
-| LEDs 5–6 | Zone 3 watch | Green (#00CC44) |
-| LED 7 | Port A USB-C | Orange (#FF6600) |
-| LED 8 | Port B USB-C | Teal (#00BBAA) |
-
-LEDs illuminate when the corresponding zone/port has a device present and is actively charging.
+| Strip type | WS2811 | WS2812B |
+| LED count | 8 | 8 |
+| Strip length | 130 mm | 130 mm |
+| Colour | Warm white only (#FFD6A0, fixed) | Full RGB — 8 modes |
+| Mode cycling | N/A | Rear tactile button (PB4) cycles through 8 modes |
+| RGB modes | — | Blue → Purple → Green → Red → Cyan → Yellow → White → Off |
+| Colour codes | — | #3399FF → #9966FF → #33CC66 → #FF3333 → #00FFFF → #FFFF00 → #FFFFFF → off |
+| Data pin | PB0 | PB0 |
 
 ---
 
-## Power Budget
+## Power budget
 
-| Zone | Max draw |
-|---|---:|
-| Phone Qi2 (Zone 1) | 20W |
-| Buds Qi (Zone 2) | 5W |
-| Watch (Zone 3) | 5W |
-| USB-C Port A | 60W |
-| USB-C Port B | 30W |
-| Logic + LEDs | 2W |
-| **Worst case total** | **122W** |
-| **Typical real load** | ~50–65W |
-| **Included brick** | 65W |
-| **Soft cap** | 60W |
+Both models have identical power consumption profiles.
 
----
+| Load | Voltage | Max current | Max power |
+|---|---:|---:|---:|
+| Zone 1 Qi2 TX | 12V | 1.67A | 20W |
+| Zone 2 Qi TX | 5V | 1.0A | 5W |
+| Zone 3 Watch TX | 5V | 1.0A | 5W |
+| USB-C Port A | PD | — | 60W |
+| USB-C Port B | PD | — | 30W |
+| ATtiny85 + LEDs | 5V | 0.3A | 1.5W |
+| **Theoretical max** | | | **121.5W** |
+| **ATtiny85 soft cap** | | | **60W** |
+| **Included brick** | | | **100W** |
 
-## Safety Systems
-
-| System | Location | Purpose |
-|---|---|---|
-| Polyfuse | Zone 1, Zone 2, Zone 3, Port A, Port B | Overcurrent protection per zone |
-| TVS diode | Port A, Port B | ESD / voltage spike protection |
-| NTC thermistor | Zone 1 (Qi2 module) | Thermal monitoring |
-| Thermal cutoff | Zone 1 | Hard thermal shutoff |
-| ATtiny85 soft cap | System-level | 60W aggregate cap — protects brick |
-| Hardware relay | Zone 3 | Mutual exclusion — prevents dual-coil conflict |
+The included 100W brick safely covers simultaneous wireless charging across all three zones plus both USB-C ports at partial load. For simultaneous 60W + 30W USB-C at full PD negotiation, a 100W brick is recommended (included).
 
 ---
 
-## Buck Converters
+## Safety systems
 
-| Converter | Output voltage | Feeds |
-|---|---|---|
-| 12V buck | 12V | Zone 1 Qi2 module |
-| 5V buck | 5V | Zone 2 Qi module, Zone 3 relay + coils, ATtiny85, LED strip |
+| System | Purpose |
+|---|---|
+| Polyfuse Zone 1 | Overcurrent protection on Qi2 TX |
+| NTC thermistor Zone 1 | Temperature monitoring on Qi2 coil |
+| Thermal cutoff Zone 1 | Hard cutoff if coil exceeds 70°C |
+| Polyfuse Zone 2 | Overcurrent on Qi 5W TX |
+| Polyfuse Zone 3 | Overcurrent on watch coil |
+| Hardware relay Zone 3 | Prevents both watch coils being active simultaneously |
+| Polyfuse + TVS Port A | Overcurrent + ESD on USB-C Port A |
+| Polyfuse + TVS Port B | Overcurrent + ESD on USB-C Port B |
+| ATtiny85 soft cap | Dims LEDs if estimated load approaches 60W |
 
-Both converters fed from DC barrel jack rail.
+---
+
+## Soft cap explanation
+
+The ATtiny85 tracks which zones are active (via detect pins) and estimates total draw. If estimated draw exceeds 60W, it reduces LED brightness to pull back ~1.5W from the LED strip. This is a soft protection measure — the polyfuses and TVS handle hard faults.
+
+---
+
+## Night mode
+
+LEDs automatically turn off between 23:00 and 07:00 using a simple time counter derived from power-on time. The ATtiny85 has no RTC. The user sets night mode by pressing and holding the power button for 3 seconds at 23:00 (Obsidian: the mode button; Walnut: no external button, factory-set). First power-on at any time assumes 12:00 noon and counts from there.
+

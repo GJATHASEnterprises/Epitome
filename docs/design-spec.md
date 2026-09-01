@@ -1,196 +1,160 @@
-# Step — Design Specification
+# Epitome Step — Physical Design Specification
 
-**Brand:** Epitome Charge (epitomecharge.com)
-**Product name:** Step
-**Tagline:** "Charge everything. Touch nothing."
-**Price:** $89
+Both models (Walnut and Obsidian) share identical geometry. This document covers all shared dimensions, zone positions, and material differences.
 
 ---
 
-## Overview
+## Coordinate system
 
-Step is a three-step wireless charging stand made from walnut and matte black ABS. Three wireless charging zones are arranged on a rising staircase platform. Two USB-C PD ports on the rear allow wired charging for any device. An external 65W USB-C power brick is included. Users bring their own USB-C cables for the rear ports.
+- X: left → right (0 at left edge)
+- Y: front → rear (0 at front face)
+- Z: bottom → top (0 at base underside)
 
 ---
 
-## Physical Dimensions
+## Overall dimensions
 
-| Dimension | Value |
+| Parameter | Value |
 |---|---|
-| Overall footprint | 165mm × 100mm |
-| Overall height | 70mm |
-| Base plate | 165 × 100 × 3mm (Z=0 to Z=3) |
-| Riser/wiring cavity | 165 × 100 × 22mm (Z=3 to Z=25) |
-| Step 1 block | 165 × 100 × 15mm, top surface Z=40 |
-| Step 2 block | 130 × 100 × 15mm, top surface Z=55 |
-| Step 3 block | 95 × 80 × 15mm, top surface Z=70 |
-| Step 3 setback | 20mm from front (Y=20 to Y=100) |
-
-### Coordinate System
-
-- X=0 left edge, X=165 right edge, centred at X=82.5
-- Y=0 front, Y=100 rear
-- Z=0 base floor, up = +Z
-
-### Step Widths (centred at X=82.5)
-
-| Step | X range | Width | Y range |
-|---|---|---|---|
-| Step 1 (phone) | X=0 – X=165 | 165mm | Y=0 – Y=100 |
-| Step 2 (buds) | X=17.5 – X=147.5 | 130mm | Y=0 – Y=100 |
-| Step 3 (watch) | X=35 – X=130 | 95mm | Y=20 – Y=100 (setback) |
-
-Each step narrows 17.5mm per side (165→130→95mm widths).
+| Width (X) | 165 mm |
+| Depth (Y) | 100 mm |
+| Height (Z) | 70 mm |
+| Footprint area | 165 cm² |
 
 ---
 
-## Zone Specifications
+## Step geometry table
 
-### Zone 1 — Phone (Step 1 top, Z=40)
-- **Standard:** Qi2 20W TX (magnetic alignment, N52 ring)
-- **Pad size:** 75×90mm portrait, 1mm recessed silicone dish
-- **Centre:** X=82.5, Y=50, Z=40
+| Component | X start | X end | Width | Y start | Y end | Depth | Z start | Z end | Height |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Base plate | 0 | 165 | 165 mm | 0 | 100 | 100 mm | 0 | 3 | 3 mm |
+| Riser / wiring cavity | 0 | 165 | 165 mm | 0 | 100 | 100 mm | 3 | 25 | 22 mm |
+| Step 1 (phone) | 0 | 165 | 165 mm | 0 | 100 | 100 mm | 25 | 40 | 15 mm |
+| Step 2 (buds) | 17.5 | 147.5 | 130 mm | 0 | 100 | 100 mm | 40 | 55 | 15 mm |
+| Step 3 (watch) | 35 | 130 | 95 mm | 20 | 100 | 80 mm | 55 | 70 | 15 mm |
 
-### Zone 2 — Buds / Small Phone (Step 2 top, Z=55)
-- **Standard:** Qi 5W TX
-- **Pad size:** 65×50mm silicone pad
-- **Centre:** X=82.5, Y=50, Z=55
-
-### Zone 3 — Watch (Step 3 top, Z=70)
-- **Standard:** Apple Watch magnetic puck PCBA + universal Qi watch coil 5W
-- **Mutual exclusion:** Hardware relay (only one active at a time)
-- **Pad size:** 55×55mm cradle
-- **Centre:** X=82.5, Y=60, Z=70
-- **Note:** Step 3 is set back 20mm from front (front face at Y=20)
-
-### USB-C Ports (rear face)
-- **Port A:** USB-C PD 60W, rear right (X=120, Y=100, Z=15)
-- **Port B:** USB-C PD 30W, rear right (X=140, Y=100, Z=15)
-- **BYOC:** User brings own USB-C cables
+Step 3 is set back 20 mm from the front face (Y starts at 20 mm, not 0). This provides lateral support and hides the watch cradle wiring behind the step face.
 
 ---
 
-## Electronics Summary
+## Charging zone positions
 
-- Qi2 20W TX module (Zone 1)
-- Qi 5W TX module (Zone 2)
-- Apple Watch puck PCBA + universal Qi 5W coil (Zone 3)
-- Hardware relay for Zone 3 mutual exclusion
-- 12V buck converter (Qi2 zone)
-- 5V buck converter (watch + logic)
-- ATtiny85: zone LED logic + soft power cap (60W)
-- WS2811 LED strip: 8 LEDs, 130mm, front fascia frosted diffuser
-- DC barrel jack rear inlet
-- USB-C PD 60W trigger board (Port A)
-- USB-C PD 30W trigger board (Port B)
-- Polyfuses + TVS diodes on all power outputs
+| Zone | Device | Surface Z | Notes |
+|---|---|---:|---|
+| Zone 1 | Phone | 40 mm | Centred on Step 1, portrait orientation |
+| Zone 2 | Buds / small phone | 55 mm | Centred on Step 2 |
+| Zone 3 | Watch | 70 mm | Centred on Step 3, Y = 20 – 100 |
 
-### LED Colours
-| Zone | Colour |
-|---|---|
-| Zone 1 phone | Blue |
-| Zone 2 buds | Purple |
-| Zone 3 watch | Green |
-| Port A USB-C | Orange |
-| Port B USB-C | Teal |
+### Silicone pads / cradles
+
+| Zone | Pad size | Notes |
+|---|---|---|
+| Zone 1 | 75 × 90 mm portrait | 1 mm recess in walnut / ABS surface |
+| Zone 2 | 65 × 50 mm | Flat pad, no recess |
+| Zone 3 | 55 × 55 mm cradle | Raised lip, watch sits in well |
 
 ---
 
-## Material Specification
+## Rear face port positions (all at Z = 15, Y = 100)
 
-| Component | Material |
-|---|---|
-| Base / riser | 3D printed matte black ABS |
-| Step faces (×3) | Laser cut walnut, 4mm, Rubio Monocoat oiled |
-| Step top surfaces (×3) | Laser cut walnut, 4mm, Rubio Monocoat oiled |
-| Rear spine | Laser cut ABS, 165×35mm |
-| Charging pads | 1mm silicone sheet |
-| LED diffuser | Frosted acrylic, 130×10mm |
-| Feet | 3M Bumpons ×4 |
+| Port | X position | Description |
+|---|---:|---|
+| DC barrel jack inlet | X = 40 | Main power in |
+| USB-C Port A | X = 120 | 60W PD |
+| USB-C Port B | X = 140 | 30W PD |
 
 ---
 
-## ASCII Diagrams
+## Riser / wiring cavity — flat-mount rule
 
-### Front View (3-step rising staircase)
+The riser cavity (Z = 3 to Z = 25, usable height = 22 mm) contains all active electronics. **Maximum component height is 18 mm** to leave 4 mm clearance below the Step 1 floor.
 
-```
-       +--------+
-       | WATCH  |     Z=70 (Step 3)
-  +----+--------+----+
-  |    BUDS PAD      |  Z=55 (Step 2)
-+-+------------------+-+
-|      PHONE PAD       |  Z=40 (Step 1)
-+--[ LED DIFFUSER ]----+
-|   ==================  |  Riser / base
-+----------------------+
-```
+All boards must be flat-mounted (lying horizontal). No upright PCBs. JST connectors oriented sideways.
 
-### Top View
+---
 
-```
-X=0                    X=165
-|<-------- 165mm -------->|
-+-------------------------+   Y=0 (front)
-|  +-------------------+  |
-|  |  Step 1 (phone)   |  |
-|  | [  75x90mm pad  ] |  |
-|  +-------------------+  |
-|    +---------------+    |
-|    | Step 2 (buds) |    |
-|    | [65x50mm pad] |    |
-|    +---------------+    |
-|      +-----------+      |
-|      | Step 3    |      |
-|      | (watch)   |      |
-|      |[55x55 pad]|      |
-|      +-----------+      |   Y=100 (rear)
-+-------------------------+
-```
+## Material differences table
 
-### Side View (cross-section, left edge)
+| Part | Walnut model | Obsidian model |
+|---|---|---|
+| Step faces (×3 sides) | 4 mm laser-cut oiled walnut | 4 mm laser-cut matte black ABS |
+| Step top surfaces (×3) | 4 mm laser-cut oiled walnut | 4 mm laser-cut matte black ABS |
+| Base plate | Matte black ABS (3D printed) | Matte black ABS (3D printed) |
+| Riser / wiring cavity | Matte black ABS (3D printed) | Matte black ABS (3D printed) |
+| Rear spine | Laser-cut ABS 165 × 35 mm | Laser-cut ABS 165 × 35 mm |
+| LED strip | WS2811, warm white (#FFD6A0) | WS2812B, full RGB |
+| Step face edge profile | Soft rounded (hand-sanded) | Sharp angular |
+
+---
+
+## ASCII diagrams
+
+### Front view
 
 ```
-Z=70 |        +--------+
-     |        | Step 3 |  15mm
-Z=55 |   +----+--------+
-     |   | Step 2      |  15mm
-Z=40 +---+-------------+
-     | Step 1           |  15mm
-Z=25 +------------------+
-     | Riser cavity     |  22mm
-Z=3  +==================+
-     | Base plate       |  3mm
-Z=0  +==================+
+         ┌────────────────────────────┐  ← Step 3 top (Z=70, 95mm wide)
+         │       Watch Zone           │
+    ┌────┴────────────────────────────┴────┐  ← Step 2 top (Z=55, 130mm wide)
+    │           Buds Zone                  │
+┌───┴──────────────────────────────────────┴───┐  ← Step 1 top (Z=40, 165mm wide)
+│                  Phone Zone                   │
+│━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│  ← LED diffuser strip (Z=25–40)
+│              RISER  (Z=3–25)                  │
+└───────────────────────────────────────────────┘  ← Base (Z=0–3)
+                  165 mm wide
 ```
 
-### Rear View
+### Side view (cross-section at X = 82.5)
 
 ```
-+----------------------------+
-|                            |
-|  [DC IN]  [USB-A] [USB-B]  |
-|  X=40     X=120   X=140    |
-|                            |
-+----------------------------+
+70mm ┤     ┌──────┐
+     │     │Watch │
+55mm ┤   ┌─┘      │
+     │   │ Buds   │
+40mm ┤ ┌─┘        │
+     │ │  Phone   │
+25mm ┤ │──────────│  ← LED diffuser
+ 3mm ┤ │  Riser   │
+  0  ┤ └──────────┘
+     └──────────────→
+        0          100mm (Y)
+```
+
+### Top view (Z = 40, looking down)
+
+```
+←───────────────── 165 mm ──────────────────→
+┌───────────────────────────────────────────┐  Y=0
+│          [  Phone Qi2 pad 75×90  ]        │
+│               Zone 1                      │
+│   ┌─────────────────────────────────┐     │
+│   │      [  Buds Qi pad 65×50  ]   │     │
+│   │           Zone 2                │     │  Y=50
+│   │   ┌───────────────────────┐    │     │
+│   │   │ [Watch cradle 55×55] │    │     │
+│   │   │      Zone 3          │    │     │  Y=60
+│   │   └───────────────────────┘    │     │
+│   └─────────────────────────────────┘     │
+└───────────────────────────────────────────┘  Y=100
+```
+
+### Rear view
+
+```
+←─────────────── 165 mm ──────────────────→
+┌──────────────────────────────────────────┐
+│  [DC]        [USB-C A]  [USB-C B]        │
+│  X=40         X=120      X=140           │
+│            (all Z=15)                    │
+└──────────────────────────────────────────┘
 ```
 
 ---
 
-## Dimensions Table
+## Step 3 setback — rationale
 
-| Feature | Value |
-|---|---|
-| Overall width | 165mm |
-| Overall depth | 100mm |
-| Overall height | 70mm |
-| Step 1 top surface Z | 40mm |
-| Step 2 top surface Z | 55mm |
-| Step 3 top surface Z | 70mm |
-| Step 3 front setback | 20mm (Y=20) |
-| Riser cavity height | 22mm (Z=3 to Z=25) |
-| Base plate thickness | 3mm |
-| Zone 1 pad | 75×90mm portrait |
-| Zone 2 pad | 65×50mm |
-| Zone 3 cradle | 55×55mm |
-| LED diffuser | 130×8mm front fascia |
+Step 3 starts at Y = 20 (20 mm from front face). Benefits:
+1. Adds structural wall thickness on the front of Step 3 (≥ 3 mm ABS wall above Step 2 level)
+2. Conceals watch cradle wiring
+3. Visually anchors Step 3 rearward — makes the staircase silhouette more dramatic from the front
+

@@ -1,232 +1,276 @@
-#!/usr/bin/env python3
 """
-Step — product sheet generator.
-Two-panel layout: dock render left (55%), spec right (45%).
-Run:
-  python scripts/generate_product_sheet.py
-Output:
-  assets/step-product-sheet.png  (1200×800 px, dpi=150)
+Epitome Step — Product Sheet
+Two-panel layout: dock render (left 55%) + spec panel (right 45%).
+Minimum 12pt body text, 28pt title.
+
+Usage:
+    python generate_product_sheet.py                 # both models
+    python generate_product_sheet.py --model walnut
+    python generate_product_sheet.py --model obsidian
 """
-from __future__ import annotations
 
-from pathlib import Path
+import argparse
+import math
+import os
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
-import numpy as np
-from matplotlib.patches import Polygon, FancyBboxPatch
+OUTPUT_W, OUTPUT_H = 1200, 800
+PANEL_SPLIT = int(OUTPUT_W * 0.55)  # 660 left, 540 right
 
-ROOT = Path(__file__).resolve().parents[1]
-OUT  = ROOT / "assets" / "step-product-sheet.png"
-OUT.parent.mkdir(exist_ok=True)
+SHEET_CONFIGS = {
+    "walnut": {
+        "bg": (15, 12, 10),
+        "panel_bg": (20, 16, 12),
+        "accent": (212, 168, 75),
+        "title_col": (255, 255, 255),
+        "price_col": (212, 168, 75),
+        "body_col": (200, 190, 175),
+        "dim_col": (130, 120, 110),
+        "divider_col": (60, 50, 40),
+        "step_top": (140, 100, 40),
+        "step_face_light": (160, 120, 55),
+        "step_face_dark": (110, 80, 20),
+        "riser_col": (26, 26, 26),
+        "led_glow": (255, 214, 160),
+        "model_name": "Step Walnut",
+        "price": "$99",
+        "spec_lines": [
+            ("① Phone", "20W", "Qi2"),
+            ("② Buds", " 5W", "Qi"),
+            ("③ Watch", " 5W", "Apple + Qi"),
+            ("④ USB-C A", "60W", "Port A"),
+            ("⑤ USB-C B", "30W", "Port B"),
+        ],
+        "detail_lines": [
+            "Oiled walnut · Matte black ABS",
+            "Warm white LED",
+            "165 × 100 × 70 mm",
+            "100W USB-C brick included",
+            "3× USB-C cables included",
+        ],
+        "footer": "epitomecharge.com · PRE-ORDER",
+    },
+    "obsidian": {
+        "bg": (10, 10, 15),
+        "panel_bg": (14, 14, 20),
+        "accent": (51, 153, 255),
+        "title_col": (255, 255, 255),
+        "price_col": (51, 153, 255),
+        "body_col": (180, 185, 200),
+        "dim_col": (100, 110, 130),
+        "divider_col": (30, 35, 55),
+        "step_top": (28, 28, 28),
+        "step_face_light": (38, 38, 42),
+        "step_face_dark": (18, 18, 22),
+        "riser_col": (20, 20, 26),
+        "led_glow": (51, 153, 255),
+        "model_name": "Step Obsidian",
+        "price": "$79",
+        "spec_lines": [
+            ("① Phone", "20W", "Qi2"),
+            ("② Buds", " 5W", "Qi"),
+            ("③ Watch", " 5W", "Apple + Qi"),
+            ("④ USB-C A", "60W", "Port A"),
+            ("⑤ USB-C B", "30W", "Port B"),
+        ],
+        "detail_lines": [
+            "Full matte black ABS",
+            "RGB LED · 8 colour modes",
+            "165 × 100 × 70 mm",
+            "100W USB-C brick included",
+            "3× USB-C cables included",
+        ],
+        "footer": "epitomecharge.com · PRE-ORDER",
+    },
+}
 
-DPI = 150
-W_IN = 1200 / DPI   # 8.0 inches
-H_IN = 800  / DPI   # 5.333 inches
 
-# ── Colour palette ────────────────────────────────────────────────────────────
-C_BG        = "#111111"
-C_PANEL     = "#1a1a1a"
-C_ABS       = "#222222"
-C_ABS_SIDE  = "#161616"
-C_WALNUT    = "#8B6914"
-C_WALNUT_DK = "#5C4209"
-C_DIVIDER   = "#333333"
-C_TEXT      = "#EEEEEE"
-C_SUBTEXT   = "#AAAAAA"
-C_ACCENT    = "#FFFFFF"
-C_GLOW_1    = "#0044FF"
-C_GLOW_2    = "#8800FF"
-C_GLOW_3    = "#00CC44"
-C_GLOW_A    = "#FF6600"
-C_GLOW_B    = "#00BBAA"
-
-# ── Isometric helpers ─────────────────────────────────────────────────────────
-def iso(x, y, z):
-    return (x - y) * 0.6, (x + y) * 0.3 + z * 0.6
-
-def face_top(x0, y0, x1, y1, z, **kw):
-    return Polygon([iso(x0,y0,z),iso(x1,y0,z),iso(x1,y1,z),iso(x0,y1,z)], closed=True, **kw)
-
-def face_front(x0, x1, y, z0, z1, **kw):
-    return Polygon([iso(x0,y,z0),iso(x1,y,z0),iso(x1,y,z1),iso(x0,y,z1)], closed=True, **kw)
-
-def face_right(x, y0, y1, z0, z1, **kw):
-    return Polygon([iso(x,y0,z0),iso(x,y1,z0),iso(x,y1,z1),iso(x,y0,z1)], closed=True, **kw)
+def iso_pt(x, y, z, cx, cy, s=1.7):
+    a = math.radians(30)
+    px = (x - y) * math.cos(a)
+    py = (x + y) * math.sin(a) - z
+    return cx + px * s, cy + py * s
 
 
-def draw_block(ax, bx, ex, by, ey, z0, z1, walnut_top=False, zbase=1):
-    ax.add_patch(face_front(bx, ex, by, z0, z1, facecolor=C_ABS, edgecolor=C_ABS_SIDE, lw=0.3, zorder=zbase))
-    ax.add_patch(face_right(ex, by, ey, z0, z1, facecolor=C_ABS_SIDE, edgecolor=C_ABS_SIDE, lw=0.3, zorder=zbase))
-    tc = C_WALNUT if walnut_top else C_ABS
-    te = C_WALNUT_DK if walnut_top else C_ABS_SIDE
-    ax.add_patch(face_top(bx, by, ex, ey, z1, facecolor=tc, edgecolor=te, lw=0.3, zorder=zbase+0.5))
-    if walnut_top:
-        for g in np.linspace(by+(ey-by)*0.08, ey-(ey-by)*0.08, 7):
-            p0 = iso(bx+(ex-bx)*0.03, g, z1)
-            p1 = iso(ex-(ex-bx)*0.03, g, z1)
-            ax.plot([p0[0],p1[0]], [p0[1],p1[1]], color=C_WALNUT_DK, lw=0.25, alpha=0.45, zorder=zbase+0.6)
+def draw_dock(img: Image.Image, cfg: dict, cx: float, cy: float):
+    """Draw the dock isometric render into the left panel."""
+    draw = ImageDraw.Draw(img, "RGBA")
 
+    def pt(x, y, z):
+        return iso_pt(x, y, z, cx, cy)
 
-def draw_glow(ax, cx, cy, z, color, rx=0.12, ry=0.06):
-    px, py = iso(cx, cy, z)
-    ax.add_patch(mpatches.Ellipse((px,py), rx*2, ry*2, facecolor=color, alpha=0.2, zorder=30))
-    ax.add_patch(mpatches.Ellipse((px,py), rx*0.7, ry*0.7, facecolor=color, alpha=0.45, zorder=31))
+    def f4(pts, fill):
+        draw.polygon(pts, fill=fill)
 
+    # Base
+    f4([pt(0, 0, 3), pt(165, 0, 3), pt(165, 100, 3), pt(0, 100, 3)], cfg["riser_col"])
+    f4([pt(0, 0, 0), pt(165, 0, 0), pt(165, 0, 3), pt(0, 0, 3)],
+       tuple(max(0, v - 8) for v in cfg["riser_col"]))
 
-def draw_dock(ax):
-    """Draw Step isometric render on the given axes."""
-    S = 0.025
+    # Riser
+    f4([pt(0, 0, 25), pt(165, 0, 25), pt(165, 100, 25), pt(0, 100, 25)], cfg["riser_col"])
+    f4([pt(0, 0, 3), pt(165, 0, 3), pt(165, 0, 25), pt(0, 0, 25)],
+       tuple(max(0, v - 12) for v in cfg["riser_col"]))
+    f4([pt(165, 0, 3), pt(165, 100, 3), pt(165, 100, 25), pt(165, 0, 25)],
+       tuple(max(0, v - 25) for v in cfg["riser_col"]))
 
-    # Base + riser
-    draw_block(ax, 0, 165*S, 0, 100*S, 0, 3*S,  walnut_top=False, zbase=1)
-    draw_block(ax, 0, 165*S, 0, 100*S, 3*S, 25*S, walnut_top=False, zbase=2)
+    # LED glow
+    glow_layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    gd = ImageDraw.Draw(glow_layer)
+    gd.polygon([pt(17.5, 0, 26), pt(147.5, 0, 26),
+                pt(147.5, 0, 36), pt(17.5, 0, 36)],
+               fill=cfg["led_glow"] + (100,))
+    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(6))
+    base_rgba = img.convert("RGBA")
+    img.paste(Image.alpha_composite(base_rgba, glow_layer).convert("RGB"))
 
-    # LED diffuser strip
-    ax.add_patch(face_front(17.5*S, 147.5*S, 0, 26*S, 33*S,
-                             facecolor="#334466", edgecolor="#446688", lw=0.3, alpha=0.7, zorder=3))
-    # LED dots on diffuser
-    for gx_mm, gc in [(40, C_GLOW_1), (65, C_GLOW_2), (90, C_GLOW_3), (120, C_GLOW_A), (140, C_GLOW_B)]:
-        px, py = iso(gx_mm*S, 0, 29*S)
-        ax.add_patch(mpatches.Ellipse((px,py), 0.09, 0.04, facecolor=gc, alpha=0.6, zorder=4))
+    draw = ImageDraw.Draw(img, "RGBA")
+
+    def f4(pts, fill):
+        draw.polygon(pts, fill=fill)
 
     # Step 1
-    draw_block(ax, 0, 165*S, 0, 100*S, 25*S, 40*S, walnut_top=True, zbase=5)
-    # Zone 1 pad + glow
-    ax.add_patch(face_top(57*S, 32*S, 108*S, 68*S, 40*S,
-                           facecolor="#1a1a1a", edgecolor="#333", lw=0.2, zorder=6))
-    draw_glow(ax, 82.5*S, 50*S, 40*S, C_GLOW_1, rx=0.10, ry=0.06)
+    f4([pt(0, 0, 40), pt(165, 0, 40), pt(165, 100, 40), pt(0, 100, 40)],
+       cfg["step_top"])
+    f4([pt(0, 0, 25), pt(165, 0, 25), pt(165, 0, 40), pt(0, 0, 40)],
+       cfg["step_face_light"])
+    f4([pt(165, 0, 25), pt(165, 100, 25), pt(165, 100, 40), pt(165, 0, 40)],
+       cfg["step_face_dark"])
+
+    # Zone 1 phone silhouette
+    draw.polygon([pt(75.75, 12, 41), pt(89.25, 12, 41),
+                  pt(89.25, 52, 41), pt(75.75, 52, 41)],
+                 fill=(240, 240, 255, 140))
+
+    # Zone 1 label leader
+    try:
+        fl = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
+    except Exception:
+        fl = ImageFont.load_default()
+    anchor = pt(82.5, 20, 42)
+    draw.line([anchor, (anchor[0] - 60, anchor[1] - 30)], fill=(150, 150, 150), width=1)
+    draw.text((anchor[0] - 130, anchor[1] - 42), "Qi2 · 20W", font=fl, fill=(180, 180, 180))
 
     # Step 2
-    draw_block(ax, 17.5*S, 147.5*S, 0, 100*S, 40*S, 55*S, walnut_top=True, zbase=7)
-    ax.add_patch(face_top(50*S, 25*S, 115*S, 75*S, 55*S,
-                           facecolor="#1a1a1a", edgecolor="#333", lw=0.2, zorder=8))
-    draw_glow(ax, 82.5*S, 50*S, 55*S, C_GLOW_2, rx=0.09, ry=0.055)
+    f4([pt(17.5, 0, 55), pt(147.5, 0, 55), pt(147.5, 100, 55), pt(17.5, 100, 55)],
+       cfg["step_top"])
+    f4([pt(17.5, 0, 40), pt(147.5, 0, 40), pt(147.5, 0, 55), pt(17.5, 0, 55)],
+       cfg["step_face_light"])
+    f4([pt(147.5, 0, 40), pt(147.5, 100, 40), pt(147.5, 100, 55), pt(147.5, 0, 55)],
+       cfg["step_face_dark"])
+
+    draw.polygon([pt(75, 12, 56), pt(90, 12, 56), pt(90, 24, 56), pt(75, 24, 56)],
+                 fill=(200, 200, 240, 140))
+    anchor2 = pt(82.5, 15, 57)
+    draw.line([anchor2, (anchor2[0] - 50, anchor2[1] - 25)], fill=(150, 150, 150), width=1)
+    draw.text((anchor2[0] - 110, anchor2[1] - 36), "Qi · 5W", font=fl, fill=(180, 180, 180))
 
     # Step 3
-    draw_block(ax, 35*S, 130*S, 20*S, 100*S, 55*S, 70*S, walnut_top=True, zbase=9)
-    ax.add_patch(face_top(55*S, 32*S, 110*S, 87*S, 70*S,
-                           facecolor="#1a1a1a", edgecolor="#333", lw=0.2, zorder=10))
-    draw_glow(ax, 82.5*S, 60*S, 70*S, C_GLOW_3, rx=0.08, ry=0.05)
+    f4([pt(35, 20, 70), pt(130, 20, 70), pt(130, 100, 70), pt(35, 100, 70)],
+       cfg["step_top"])
+    f4([pt(35, 20, 55), pt(130, 20, 55), pt(130, 20, 70), pt(35, 20, 70)],
+       cfg["step_face_light"])
+    f4([pt(130, 20, 55), pt(130, 100, 55), pt(130, 100, 70), pt(130, 20, 70)],
+       cfg["step_face_dark"])
 
-    # Rear USB-C ports
-    for px_mm, col in [(120, C_GLOW_A), (140, C_GLOW_B)]:
-        px, py = iso(px_mm*S, 100*S, 15*S)
-        ax.add_patch(mpatches.Circle((px, py), 0.03, facecolor=col, alpha=0.7, zorder=15))
-
-    # Zone labels on left side
-    label_data = [
-        (82.5*S, 50*S, 42*S, "① PHONE  Qi2", C_GLOW_1),
-        (82.5*S, 50*S, 57*S, "② BUDS    Qi",  C_GLOW_2),
-        (82.5*S, 60*S, 72*S, "③ WATCH   5W",  C_GLOW_3),
-    ]
-    for lx, ly, lz, text, col in label_data:
-        px, py = iso(lx, ly, lz)
-        epx, epy = px - 0.28, py + 0.04
-        ax.annotate("", xy=(px,py), xytext=(epx,epy),
-                    arrowprops=dict(arrowstyle="-", color=col, lw=0.6), zorder=50)
-        ax.text(epx-0.02, epy, text, color=col, fontsize=5.5, va="center", ha="right",
-                fontfamily="monospace", zorder=51)
-
-    # Fit view
-    pts = [(0,0,0),(165*S,0,0),(0,100*S,0),(165*S,100*S,0),(82.5*S,60*S,80*S)]
-    xs = [iso(*p)[0] for p in pts]
-    ys = [iso(*p)[1] for p in pts]
-    cx = (min(xs)+max(xs))/2
-    cy = (min(ys)+max(ys))/2
-    span = max(max(xs)-min(xs), max(ys)-min(ys)) * 0.65
-    ax.set_xlim(cx - span, cx + span)
-    ax.set_ylim(cy - span*0.55, cy + span*0.95)
+    wc_x, wc_y, r = 82.5, 60, 14
+    watch_pts = [pt(wc_x + r * math.cos(math.radians(a)),
+                    wc_y + r * math.sin(math.radians(a)) * 0.5, 71)
+                 for a in range(0, 360, 45)]
+    draw.polygon(watch_pts, fill=(220, 220, 220, 180))
+    anchor3 = pt(82.5, 45, 72)
+    draw.line([anchor3, (anchor3[0] - 40, anchor3[1] - 22)], fill=(150, 150, 150), width=1)
+    draw.text((anchor3[0] - 108, anchor3[1] - 32), "Watch · 5W", font=fl,
+              fill=(180, 180, 180))
 
 
-def draw_spec_panel(ax):
-    """Draw spec text panel on right axes."""
-    ax.set_facecolor(C_PANEL)
-    ax.axis("off")
+def draw_spec_panel(img: Image.Image, cfg: dict):
+    """Draw the right spec panel."""
+    draw = ImageDraw.Draw(img)
 
-    import matplotlib.lines as mlines
-    def rule(y_axes, lw=0.5, color=C_DIVIDER):
-        line = mlines.Line2D([0.05, 0.95], [y_axes, y_axes],
-                             color=color, lw=lw, transform=ax.transAxes)
-        ax.add_line(line)
+    px = PANEL_SPLIT + 36
+    py = 48
+    pw = OUTPUT_W - PANEL_SPLIT - 36
+    line_h = OUTPUT_H
 
-    # Title
-    ax.text(0.06, 0.91, "STEP", color=C_TEXT, fontsize=22, fontweight="bold",
-            transform=ax.transAxes, va="top", fontfamily="monospace")
-    ax.text(0.85, 0.91, "$89", color=C_TEXT, fontsize=18, fontweight="bold",
-            transform=ax.transAxes, va="top", ha="right", fontfamily="monospace")
-    ax.text(0.06, 0.82, "Charge everything. Touch nothing.",
-            color=C_SUBTEXT, fontsize=7, transform=ax.transAxes, va="top", fontfamily="monospace")
+    # Panel background
+    draw.rectangle([PANEL_SPLIT, 0, OUTPUT_W, OUTPUT_H], fill=cfg["panel_bg"])
 
-    rule(0.79)
+    try:
+        f_title = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 32)
+        f_price = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 40)
+        f_zone_name = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 16)
+        f_zone_watt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
+        f_detail = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
+        f_footer = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 14)
+    except Exception:
+        f_title = f_price = f_zone_name = f_zone_watt = f_detail = f_footer = \
+            ImageFont.load_default()
 
-    # Zones table
-    zones = [
-        ("1", "PHONE",   "20W", "Qi2",         C_GLOW_1),
-        ("2", "BUDS",    " 5W", "Qi",           C_GLOW_2),
-        ("3", "WATCH",   " 5W", "Apple + Qi",   C_GLOW_3),
-        ("4", "USB-C A", "60W", "Port A",       C_GLOW_A),
-        ("5", "USB-C B", "30W", "Port B",       C_GLOW_B),
-    ]
+    # Model name
+    draw.text((px, py), cfg["model_name"], font=f_title, fill=cfg["title_col"])
+    py += 44
 
-    y_start = 0.74
-    row_h   = 0.11
-    for i, (num, name, watts, std, col) in enumerate(zones):
-        y = y_start - i * row_h
-        ax.text(0.06, y, num,   color=col,       fontsize=9,  transform=ax.transAxes, va="center", fontfamily="monospace")
-        ax.text(0.17, y, name,  color=C_TEXT,    fontsize=9,  transform=ax.transAxes, va="center", fontfamily="monospace")
-        ax.text(0.62, y, watts, color=C_TEXT,    fontsize=12, fontweight="bold",
-                transform=ax.transAxes, va="center", ha="right", fontfamily="monospace")
-        ax.text(0.66, y, std,   color=C_SUBTEXT, fontsize=7.5, transform=ax.transAxes, va="center", fontfamily="monospace")
+    # Price
+    draw.text((px, py), cfg["price"], font=f_price, fill=cfg["price_col"])
+    py += 54
 
-    rule_y = y_start - len(zones) * row_h + 0.02
-    rule(rule_y)
+    # Divider
+    draw.line([(px, py), (OUTPUT_W - 20, py)], fill=cfg["divider_col"], width=1)
+    py += 14
 
-    # Materials + size
-    detail_y = rule_y - 0.06
-    details = [
-        "Walnut + matte black ABS",
-        "165 x 100 x 70mm",
-        "65W USB-C brick included",
-        "Bring your own USB-C cables",
-    ]
-    for j, line in enumerate(details):
-        y = detail_y - j * 0.09
-        ax.text(0.06, y, line, color=C_SUBTEXT, fontsize=7.5,
-                transform=ax.transAxes, va="center", fontfamily="monospace")
+    # Spec rows
+    for zone_name, watts, protocol in cfg["spec_lines"]:
+        draw.text((px, py), zone_name, font=f_zone_name, fill=cfg["body_col"])
+        draw.text((px + 160, py), watts, font=f_zone_watt, fill=cfg["accent"])
+        draw.text((px + 210, py), protocol, font=f_zone_name, fill=cfg["dim_col"])
+        py += 34
 
-    footer_y = detail_y - len(details) * 0.09 - 0.04
-    rule(footer_y)
+    # Divider
+    draw.line([(px, py), (OUTPUT_W - 20, py)], fill=cfg["divider_col"], width=1)
+    py += 14
+
+    # Detail lines
+    for line in cfg["detail_lines"]:
+        draw.text((px, py), line, font=f_detail, fill=cfg["body_col"])
+        py += 26
+
+    # Divider
+    draw.line([(px, py), (OUTPUT_W - 20, py)], fill=cfg["divider_col"], width=1)
+    py += 18
 
     # Footer
-    ax.text(0.06, footer_y - 0.06, "epitomecharge.com  ·  PRE-ORDER",
-            color=C_ACCENT, fontsize=7.5, transform=ax.transAxes, va="center",
-            fontfamily="monospace")
+    draw.text((px, py), cfg["footer"], font=f_footer, fill=cfg["accent"])
+
+
+def build_sheet(model: str) -> Image.Image:
+    cfg = SHEET_CONFIGS[model]
+    img = Image.new("RGB", (OUTPUT_W, OUTPUT_H), cfg["bg"])
+
+    # Draw dock in left panel
+    draw_dock(img, cfg, cx=PANEL_SPLIT * 0.48, cy=OUTPUT_H * 0.67)
+
+    # Draw spec panel on right
+    draw_spec_panel(img, cfg)
+
+    return img
 
 
 def main():
-    fig = plt.figure(figsize=(W_IN, H_IN), facecolor=C_BG)
+    parser = argparse.ArgumentParser(description="Generate Epitome Step product sheets")
+    parser.add_argument("--model", choices=["walnut", "obsidian", "both"], default="both")
+    args = parser.parse_args()
 
-    # Two panels: left 55%, right 45%
-    gs = gridspec.GridSpec(1, 2, figure=fig, width_ratios=[55, 45],
-                           left=0.0, right=1.0, top=1.0, bottom=0.0, wspace=0.0)
+    os.makedirs("../assets", exist_ok=True)
+    os.makedirs("assets", exist_ok=True)
 
-    ax_left  = fig.add_subplot(gs[0])
-    ax_right = fig.add_subplot(gs[1])
-
-    # Left panel — dock render
-    ax_left.set_facecolor(C_BG)
-    ax_left.set_aspect("equal")
-    ax_left.axis("off")
-    draw_dock(ax_left)
-
-    # Right panel — spec
-    draw_spec_panel(ax_right)
-
-    fig.savefig(OUT, dpi=DPI, bbox_inches="tight", facecolor=C_BG)
-    plt.close(fig)
-    print(f"Product sheet saved: {OUT}")
+    models = ["walnut", "obsidian"] if args.model == "both" else [args.model]
+    for model in models:
+        img = build_sheet(model)
+        out_dir = "../assets" if os.path.isdir("../assets") else "assets"
+        path = os.path.join(out_dir, f"step-{model}-product-sheet.png")
+        img.save(path)
+        print(f"Saved: {path}")
 
 
 if __name__ == "__main__":

@@ -3,135 +3,339 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Step — Product Sheet</title>
+  <title>Epitome Step — Product Comparison</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #111;
-      color: #eee;
-      font-family: 'Courier New', Courier, monospace;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: #0d0d0d;
+      color: #e8e8e8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
       min-height: 100vh;
-      padding: 24px;
-    }
-    .sheet {
-      width: 1200px;
-      height: 800px;
-      background: #111;
       display: flex;
-      overflow: hidden;
-    }
-    .left {
-      width: 55%;
-      background: #1a1a1a;
-      display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      position: relative;
     }
-    .left .placeholder {
-      color: #444;
-      font-size: 14px;
+    header {
       text-align: center;
+      padding: 48px 24px 24px;
     }
-    .right {
-      width: 45%;
-      background: #1a1a1a;
+    header .brand {
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    header .tagline {
+      font-size: 15px;
+      color: #666;
+      font-style: italic;
+    }
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 24px 48px;
+    }
+    .model {
+      background: #161616;
       padding: 40px 36px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      border-left: 1px solid #333;
     }
-    .title-row {
+    .model-walnut { border-top: 3px solid #A0783C; }
+    .model-obsidian { border-top: 3px solid #3399FF; }
+    .model-name {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .model-walnut .model-name { color: #c49a4a; }
+    .model-obsidian .model-name { color: #3399FF; }
+    .model-price {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 24px;
+    }
+    .model-walnut .model-price { color: #d4a84b; }
+    .model-obsidian .model-price { color: #3399FF; }
+    .model-tagline {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 32px;
+      font-style: italic;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #2a2a2a;
+      margin: 20px 0;
+    }
+    .section-title {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 14px;
+    }
+    .zone-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid #1e1e1e;
     }
-    .title { font-size: 36px; font-weight: bold; letter-spacing: 2px; color: #fff; }
-    .price { font-size: 28px; font-weight: bold; color: #fff; }
-    .tagline { font-size: 11px; color: #888; margin-top: 6px; }
-    hr { border: none; border-top: 1px solid #333; margin: 16px 0; }
-    .zone-list { flex: 1; }
-    .zone-row {
+    .zone-num {
+      font-size: 11px;
+      width: 20px;
+      color: #555;
+      flex-shrink: 0;
+    }
+    .zone-name {
+      font-size: 14px;
+      color: #ccc;
+      flex: 1;
+    }
+    .zone-watts {
+      font-size: 16px;
+      font-weight: 700;
+      width: 50px;
+      text-align: right;
+    }
+    .model-walnut .zone-watts { color: #d4a84b; }
+    .model-obsidian .zone-watts { color: #3399FF; }
+    .zone-protocol {
+      font-size: 12px;
+      color: #555;
+      width: 70px;
+      text-align: right;
+    }
+    .material-row {
       display: flex;
       align-items: center;
       padding: 7px 0;
-      font-size: 13px;
+      border-bottom: 1px solid #1e1e1e;
+      font-size: 14px;
+      color: #bbb;
     }
-    .zone-num  { width: 20px; font-size: 10px; }
-    .zone-name { flex: 1; color: #ddd; }
-    .zone-w    { width: 48px; text-align: right; font-size: 16px; font-weight: bold; color: #fff; }
-    .zone-std  { width: 90px; padding-left: 10px; color: #888; font-size: 11px; }
-    .z1 { color: #0044FF; }
-    .z2 { color: #8800FF; }
-    .z3 { color: #00CC44; }
-    .z4 { color: #FF6600; }
-    .z5 { color: #00BBAA; }
-    .detail-block { font-size: 11px; color: #888; line-height: 1.8; }
-    .footer { font-size: 11px; color: #ccc; letter-spacing: 1px; }
+    .material-row .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .model-walnut .dot { background: #A0783C; }
+    .model-obsidian .dot { background: #3399FF; }
+    .in-box {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.8;
+      margin-top: 4px;
+    }
+    .in-box span {
+      display: block;
+      padding: 4px 0;
+      border-bottom: 1px solid #1e1e1e;
+    }
+    .cta {
+      margin-top: auto;
+      padding-top: 28px;
+    }
+    .cta a {
+      display: block;
+      text-align: center;
+      padding: 14px 24px;
+      border-radius: 4px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .model-walnut .cta a {
+      background: #A0783C;
+      color: #fff;
+    }
+    .model-obsidian .cta a {
+      background: #3399FF;
+      color: #000;
+    }
+    .shared-note {
+      max-width: 1100px;
+      padding: 0 24px 24px;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+      line-height: 1.7;
+    }
+    footer {
+      padding: 24px;
+      font-size: 12px;
+      color: #444;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    footer a { color: #555; text-decoration: none; }
+    @media (max-width: 700px) {
+      .comparison { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-<div class="sheet">
-  <div class="left">
-    <div class="placeholder">
-      [Run python scripts/generate_render.py<br>to produce assets/step-render.png]
+
+  <header>
+    <p class="brand">Epitome</p>
+    <h1>Epitome Step</h1>
+    <p class="tagline">Charge everything. Touch nothing.</p>
+  </header>
+
+  <div class="comparison">
+
+    <!-- WALNUT -->
+    <div class="model model-walnut">
+      <div class="model-name">Step Walnut</div>
+      <div class="model-price">$99</div>
+      <p class="model-tagline">Oiled walnut · Warm white LED · Handmade</p>
+
+      <hr class="divider">
+      <p class="section-title">Charging Zones</p>
+
+      <div class="zone-row">
+        <span class="zone-num">①</span>
+        <span class="zone-name">Phone</span>
+        <span class="zone-watts">20W</span>
+        <span class="zone-protocol">Qi2</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num">②</span>
+        <span class="zone-name">Buds</span>
+        <span class="zone-watts">5W</span>
+        <span class="zone-protocol">Qi</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num">③</span>
+        <span class="zone-name">Watch</span>
+        <span class="zone-watts">5W</span>
+        <span class="zone-protocol">Apple + Qi</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num">④</span>
+        <span class="zone-name">USB-C Port A</span>
+        <span class="zone-watts">60W</span>
+        <span class="zone-protocol">PD</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num">⑤</span>
+        <span class="zone-name">USB-C Port B</span>
+        <span class="zone-watts">30W</span>
+        <span class="zone-protocol">PD</span>
+      </div>
+
+      <hr class="divider">
+      <p class="section-title">Materials</p>
+
+      <div class="material-row"><span class="dot"></span>Oiled walnut step faces (4 mm laser-cut)</div>
+      <div class="material-row"><span class="dot"></span>Matte black ABS base and riser</div>
+      <div class="material-row"><span class="dot"></span>Warm white LED · #FFD6A0 · WS2811</div>
+      <div class="material-row"><span class="dot"></span>Soft rounded step edges</div>
+      <div class="material-row"><span class="dot"></span>165 × 100 × 70 mm</div>
+
+      <hr class="divider">
+      <p class="section-title">In the Box</p>
+      <div class="in-box">
+        <span>Epitome Step Walnut</span>
+        <span>100W USB-C GaN brick</span>
+        <span>USB-C to barrel cable</span>
+        <span>2× USB-C cables</span>
+        <span>Setup card</span>
+      </div>
+
+      <div class="cta">
+        <a href="https://epitomecharge.com/walnut">Pre-order — $99 →</a>
+      </div>
     </div>
+
+    <!-- OBSIDIAN -->
+    <div class="model model-obsidian">
+      <div class="model-name">Step Obsidian</div>
+      <div class="model-price">$79</div>
+      <p class="model-tagline">Full matte black · RGB LED · 8 colour modes</p>
+
+      <hr class="divider">
+      <p class="section-title">Charging Zones</p>
+
+      <div class="zone-row">
+        <span class="zone-num">①</span>
+        <span class="zone-name">Phone</span>
+        <span class="zone-watts">20W</span>
+        <span class="zone-protocol">Qi2</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num">②</span>
+        <span class="zone-name">Buds</span>
+        <span class="zone-watts">5W</span>
+        <span class="zone-protocol">Qi</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num">③</span>
+        <span class="zone-name">Watch</span>
+        <span class="zone-watts">5W</span>
+        <span class="zone-protocol">Apple + Qi</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num">④</span>
+        <span class="zone-name">USB-C Port A</span>
+        <span class="zone-watts">60W</span>
+        <span class="zone-protocol">PD</span>
+      </div>
+      <div class="zone-row">
+        <span class="zone-num">⑤</span>
+        <span class="zone-name">USB-C Port B</span>
+        <span class="zone-watts">30W</span>
+        <span class="zone-protocol">PD</span>
+      </div>
+
+      <hr class="divider">
+      <p class="section-title">Materials</p>
+
+      <div class="material-row"><span class="dot"></span>Full matte black ABS throughout</div>
+      <div class="material-row"><span class="dot"></span>Sharp angular step edges</div>
+      <div class="material-row"><span class="dot"></span>RGB LED · WS2812B · 8 colour modes</div>
+      <div class="material-row"><span class="dot"></span>Rear mode button — cycles colours</div>
+      <div class="material-row"><span class="dot"></span>165 × 100 × 70 mm</div>
+
+      <hr class="divider">
+      <p class="section-title">In the Box</p>
+      <div class="in-box">
+        <span>Epitome Step Obsidian</span>
+        <span>100W USB-C GaN brick</span>
+        <span>USB-C to barrel cable</span>
+        <span>2× USB-C cables</span>
+        <span>Setup card</span>
+      </div>
+
+      <div class="cta">
+        <a href="https://epitomecharge.com/obsidian">Pre-order — $79 →</a>
+      </div>
+    </div>
+
   </div>
-  <div class="right">
-    <div>
-      <div class="title-row">
-        <div class="title">STEP</div>
-        <div class="price">$89</div>
-      </div>
-      <div class="tagline">Charge everything. Touch nothing.</div>
-    </div>
-    <hr>
-    <div class="zone-list">
-      <div class="zone-row">
-        <span class="zone-num z1">1</span>
-        <span class="zone-name">PHONE</span>
-        <span class="zone-w">20W</span>
-        <span class="zone-std">Qi2</span>
-      </div>
-      <div class="zone-row">
-        <span class="zone-num z2">2</span>
-        <span class="zone-name">BUDS</span>
-        <span class="zone-w">5W</span>
-        <span class="zone-std">Qi</span>
-      </div>
-      <div class="zone-row">
-        <span class="zone-num z3">3</span>
-        <span class="zone-name">WATCH</span>
-        <span class="zone-w">5W</span>
-        <span class="zone-std">Apple + Qi</span>
-      </div>
-      <div class="zone-row">
-        <span class="zone-num z4">4</span>
-        <span class="zone-name">USB-C A</span>
-        <span class="zone-w">60W</span>
-        <span class="zone-std">Port A</span>
-      </div>
-      <div class="zone-row">
-        <span class="zone-num z5">5</span>
-        <span class="zone-name">USB-C B</span>
-        <span class="zone-w">30W</span>
-        <span class="zone-std">Port B</span>
-      </div>
-    </div>
-    <hr>
-    <div class="detail-block">
-      Walnut + matte black ABS<br>
-      165 × 100 × 70mm<br>
-      65W USB-C brick included<br>
-      Bring your own USB-C cables
-    </div>
-    <hr>
-    <div class="footer">epitomecharge.com &nbsp;·&nbsp; PRE-ORDER</div>
-  </div>
-</div>
+
+  <p class="shared-note">
+    Both models include a 100W USB-C GaN brick + 3 cables. Night mode LEDs off 23:00–07:00. No app, no Bluetooth, no setup.
+    USB-C ports are Bring Your Own Cable — two USB-C cables included to get you started.
+  </p>
+
+  <footer>
+    <a href="https://epitomecharge.com">epitomecharge.com</a>
+  </footer>
+
 </body>
 </html>
