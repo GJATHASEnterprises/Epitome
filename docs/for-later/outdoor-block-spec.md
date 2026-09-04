@@ -1,74 +1,36 @@
 # Epitome Outdoor Block — Concept Spec (FOR LATER)
 
-**Status:** Concept. Gated behind Step Batch 1 success + $500 reserve. Plausibility: 7/10 with certified-module architecture and IP67 target; 4/10 if custom cells or "completely waterproof" absolutism.
+**Status:** Concept. Gated behind Step Batch 1 success + reserve gate.
 
-**One-liner:** A rugged, IP67 battery-powered wireless charging block for camping/outdoors. Phone + buds zones, one USB-C output, ~3 full phone charges per bank.
+## Models and pricing
 
----
+| Model | Price | Positioning |
+|---|---:|---|
+| Outdoor Block Stone | $119 | rugged neutral finish |
+| Outdoor Block Camo | $129 | rugged camo finish |
 
-## Models
+## Tariffed BOM alignment (Sept 2026)
 
-| | **Outdoor Block Camo** | **Outdoor Block Stone** |
-|---|---|---|
-| Finish | Matte OD green + black camo accents | Matte stone gray + charcoal accents |
-| Target price | $129 | $119 |
-| Electronics | Identical | Identical |
+All China-sourced electronics use 25% Section 301 pricing. Reference: `docs/technical-readouts/outdoor-block-stone.md` and `docs/technical-readouts/outdoor-block-camo.md`.
 
-## Charging zones & interlock logic
-
-| Zone | Spec | Notes |
-|---|---|---|
-| Zone 1 — Phone | Magnetic wireless, up to 20W | Always on unless thermal/power-limited |
-| Zone 2 — Buds | Wireless, engineered 5–10W actual | Market as "optimized earbuds charging" — buds only draw ~5W; higher power = heat in sealed housing |
-| Zone 3 — USB-C output | Wired PD output | **When active, Zone 2 auto-disables** (firmware + hardware interlock) |
-
-### Mode table
-| USB-C plugged in? | Phone zone | Buds zone |
-|---|---|---|
-| No | ON | ON |
-| Yes | ON | OFF (forced) |
-| Bank <10% | OFF | OFF (prevent brownout loops) |
-
-## Waterproofing (IP67 target — not "completely waterproof")
-
-- Enclosure: **ASA or PC-ABS** (not plain ABS — UV/weather resistance)
-- Gasketed split line, membrane pressure-equalization vent
-- Sealed USB-C receptacle + tethered cap; potted cable glands
-- External button via sealed tact dome
-- Top shell over coils: 1.2–1.8 mm non-metallic max (wireless efficiency)
-- Marketing language: "IP67 — submersion-safe in shallow water" — never claim "waterproof" unqualified
-
-## Battery architecture (same rule as Step Go)
-
-- **Docked/integrated CERTIFIED battery module** (UL 2056 / UN38.3 pre-certified pack), never loose cells
-- 20,000mAh class (~74Wh) — under 100Wh airline carry-on limit
-- Mandatory: BMS with short-circuit protection, thermal sensor + cutoff, fuse
-- Real-world claim: ~3 phone charges (wireless, mixed usage) or 2 charges + buds top-ups
-
-## Draft BOM (rough v1)
-
-| Part | Est. cost |
+| Part | Tariffed cost |
 |---|---:|
-| Certified 20,000mAh PD battery module | $22–25 |
-| 20W magnetic wireless TX (pre-certified Qi) | $6.50 |
-| 5–10W buds TX module | $2.50 |
-| Sealed USB-C receptacle + cap | $3.00 |
-| Interlock circuit + MCU (ATtiny85) + sensors | $4.00 |
-| ASA/PC-ABS printed enclosure + gaskets + vent | $7.00 |
-| Fasteners, silicone, misc | $2.50 |
-| Packaging | $6.00 |
-| **Build cost estimate** | **~$54–57** |
+| Certified 20,000 mAh PD bank | $22.50 |
+| 20W magnetic phone TX | $7.50 |
+| Buds TX module | $2.50 |
+| IP67 panel USB-C + cap | $4.00 |
+| Interlock + sensors + harness | $7.30 |
+| ASA/TPU enclosure + hardware | $8.00 |
+| Camo process adder (Camo only) | $3.50 |
+| Packaging/consumables | $0.50 |
 
-Margin at $119: ~45%. At $129 (Camo): ~48%. Viable.
+Resulting build targets:
+- **Stone:** ~$53.30 → net ~ $34/sale at $119
+- **Camo:** ~$56.80 → net ~ $39/sale at $129
 
-## Go / No-Go gates (all must pass before spending the $500 reserve)
+## Gates before spending reserve
 
-- [ ] Step Batch 1 sold through (≥3 paid units shipped, zero thermal incidents)
+- [ ] Step Batch 1 sold through (≥3 paid units)
 - [ ] LLC + product liability insurance active
-- [ ] Certified battery module source confirmed ≤$25
-- [ ] Prototype passes: 30 min immersion @ 30 cm (IP67), no ingress
-- [ ] Prototype passes: 1 m drop × 6 faces onto packed dirt, functional after
-- [ ] Thermal: phone zone sustained 20W for 1 hr in 35°C ambient, coil surface <45°C
-- [ ] Runtime: ≥2.5 full phone charges measured (not calculated)
-- [ ] 25 charge/discharge cycles, no capacity anomaly, no swelling
-- [ ] Interlock verified: USB-C insertion kills buds zone within 1 s, restores on removal
+- [ ] Certified battery module source confirmed
+- [ ] Prototype passes immersion/drop/thermal/runtime/interlock gates
