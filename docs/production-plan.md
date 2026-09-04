@@ -47,7 +47,9 @@ Batch 1 build plan: **3 Walnut + 3 Obsidian**, projected profit **~$225–240**.
 ## 5) Schedule updates
 
 1. **Week 1:** place a **measurement order (~$35)**: one of each electronics module for caliper capture (`docs/design-brief-step.md` §5).
-2. **Week 1:** place consolidated parts order after measurement order confirmation (about **~$740 for all 10 units** planning envelope, or **~$430 Step-only**).
+2. **Week 1:** place consolidated parts order after measurement order confirmation (same-week confirmation target):
+   - **Immediate Batch 1 purchase (3 Walnut + 3 Obsidian): ~ $430 Step-only**
+   - **Optional full 10-unit planning envelope (if buying all modules up front): ~ $740 total**
 3. **Before prototype printing:** produce CAD production files (friend sketches + dimensional spec, or Upwork CAD freelancer delivery of STEP/STL).
 4. **Week 2–3:** first Step prototype and QC gauntlet.
 5. **Week 3–5:** build/ship remaining Step units.

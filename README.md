@@ -29,3 +29,4 @@ Notes:
 - `docs/production-plan.md`
 - `docs/budget-plan.md`
 - `docs/marketing-plan.md`
+- `docs/design-brief-step.md`

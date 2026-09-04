@@ -2,8 +2,8 @@
 
 ## Envelope targets
 
-- Footprint target: ~190 × 100 mm (finalized by measured modules).
-- Two-tier profile target: lower tier ~12 mm rise, upper tier total ~22 mm rise from base baseline.
+- Footprint and tier envelope are finalized from measured modules and CAD lock review.
+- Use the measurement-order workflow and dimensional lock process defined in project planning docs before freezing STL/STEP outputs.
 - Corner radii target: 6–8 mm external.
 
 ## Material split

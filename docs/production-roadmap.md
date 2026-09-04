@@ -19,4 +19,4 @@
 ## Batch 2 (Outdoor Block, gated)
 
 - Stone ($119) and Camo ($129) remain gated behind reserve and safety gates.
-- Economics baseline from technical readouts: Stone net ~ $34, Camo net ~ $39.
+- Economics baseline: see `docs/production-plan.md` canonical unit-economics section (Stone net ~ $34, Camo net ~ $39).

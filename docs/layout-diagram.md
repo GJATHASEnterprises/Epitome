@@ -1,8 +1,8 @@
 # Epitome Step — Layout Diagrams (Sept 2026)
 
 Geometry workflow and dimensional locking now live in:
-- `docs/design-brief-step.md`
 - `docs/design-spec.md`
+- `docs/production-plan.md`
 
 Model identity callouts:
 - Walnut: black PETG base + wood-PLA top, white status light pipe.
