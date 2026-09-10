@@ -12,7 +12,7 @@ CAD & 3D Modeling → Product Design (Fusion 360 / SolidWorks / Onshape)
 
 ## Description
 
-I'm building a three-tier desktop wireless charging stand ("Epitome Step") sold in two material variants that share identical geometry. It has dedicated zones for a phone, earbuds, and watch, with the top watch step set back from the front. I need production-ready CAD from a **complete written design brief** — the industrial design direction, target envelope dimensions, all engineering constraints, and caliper-measured component dimensions are already documented. This is a modeling job, not a design-from-scratch job.
+I'm building a three-tier desktop wireless charging stand ("Epitome Step") sold in two material variants that share identical geometry. It has dedicated zones for a phone, earbuds, and watch, with the top watch step set back from the front. I need production-ready CAD from a **complete written design brief** — the industrial design direction, target envelope dimensions, all engineering constraints, and caliper-measured component dimensions are already documented. This is a modeling job, not a design-from-scratch job: the added printability note and coil-pocket fit coupons are just low-cost print-validation deliverables to reduce revision rounds.
 
 **You will receive:**
 - A detailed design brief (target envelope 165 × 100 mm, three-tier layout, wall thicknesses, coil pocket rules, insert boss specs, FDM printability constraints)

@@ -14,11 +14,12 @@ A three-tier "stepped" desktop wireless charging stand with dedicated zones for 
 | Dimension | Target |
 |---|---|
 | Footprint (W × D) | 165 × 100 mm |
-| Base shell thickness | 3 mm |
-| Riser height above base | 22 mm |
-| Step 1 height | 15 mm |
-| Step 2 height | 15 mm |
-| Step 3 height | 15 mm |
+| Base top surface (Z) | 3 mm above desk |
+| Riser top surface (Z) | 25 mm above desk *(3 + 22)* |
+| Step 1 / Zone 1 top surface (Z) | 40 mm above desk *(25 + 15)* |
+| Step 2 / Zone 2 top surface (Z) | 55 mm above desk *(40 + 15)* |
+| Step 3 / Zone 3 top surface (Z) | 70 mm above desk *(55 + 15)* |
+| Vertical stack breakdown | 3 mm base + 22 mm riser + 15 mm + 15 mm + 15 mm |
 | Total height | 70 mm |
 | Step 1 / Zone 1 | Phone, Qi2 20W |
 | Step 2 / Zone 2 | Earbuds, Qi 5W |
@@ -36,7 +37,7 @@ A three-tier "stepped" desktop wireless charging stand with dedicated zones for 
 5. **Thermistor channel:** 3 mm wide groove from the phone coil pocket to the main board bay.
 6. **Board standoffs:** 2 mm tall pins/clips for the trigger board and MCU board (dimensions after we measure — see §5).
 7. **Walnut only:** Ø3.2 mm light-pipe hole on the front face, centered, **12 mm above desk**, fully owned by the **top shell** so it does not sit on the 8 mm split line.
-8. **Obsidian only:** recessed groove on each side face, 5 mm tall × 3 mm deep × ~140 mm long, positioned 6 mm above desk, to hold a press-fit diffuser bar over a **60 LED/m WS2812B strip**. Size the groove for **8 LEDs per side (16 total)** with an approximate **133 mm cut length per side** plus wire relief; diffuser sits flush or up to 0.5 mm proud. Wire pass-through from each groove into the base cavity.
+8. **Obsidian only:** recessed groove on each side face, 5 mm tall × 3 mm deep × ~140 mm long, positioned 6 mm above desk, to hold a press-fit diffuser bar over a **60 LED/m WS2812B strip**. Size the groove for **8 LEDs per side (16 total)** with ~**16.7 mm pitch**, about **116.7 mm first-to-last LED center span**, and about **133 mm end-to-end strip cut length per side**, plus wire relief; diffuser sits flush or up to 0.5 mm proud. Wire pass-through from each groove into the base cavity.
 9. **Hidden venting:** add concealed vent slots in the base shell for coil thermal relief, but keep them invisible from normal top/side views.
 10. **Optional ballast:** include a base-shell cavity / steel plate pocket option for anti-slip heft without changing the exterior silhouette.
 11. **4× feet recesses** on the bottom: Ø10 mm × 1 mm deep (for silicone bumpers).
