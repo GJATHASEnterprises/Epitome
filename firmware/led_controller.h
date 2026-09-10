@@ -40,6 +40,9 @@
 #elif defined(MODEL_OBSIDIAN)
   // Obsidian uses two side glow lines: 8 LEDs per side on 60 LED/m strip = 16 total.
   #define LED_COUNT       16
+#else
+  // Fallback for tooling/readability only; normal builds are rejected by the model guard above.
+  #define LED_COUNT       1
 #endif
 
 #define LED_BRIGHTNESS  200  // 0–255 (daytime default)
