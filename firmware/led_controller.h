@@ -40,10 +40,10 @@
 
 // ── Night mode ─────────────────────────────────────────────────────────────────
 // Timer-based: 1 tick/sec via WDT. Initialises at 12:00 (noon).
-// Night = 23:00 – 07:00 (8 hours off). 86400 ticks/day.
+// Night = 23:00 – 07:00 next day (8 hours off). 86400 ticks/day.
 #define TICKS_PER_DAY    86400UL
 #define NIGHT_START_TICK 39600UL  // 11 * 3600 ticks from noon = 23:00
-#define NIGHT_END_TICK   54000UL  // 15 * 3600 ticks from noon = 07:00 next day
+#define NIGHT_END_TICK   68400UL  // 19 * 3600 ticks from noon = 07:00 next day
 
 // ── Walnut model ───────────────────────────────────────────────────────────────
 #ifdef MODEL_WALNUT

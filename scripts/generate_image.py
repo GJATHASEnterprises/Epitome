@@ -10,10 +10,11 @@ Usage:
 
 import argparse
 import math
-import os
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 OUTPUT_W, OUTPUT_H = 1200, 800
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
 CONFIGS = {
     "walnut": {
@@ -128,14 +129,12 @@ def main():
     parser.add_argument("--model", choices=["walnut", "obsidian", "both"], default="both")
     args = parser.parse_args()
 
-    os.makedirs("../assets", exist_ok=True)
-    os.makedirs("assets", exist_ok=True)
+    ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
     models = ["walnut", "obsidian"] if args.model == "both" else [args.model]
     for model in models:
         img = build_hero(model)
-        out_dir = "../assets" if os.path.isdir("../assets") else "assets"
-        path = os.path.join(out_dir, f"step-{model}-hero.png")
+        path = ASSETS_DIR / f"step-{model}-hero.png"
         img.save(path)
         print(f"Saved: {path}")
 

@@ -12,26 +12,33 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
+#ifdef ARDUINO
+#include <Arduino.h>
+#endif
 
 // ── LED array ──────────────────────────────────────────────────────────────────
 static CRGB leds[LED_COUNT];
 
 // ── State ──────────────────────────────────────────────────────────────────────
-static uint32_t tick_counter = 0;          // seconds since power-on (noon reference)
-static uint8_t  current_brightness = LED_BRIGHTNESS;
-static uint8_t  is_night = 0;
-static uint8_t  pulse_active = 0;
-static uint8_t  pulse_ticks = 0;
+static volatile uint32_t tick_counter = 0; // seconds since power-on (noon reference)
+static volatile uint8_t  tick_pending = 0;
+static uint8_t           current_brightness = LED_BRIGHTNESS;
+static uint8_t           is_night = 0;
+static volatile uint8_t  pulse_active = 0;
+static volatile uint8_t  pulse_ticks = 0;
 
 #ifdef MODEL_OBSIDIAN
-static volatile uint8_t mode_index = 0;   // current RGB mode (0–7)
-static volatile uint8_t mode_changed = 0; // set in ISR, cleared in led_update
+static volatile uint8_t mode_index = 0;           // current RGB mode (0–7)
+static volatile uint8_t mode_changed = 0;         // set in main loop, cleared in led_update
+static volatile uint8_t button_event_pending = 0; // set in ISR, handled in led_update
 #endif
 
 // ── Forward declarations ───────────────────────────────────────────────────────
 static void apply_colour(void);
+static uint8_t get_brightness_cap(void);
 static void check_soft_cap(void);
-static void check_night_mode(void);
+static void check_night_mode(uint32_t tick_value);
+static uint32_t snapshot_tick_counter(void);
 
 // ── Watchdog ISR (1 Hz tick) ───────────────────────────────────────────────────
 ISR(WDT_vect) {
@@ -43,7 +50,7 @@ ISR(WDT_vect) {
 ISR(PCINT0_vect) {
     // Only act on falling edge (button press, active LOW)
     if (!(PINB & (1 << PIN_MODE_BTN))) {
-        led_next_mode();
+        button_event_pending = 1;
     }
 }
 #endif
@@ -90,14 +97,12 @@ void led_tick(void) {
     if (tick_counter >= TICKS_PER_DAY) {
         tick_counter = 0;  // roll over at midnight+12h
     }
-    check_night_mode();
-    check_soft_cap();
+    tick_pending = 1;
 
     if (pulse_active && pulse_ticks > 0) {
         pulse_ticks--;
         if (pulse_ticks == 0) {
             pulse_active = 0;
-            current_brightness = is_night ? 0 : LED_BRIGHTNESS;
         }
     }
 }
@@ -107,8 +112,8 @@ void led_pulse_zone(uint8_t zone) {
     (void)zone;  // same pulse for all zones
     if (is_night) return;
     pulse_active = 1;
-    pulse_ticks  = 2;  // ~200 ms bright pulse (2 ticks at 1Hz — small ATtiny tick)
-    current_brightness = 255;
+    pulse_ticks  = 2;  // brief pulse window, cleared by the WDT tick path
+    current_brightness = get_brightness_cap();
 }
 
 // ── Obsidian: cycle mode ───────────────────────────────────────────────────────
@@ -121,6 +126,14 @@ void led_next_mode(void) {
 
 // ── Main update loop (call as frequently as possible from main loop) ───────────
 void led_update(void) {
+    uint8_t leds_dirty = 0;
+    static uint8_t last_brightness = 0xFF;
+
+    if (tick_pending) {
+        tick_pending = 0;
+        check_night_mode(snapshot_tick_counter());
+    }
+
     // Check zone detect pins for device presence
     uint8_t z1 = (PINB >> PIN_ZONE1) & 1;
     uint8_t z2 = (PINB >> PIN_ZONE2) & 1;
@@ -134,14 +147,65 @@ void led_update(void) {
     last_z1 = z1; last_z2 = z2; last_z3 = z3;
 
 #ifdef MODEL_OBSIDIAN
+    static uint8_t button_lockout = 0;
+    static uint8_t release_samples = 0;
+    uint8_t button_pressed = !(PINB & (1 << PIN_MODE_BTN));
+
+#ifdef ARDUINO
+    static uint32_t last_button_press_ms = 0;
+    static uint8_t has_accepted_button_press = 0;
+#endif
+
+    if (button_lockout) {
+        if (button_pressed) {
+            release_samples = 0;
+        } else if (release_samples < 3) {
+            release_samples++;
+        }
+
+        if (release_samples >= 3) {
+            button_lockout = 0;
+            release_samples = 0;
+        }
+    }
+
+    if (button_event_pending && button_pressed && !button_lockout) {
+#ifdef ARDUINO
+        uint32_t now = millis();
+        if (!has_accepted_button_press || (uint32_t)(now - last_button_press_ms) >= 100UL) {
+            has_accepted_button_press = 1;
+            last_button_press_ms = now;
+            led_next_mode();
+            button_lockout = 1;
+            release_samples = 0;
+        }
+#else
+        led_next_mode();
+        button_lockout = 1;
+        release_samples = 0;
+#endif
+        button_event_pending = 0;
+    } else if (!button_pressed) {
+        button_event_pending = 0;
+    }
+
     if (mode_changed) {
         mode_changed = 0;
         apply_colour();
+        leds_dirty = 1;
     }
 #endif
 
-    FastLED.setBrightness(current_brightness);
-    FastLED.show();
+    check_soft_cap();
+    if (current_brightness != last_brightness) {
+        last_brightness = current_brightness;
+        leds_dirty = 1;
+    }
+
+    if (leds_dirty) {
+        FastLED.setBrightness(current_brightness);
+        FastLED.show();
+    }
 }
 
 // ── Colour application ─────────────────────────────────────────────────────────
@@ -163,27 +227,32 @@ static void apply_colour(void) {
 }
 
 // ── Night mode check ───────────────────────────────────────────────────────────
-static void check_night_mode(void) {
+static void check_night_mode(uint32_t tick_value) {
     uint8_t was_night = is_night;
 
-    // Night window: tick_counter [NIGHT_START_TICK, TICKS_PER_DAY) or [0, NIGHT_END_TICK)
-    if (tick_counter >= NIGHT_START_TICK || tick_counter < NIGHT_END_TICK) {
+    // Night window: tick_counter [23:00, 07:00 next day) using the noon-based day counter.
+    if (tick_value >= NIGHT_START_TICK && tick_value < NIGHT_END_TICK) {
         is_night = 1;
     } else {
         is_night = 0;
     }
 
     if (is_night != was_night) {
-        current_brightness = is_night ? 0 : LED_BRIGHTNESS;
-        apply_colour();
-        FastLED.setBrightness(current_brightness);
-        FastLED.show();
+        current_brightness = is_night ? 0 : get_brightness_cap();
     }
 }
 
 // ── Soft cap check ─────────────────────────────────────────────────────────────
 static void check_soft_cap(void) {
-    if (is_night) return;
+    if (is_night) {
+        current_brightness = 0;
+    } else if (!pulse_active) {
+        current_brightness = get_brightness_cap();
+    }
+}
+
+static uint8_t get_brightness_cap(void) {
+    if (is_night) return 0;
 
     uint8_t z1 = (PINB >> PIN_ZONE1) & 1;
     uint8_t z2 = (PINB >> PIN_ZONE2) & 1;
@@ -192,13 +261,16 @@ static void check_soft_cap(void) {
     // Estimated wireless draw: zone1=20W zone2=5W zone3=5W = 30W max wireless
     // USB-C always assumed present. Dim LEDs if all three zones active (max wireless load).
     uint8_t total_wireless = (z1 * 20) + (z2 * 5) + (z3 * 5);
-    if (total_wireless >= 30) {
-        current_brightness = LED_DIM_CAP;
-    } else {
-        if (!pulse_active) {
-            current_brightness = LED_BRIGHTNESS;
-        }
-    }
+    return (total_wireless >= 30) ? LED_DIM_CAP : LED_BRIGHTNESS;
+}
+
+static uint32_t snapshot_tick_counter(void) {
+    uint32_t value;
+    uint8_t sreg = SREG;
+    cli();
+    value = tick_counter;
+    SREG = sreg;
+    return value;
 }
 
 // ── Arduino-style entry points (if building with Arduino IDE) ─────────────────
