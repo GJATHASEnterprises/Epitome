@@ -34,14 +34,14 @@
 #define PIN_MODE_BTN    4  // PB4 — Obsidian only: RGB mode button (active LOW)
 
 // ── LED config for the selected Step variant ───────────────────────────────────
-#ifdef MODEL_WALNUT
+#if defined(MODEL_WALNUT)
   // Walnut drives a single white status LED through the front light pipe.
   #define LED_COUNT       1
-#endif
-
-#ifdef MODEL_OBSIDIAN
+#elif defined(MODEL_OBSIDIAN)
   // Obsidian uses two side glow lines: 8 LEDs per side on 60 LED/m strip = 16 total.
   #define LED_COUNT       16
+#else
+  #error "Define MODEL_WALNUT or MODEL_OBSIDIAN before setting LED_COUNT."
 #endif
 
 #define LED_BRIGHTNESS  200  // 0–255 (daytime default)
