@@ -12,9 +12,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
-#ifdef ARDUINO
-#include <Arduino.h>
-#endif
 
 // ── LED array ──────────────────────────────────────────────────────────────────
 static CRGB leds[LED_COUNT];
@@ -148,13 +145,8 @@ void led_update(void) {
 
 #ifdef MODEL_OBSIDIAN
     static uint8_t button_lockout = 0;
-    static uint8_t release_samples = 0;
+    static uint8_t release_samples = 0;  // ~150 ms with the Arduino loop's 50 ms delay
     uint8_t button_pressed = !(PINB & (1 << PIN_MODE_BTN));
-
-#ifdef ARDUINO
-    static uint32_t last_button_press_ms = 0;
-    static uint8_t has_accepted_button_press = 0;
-#endif
 
     if (button_lockout) {
         if (button_pressed) {
@@ -170,20 +162,9 @@ void led_update(void) {
     }
 
     if (button_event_pending && button_pressed && !button_lockout) {
-#ifdef ARDUINO
-        uint32_t now = millis();
-        if (!has_accepted_button_press || (uint32_t)(now - last_button_press_ms) >= 100UL) {
-            has_accepted_button_press = 1;
-            last_button_press_ms = now;
-            led_next_mode();
-            button_lockout = 1;
-            release_samples = 0;
-        }
-#else
         led_next_mode();
         button_lockout = 1;
         release_samples = 0;
-#endif
         button_event_pending = 0;
     } else if (!button_pressed) {
         button_event_pending = 0;
