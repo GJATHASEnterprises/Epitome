@@ -6,11 +6,12 @@ Usage:
     python generate_3d_model.py
 """
 
-import os
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 TOP_W, TOP_H = 1200, 900
 SIDE_W, SIDE_H = 900, 900
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
 BG = (14, 14, 14)
 GRID = (30, 30, 30)
@@ -230,17 +231,15 @@ def generate_side_view() -> Image.Image:
 
 
 def main():
-    os.makedirs("../assets", exist_ok=True)
-    os.makedirs("assets", exist_ok=True)
-    out_dir = "../assets" if os.path.isdir("../assets") else "assets"
+    ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
     top = generate_top_view()
-    path = os.path.join(out_dir, "step-technical-top.png")
+    path = ASSETS_DIR / "step-technical-top.png"
     top.save(path)
     print(f"Saved: {path}")
 
     side = generate_side_view()
-    path = os.path.join(out_dir, "step-technical-side.png")
+    path = ASSETS_DIR / "step-technical-side.png"
     side.save(path)
     print(f"Saved: {path}")
 
