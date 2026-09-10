@@ -3,7 +3,7 @@
 ## 1) Product lineup and build materials
 
 - **Step Walnut ($99):** minimalist / wood-desk buyer. Black PETG base shell + wood-PLA top shell, sanded and Danish-oiled. ATtiny85. Single white status LED via 3 mm light pipe.
-- **Step Obsidian ($109):** gamer / battlestation buyer. Full CF-PETG shells (carbon-weave matte). ESP32-C3. WS2812B RGB glow lines in recessed side grooves behind flush diffusers, 8–12 LEDs per side, no visible LED dots.
+- **Step Obsidian ($109):** gamer / battlestation buyer. Full CF-PETG shells (carbon-weave matte). ESP32-C3. WS2812B RGB glow lines in recessed side grooves behind flush diffusers, 8 LEDs per side (16 total), no visible LED dots.
 - **Outdoor Block Stone ($119) / Camo ($129):** unchanged architecture from technical readouts (Batch 2 gated).
 
 Authoritative per-model BOMs and QC gates live in `docs/technical-readouts/`.
@@ -18,6 +18,7 @@ Authoritative per-model BOMs and QC gates live in `docs/technical-readouts/`.
 | Outdoor Block Camo | ~$56.80 | $129 | ~ $39 / sale |
 
 Batch 1 build plan: **3 Walnut + 3 Obsidian**, projected profit **~$225–240**.
+That profit is not expected to recoup the one-time **$150–250 CAD spend** during Batch 1; the CAD spend is treated as validation/tooling cost.
 
 ## 3) Sept-2026 tariffed reference prices (25% Section 301 on China-sourced electronics)
 
@@ -46,7 +47,7 @@ Batch 1 build plan: **3 Walnut + 3 Obsidian**, projected profit **~$225–240**.
 
 ## 5) Schedule updates
 
-1. **Week 1:** place a **measurement order (~$35)**: one of each electronics module for caliper capture (`docs/design-brief-step.md` §5).
+1. **Week 1:** place a **measurement order (~$35)**: one of each electronics module, plus the 65W GaN brick / USB-C plug-overmold reference, for caliper capture (`docs/design-brief-step.md` §5).
 2. **Week 1:** place consolidated parts order after measurement order confirmation (same-week confirmation target):
    - **Immediate Batch 1 purchase (3 Walnut + 3 Obsidian): ~ $430 Step-only**
    - **Optional full 10-unit planning envelope (if buying all modules up front): ~ $740 total**

@@ -33,8 +33,17 @@
 #define PIN_ZONE3       3  // PB3 — Zone 3 detect (HIGH = watch present)
 #define PIN_MODE_BTN    4  // PB4 — Obsidian only: RGB mode button (active LOW)
 
-// ── LED strip config ───────────────────────────────────────────────────────────
-#define LED_COUNT       8
+// ── LED config for the selected Step variant ───────────────────────────────────
+#ifdef MODEL_WALNUT
+  // Walnut drives a single white status LED through the front light pipe.
+  #define LED_COUNT       1
+#endif
+
+#ifdef MODEL_OBSIDIAN
+  // Obsidian uses two side glow lines: 8 LEDs per side on 60 LED/m strip = 16 total.
+  #define LED_COUNT       16
+#endif
+
 #define LED_BRIGHTNESS  200  // 0–255 (daytime default)
 #define LED_DIM_CAP     80   // brightness when soft power cap active
 

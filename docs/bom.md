@@ -8,6 +8,7 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 |---|---:|
 | Qi TX module | $5.63 |
 | Buds TX module | $2.50 |
+| Watch TX coil | ~$3–4 *(estimate; pending sourcing)* |
 | USB-C trigger board | $2.25 |
 | 65W GaN brick (Step models) | $13.75 |
 | USB-C cable (Step models) | $3.00 |
@@ -36,3 +37,4 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 
 - Mix: 3 Walnut + 3 Obsidian
 - Projected profit: **~$225–240**
+- Adding the watch TX coil nudges Step build costs up slightly versus a two-zone concept, but current sell prices remain unchanged pending sourcing confirmation.

@@ -4,7 +4,7 @@
 - Same stepped geometry as Walnut.
 - **Both shells:** CF-PETG (carbon-weave matte).
 - Side RGB grooves with flush diffuser bars (glow lines only, no visible LED dots).
-- WS2812B count target: **8–12 LEDs per side**.
+- WS2812B count target: **8 LEDs per side (16 total)** on 60 LED/m strip.
 - Hardened steel nozzle required for CF-PETG.
 
 ## Electronics BOM (Sept 2026, tariffed where applicable)
