@@ -10,7 +10,7 @@ Usage:
 
 import argparse
 import math
-import os
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 # ── Geometry constants (mm → pixels, 4px/mm) ──────────────────────────────────
@@ -29,6 +29,7 @@ S3_W = 95 * SCALE
 S3_D = 80 * SCALE
 
 OUTPUT_W, OUTPUT_H = 1200, 800
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
 # ── Colour palettes ────────────────────────────────────────────────────────────
 PALETTES = {
@@ -199,7 +200,7 @@ def build_render(model: str) -> Image.Image:
               fill=p["label_colour"])
 
     # Price
-    price = "$99" if model == "walnut" else "$79"
+    price = "$99" if model == "walnut" else "$109"
     draw.text((OUTPUT_W - 120, OUTPUT_H - 60), price, font=font_price, fill=p["price_colour"])
 
     return img
@@ -210,14 +211,12 @@ def main():
     parser.add_argument("--model", choices=["walnut", "obsidian", "both"], default="both")
     args = parser.parse_args()
 
-    os.makedirs("../assets", exist_ok=True)
-    os.makedirs("assets", exist_ok=True)
+    ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
     models = ["walnut", "obsidian"] if args.model == "both" else [args.model]
     for model in models:
         img = build_render(model)
-        out_dir = "../assets" if os.path.isdir("../assets") else "assets"
-        path = os.path.join(out_dir, f"step-{model}-render.png")
+        path = ASSETS_DIR / f"step-{model}-render.png"
         img.save(path)
         print(f"Saved: {path}")
 

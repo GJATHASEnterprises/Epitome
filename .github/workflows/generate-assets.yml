@@ -8,6 +8,8 @@ on:
     paths:
       - scripts/generate_3d_model.py
       - scripts/generate_render.py
+      - scripts/generate_image.py
+      - scripts/generate_product_sheet.py
       - scripts/requirements.txt
       - docs/**
   workflow_dispatch:
@@ -31,17 +33,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install generation dependencies
-        run: |
-          # Install from the pinned requirements file first.
-          if ! pip install -r scripts/requirements.txt; then
-            echo "::warning::requirements.txt install had failures; attempting fallback package installs."
-            # Fallback installs for environments where optional/compiled deps fail.
-            pip install matplotlib Pillow numpy trimesh pygltflib scipy ezdxf numpy-stl || {
-              echo "::error::Fallback install for core generation dependencies failed."
-              exit 1
-            }
-          fi
-          pip install cadquery || echo "::warning::cadquery install failed; continuing because CAD exports have graceful fallbacks."
+        run: pip install -r scripts/requirements.txt
 
       - name: Create asset directories
         run: mkdir -p assets/export
@@ -52,11 +44,15 @@ jobs:
 
       - name: Generate image assets
         continue-on-error: false
-        run: |
-          if ! command -v blender >/dev/null 2>&1; then
-            sudo snap install blender --classic
-          fi
-          blender --background --python scripts/generate_render.py
+        run: python scripts/generate_render.py
+
+      - name: Generate hero images
+        continue-on-error: false
+        run: python scripts/generate_image.py
+
+      - name: Generate product sheets
+        continue-on-error: false
+        run: python scripts/generate_product_sheet.py
 
       - name: Verify generated asset files exist
         run: |

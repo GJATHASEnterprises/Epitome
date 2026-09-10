@@ -11,11 +11,12 @@ Usage:
 
 import argparse
 import math
-import os
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 OUTPUT_W, OUTPUT_H = 1200, 800
 PANEL_SPLIT = int(OUTPUT_W * 0.55)  # 660 left, 540 right
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
 SHEET_CONFIGS = {
     "walnut": {
@@ -261,14 +262,12 @@ def main():
     parser.add_argument("--model", choices=["walnut", "obsidian", "both"], default="both")
     args = parser.parse_args()
 
-    os.makedirs("../assets", exist_ok=True)
-    os.makedirs("assets", exist_ok=True)
+    ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
     models = ["walnut", "obsidian"] if args.model == "both" else [args.model]
     for model in models:
         img = build_sheet(model)
-        out_dir = "../assets" if os.path.isdir("../assets") else "assets"
-        path = os.path.join(out_dir, f"step-{model}-product-sheet.png")
+        path = ASSETS_DIR / f"step-{model}-product-sheet.png"
         img.save(path)
         print(f"Saved: {path}")
 
