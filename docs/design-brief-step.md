@@ -36,7 +36,7 @@ A three-tier "stepped" desktop wireless charging stand with dedicated zones for 
 4. **Rear USB-C recess:** pocket for the port board so the connector face sits 1 mm recessed from the rear wall; cable strain channel below it.
 5. **Thermistor channel:** 3 mm wide groove from the phone coil pocket to the main board bay.
 6. **Board standoffs:** 2 mm tall pins/clips for the trigger board and MCU board (dimensions after we measure — see §5).
-7. **Walnut only:** Ø3.2 mm light-pipe hole on the front face, centered, **12 mm above desk**, fully owned by the **top shell** so it does not sit on the 8 mm split line.
+7. **Walnut only:** Ø3.2 mm light-pipe hole on the front face, centered, **14 mm above desk**, fully owned by the **top shell** so it sits clearly above the 8 mm split line.
 8. **Obsidian only:** recessed groove on each side face, 5 mm tall × 3 mm deep × ~140 mm long, positioned 6 mm above desk, to hold a press-fit diffuser bar over a **60 LED/m WS2812B strip**. Size the groove for **8 LEDs per side (16 total)** with ~**16.7 mm pitch**, about **116.7 mm first-to-last LED center span**, and about **133 mm end-to-end strip cut length per side**, plus wire relief; diffuser sits flush or up to 0.5 mm proud. Wire pass-through from each groove into the base cavity.
 9. **Hidden venting:** add concealed vent slots in the base shell for coil thermal relief, but keep them invisible from normal top/side views.
 10. **Optional ballast:** include a base-shell cavity / steel plate pocket option for anti-slip heft without changing the exterior silhouette.

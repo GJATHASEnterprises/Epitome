@@ -52,6 +52,8 @@ I'm building a three-tier desktop wireless charging stand ("Epitome Step") sold 
 - Exact PETG / wood-PLA / CF-PETG material brands
 - Preferred layer height / wall settings if they affect fit allowances
 
+Until those fabrication inputs are supplied, the requested clearance variables, printability notes, and fit-coupon STLs should be treated as **provisional print-validation deliverables** rather than final locked values.
+
 **To apply:** share 1–2 examples of enclosure/consumer-product CAD you've modeled for FDM printing, and confirm you can deliver native Fusion 360 (or state your tool).
 
 ---
