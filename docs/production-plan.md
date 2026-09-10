@@ -12,18 +12,19 @@ Authoritative per-model BOMs and QC gates live in `docs/technical-readouts/`.
 
 | Model | Build cost | Price | Net after fees/processing/defect reserve |
 |---|---:|---:|---:|
-| Step Walnut | $42.43 | $99 | ~ $36 / sale |
-| Step Obsidian | ~$48.50 | $109 | ~ $40–44 / sale |
+| Step Walnut | ~$45.93 | $99 | ~ $32–33 / sale |
+| Step Obsidian | ~$52.00 | $109 | ~ $36–40 / sale |
 | Outdoor Block Stone | ~$53.30 | $119 | ~ $34 / sale |
 | Outdoor Block Camo | ~$56.80 | $129 | ~ $39 / sale |
 
-Batch 1 build plan: **3 Walnut + 3 Obsidian**, projected profit **~$225–240**.
+Batch 1 build plan: **3 Walnut + 3 Obsidian**, projected profit **~$204–219**.
 That profit is not expected to recoup the one-time **$150–250 CAD spend** during Batch 1; the CAD spend is treated as validation/tooling cost.
 
 ## 3) Sept-2026 tariffed reference prices (25% Section 301 on China-sourced electronics)
 
 - Qi TX: **$5.63**
 - Buds TX: **$2.50**
+- Watch TX coil: **$3.50 estimate**
 - Trigger board: **$2.25**
 - 65W GaN brick (included with Step): **$13.75**
 - Cable (included with Step): **$3.00**
@@ -49,8 +50,8 @@ That profit is not expected to recoup the one-time **$150–250 CAD spend** duri
 
 1. **Week 1:** place a **measurement order (~$35)**: one of each electronics module, plus the 65W GaN brick / USB-C plug-overmold reference, for caliper capture (`docs/design-brief-step.md` §5).
 2. **Week 1:** place consolidated parts order after measurement order confirmation (same-week confirmation target):
-   - **Immediate Batch 1 purchase (3 Walnut + 3 Obsidian): ~ $430 Step-only**
-   - **Optional full 10-unit planning envelope (if buying all modules up front): ~ $740 total**
+   - **Immediate Batch 1 purchase (3 Walnut + 3 Obsidian): ~ $451 Step-only**
+   - **Optional full 10-unit planning envelope (if buying all modules up front): ~ $775 total**
 3. **Before prototype printing:** produce CAD production files (friend sketches + dimensional spec, or Upwork CAD freelancer delivery of STEP/STL).
 4. **Week 2–3:** first Step prototype and QC gauntlet.
 5. **Week 3–5:** build/ship remaining Step units.

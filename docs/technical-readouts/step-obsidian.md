@@ -12,6 +12,7 @@
 |---|---:|
 | 15–20W Qi TX module (China, +25%) | $5.63 |
 | 5W buds TX module (China, +25%) | $2.50 |
+| Watch TX coil (estimate, pending sourcing) | $3.50 |
 | USB-C trigger/boost board (China, +25%) | $2.25 |
 | 65W GaN brick (China, +25%) | $13.75 |
 | USB-C cable, 1 m (China, +25%) | $3.00 |
@@ -19,7 +20,7 @@
 | WS2812B strips + diffuser bars | $2.00 |
 | CF-PETG enclosure + inserts/feet | $11.07 |
 | Packaging (kraft box + insert) | $3.00 |
-| **Build cost** | **~$48.50** |
+| **Build cost** | **~$52.00** |
 
 ## Firmware behavior (ESP32-C3)
 - RGB modes: static, breathing, charge-progress sweep, OFF.
@@ -30,4 +31,4 @@
 ## Unit economics
 - Price: $109
 - Customer-paid shipping target: ~$10.50 label
-- Net per sale after fees/processing/defect reserve: **~$40–44**
+- Net per sale after fees/processing/defect reserve: **~$36–40**
