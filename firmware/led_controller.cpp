@@ -35,7 +35,6 @@ static void apply_colour(void);
 static uint8_t get_brightness_cap(void);
 static void check_soft_cap(void);
 static void check_night_mode(uint32_t tick_value);
-static uint32_t snapshot_tick_counter(void);
 
 // ── Watchdog ISR (1 Hz tick) ───────────────────────────────────────────────────
 ISR(WDT_vect) {
@@ -126,9 +125,19 @@ void led_update(void) {
     uint8_t leds_dirty = 0;
     static uint8_t last_brightness = 0xFF;
 
+    uint32_t tick_value = 0;
+    uint8_t has_tick_update = 0;
+    uint8_t sreg = SREG;
+    cli();
     if (tick_pending) {
+        tick_value = tick_counter;
         tick_pending = 0;
-        check_night_mode(snapshot_tick_counter());
+        has_tick_update = 1;
+    }
+    SREG = sreg;
+
+    if (has_tick_update) {
+        check_night_mode(tick_value);
     }
 
     // Check zone detect pins for device presence
@@ -243,15 +252,6 @@ static uint8_t get_brightness_cap(void) {
     // USB-C always assumed present. Dim LEDs if all three zones active (max wireless load).
     uint8_t total_wireless = (z1 * 20) + (z2 * 5) + (z3 * 5);
     return (total_wireless >= 30) ? LED_DIM_CAP : LED_BRIGHTNESS;
-}
-
-static uint32_t snapshot_tick_counter(void) {
-    uint32_t value;
-    uint8_t sreg = SREG;
-    cli();
-    value = tick_counter;
-    SREG = sreg;
-    return value;
 }
 
 // ── Arduino-style entry points (if building with Arduino IDE) ─────────────────
