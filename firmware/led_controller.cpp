@@ -156,6 +156,13 @@ void led_update(void) {
     static uint8_t button_lockout = 0;
     static uint8_t release_samples = 0;  // ~150 ms with the Arduino loop's 50 ms delay
     uint8_t button_pressed = !(PINB & (1 << PIN_MODE_BTN));
+    uint8_t button_event = 0;
+
+    sreg = SREG;
+    cli();
+    button_event = button_event_pending;
+    button_event_pending = 0;
+    SREG = sreg;
 
     if (button_lockout) {
         if (button_pressed) {
@@ -170,13 +177,10 @@ void led_update(void) {
         }
     }
 
-    if (button_event_pending && button_pressed && !button_lockout) {
+    if (button_event && button_pressed && !button_lockout) {
         led_next_mode();
         button_lockout = 1;
         release_samples = 0;
-        button_event_pending = 0;
-    } else if (!button_pressed) {
-        button_event_pending = 0;
     }
 
     if (mode_changed) {
