@@ -24,17 +24,31 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 | Obsidian enclosure (CF-PETG shells incl. premium) | $11.00 |
 | Kraft packaging box set | $3.00 |
 
+## Easy-connect (no-solder) BOM deltas
+
+| Part / change | Added cost |
+|---|---:|
+| 2× screw-terminal buck converters | +$1.50–3.00 / unit each |
+| DC jack with screw terminals + screw-terminal distribution PCB | +$1.70–3.70 / unit |
+| Pre-wired LED strip (factory JST-SM leads) | +$0.35–1.10 / unit |
+| Digispark-style ATtiny85 USB board | +$0.70–2.20 / unit |
+| Pre-crimped JST-XH pigtail set | +$0.90–1.40 / unit |
+| Pre-crimped NTC | +$0.30 / unit |
+| Solder-seal connector allowance | +$0.20 / unit |
+| **Total easy-connect delta** | **~$6–12 / unit (plan at ~$8)** |
+
 ## Model economics (net-after-fees)
 
 | Model | Build cost | Price | Net-after-fees |
 |---|---:|---:|---:|
-| Step Walnut | ~$45.93 | $99 | ~ $32–33/sale |
-| Step Obsidian | ~$52.00 | $109 | ~ $36–40/sale |
+| Step Walnut | ~$50.50 | $99 | ~ $28–29/sale |
+| Step Obsidian | ~$56.50 | $109 | ~ $32–36/sale |
 | Outdoor Block Stone | ~$53.30 | $119 | ~ $34/sale |
 | Outdoor Block Camo | ~$56.80 | $129 | ~ $39/sale |
 
 ## Batch 1 projection
 
 - Mix: 3 Walnut + 3 Obsidian
-- Projected profit: **~$204–219**
+- Easy-connect parts add **~$50 total** versus the earlier 6-unit Step plan.
+- Projected profit after fees/processing/defect reserve: **~$180–195**
 - The watch TX coil estimate is already reflected in the Step build-cost / profit figures above; current sell prices remain unchanged pending final sourcing confirmation.

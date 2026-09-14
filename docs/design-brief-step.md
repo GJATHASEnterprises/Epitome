@@ -41,7 +41,7 @@ A three-tier "stepped" desktop wireless charging stand with dedicated zones for 
 9. **Hidden venting:** add concealed vent slots in the base shell for coil thermal relief, but keep them invisible from normal top/side views.
 10. **Optional ballast:** include a base-shell cavity / steel plate pocket option for anti-slip heft without changing the exterior silhouette.
 11. **4× feet recesses** on the bottom: Ø10 mm × 1 mm deep (for silicone bumpers).
-12. **Shared board bay:** Walnut uses an **ATtiny85 carrier board**; Obsidian uses an **ESP32-C3 dev/carrier board**. The shared enclosure geometry must fit the **larger** measured board footprint/height from §5.
+12. **Shared board bay:** both Step models use a **Digispark-style ATtiny85 USB board** plus easy-connect power hardware. The shared enclosure geometry must fit the measured board footprint/height from §5 along with the screw-terminal distribution parts.
 13. Design for FDM printing: no overhangs >50° without a chamfer, flat surfaces face up on the print bed, both shells printable without supports if possible.
 
 ## 4. Deliverables we need from you
@@ -60,8 +60,10 @@ Measure with calipers — do not trust seller datasheets. All in mm.
 | Buds TX coil | Same | ___ |
 | Watch TX coil | Same + cradle / magnet carrier dimensions if separate | ___ |
 | Trigger/boost board | L × W × H, tallest component height, USB-C port overhang, mounting hole positions/Ø | ___ |
-| ATtiny85 carrier board (Walnut) | L × W × H, mounting holes | ___ |
-| ESP32-C3 dev/carrier board (Obsidian) | L × W × H, mounting holes | ___ |
+| Digispark-style ATtiny85 USB board | L × W × H, USB overhang, mounting method | ___ |
+| Screw-terminal DC jack | Body L × W × H, terminal clearance, panel cutout needs | ___ |
+| Power-distribution PCB / block | L × W × H, terminal pitch, mounting holes/clearance | ___ |
+| 12V / 5V screw-terminal buck converters | L × W × H, terminal overhang, adjustment-pot access | ___ |
 | LED strip (Obsidian) | Width, thickness, LED pitch, cut lengths | ___ |
 | Light pipe (Walnut) | Ø, length | ___ |
 | Thermistor | Bead Ø, lead length | ___ |

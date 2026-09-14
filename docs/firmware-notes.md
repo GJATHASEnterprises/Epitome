@@ -1,6 +1,6 @@
-# Epitome Step — Firmware Notes (ATtiny85)
+# Epitome Step — Firmware Notes (Digispark ATtiny85)
 
-No ESP32. No BLE. No app. The ATtiny85 handles LED control, soft power cap, and night mode only.
+No ESP32. No BLE. No app. The Digispark-style ATtiny85 board handles LED control, the 60W soft power cap, and night mode only.
 
 See `firmware/led_controller.h` and `firmware/led_controller.cpp` for full implementation.
 
@@ -20,7 +20,7 @@ Flash two separate binaries: one for Walnut units, one for Obsidian units.
 
 ## Walnut model behaviour
 
-- **LED type:** WS2811
+- **LED type:** single white status LED via light pipe
 - **Colour:** Warm white only — #FFD6A0 (R=255, G=214, B=160), fixed, cannot be changed
 - **Brightness:** Full brightness during daytime; off during night mode
 - **Zone indicators:** When a device is detected on any zone, LEDs pulse once (brief 200 ms brightening) then return to steady on
@@ -31,7 +31,7 @@ Flash two separate binaries: one for Walnut units, one for Obsidian units.
 
 ## Obsidian model behaviour
 
-- **LED type:** WS2812B
+- **LED type:** WS2812B, **16 total LEDs (8 per side)**
 - **Colour modes:** 8 modes, cycled by single rear button press
   1. Blue (#3399FF)
   2. Purple (#9966FF)
@@ -41,7 +41,7 @@ Flash two separate binaries: one for Walnut units, one for Obsidian units.
   6. Yellow (#FFFF00)
   7. White (#FFFFFF)
   8. Off (LEDs disabled — night mode equivalent)
-- **Button:** PB4, active LOW, internal pull-up, interrupt-driven (INT0)
+- **Button:** PB4, active LOW, internal pull-up, interrupt-driven
 - **Zone indicators:** Same pulse behaviour as Walnut but uses current colour mode
 - **Night mode:** Same timer-based logic; forces mode to "Off" state during 23:00–07:00
 
@@ -61,13 +61,13 @@ This is intentionally simple. Night mode will drift over time. For most users, "
 
 ## Soft cap logic
 
-The ATtiny85 estimates total power draw from zone detect pins:
+The ATtiny85 estimates total draw from zone detect pins:
 - Zone 1 active: +20W estimate
 - Zone 2 active: +5W estimate
 - Zone 3 active: +5W estimate
-- USB-C ports: assumed at max (90W total) — always included
+- Lighting budget: up to ~1.5W
 
-If estimated wireless draw > 30W (i.e., Zones 1 + 2 + 3 all active simultaneously), LED brightness is reduced to 40% to shed ~0.9W. This is cosmetic headroom, not a hard safety limit.
+If estimated draw approaches the **60W** soft cap, lighting brightness is reduced to shed roughly 1–1.5W. This is cosmetic headroom, not a hard safety limit.
 
 ---
 
@@ -75,23 +75,24 @@ If estimated wireless draw > 30W (i.e., Zones 1 + 2 + 3 all active simultaneousl
 
 | ATtiny85 Pin | Direction | Function |
 |---|---|---|
-| PB0 (pin 5) | Output | WS2811/WS2812B DATA |
+| PB0 (pin 5) | Output | Lighting DATA |
 | PB1 (pin 6) | Input | Zone 1 detect (HIGH = phone present) |
 | PB2 (pin 7) | Input | Zone 2 detect (HIGH = buds present) |
 | PB3 (pin 2) | Input | Zone 3 detect (HIGH = watch present) |
 | PB4 (pin 3) | Input | **Obsidian only** — mode button (active LOW) |
-| VCC (pin 8) | Power | 5V from 5V buck |
-| GND (pin 4) | Power | Common ground |
+| 5V | Power | 5V from 5V buck |
+| GND | Power | Common ground |
+
+Zone 1 thermals are handled by the Qi TX module's own NTC + hard-cutoff path, so the firmware currently reads no ADC input for coil temperature.
 
 ---
 
 ## Programming the ATtiny85
 
-- Programmer: USBasp or Arduino as ISP
-- Arduino IDE: install ATtiny85 board package (David Mellis or SpenceKonde)
-- Clock: 8 MHz internal (no crystal needed)
-- Fuses: Low = 0xE2, High = 0xDF, Extended = 0xFF
-- Library: FastLED (WS2811 / WS2812B both supported)
+- Board: Digispark-style ATtiny85 USB dev board
+- Programming path: USB direct from Arduino IDE (no USBasp required)
+- Arduino IDE: install the Digistump / ATtiny85 board package in the environment you actually use for flashing
+- Clock: use the board profile that matches the purchased Digispark-style board
+- Library: FastLED
 
-Flash Walnut binary first. Program Obsidian binary separately. Label each chip with a marker before installing.
-
+Flash Walnut first, then Obsidian. Label each board before installing.

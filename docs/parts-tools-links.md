@@ -24,8 +24,10 @@
 
 - FDM printer (PETG/wood-PLA/CF-PETG capable)
 - Hardened steel nozzle for CF-PETG
-- Soldering iron + insert tips
+- Heat-set insert tool / insert tips
 - Calipers (required for measurement-order workflow)
-- USBasp programmer
+- Multimeter
+- Wire stripper
+- Heat gun
 
 Detailed BOM by model: `docs/technical-readouts/`.
