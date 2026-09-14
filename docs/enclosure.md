@@ -20,7 +20,7 @@ Legacy enclosure material/process options are removed from this plan.
 ## Obsidian lighting geometry
 
 - Recessed side grooves with flush diffuser bars.
-- WS2812B 8–12 LEDs per side.
+- WS2812B 8 LEDs per side (16 total).
 - Glow lines only (LED dots not directly visible).
 
 ## CAD source of truth

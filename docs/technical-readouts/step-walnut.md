@@ -12,13 +12,14 @@
 |---|---:|
 | 15–20W Qi TX module (China, +25%) | $5.63 |
 | 5W buds TX module (China, +25%) | $2.50 |
+| Watch TX coil (estimate, pending sourcing) | $3.50 |
 | USB-C trigger/boost board (China, +25%) | $2.25 |
 | 65W GaN brick (China, +25%) | $13.75 |
 | USB-C cable, 1 m (China, +25%) | $3.00 |
 | ATtiny85 + status LED + thermals/harness | $2.80 |
 | Enclosure + inserts/feet + oil finish | $9.50 |
 | Packaging (kraft box + insert) | $3.00 |
-| **Build cost** | **$42.43** |
+| **Build cost** | **~$45.93** |
 
 ## Firmware behavior (ATtiny85)
 - Idle: soft breathing white status LED.
@@ -28,4 +29,4 @@
 ## Unit economics
 - Price: $99
 - Customer-paid shipping target: ~$10.50 label
-- Net per sale after fees/processing/defect reserve: **~$36**
+- Net per sale after fees/processing/defect reserve: **~$32–33**

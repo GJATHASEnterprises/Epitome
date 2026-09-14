@@ -8,6 +8,7 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 |---|---:|
 | Qi TX module | $5.63 |
 | Buds TX module | $2.50 |
+| Watch TX coil | $3.50 *(estimate; pending sourcing)* |
 | USB-C trigger board | $2.25 |
 | 65W GaN brick (Step models) | $13.75 |
 | USB-C cable (Step models) | $3.00 |
@@ -27,12 +28,13 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 
 | Model | Build cost | Price | Net-after-fees |
 |---|---:|---:|---:|
-| Step Walnut | $42.43 | $99 | ~ $36/sale |
-| Step Obsidian | ~$48.50 | $109 | ~ $40–44/sale |
+| Step Walnut | ~$45.93 | $99 | ~ $32–33/sale |
+| Step Obsidian | ~$52.00 | $109 | ~ $36–40/sale |
 | Outdoor Block Stone | ~$53.30 | $119 | ~ $34/sale |
 | Outdoor Block Camo | ~$56.80 | $129 | ~ $39/sale |
 
 ## Batch 1 projection
 
 - Mix: 3 Walnut + 3 Obsidian
-- Projected profit: **~$225–240**
+- Projected profit: **~$204–219**
+- The watch TX coil estimate is already reflected in the Step build-cost / profit figures above; current sell prices remain unchanged pending final sourcing confirmation.
