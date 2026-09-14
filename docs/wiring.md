@@ -34,6 +34,7 @@ All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. 
 | 12V power | 12V distribution terminals via J1 | Qi2 TX VIN |
 | GND | 12V distribution terminals via J1 | Qi2 TX GND |
 | Detect | Qi2 TX STAT via J7 (orange) | Digispark ATtiny85 PB1 |
+| Signal ground | J7 black lead | Common ground / Digispark GND |
 | NTC thermal pair | Pre-crimped thermistor leads | Qi2 TX thermal header / hardwired 70°C cutoff input |
 
 - Polyfuse remains in-line on the 12V feed between the 12V distribution block and the TX module.
@@ -49,6 +50,7 @@ All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. 
 | 5V power | 5V distribution terminals via J2 | Qi 5W TX VIN |
 | GND | 5V distribution terminals via J2 | Qi 5W TX GND |
 | Detect | Qi 5W TX STAT via J8 (orange) | Digispark ATtiny85 PB2 |
+| Signal ground | J8 black lead | Common ground / Digispark GND |
 
 - Polyfuse remains in-line on the 5V feed.
 
@@ -63,6 +65,7 @@ All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. 
 | Coil A data | Relay output A | Apple Watch PCBA |
 | Coil B data | Relay output B | Qi watch coil |
 | Detect | Relay STAT via J9 (orange) | Digispark ATtiny85 PB3 |
+| Signal ground | J9 black lead | Common ground / Digispark GND |
 
 - Relay board receives 5V and switches between the Apple Watch PCBA and Qi watch coil.
 - Polyfuse stays on the 5V feed to the relay board.
@@ -106,7 +109,7 @@ Route USB-C lines through rear spine cutouts. Both ports panel-mount with M2 scr
 | 5V | VCC | From 5V buck via J4 |
 | GND | GND | Common bus |
 
-Flash the Digispark-style board over USB before installation. No USBasp and no soldered headers are required.
+Flash a **preassembled Digispark-style board with the onboard USB bootloader already present** before installation. If a purchased clone lacks the USB bootloader or arrives without the needed headers/connectors installed, replace it with a fully assembled USB-flashable equivalent rather than adding a soldering step.
 
 ---
 

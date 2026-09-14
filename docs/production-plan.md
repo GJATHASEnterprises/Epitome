@@ -33,7 +33,7 @@ That profit is not expected to recoup the one-time **$150–250 CAD spend** duri
 - 20,000 mAh certified PD bank: **$22.50**
 - Enclosure cost targets: Walnut **$9.50** (wood-PLA + oil), Obsidian **$11.00** ($7.50 + $3.50 CF premium)
 - Packaging target: kraft box **$3.00**
-- Easy-connect delta target: **~$6–12 / unit, plan at ~$8**
+- Easy-connect delta target: **~$6–12 / unit; use ~$8 as the working planning estimate**
 
 ## 4) One-time tooling/setup
 
@@ -54,7 +54,7 @@ That profit is not expected to recoup the one-time **$150–250 CAD spend** duri
 1. **Week 1:** place a **measurement order (~$35)**: one of each electronics module, plus the 65W GaN brick / USB-C plug-overmold reference, Digispark board, screw-terminal DC jack, and distribution PCB for caliper capture (`docs/design-brief-step.md` §5).
 2. **Week 1:** place consolidated parts order after measurement order confirmation (same-week confirmation target):
    - **Immediate Batch 1 purchase (3 Walnut + 3 Obsidian): ~ $501 Step-only**
-   - **Optional full 10-unit planning envelope (if buying all modules up front): adjust from the earlier plan by roughly +$8 per Step unit**
+   - **Optional full 10-unit planning envelope (if buying all modules up front): adjust from the earlier plan by roughly +$8 per Step unit as the working estimate within the documented ~$6–12 range**
 3. **Before prototype printing:** produce CAD production files (friend sketches + dimensional spec, or Upwork CAD freelancer delivery of STEP/STL).
 4. **Week 2–3:** first Step prototype and QC gauntlet.
 5. **Week 3–5:** build/ship remaining Step units.

@@ -28,7 +28,7 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 
 | Part / change | Added cost |
 |---|---:|
-| 2× screw-terminal buck converters | +$1.50–3.00 / unit each |
+| 2× screw-terminal buck converters (pair total over bare modules) | +$1.50–3.00 / finished unit |
 | DC jack with screw terminals + screw-terminal distribution PCB | +$1.70–3.70 / unit |
 | Pre-wired LED strip (factory JST-SM leads) | +$0.35–1.10 / unit |
 | Digispark-style ATtiny85 USB board | +$0.70–2.20 / unit |

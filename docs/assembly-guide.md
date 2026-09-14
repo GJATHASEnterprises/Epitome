@@ -68,9 +68,11 @@ This scaffold is for a first-time builder. The target build method is plug-in JS
    - Then test combined wireless use before trying any USB-C output load.
 
 10. **Thermal check**
-    - Run a 15-minute phone charge on Zone 1.
-    - Coil area should stay below a roughly **<45°C touch test** during normal operation.
-    - Confirm the NTC / hard-cutoff path is present and physically bonded to the coil area.
+    - Run a 15-minute phone charge on Zone 1 and confirm charging stays stable for the full test (no repeated dropouts).
+    - Remove the phone, then **disconnect input power** before setting up the cutoff test.
+    - Identify the chosen Qi TX board family's observable thermal-cutoff indicator for Batch 1 documentation: onboard status/fault LED, documented fault pin, or the exposed Zone 1 status lead if that board family uses it for cutoff state.
+    - Re-apply input power with **no device charging**, set the heat gun to low, hold it roughly **15–20 cm (6–8 in)** away, and warm the NTC bead in **2–3 second sweeps** until the documented indicator flips to the thermal-cutoff state. Stop heating immediately, allow cooldown, and confirm the same indicator returns to its normal ready state.
+    - Acceptance rule: **the 15-minute charging run must stay stable, and the documented board-family cutoff indicator must show both cutoff and recovery during the warm-up test.** Record which indicator was used for the unit log.
 
 11. **Final assembly**
     - Dress the service loops.

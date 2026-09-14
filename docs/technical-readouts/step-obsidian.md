@@ -24,7 +24,7 @@
 
 ## Firmware behavior (Digispark ATtiny85)
 - RGB modes: rear-button colour cycling across the documented preset colours plus OFF.
-- RGB brightness is soft-capped when estimated load approaches the 60W ATtiny85 limit.
+- RGB brightness is trimmed when the estimated wireless load is fully active; this supports the documented 60W planning target but does not measure USB-C current.
 - Thermal cutoff behavior retained through the Qi module / hardwired thermal chain.
 
 ## Unit economics

@@ -106,10 +106,10 @@ Both models have identical power-consumption limits except for the lighting hard
 | USB-C Port B | PD | — | 30W |
 | ATtiny85 + lighting | 5V | 0.3A | 1.5W |
 | **Theoretical max** | | | **121.5W** |
-| **ATtiny85 soft cap** | | | **60W** |
+| **Documentation planning figure** | | | **60W** |
 | **Included brick** | | | **65W** |
 
-The included 65W GaN brick comfortably covers all three wireless zones plus only a **partial** USB-C load. It does **not** support full simultaneous 60W Port A + 30W Port B output, and it should not be documented as doing so. If a user expects the full 60W USB-C path while all wireless zones are active, they should supply a higher-watt external brick.
+The included 65W GaN brick comfortably covers all three wireless zones plus only a **partial** USB-C load. The practical in-box expectation should be read as **full wireless use plus low-power USB-C accessory charging only**; sustained laptop-class USB-C output should assume fewer active wireless loads or a higher-watt external brick. It does **not** support full simultaneous 60W Port A + 30W Port B output, and it should not be documented as doing so. If a user expects the full 60W USB-C path while all wireless zones are active, they should supply a higher-watt external brick.
 
 ---
 
@@ -125,16 +125,16 @@ The included 65W GaN brick comfortably covers all three wireless zones plus only
 | Hardware relay Zone 3 | Prevents both watch coils being active simultaneously |
 | Polyfuse + TVS Port A | Overcurrent + ESD on USB-C Port A |
 | Polyfuse + TVS Port B | Overcurrent + ESD on USB-C Port B |
-| ATtiny85 soft cap | Dims LEDs if estimated load approaches 60W |
+| Lighting trim against 60W target | Dims lights under full wireless load as a planning-margin measure |
 
 ---
 
 ## Soft cap explanation
 
-The ATtiny85 tracks which zones are active via the three detect pins and estimates total draw. If estimated draw approaches the 60W soft cap, it reduces lighting brightness to pull back roughly 1–1.5W from the LED budget. This is a soft protection measure only — the polyfuses, TVS parts, and the Zone 1 hard thermal cutoff handle actual hardware faults.
+The documented 60W soft cap is a planning target for the overall product budget, not a measured whole-system enforcement loop. The ATtiny85 only tracks which wireless zones are active via the three detect pins, and when the wireless stack is fully active it trims roughly 1–1.5W from the lighting budget. USB-C current is not measured by the firmware, so any remaining headroom for concurrent USB-C use is a design-budget assumption tied to the included 65W brick. This is a soft planning measure only — the polyfuses, TVS parts, and the Zone 1 hard thermal cutoff handle actual hardware faults.
 
 ---
 
 ## Night mode
 
-Lights automatically turn off between 23:00 and 07:00 using a simple time counter derived from power-on time. The ATtiny85 has no RTC. The user sets night mode by pressing and holding the Obsidian mode button for 3 seconds at 23:00 (Walnut: factory-set, no external button). First power-on at any time assumes 12:00 noon and counts from there.
+Lights automatically turn off overnight using a simple time counter derived from power-on time. The ATtiny85 has no RTC. Obsidian users can re-align the timer by pressing and holding the mode button for 3 seconds at the desired evening start time. Walnut has no external button, so its night mode should be treated as a factory-set approximate overnight blackout rather than a user-calibrated local-time schedule.

@@ -24,7 +24,7 @@ Flash two separate binaries: one for Walnut units, one for Obsidian units.
 - **Colour:** Warm white only — #FFD6A0 (R=255, G=214, B=160), fixed, cannot be changed
 - **Brightness:** Full brightness during daytime; off during night mode
 - **Zone indicators:** When a device is detected on any zone, LEDs pulse once (brief 200 ms brightening) then return to steady on
-- **Night mode:** LEDs off from 23:00 to 07:00 (timer-based — see Night Mode section)
+- **Night mode:** factory-set approximate overnight blackout using the timer-based logic described below
 - **No button** on Walnut model
 
 ---
@@ -43,7 +43,7 @@ Flash two separate binaries: one for Walnut units, one for Obsidian units.
   8. Off (LEDs disabled — night mode equivalent)
 - **Button:** PB4, active LOW, internal pull-up, interrupt-driven
 - **Zone indicators:** Same pulse behaviour as Walnut but uses current colour mode
-- **Night mode:** Same timer-based logic; forces mode to "Off" state during 23:00–07:00
+- **Night mode:** same timer-based blackout logic; users can re-align it relative to their desired evening start time
 
 ---
 
@@ -61,13 +61,13 @@ This is intentionally simple. Night mode will drift over time. For most users, "
 
 ## Soft cap logic
 
-The ATtiny85 estimates total draw from zone detect pins:
+The ATtiny85 estimates the **wireless/lighting** portion of the load from zone detect pins:
 - Zone 1 active: +20W estimate
 - Zone 2 active: +5W estimate
 - Zone 3 active: +5W estimate
 - Lighting budget: up to ~1.5W
 
-If estimated draw approaches the **60W** soft cap, lighting brightness is reduced to shed roughly 1–1.5W. This is cosmetic headroom, not a hard safety limit.
+That estimate tops out around **31.5W**. The owner-confirmed **60W soft cap** should therefore be read as a **documentation/planning target** for the overall product budget, with the balance left for possible concurrent USB-C use from the included 65W brick. The firmware does **not** directly measure USB-C current and does **not** enforce a true combined system cap; it only dims lighting when the wireless stack is fully active. This is cosmetic headroom, not a hard safety limit.
 
 ---
 
@@ -91,7 +91,7 @@ Zone 1 thermals are handled by the Qi TX module's own NTC + hard-cutoff path, so
 
 - Board: Digispark-style ATtiny85 USB dev board
 - Programming path: USB direct from Arduino IDE (no USBasp required)
-- Arduino IDE: install the Digistump / ATtiny85 board package in the environment you actually use for flashing
+- Arduino IDE: install **Digistump AVR Boards** using the Boards Manager URL `http://digistump.com/package_digistump_index.json`
 - Clock: use the board profile that matches the purchased Digispark-style board
 - Library: FastLED
 
