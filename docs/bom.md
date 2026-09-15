@@ -29,13 +29,15 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 | Part / change | Added cost |
 |---|---:|
 | 2× screw-terminal buck converters (pair total over bare modules) | +$1.50–3.00 / finished unit |
-| DC jack with screw terminals + screw-terminal distribution PCB | +$1.70–3.70 / unit |
+| USB-C PD input trigger board (~$3.00) + panel-mount USB-C receptacle (~$2.00) | ~+$0 net change / unit *(replaces prior DC jack / barrel-input hardware at roughly the same total cost)* |
 | Pre-wired LED strip (factory JST-SM leads) | +$0.35–1.10 / unit |
 | Digispark-style ATtiny85 USB board | +$0.70–2.20 / unit |
 | Pre-crimped JST-XH pigtail set | +$0.90–1.40 / unit |
 | Pre-crimped NTC | +$0.30 / unit |
 | Solder-seal connector allowance | +$0.20 / unit |
 | **Total easy-connect delta** | **~$6–12 / unit (plan at ~$8)** |
+
+**Bench simplification to verify:** if the chosen input trigger can negotiate **12V directly** with enough current for the intended load, the dedicated 12V buck for Zone 1 may be removable (**–$2.50, one less module**). Mark this as **verify on bench** before changing the architecture.
 
 ## Model economics (net-after-fees)
 

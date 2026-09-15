@@ -7,10 +7,13 @@ Both models share the same beginner-friendly easy-connect electronics architectu
 ## Shared schematic overview
 
 ```
-65W GaN brick + barrel cable
+65W GaN brick
         │
         ▼
-DC barrel jack with screw terminals
+USB-C PD input receptacle (rear X=40)
+        │
+        ▼
+PD input trigger board (20V negotiated input, ≥3.25A at 20V)
         │
         ▼
 Raw DC distribution PCB / block
@@ -45,6 +48,13 @@ Raw DC distribution PCB / block
 - TX: Apple Watch magnetic puck PCBA (all models) + universal Qi watch coil 5W
 - Mutual exclusion: hardware relay ensures only one coil active at a time
 - Cradle: 55 × 55 mm with raised lip
+
+### USB-C PD input (rear X = 40)
+- Receptacle: panel-mount USB-C input port
+- Trigger board: USB-C PD input trigger board negotiating 20V from the included 65W GaN brick
+- Minimum rating: **≥3.25A at 20V**
+- Feed: raw 20V rail into the distribution block, which then feeds the 12V buck, 5V buck, and both output trigger boards
+- Human-factors note: the input port must be visually differentiated (deeper recess or engraved **IN** label) so customers do not mistake it for an output port
 
 ### USB-C Port A (rear X = 120)
 - Trigger board: USB-C PD 60W

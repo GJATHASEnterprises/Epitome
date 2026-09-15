@@ -35,8 +35,9 @@ I'm building a three-tier desktop wireless charging stand ("Epitome Step") sold 
 - Wall 2.4 mm; ≤1.5 mm directly above coil pockets
 - Coil pockets sized from provided measurements + 0.3 mm clearance
 - 4× M3 heat-set boss (Ø7.2 mm hole / Ø10 mm boss); no fasteners visible from top/sides
-- Rear recessed USB-C pocket + strain channel; thermistor groove; board standoffs
+- Rear face has **3× USB-C ports total**: 1× differentiated USB-C PD **IN** plus 2× USB-C PD outputs; include the rear recess/strain channel for the USB-C input plug overmold, plus thermistor groove and board standoffs
 - Three coil pockets total, including the watch pocket on the set-back Step 3 tier
+- No barrel jack anywhere on the rear face; the USB-C **IN** port must be differentiated with either a deeper recess or engraved **IN** marking
 - Both shells FDM-printable without supports (no overhangs >50° without chamfer)
 
 **Process & milestones:**

@@ -33,9 +33,9 @@ A three-tier "stepped" desktop wireless charging stand with dedicated zones for 
 1. **Wall thickness 2.4 mm** everywhere, EXCEPT directly above each charging coil: **1.2–1.5 mm max** (thicker kills charging).
 2. **Coil pockets:** cylindrical recesses under each pad surface, sized from the measured phone coil, earbuds coil, and watch coil modules + **0.3 mm clearance** all around. Each coil must sit flush against the underside of its charging surface.
 3. **4× M3 heat-set insert bosses** in the base shell (Ø7.2 mm hole for M3 insert, boss Ø10 mm, near corners); matching screw counterbores through the top shell from below — **no visible screws from top or sides**.
-4. **Rear USB-C recess:** pocket for the port board so the connector face sits 1 mm recessed from the rear wall; cable strain channel below it.
+4. **Rear USB-C recesses:** 3× rear USB-C ports total — USB-C PD **IN** at X=40, Port A at X=120, Port B at X=140. The **IN** port must be visually differentiated (deeper recess or engraved **IN** marking). Size the rear recess / strain channel around the USB-C input plug overmold and bend relief rather than a barrel plug.
 5. **Thermistor channel:** 3 mm wide groove from the phone coil pocket to the main board bay.
-6. **Board standoffs:** 2 mm tall pins/clips for the trigger board and MCU board (dimensions after we measure — see §5).
+6. **Board standoffs:** 2 mm tall pins/clips for the PD input trigger board, both output trigger boards, and MCU board (dimensions after we measure — see §5).
 7. **Walnut only:** Ø3.2 mm light-pipe hole on the front face, centered, **14 mm above desk**, fully owned by the **top shell** so it sits clearly above the 8 mm split line.
 8. **Obsidian only:** recessed groove on each side face, 5 mm tall × 3 mm deep × ~140 mm long, positioned 6 mm above desk, to hold a press-fit diffuser bar over a **60 LED/m WS2812B strip**. Size the groove for **8 LEDs per side (16 total)** with ~**16.7 mm pitch**, about **116.7 mm first-to-last LED center span**, and about **133 mm end-to-end strip cut length per side**, plus wire relief; diffuser sits flush or up to 0.5 mm proud. Wire pass-through from each groove into the base cavity.
 9. **Hidden venting:** add concealed vent slots in the base shell for coil thermal relief, but keep them invisible from normal top/side views.
@@ -59,16 +59,17 @@ Measure with calipers — do not trust seller datasheets. All in mm.
 | Phone Qi TX coil | Coil outer Ø, thickness, PCB L×W×H if attached, cable exit position | ___ |
 | Buds TX coil | Same | ___ |
 | Watch TX coil | Same + cradle / magnet carrier dimensions if separate | ___ |
-| Trigger/boost board | L × W × H, tallest component height, USB-C port overhang, mounting hole positions/Ø | ___ |
+| PD input trigger board | L × W × H, tallest component height, negotiated-voltage setting access, mounting hole positions/Ø | ___ |
+| USB-C PD output trigger board | L × W × H, tallest component height, USB-C port overhang, mounting hole positions/Ø | ___ |
 | Digispark-style ATtiny85 USB board | L × W × H, USB overhang, mounting method | ___ |
-| Screw-terminal DC jack | Body L × W × H, terminal clearance, panel cutout needs | ___ |
+| Panel-mount USB-C input receptacle | Body L × W × H, panel cutout needs, rear clearance | ___ |
 | Power-distribution PCB / block | L × W × H, terminal pitch, mounting holes/clearance | ___ |
 | 12V / 5V screw-terminal buck converters | L × W × H, terminal overhang, adjustment-pot access | ___ |
 | LED strip (Obsidian) | Width, thickness, LED pitch, cut lengths | ___ |
 | Light pipe (Walnut) | Ø, length | ___ |
 | Thermistor | Bead Ø, lead length | ___ |
 | M3 heat-set insert | OD, length | ___ |
-| USB-C cable plug | Overmold W × H + cable exit angle / bend relief (for the rear recess clearance) | ___ |
+| USB-C input cable plug | Overmold W × H + cable exit angle / bend relief (for the rear recess clearance) | ___ |
 | 65W GaN brick + attached cable exit | Brick L × W × H, cable-exit face, overmold clearance, bend relief envelope | ___ |
 
 **Rule: no coil pocket, boss, standoff, or shared board-bay dimension gets finalized until this table is filled with caliper measurements from the actual parts on our bench.**

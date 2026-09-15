@@ -46,7 +46,7 @@ Removing the USBasp and any solder-only workflow keeps the tooling mix roughly n
 
 ## Measurement-order reminder
 
-- Include the 65W GaN brick, USB-C plug overmold, Digispark board, screw-terminal DC jack, and power-distribution PCB in the same first-pass measurement set because they directly affect the rear recess, board bay, and strain-channel geometry in the Step CAD brief.
+- Include the 65W GaN brick, USB-C input plug overmold, PD input trigger board, panel-mount USB-C input receptacle, Digispark board, and power-distribution PCB in the same first-pass measurement set because they directly affect the rear recess, board bay, and strain-channel geometry in the Step CAD brief.
 
 ## Gates on the $500 reserve
 

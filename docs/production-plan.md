@@ -51,7 +51,7 @@ That profit is not expected to recoup the one-time **$150–250 CAD spend** duri
 
 ## 5) Schedule updates
 
-1. **Week 1:** place a **measurement order (~$35)**: one of each electronics module, plus the 65W GaN brick / USB-C plug-overmold reference, Digispark board, screw-terminal DC jack, and distribution PCB for caliper capture (`docs/design-brief-step.md` §5).
+1. **Week 1:** place a **measurement order (~$35)**: one of each electronics module, plus the 65W GaN brick / USB-C input plug-overmold reference, PD input trigger board, panel-mount USB-C input receptacle, Digispark board, and distribution PCB for caliper capture (`docs/design-brief-step.md` §5).
 2. **Week 1:** place consolidated parts order after measurement order confirmation (same-week confirmation target):
    - **Immediate Batch 1 purchase (3 Walnut + 3 Obsidian): ~ $501 Step-only**
    - **Optional full 10-unit planning envelope (if buying all modules up front): adjust from the earlier plan by roughly +$8 per Step unit as the working estimate within the documented ~$6–12 range**
