@@ -39,7 +39,7 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 
 **Overall input-swap note:** the USB-C PD input path is a **small input-hardware cost increase** versus the old barrel-input path, but it does **not** change the published Step lineup or retail pricing.
 
-**Bench simplification to verify:** if the chosen input trigger can negotiate **12V directly** with enough current for the intended load, the dedicated 12V buck for Zone 1 may be removable (**–$2.50, one less module**). Mark this as **verify on bench** before changing the architecture.
+**Engineering note — verify on bench (not included in current BOM totals):** if a future revision proves the chosen input trigger can negotiate **12V directly** with enough current for the intended load, re-evaluate whether the dedicated 12V buck for Zone 1 can be removed in a later revision.
 
 ## Model economics (net-after-fees)
 

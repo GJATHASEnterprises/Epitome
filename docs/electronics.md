@@ -72,11 +72,6 @@ PD input trigger board (20V negotiated input, ≥3.25A at 20V)
 - Rating note: 30W is the **peak branch label** for Port B, not a guarantee of simultaneous 60W + 30W rear-port output from the included 65W brick
 - Fuse basis: 30W on a 20V branch implies about **1.5A nominal input current**, so the **2A hold** fuse intentionally keeps tighter overcurrent protection while still leaving limited tolerance headroom
 
-### Bench-verification note
-- Current canonical architecture keeps the **20V input rail + dedicated 12V buck** for Zone 1.
-- Possible simplification to test on bench: if the chosen PD input trigger can negotiate **12V directly** with enough current for the intended load, the 12V buck may become optional.
-- Do **not** remove the 12V buck from the design docs, wiring guide, or CAD assumptions until that direct-12V path is verified on hardware.
-
 ---
 
 ## Digispark-style ATtiny85 USB board — role and pin assignments
@@ -157,3 +152,11 @@ The documented 60W soft cap is a planning target for the overall product budget,
 ## Night mode
 
 Lights automatically turn off overnight using a simple time counter derived from power-on time. The ATtiny85 has no RTC. Obsidian users can re-align the timer by pressing and holding the mode button for 3 seconds at the desired evening start time. Walnut has no external button, so its night mode should be treated as a factory-set approximate overnight blackout rather than a user-calibrated local-time schedule.
+
+---
+
+## Open bench note (not part of the current canonical architecture)
+
+- Current canonical architecture keeps the **20V input rail + dedicated 12V buck** for Zone 1.
+- Future simplification to verify on bench: if the chosen PD input trigger can negotiate **12V directly** with enough current for the intended load, the 12V buck may become optional in a later revision.
+- Do **not** remove the 12V buck from the design docs, wiring guide, CAD assumptions, or BOM totals until that direct-12V path is verified on hardware.
