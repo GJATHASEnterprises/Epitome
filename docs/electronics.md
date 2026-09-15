@@ -68,6 +68,11 @@ PD input trigger board (20V negotiated input, ≥3.25A at 20V)
 - Protection: polyfuse (2A) + TVS diode
 - Feed: 20V distribution block
 
+### Bench-verification note
+- Current canonical architecture keeps the **20V input rail + dedicated 12V buck** for Zone 1.
+- Possible simplification to test on bench: if the chosen PD input trigger can negotiate **12V directly** with enough current for the intended load, the 12V buck may become optional.
+- Do **not** remove the 12V buck from the design docs, wiring guide, or CAD assumptions until that direct-12V path is verified on hardware.
+
 ---
 
 ## Digispark-style ATtiny85 USB board — role and pin assignments
