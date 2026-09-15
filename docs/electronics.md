@@ -62,6 +62,7 @@ PD input trigger board (20V negotiated input, ≥3.25A at 20V)
 - Protection: polyfuse (3.5A hold) + TVS diode
 - Feed: 20V distribution block
 - Rating note: 60W is the **peak branch label** for Port A, not a guarantee of simultaneous 60W + 30W rear-port output from the included 65W brick
+- Fuse basis: 60W on a 20V branch implies about **3.0A nominal input current**, so the **3.5A hold** fuse leaves modest tolerance / inrush headroom without opening under normal full-port use
 
 ### USB-C Port B (rear X = 140)
 - Trigger board: USB-C PD 30W
@@ -69,6 +70,7 @@ PD input trigger board (20V negotiated input, ≥3.25A at 20V)
 - Protection: polyfuse (2A hold) + TVS diode
 - Feed: 20V distribution block
 - Rating note: 30W is the **peak branch label** for Port B, not a guarantee of simultaneous 60W + 30W rear-port output from the included 65W brick
+- Fuse basis: 30W on a 20V branch implies about **1.5A nominal input current**, so the **2A hold** fuse intentionally keeps tighter overcurrent protection while still leaving limited tolerance headroom
 
 ### Bench-verification note
 - Current canonical architecture keeps the **20V input rail + dedicated 12V buck** for Zone 1.
