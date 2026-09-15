@@ -5,13 +5,16 @@
 ## Easy-connect power path
 
 ```
-65W GaN brick + barrel cable
+65W GaN brick
         │
         ▼
-DC barrel jack with screw terminals (rear X=40, Z=15)
+USB-C PD input receptacle (rear X=40, Z=15)
         │
         ▼
-Raw DC screw-terminal distribution PCB / block
+PD input trigger board (20V negotiated output)
+        │
+        ▼
+20V screw-terminal distribution PCB / block
         ├──→ Port A: USB-C PD 60W trigger board           [screw terminal feed]
         ├──→ Port B: USB-C PD 30W trigger board           [screw terminal feed]
         ├──→ 12V screw-terminal buck converter input
@@ -23,7 +26,7 @@ Raw DC screw-terminal distribution PCB / block
                                                    └──→ Lighting      [J5/J6]
 ```
 
-All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. Hot (positive) wire: red. Ground: black. Keep the existing polyfuses in-line on each protected branch. If an unavoidable wire join remains, use a heat-gun-activated solder-seal connector instead of hand-soldering.
+All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. The PD input trigger negotiates the 20V input rail before the distribution block fans out power to the rest of the system. Hot (positive) wire: red. Ground: black. Keep the existing polyfuses in-line on each protected branch. If an unavoidable wire join remains, use a heat-gun-activated solder-seal connector instead of hand-soldering.
 
 ---
 
@@ -74,12 +77,13 @@ All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. 
 
 ## USB-C ports
 
-| Port | Polyfuse | TVS | From | To |
-|---|---|---|---|---|
-| Port A (60W) | 3A | TVS3V3 | Raw DC distribution block | 60W PD trigger board |
-| Port B (30W) | 2A | TVS3V3 | Raw DC distribution block | 30W PD trigger board |
+| Port / stage | Protection / board | From | To |
+|---|---|---|---|
+| USB-C PD input stage | Panel-mount USB-C receptacle + PD input trigger board rated above the 3.25A theoretical minimum for 65W input *(4A-capable board preferred for margin)* | 65W GaN brick | 20V distribution rail |
+| Port A (60W) | 3.5A hold polyfuse + TVS3V3 | 20V distribution block | 60W PD trigger board |
+| Port B (30W) | 2A hold polyfuse + TVS3V3 | 20V distribution block | 30W PD trigger board |
 
-Route USB-C lines through rear spine cutouts. Both ports panel-mount with M2 screws.
+Rear panel uses **3× panel-mount USB-C**: **IN at X=40** (former DC-jack position), **Port A at X=120**, **Port B at X=140**. Route the input through the PD trigger first, then into the screw-terminal distribution block. The IN port should be recessed deeper or engraved **IN** so users do not plug the brick into an output port. Port A and Port B remain the documented **non-simultaneous peak branch ratings** only; the included 65W brick does **not** sustain both rear USB-C outputs at their full 60W + 30W labels at the same time, especially with wireless zones active. For the **current 20V-input architecture**, Port A uses a **3.5A hold** fuse because 60W on the 20V rail is about **3.0A nominal**; Port B uses a **2A hold** fuse because 30W on the 20V rail is about **1.5A nominal** and the lower-power branch can keep tighter protection.
 
 ---
 

@@ -11,7 +11,8 @@ Both Step models use identical core positions; lighting and the Obsidian mode bu
 
 | Component | X centre | Y centre | Z (board bottom) | Notes |
 |---|---:|---:|---:|---|
-| Raw DC distribution PCB / block | 20 | 70 | 5 | Screw-terminal power fan-out |
+| 20V distribution PCB / block | 20 | 70 | 5 | Screw-terminal power fan-out from the 20V input rail |
+| USB-C PD input trigger board | 40 | 70 | 5 | Aligned to the rear USB-C IN cutout; negotiates 20V input |
 | 12V buck converter (screw-terminal) | 20 | 50 | 5 | Flat, max 8 mm tall |
 | 5V buck converter (screw-terminal) | 55 | 50 | 5 | Flat, max 8 mm tall |
 | Digispark-style ATtiny85 USB board | 90 | 30 | 5 | Shared MCU for both Step models |
@@ -26,7 +27,7 @@ Both Step models use identical core positions; lighting and the Obsidian mode bu
 
 | Port | X | Z | Notes |
 |---|---:|---:|---|
-| DC barrel jack inlet | 40 | 15 | Screw-terminal panel-mount jack |
+| USB-C IN (PD power) | 40 | 15 | Panel-mount receptacle; differentiate with deeper recess or engraved **IN** |
 | USB-C Port A (60W) | 120 | 15 | Panel-mount receptacle |
 | USB-C Port B (30W) | 140 | 15 | Panel-mount receptacle |
 

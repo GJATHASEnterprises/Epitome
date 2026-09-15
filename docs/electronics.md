@@ -7,13 +7,16 @@ Both models share the same beginner-friendly easy-connect electronics architectu
 ## Shared schematic overview
 
 ```
-65W GaN brick + barrel cable
+65W GaN brick
         │
         ▼
-DC barrel jack with screw terminals
+USB-C PD input receptacle (rear X=40)
         │
         ▼
-Raw DC distribution PCB / block
+PD input trigger board (20V negotiated input, rated above the 3.25A theoretical minimum; 4A-capable board preferred for margin)
+        │
+        ▼
+20V distribution PCB / block
         ├──→ 12V screw-terminal buck converter ──→ Qi2 20W TX (Zone 1)
         ├──→ 5V screw-terminal buck converter ──→ Qi 5W TX (Zone 2)
         │                                      ├──→ Apple Watch PCBA / Qi watch coil (Zone 3, via relay)
@@ -46,17 +49,28 @@ Raw DC distribution PCB / block
 - Mutual exclusion: hardware relay ensures only one coil active at a time
 - Cradle: 55 × 55 mm with raised lip
 
+### USB-C PD input (rear X = 40)
+- Receptacle: panel-mount USB-C input port
+- Trigger board: USB-C PD input trigger board negotiating 20V from the included 65W GaN brick
+- Minimum rating: **above the 3.25A theoretical minimum** for a 65W input path; a **4A-capable board is preferred** for margin
+- Feed: raw 20V rail into the distribution block, which then feeds the 12V buck, 5V buck, and both output trigger boards
+- Human-factors note: the input port must be visually differentiated (deeper recess or engraved **IN** label) so customers do not mistake it for an output port
+
 ### USB-C Port A (rear X = 120)
 - Trigger board: USB-C PD 60W
 - Panel-mount USB-C receptacle
-- Protection: polyfuse (3A) + TVS diode
-- Feed: raw DC distribution block
+- Protection: polyfuse (3.5A hold) + TVS diode
+- Feed: 20V distribution block
+- Rating note: 60W is the **peak branch label** for Port A, not a guarantee of simultaneous 60W + 30W rear-port output from the included 65W brick
+- Fuse basis: 60W on a 20V branch implies about **3.0A nominal input current**, so the **3.5A hold** fuse leaves modest tolerance / inrush headroom without opening under normal full-port use
 
 ### USB-C Port B (rear X = 140)
 - Trigger board: USB-C PD 30W
 - Panel-mount USB-C receptacle
-- Protection: polyfuse (2A) + TVS diode
-- Feed: raw DC distribution block
+- Protection: polyfuse (2A hold) + TVS diode
+- Feed: 20V distribution block
+- Rating note: 30W is the **peak branch label** for Port B, not a guarantee of simultaneous 60W + 30W rear-port output from the included 65W brick
+- Fuse basis: 30W on a 20V branch implies about **1.5A nominal input current**, so the **2A hold** fuse intentionally keeps tighter overcurrent protection while still leaving limited tolerance headroom
 
 ---
 
@@ -123,8 +137,8 @@ The included 65W GaN brick comfortably covers all three wireless zones plus only
 | Polyfuse Zone 2 | Overcurrent on Qi 5W TX |
 | Polyfuse Zone 3 | Overcurrent on watch coil |
 | Hardware relay Zone 3 | Prevents both watch coils being active simultaneously |
-| Polyfuse + TVS Port A | Overcurrent + ESD on USB-C Port A |
-| Polyfuse + TVS Port B | Overcurrent + ESD on USB-C Port B |
+| 3.5A hold polyfuse + TVS Port A | Overcurrent + ESD on USB-C Port A |
+| 2A hold polyfuse + TVS Port B | Overcurrent + ESD on USB-C Port B |
 | Lighting trim against 60W target | Dims lights under full wireless load as a planning-margin measure |
 
 ---
@@ -138,3 +152,11 @@ The documented 60W soft cap is a planning target for the overall product budget,
 ## Night mode
 
 Lights automatically turn off overnight using a simple time counter derived from power-on time. The ATtiny85 has no RTC. Obsidian users can re-align the timer by pressing and holding the mode button for 3 seconds at the desired evening start time. Walnut has no external button, so its night mode should be treated as a factory-set approximate overnight blackout rather than a user-calibrated local-time schedule.
+
+---
+
+## Open bench note (not part of the current canonical architecture)
+
+- Current canonical architecture keeps the **20V input rail + dedicated 12V buck** for Zone 1.
+- Future simplification to verify on bench: if the chosen PD input trigger can negotiate **12V directly** with enough current for the intended load, the 12V buck may become optional in a later revision.
+- Do **not** remove the 12V buck from the design docs, wiring guide, CAD assumptions, or BOM totals until that direct-12V path is verified on hardware.

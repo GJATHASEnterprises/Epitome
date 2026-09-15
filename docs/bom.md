@@ -29,13 +29,17 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 | Part / change | Added cost |
 |---|---:|
 | 2× screw-terminal buck converters (pair total over bare modules) | +$1.50–3.00 / finished unit |
-| DC jack with screw terminals + screw-terminal distribution PCB | +$1.70–3.70 / unit |
+| USB-C PD input trigger board (~$3.00) + panel-mount USB-C receptacle (~$2.00) | ~$5.00 new input hardware total vs the prior ~$1.70–3.70 DC-jack input-hardware total *(the distribution PCB remains required either way)* |
 | Pre-wired LED strip (factory JST-SM leads) | +$0.35–1.10 / unit |
 | Digispark-style ATtiny85 USB board | +$0.70–2.20 / unit |
 | Pre-crimped JST-XH pigtail set | +$0.90–1.40 / unit |
 | Pre-crimped NTC | +$0.30 / unit |
 | Solder-seal connector allowance | +$0.20 / unit |
 | **Total easy-connect delta** | **~$6–12 / unit (plan at ~$8)** |
+
+**Overall input-swap note:** the USB-C PD input path is a **small input-hardware cost increase** versus the old barrel-input path, but it does **not** change the published Step lineup or retail pricing.
+
+**Engineering note — verify on bench (not included in current BOM totals):** if a future revision proves the chosen input trigger can negotiate **12V directly** with enough current for the intended load, re-evaluate whether the dedicated 12V buck for Zone 1 can be removed in a later revision.
 
 ## Model economics (net-after-fees)
 

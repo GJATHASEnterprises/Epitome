@@ -2,7 +2,7 @@
 
 ## In-box policy (Step models)
 
-- Include **1× 65W GaN brick** and **1× 1 m USB-C cable**.
+- Include **1× 65W GaN brick**, **one 1 m USB-C cable for the power-input port**, and **2× USB-C device cables for the two output ports**.
 - Customer pays shipping at checkout.
 
 ## Packaging cost target

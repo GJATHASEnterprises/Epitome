@@ -27,13 +27,14 @@ This scaffold is for a first-time builder. The target build method is plug-in JS
    - Install the M3 inserts square to the bosses and let the plastic cool fully before test-threading screws.
 
 3. **Mount the power hardware**
-   - Install the screw-terminal DC jack.
-   - Install the screw-terminal raw DC distribution block / PCB.
+   - Install the panel-mount USB-C input receptacle and the PD input trigger board.
+   - Install the screw-terminal 20V distribution block / PCB.
    - Install both screw-terminal buck converters.
    - Leave the module outputs disconnected from the loads for now.
 
 4. **HARD GATE — set and verify buck outputs before connecting any module**
-   - Power only the DC jack + distribution block + buck converters.
+   - Power only the USB-C input receptacle + PD input trigger board + distribution block + buck converters.
+   - Confirm the PD input trigger is negotiating the intended input rail before landing any load wiring.
    - Use the multimeter to set the 12V buck to **12.0V ±0.1V**.
    - Use the multimeter to set the 5V buck to **5.0V ±0.1V**.
    - **Do not connect the Qi boards, the Digispark, or the LEDs until both outputs are verified.**
