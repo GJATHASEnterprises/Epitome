@@ -57,7 +57,7 @@
 | Port A (60W) | USB-C PD | Laptops, tablets, phones — any USB-C PD device |
 | Port B (30W) | USB-C PD | Phones, earbuds, small tablets, accessories |
 
-**BYOC (Bring Your Own Cable):** The Epitome Step includes **3× USB-C cables** in the box (one for the included brick, two for your devices). The ports are BYOC — you plug in cables at setup and leave them in. They become dedicated charging ports for your most-used accessories.
+**BYOC (Bring Your Own Cable):** The Epitome Step includes **3× USB-C cables** in the box (one for the power-input port, two for your devices). The ports are BYOC — you plug in cables at setup and leave them in. They become dedicated charging ports for your most-used accessories.
 
 ### Compatible devices for Port A (60W)
 - MacBook Air M1/M2 (up to 35W via MagSafe-equivalent PD)

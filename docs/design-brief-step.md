@@ -70,7 +70,7 @@ Measure with calipers — do not trust seller datasheets. All in mm.
 | Thermistor | Bead Ø, lead length | ___ |
 | M3 heat-set insert | OD, length | ___ |
 | USB-C input cable plug | Overmold W × H + cable exit angle / bend relief (for the rear recess clearance) | ___ |
-| 65W GaN brick + attached cable exit | Brick L × W × H, cable-exit face, overmold clearance, bend relief envelope | ___ |
+| 65W GaN brick | Brick L × W × H, USB-C port-face clearance on the brick body | ___ |
 
 **Rule: no coil pocket, boss, standoff, or shared board-bay dimension gets finalized until this table is filled with caliper measurements from the actual parts on our bench.**
 
