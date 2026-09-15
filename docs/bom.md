@@ -29,7 +29,7 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 | Part / change | Added cost |
 |---|---:|
 | 2× screw-terminal buck converters (pair total over bare modules) | +$1.50–3.00 / finished unit |
-| USB-C PD input trigger board (~$3.00) + panel-mount USB-C receptacle (~$2.00) | ~+$0 vs prior DC jack / barrel-input hardware only *(the distribution PCB remains required elsewhere in the architecture)* |
+| USB-C PD input trigger board (~$3.00) + panel-mount USB-C receptacle (~$2.00) | ~+$1.30–3.30 / unit vs the prior DC-jack line alone *(roughly net-zero overall once the old barrel-input cable cost is removed; the distribution PCB remains required either way)* |
 | Pre-wired LED strip (factory JST-SM leads) | +$0.35–1.10 / unit |
 | Digispark-style ATtiny85 USB board | +$0.70–2.20 / unit |
 | Pre-crimped JST-XH pigtail set | +$0.90–1.40 / unit |
