@@ -16,19 +16,18 @@
 | USB-C trigger/boost board (China, +25%) | $2.25 |
 | 65W GaN brick (China, +25%) | $13.75 |
 | USB-C cable, 1 m (China, +25%) | $3.00 |
-| ESP32-C3 + RGB support circuitry + harness | $4.30 |
+| Digispark-style ATtiny85 USB board + RGB/easy-connect harnessing | $9.80 |
 | WS2812B strips + diffuser bars | $2.00 |
 | CF-PETG enclosure + inserts/feet | $11.07 |
 | Packaging (kraft box + insert) | $3.00 |
-| **Build cost** | **~$52.00** |
+| **Build cost** | **~$56.50** |
 
-## Firmware behavior (ESP32-C3)
-- RGB modes: static, breathing, charge-progress sweep, OFF.
-- Mode persistence across power cycles.
-- RGB brightness capped when both charging coils are at full load.
-- Thermal cutoff behavior retained.
+## Firmware behavior (Digispark ATtiny85)
+- RGB modes: rear-button colour cycling across the documented preset colours plus OFF.
+- RGB brightness is trimmed when the estimated wireless load is fully active; this supports the documented 60W planning target but does not measure USB-C current.
+- Thermal cutoff behavior retained through the Qi module / hardwired thermal chain.
 
 ## Unit economics
 - Price: $109
 - Customer-paid shipping target: ~$10.50 label
-- Net per sale after fees/processing/defect reserve: **~$36–40**
+- Net per sale after fees/processing/defect reserve: **~$32–36**

@@ -13,7 +13,7 @@
 | Base shell | Black PETG | CF-PETG |
 | Top shell | Wood-PLA (oiled) | CF-PETG |
 | Lighting | White light pipe status LED | Recessed WS2812B side glow lines |
-| MCU | ATtiny85 | ESP32-C3 |
+| MCU | Digispark-style ATtiny85 USB board | Digispark-style ATtiny85 USB board |
 
 ## Hard constraints
 

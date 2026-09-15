@@ -16,12 +16,12 @@
 | USB-C trigger/boost board (China, +25%) | $2.25 |
 | 65W GaN brick (China, +25%) | $13.75 |
 | USB-C cable, 1 m (China, +25%) | $3.00 |
-| ATtiny85 + status LED + thermals/harness | $2.80 |
+| Digispark-style ATtiny85 USB board + easy-connect harnessing | $7.37 |
 | Enclosure + inserts/feet + oil finish | $9.50 |
 | Packaging (kraft box + insert) | $3.00 |
-| **Build cost** | **~$45.93** |
+| **Build cost** | **~$50.50** |
 
-## Firmware behavior (ATtiny85)
+## Firmware behavior (Digispark ATtiny85)
 - Idle: soft breathing white status LED.
 - Charging: solid white status LED.
 - Thermal fault: fast-blink white + cutoff behavior.
@@ -29,4 +29,4 @@
 ## Unit economics
 - Price: $99
 - Customer-paid shipping target: ~$10.50 label
-- Net per sale after fees/processing/defect reserve: **~$32–33**
+- Net per sale after fees/processing/defect reserve: **~$28–29**

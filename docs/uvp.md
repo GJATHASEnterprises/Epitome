@@ -16,6 +16,6 @@ Both use the same charging architecture and include a 65W GaN brick + cable.
 ## Product identity
 
 - Walnut: black PETG base + wood-PLA top, sanded and oiled, single white status LED.
-- Obsidian: full CF-PETG shell, WS2812B side glow lines, ESP32-C3 mode control.
+- Obsidian: full CF-PETG shell, WS2812B side glow lines, Digispark-style ATtiny85 USB mode control.
 
 For exact BOM/economics/QC, use `docs/technical-readouts/`.

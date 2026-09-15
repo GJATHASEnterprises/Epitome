@@ -17,7 +17,7 @@ I'm building a three-tier desktop wireless charging stand ("Epitome Step") sold 
 **You will receive:**
 - A detailed design brief (target envelope 165 × 100 mm, three-tier layout, wall thicknesses, coil pocket rules, insert boss specs, FDM printability constraints)
 - Repo-generated renders / technical diagrams showing the intended three-tier structure and proportions
-- Caliper-measured dimensions for every internal component (coils, PCBs, inserts, light pipe / LED strips)
+- Caliper-measured dimensions for every internal component (coils, PCBs, inserts, light pipe / LED strips, Digispark board, screw-terminal distribution parts)
 - Reference sketches of the intended look
 
 **Deliverables:**

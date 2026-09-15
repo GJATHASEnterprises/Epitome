@@ -19,8 +19,8 @@
 
 ## Electronics/FW split
 
-- Walnut controller: ATtiny85, white status LED only.
-- Obsidian controller: ESP32-C3 + WS2812B RGB (8 LEDs per side, 16 total).
+- Walnut controller: Digispark-style ATtiny85 USB board, white status LED only.
+- Obsidian controller: Digispark-style ATtiny85 USB board + WS2812B RGB (8 LEDs per side, 16 total).
 
 ## Validation gates
 

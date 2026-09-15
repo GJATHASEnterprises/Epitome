@@ -6,4 +6,4 @@ Geometry workflow and dimensional locking now live in:
 
 Model identity callouts:
 - Walnut: black PETG base + wood-PLA top, white status light pipe.
-- Obsidian: full CF-PETG shell, WS2812B side glow lines (8 LEDs per side, 16 total), ESP32-C3 control.
+- Obsidian: full CF-PETG shell, WS2812B side glow lines (8 LEDs per side, 16 total), Digispark-style ATtiny85 USB control.

@@ -10,8 +10,8 @@
 
 | Model | Price | Positioning | Enclosure | Lighting | MCU |
 |---|---:|---|---|---|---|
-| Step Walnut | $99 | Minimalist / wood-desk buyer | Black PETG base shell + wood-PLA top shell (sanded + Danish oil) | Single white status LED via 3 mm light pipe | ATtiny85 |
-| Step Obsidian | $109 | Gamer / battlestation buyer | Full CF-PETG (both shells) | WS2812B RGB glow lines, 8 LEDs per side (16 total) behind flush diffusers | ESP32-C3 |
+| Step Walnut | $99 | Minimalist / wood-desk buyer | Black PETG base shell + wood-PLA top shell (sanded + Danish oil) | Single white status LED via 3 mm light pipe | Digispark-style ATtiny85 USB board |
+| Step Obsidian | $109 | Gamer / battlestation buyer | Full CF-PETG (both shells) | WS2812B RGB glow lines, 8 LEDs per side (16 total) behind flush diffusers | Digispark-style ATtiny85 USB board |
 | Outdoor Block Stone | $119 | Outdoor utility buyer | Sealed ASA body | Functional indicators only | Interlock controller |
 | Outdoor Block Camo | $129 | Outdoor tactical aesthetic buyer | Sealed ASA body + camo finish | Functional indicators only | Interlock controller |
 
@@ -30,3 +30,4 @@ Notes:
 - `docs/budget-plan.md`
 - `docs/marketing-plan.md`
 - `docs/design-brief-step.md`
+- `docs/assembly-guide.md`

@@ -16,7 +16,7 @@
 
 - Full CF-PETG shells (carbon-weave matte)
 - WS2812B side RGB grooves with flush diffuser bars (no visible dots)
-- ESP32-C3 modes: static, breathing, charge-progress sweep, OFF (persisted)
+- Digispark-style ATtiny85 RGB modes with rear-button control
 - RGB brightness auto-capped under full dual-coil load
 - Includes 65W GaN brick + cable
 - Customer pays shipping at checkout
