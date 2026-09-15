@@ -59,13 +59,13 @@ PD input trigger board (20V negotiated input, ≥3.25A at 20V)
 ### USB-C Port A (rear X = 120)
 - Trigger board: USB-C PD 60W
 - Panel-mount USB-C receptacle
-- Protection: polyfuse (3A) + TVS diode
+- Protection: polyfuse (4A) + TVS diode
 - Feed: 20V distribution block
 
 ### USB-C Port B (rear X = 140)
 - Trigger board: USB-C PD 30W
 - Panel-mount USB-C receptacle
-- Protection: polyfuse (2A) + TVS diode
+- Protection: polyfuse (2.5A) + TVS diode
 - Feed: 20V distribution block
 
 ### Bench-verification note
@@ -138,8 +138,8 @@ The included 65W GaN brick comfortably covers all three wireless zones plus only
 | Polyfuse Zone 2 | Overcurrent on Qi 5W TX |
 | Polyfuse Zone 3 | Overcurrent on watch coil |
 | Hardware relay Zone 3 | Prevents both watch coils being active simultaneously |
-| Polyfuse + TVS Port A | Overcurrent + ESD on USB-C Port A |
-| Polyfuse + TVS Port B | Overcurrent + ESD on USB-C Port B |
+| 4A polyfuse + TVS Port A | Overcurrent + ESD on USB-C Port A |
+| 2.5A polyfuse + TVS Port B | Overcurrent + ESD on USB-C Port B |
 | Lighting trim against 60W target | Dims lights under full wireless load as a planning-margin measure |
 
 ---

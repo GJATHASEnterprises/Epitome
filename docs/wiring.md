@@ -80,8 +80,8 @@ All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. 
 | Port / stage | Protection / board | From | To |
 |---|---|---|---|
 | USB-C PD input stage | Panel-mount USB-C receptacle + PD input trigger board rated for 20V at ≥3.25A | 65W GaN brick | 20V distribution rail |
-| Port A (60W) | 3A polyfuse + TVS3V3 | 20V distribution block | 60W PD trigger board |
-| Port B (30W) | 2A polyfuse + TVS3V3 | 20V distribution block | 30W PD trigger board |
+| Port A (60W) | 4A polyfuse + TVS3V3 | 20V distribution block | 60W PD trigger board |
+| Port B (30W) | 2.5A polyfuse + TVS3V3 | 20V distribution block | 30W PD trigger board |
 
 Rear panel uses **3× panel-mount USB-C**: **IN at X=40** (former DC-jack position), **Port A at X=120**, **Port B at X=140**. Route the input through the PD trigger first, then into the screw-terminal distribution block. The IN port should be recessed deeper or engraved **IN** so users do not plug the brick into an output port.
 
