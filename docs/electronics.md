@@ -13,7 +13,7 @@ Both models share the same beginner-friendly easy-connect electronics architectu
 USB-C PD input receptacle (rear X=40)
         │
         ▼
-PD input trigger board (20V negotiated input, ≥3.25A at 20V)
+PD input trigger board (20V negotiated input, target 5A at 20V; do not go below the 3.25A theoretical minimum)
         │
         ▼
 20V distribution PCB / block
@@ -52,7 +52,7 @@ PD input trigger board (20V negotiated input, ≥3.25A at 20V)
 ### USB-C PD input (rear X = 40)
 - Receptacle: panel-mount USB-C input port
 - Trigger board: USB-C PD input trigger board negotiating 20V from the included 65W GaN brick
-- Minimum rating: **≥3.25A at 20V**
+- Minimum rating: **target 5A at 20V**; do not choose anything below the **3.25A theoretical minimum** for a 65W input path
 - Feed: raw 20V rail into the distribution block, which then feeds the 12V buck, 5V buck, and both output trigger boards
 - Human-factors note: the input port must be visually differentiated (deeper recess or engraved **IN** label) so customers do not mistake it for an output port
 
