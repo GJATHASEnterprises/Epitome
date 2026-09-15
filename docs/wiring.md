@@ -83,7 +83,7 @@ All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. 
 | Port A (60W) | 3.5A hold polyfuse + TVS3V3 | 20V distribution block | 60W PD trigger board |
 | Port B (30W) | 2A hold polyfuse + TVS3V3 | 20V distribution block | 30W PD trigger board |
 
-Rear panel uses **3× panel-mount USB-C**: **IN at X=40** (former DC-jack position), **Port A at X=120**, **Port B at X=140**. Route the input through the PD trigger first, then into the screw-terminal distribution block. The IN port should be recessed deeper or engraved **IN** so users do not plug the brick into an output port.
+Rear panel uses **3× panel-mount USB-C**: **IN at X=40** (former DC-jack position), **Port A at X=120**, **Port B at X=140**. Route the input through the PD trigger first, then into the screw-terminal distribution block. The IN port should be recessed deeper or engraved **IN** so users do not plug the brick into an output port. Port A and Port B remain the documented **non-simultaneous peak branch ratings** only; the included 65W brick does **not** sustain both rear USB-C outputs at their full 60W + 30W labels at the same time, especially with wireless zones active.
 
 ---
 

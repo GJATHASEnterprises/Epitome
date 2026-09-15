@@ -37,7 +37,7 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 | Solder-seal connector allowance | +$0.20 / unit |
 | **Total easy-connect delta** | **~$6–12 / unit (plan at ~$8)** |
 
-**Overall input-swap note:** replacing the barrel-input approach with USB-C PD input is still treated as a **roughly net-zero full-product change** once the old barrel-input cable/accessory cost is removed from the box plan.
+**Overall input-swap note:** replacing the barrel-input approach with USB-C PD input is still treated as a **roughly net-zero full-product change** because the box plan still carries the same three-cable total: one power-input cable and two device cables.
 
 **Bench simplification to verify:** if the chosen input trigger can negotiate **12V directly** with enough current for the intended load, the dedicated 12V buck for Zone 1 may be removable (**–$2.50, one less module**). Mark this as **verify on bench** before changing the architecture.
 
