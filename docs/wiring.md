@@ -14,7 +14,7 @@ USB-C PD input receptacle (rear X=40, Z=15)
 PD input trigger board (20V negotiated output)
         │
         ▼
-Raw DC screw-terminal distribution PCB / block
+20V screw-terminal distribution PCB / block
         ├──→ Port A: USB-C PD 60W trigger board           [screw terminal feed]
         ├──→ Port B: USB-C PD 30W trigger board           [screw terminal feed]
         ├──→ 12V screw-terminal buck converter input
@@ -77,11 +77,11 @@ All power branches terminate in screw terminals or pre-crimped JST-XH pigtails. 
 
 ## USB-C ports
 
-| Port | Protection | From | To |
+| Port / stage | Protection / board | From | To |
 |---|---|---|---|
-| USB-C IN (power) | PD input trigger board rated for 20V at ≥3.25A | 65W GaN brick | 20V distribution rail |
-| Port A (60W) | 3A polyfuse + TVS3V3 | Raw DC distribution block | 60W PD trigger board |
-| Port B (30W) | 2A polyfuse + TVS3V3 | Raw DC distribution block | 30W PD trigger board |
+| USB-C PD input stage | Panel-mount USB-C receptacle + PD input trigger board rated for 20V at ≥3.25A | 65W GaN brick | 20V distribution rail |
+| Port A (60W) | 3A polyfuse + TVS3V3 | 20V distribution block | 60W PD trigger board |
+| Port B (30W) | 2A polyfuse + TVS3V3 | 20V distribution block | 30W PD trigger board |
 
 Rear panel uses **3× panel-mount USB-C**: **IN at X=40** (former DC-jack position), **Port A at X=120**, **Port B at X=140**. Route the input through the PD trigger first, then into the screw-terminal distribution block. The IN port should be recessed deeper or engraved **IN** so users do not plug the brick into an output port.
 

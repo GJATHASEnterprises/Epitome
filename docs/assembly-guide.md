@@ -28,7 +28,7 @@ This scaffold is for a first-time builder. The target build method is plug-in JS
 
 3. **Mount the power hardware**
    - Install the panel-mount USB-C input receptacle and the PD input trigger board.
-   - Install the screw-terminal raw DC distribution block / PCB.
+   - Install the screw-terminal 20V distribution block / PCB.
    - Install both screw-terminal buck converters.
    - Leave the module outputs disconnected from the loads for now.
 

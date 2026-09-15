@@ -11,7 +11,7 @@ Both Step models use identical core positions; lighting and the Obsidian mode bu
 
 | Component | X centre | Y centre | Z (board bottom) | Notes |
 |---|---:|---:|---:|---|
-| Raw DC distribution PCB / block | 20 | 70 | 5 | Screw-terminal power fan-out from the 20V input rail |
+| 20V distribution PCB / block | 20 | 70 | 5 | Screw-terminal power fan-out from the 20V input rail |
 | USB-C PD input trigger board | 40 | 70 | 5 | Aligned to the rear USB-C IN cutout; negotiates 20V input |
 | 12V buck converter (screw-terminal) | 20 | 50 | 5 | Flat, max 8 mm tall |
 | 5V buck converter (screw-terminal) | 55 | 50 | 5 | Flat, max 8 mm tall |

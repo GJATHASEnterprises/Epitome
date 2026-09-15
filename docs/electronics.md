@@ -16,7 +16,7 @@ USB-C PD input receptacle (rear X=40)
 PD input trigger board (20V negotiated input, ≥3.25A at 20V)
         │
         ▼
-Raw DC distribution PCB / block
+20V distribution PCB / block
         ├──→ 12V screw-terminal buck converter ──→ Qi2 20W TX (Zone 1)
         ├──→ 5V screw-terminal buck converter ──→ Qi 5W TX (Zone 2)
         │                                      ├──→ Apple Watch PCBA / Qi watch coil (Zone 3, via relay)
@@ -60,13 +60,13 @@ Raw DC distribution PCB / block
 - Trigger board: USB-C PD 60W
 - Panel-mount USB-C receptacle
 - Protection: polyfuse (3A) + TVS diode
-- Feed: raw DC distribution block
+- Feed: 20V distribution block
 
 ### USB-C Port B (rear X = 140)
 - Trigger board: USB-C PD 30W
 - Panel-mount USB-C receptacle
 - Protection: polyfuse (2A) + TVS diode
-- Feed: raw DC distribution block
+- Feed: 20V distribution block
 
 ---
 
