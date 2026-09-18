@@ -151,7 +151,7 @@ The documented 60W soft cap is a planning target for the overall product budget,
 
 ## Night mode
 
-Lights automatically turn off overnight using a simple time counter derived from power-on time. The ATtiny85 has no RTC. Obsidian users can re-align the timer by pressing and holding the mode button for 3 seconds at the desired evening start time. Walnut has no external button, so its night mode should be treated as a factory-set approximate overnight blackout rather than a user-calibrated local-time schedule.
+Lights automatically turn off overnight using a simple time counter derived from power-on time. The ATtiny85 has no RTC, and current firmware provides no runtime clock-set/re-alignment path. Walnut and Obsidian should both be treated as approximate timer-based overnight blackout behavior anchored to the fixed power-on reference.
 
 ---
 

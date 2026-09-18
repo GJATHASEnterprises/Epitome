@@ -18,7 +18,7 @@
 Notes:
 - Legacy material/process options were removed from the lineup.
 - Customer pays shipping on all models.
-- Step models include a 65W GaN brick and cable in-box.
+- Step models include a 65W GaN brick, one 1 m USB-C input cable, and two USB-C output-device cables in-box.
 
 ## Source of truth docs
 

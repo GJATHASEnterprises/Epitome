@@ -22,8 +22,8 @@ Flash two separate binaries: one for Walnut units, one for Obsidian units.
 
 - **LED type:** single white status LED via light pipe
 - **Colour:** Warm white only — #FFD6A0 (R=255, G=214, B=160), fixed, cannot be changed
-- **Brightness:** Full brightness during daytime; off during night mode
-- **Zone indicators:** When a device is detected on any zone, LEDs pulse once (brief 200 ms brightening) then return to steady on
+- **Idle/default:** steady warm white status LED during non-night hours
+- **Zone indicators:** when a newly detected zone goes active, LEDs pulse briefly, then return to steady-on behaviour
 - **Night mode:** factory-set approximate overnight blackout using the timer-based logic described below
 - **No button** on Walnut model
 
@@ -43,7 +43,7 @@ Flash two separate binaries: one for Walnut units, one for Obsidian units.
   8. Off (LEDs disabled — night mode equivalent)
 - **Button:** PB4, active LOW, internal pull-up, interrupt-driven
 - **Zone indicators:** Same pulse behaviour as Walnut but uses current colour mode
-- **Night mode:** same timer-based blackout logic; users can re-align it relative to their desired evening start time
+- **Night mode:** same timer-based blackout logic (no runtime clock-set path in current firmware)
 
 ---
 
@@ -53,7 +53,7 @@ The ATtiny85 has no real-time clock. Night mode uses a software timer:
 1. On first power-on, internal time counter initialises to 12:00 (noon)
 2. Timer increments using the ATtiny85 watchdog timer (1 Hz tick)
 3. At simulated 23:00, LEDs go off; at 07:00, LEDs resume
-4. **To set the clock:** Hold mode button (Obsidian) for 3 seconds at a known time — this does not adjust the clock but resets the counter to 12:00. Hold at actual 23:00 to align night mode to real time.
+4. **Current implementation note:** there is no long-press or runtime clock-set function; the counter restarts from the fixed noon reference on power cycle.
 
 This is intentionally simple. Night mode will drift over time. For most users, "LEDs off for roughly 8 hours per day" is sufficient.
 

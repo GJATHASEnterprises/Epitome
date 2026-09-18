@@ -1,4 +1,4 @@
-# Epitome — Budget Plan (~$2,000)
+# Epitome — Budget Plan (~$2,200 working envelope)
 
 ## Allocation (Sept 2026)
 
@@ -10,8 +10,8 @@
 | CAD freelancer (production files) | **$150–250** | STEP/STL delivery from design brief |
 | Measurement order (Week 1) | **~$35** | 1× each module for caliper dimensions, plus GaN brick / cable-overmold capture for rear strain-channel sizing |
 | Step Go / Outdoor Block reserve (gated) | **$500** | Unchanged |
-| Contingency (after tooling draw) | Remainder | Absorbs the Batch 1 easy-connect delta; reserve stays untouched |
-| **Total planning envelope** | **~$2,000** | |
+| Contingency (after tooling draw) | Remainder above fixed allocations | Absorbs the Batch 1 easy-connect delta; reserve stays untouched |
+| **Total planning envelope** | **~$2,100–2,200 before contingency** | |
 
 ## Unit economics reference (net-after-fees)
 

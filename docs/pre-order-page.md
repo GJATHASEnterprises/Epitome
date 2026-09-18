@@ -7,7 +7,7 @@
 - Black PETG base shell + wood-PLA top shell
 - Sanded + Danish-oiled finish
 - Single white status LED via light pipe
-- Includes 65W GaN brick + cable
+- Includes 65W GaN brick + 3 USB-C cables (1 input + 2 output-device)
 - Customer pays shipping at checkout
 
 ## STEP OBSIDIAN — $109
@@ -18,7 +18,7 @@
 - WS2812B side RGB grooves with flush diffuser bars (no visible dots)
 - Digispark-style ATtiny85 RGB modes with rear-button control
 - RGB brightness auto-capped under full dual-coil load
-- Includes 65W GaN brick + cable
+- Includes 65W GaN brick + 3 USB-C cables (1 input + 2 output-device)
 - Customer pays shipping at checkout
 
 ## Shared checkout language
