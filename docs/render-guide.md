@@ -104,12 +104,11 @@ python generate_3d_model.py
 
 ## Regenerating after design changes
 
-If you change the physical dimensions in `docs/design-spec.md`, update the corresponding constants at the top of each script before regenerating:
+If you change the physical dimensions in `docs/design-spec.md`, update the geometry values used directly in each script before regenerating. The scripts currently encode the same canonical layout (165 × 100 footprint; Z stack 3/25/40/55/70; Step 2 bounds 17.5–147.5; Step 3 bounds X=35–130 and Y=20–100), but they do so with script-specific variable names and literals.
 
-- `generate_render.py` — `STEP_W`, `STEP_D`, `STEP_H` constants
-- `generate_image.py` — same constants
-- `generate_product_sheet.py` — same constants
-- `generate_3d_model.py` — `DIM_*` constants
+- `generate_render.py` — update base/step geometry values inside `build_render()`
+- `generate_image.py` — update matching geometry values inside `build_hero()`
+- `generate_product_sheet.py` — update matching geometry values inside `draw_dock()`
+- `generate_3d_model.py` — update view geometry and dimension labels inside `generate_top_view()` and `generate_side_view()`
 
-All four scripts share the same geometry. Change them consistently.
-
+Keep all four scripts aligned when dimensions change.

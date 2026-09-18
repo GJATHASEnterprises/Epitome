@@ -11,7 +11,7 @@ Legacy enclosure material/process options are removed from this plan.
 
 ## Shared mechanical constraints
 
-- Two-tier stepped body.
+- Three-tier stepped body.
 - Wall thickness target: 2.4 mm.
 - Coil window thickness: ≤1.5 mm.
 - M3 heat-set inserts ×4.

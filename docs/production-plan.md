@@ -47,7 +47,7 @@ That profit is not expected to recoup the one-time **$150–250 CAD spend** duri
 | Thermal epoxy + kapton | $15 |
 | Camo stencil/paint supplies | $30 |
 | Immersion test kit | $15 |
-| **Total cash draw** | **~$105 if bought from zero; roughly flat to -$10 versus the older solder-based plan if common hand tools are already on hand** |
+| **Total cash draw** | **~$120 if bought from zero; roughly flat to -$10 versus the older solder-based plan if common hand tools are already on hand** |
 
 ## 5) Schedule updates
 

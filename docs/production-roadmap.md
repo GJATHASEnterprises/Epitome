@@ -3,12 +3,12 @@
 ## Batch 1 (Step only)
 
 - Mix: **3 Walnut + 3 Obsidian**
-- Profit target: **~$204–219**
+- Profit target: **~$180–195**
 
 ### Week 1 additions
 
 1. Measurement order (~$35): one of each electronics module for caliper capture, plus the 65W GaN brick / USB-C plug-overmold reference.
-2. Consolidated parts order after measurements (~$451 Step-only, or ~$775 full 10-unit planning envelope).
+2. Consolidated parts order after measurements (~$501 Step-only, or ~$775 full 10-unit planning envelope).
 3. CAD production files completed before prototype print (friend sketches + dimensional spec, or CAD freelancer).
 
 ### Week 2–5

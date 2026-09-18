@@ -5,7 +5,7 @@
 - **Step Walnut ($99):** minimalist, warm desk aesthetic.
 - **Step Obsidian ($109):** gamer battlestation aesthetic with RGB glow lines.
 
-Both use the same charging architecture and include a 65W GaN brick + cable.
+Both use the same charging architecture and include a 65W GaN brick, one 1 m USB-C input cable, and two USB-C output-device cables.
 
 ## Why it works
 

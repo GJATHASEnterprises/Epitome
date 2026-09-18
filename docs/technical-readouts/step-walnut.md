@@ -22,9 +22,9 @@
 | **Build cost** | **~$50.50** |
 
 ## Firmware behavior (Digispark ATtiny85)
-- Idle: soft breathing white status LED.
-- Charging: solid white status LED.
-- Thermal fault: fast-blink white + cutoff behavior.
+- Default: steady warm-white status LED during non-night hours.
+- Zone detect pulse: brief brightness pulse on newly detected device presence.
+- Night mode: timer-based overnight LED-off window (approximate, no RTC alignment).
 
 ## Unit economics
 - Price: $99

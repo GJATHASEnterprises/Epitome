@@ -9,8 +9,8 @@
 
 ## Economics fit
 
-- Walnut net: ~ $32–33/sale
-- Obsidian net: ~ $36–40/sale
+- Walnut net: ~ $28–29/sale
+- Obsidian net: ~ $32–36/sale
 - Shipping is customer-paid; checkout clarity is part of conversion strategy.
 
 ## Message strategy
