@@ -1,6 +1,6 @@
-# Epitome — Marketing Plan (Batch 1)
+# Epitome — Marketing Plan (Sept 2026 planning estimates)
 
-**Budget target: ~$400 paid marketing**. No paid spend until real product photos and listings are live.
+**Budget target: ~$400 paid marketing.** No paid spend until prototype photos and compliant launch wording are ready.
 
 ## Positioning
 
@@ -19,12 +19,13 @@
 
 ## Message guardrails
 
-- Claims: “compatible with Qi-enabled devices”, “65W brick included with Step models”.
-- Never claim Qi2/MagSafe certification unless certified.
-- Lead with aesthetics + reliability (no brownouts, clean desk flow).
+- Use: “Qi2 magnetic charging — compatible with MagSafe-case iPhones and Qi2 Android phones.”
+- Use: “up to 60W total.”
+- Use: “Zone 2 supports buds or a second phone (up to 15W, non-magnetic).”
+- Do not use bare “MagSafe” as a product claim.
+- Do not show Apple Watch in watch-zone visuals unless MFi hardware is selected.
+- Never claim a product is for sale before FCC authorization is complete.
 
 ## Shipping note
 
-Customer pays shipping. Run an A/B copy test after first sales:
-- Variant A: clear checkout shipping estimate callout
-- Variant B: “price excludes shipping” short disclosure above CTA
+Customer pays shipping. Run A/B copy tests only after compliance gates are met.

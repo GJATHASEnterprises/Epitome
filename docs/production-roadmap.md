@@ -1,22 +1,36 @@
-# Epitome Step — Production Roadmap (Sept 2026)
+# Epitome — Production Roadmap (Sept 2026 planning estimates)
 
-## Batch 1 (Step only)
+## Phase 0 — Free verification week (~$0)
 
-- Mix: **3 Walnut + 3 Obsidian**
-- Profit target: **~$180–195**
+- Verify FCC IDs for all candidate TX modules.
+- Verify UN38.3 + UL component docs for Outdoor Block battery module.
+- Collect 3 FCC-lab quotes.
 
-### Week 1 additions
+Gate: do not continue until this verification package is complete.
 
-1. Measurement order (~$35): one of each electronics module for caliper capture, plus the 65W GaN brick / USB-C plug-overmold reference.
-2. Consolidated parts order after measurements (~$501 Step-only, or ~$775 full 10-unit planning envelope).
-3. CAD production files completed before prototype print (friend sketches + dimensional spec, or CAD freelancer).
+## Phase 1 — Prototype + demand test (~$500–700)
 
-### Week 2–5
+- Build only 2 Step prototypes total: 1 Walnut + 1 Obsidian.
+- Keep tooling essentials to about ~$120.
+- Launch a free waitlist page (no payments, no "for sale" claims).
 
-- Prototype, QC, revise, then build remaining units.
-- Customer-paid shipping from first sales onward.
+Gate: continue only if waitlist interest is meaningful (~100 signups suggested) and FCC quote path is favorable.
 
-## Batch 2 (Outdoor Block, gated)
+## Phase 2 — Compliance (~$1,000–2,500 good path)
 
-- Stone ($119) and Camo ($129) remain gated behind reserve and safety gates.
-- Economics baseline: see `docs/production-plan.md` canonical unit-economics section (Stone net ~ $34, Camo net ~ $39).
+- Run Step FCC authorization path.
+- Activate year-1 general/product liability insurance.
+
+Gate: FCC authorization must be in hand before paid pre-orders.
+
+## Phase 3 — Pre-order-funded production
+
+- Take paid orders only after compliance gate.
+- Build only what is sold.
+- Direct sales first to preserve margin.
+
+## Phase 4 — Outdoor Block (gated)
+
+- Keep Block gated until Step cumulative profit reaches ~$3,000 or Block waitlist/pre-order demand reaches ~40 signups.
+- Good-path Block compliance floor: ~$1,500–3,000 with FCC-ID modules + certified battery docs + final verification.
+- Full UL 2056 listing (~$15,000–30,000) is a later distribution milestone, not a launch requirement for legal direct sales.

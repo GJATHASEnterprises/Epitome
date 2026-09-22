@@ -1,4 +1,4 @@
-# Epitome — BOM & Economics Snapshot (Sept 2026)
+# Epitome — BOM & Economics Snapshot (Sept 2026 planning estimates)
 
 Canonical detailed BOMs are in `docs/technical-readouts/`.
 
@@ -6,12 +6,12 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 
 | Part | Price |
 |---|---:|
-| Qi TX module | $5.63 |
-| Buds TX module | $2.50 |
-| Watch TX coil | $3.50 *(estimate; pending sourcing)* |
-| USB-C trigger board | $2.25 |
-| 65W GaN brick (Step models) | $13.75 |
-| USB-C cable (Step models) | $3.00 |
+| Qi2 / Qi TX module (used for Zone 1 and Zone 2 on Step) | $5.63 |
+| Watch TX coil (generic) | $3.50 *(estimate; pending sourcing)* |
+| USB-C trigger board (Step output, 15W class) | $1.50 |
+| 65W GaN brick (Step models, budget source target) | $9.50 |
+| 65W GaN brick fallback price (if cert docs fail review) | $13.75 |
+| USB-C cable (Step models, two cables total) | $3.00 |
 | 20W magnetic TX (Outdoor Block) | $7.50 |
 | IP67 USB-C (Outdoor Block) | $4.00 |
 | 20,000 mAh certified PD bank | $22.50 |
@@ -21,38 +21,28 @@ Canonical detailed BOMs are in `docs/technical-readouts/`.
 | Item | Cost |
 |---|---:|
 | Walnut enclosure (black PETG base + wood-PLA top + oil) | $9.50 |
-| Obsidian enclosure (CF-PETG shells incl. premium) | $11.00 |
+| Obsidian enclosure (CF-PETG shells incl. premium) | $11.07 |
 | Kraft packaging box set | $3.00 |
 
-## Easy-connect (no-solder) BOM deltas
+## Hard sourcing rules
 
-| Part / change | Added cost |
-|---|---:|
-| 2× screw-terminal buck converters (pair total over bare modules) | +$1.50–3.00 / finished unit |
-| USB-C PD input trigger board (~$3.00) + panel-mount USB-C receptacle (~$2.00) | ~$5.00 new input hardware total vs the prior ~$1.70–3.70 DC-jack input-hardware total *(the distribution PCB remains required either way)* |
-| Pre-wired LED strip (factory JST-SM leads) | +$0.35–1.10 / unit |
-| Digispark-style ATtiny85 USB board | +$0.70–2.20 / unit |
-| Pre-crimped JST-XH pigtail set | +$0.90–1.40 / unit |
-| Pre-crimped NTC | +$0.30 / unit |
-| Solder-seal connector allowance | +$0.20 / unit |
-| **Total easy-connect delta** | **~$6–12 / unit (plan at ~$8)** |
-
-**Overall input-swap note:** the USB-C PD input path is a **small input-hardware cost increase** versus the old barrel-input path, but it does **not** change the published Step lineup or retail pricing.
-
-**Engineering note — verify on bench (not included in current BOM totals):** if a future revision proves the chosen input trigger can negotiate **12V directly** with enough current for the intended load, re-evaluate whether the dedicated 12V buck for Zone 1 can be removed in a later revision.
+- All wireless TX modules must have verifiable module-level FCC IDs.
+- Outdoor Block battery modules must have verifiable UN38.3 and UL component documentation.
 
 ## Model economics (net-after-fees)
 
 | Model | Build cost | Price | Net-after-fees |
 |---|---:|---:|---:|
-| Step Walnut | ~$50.50 | $99 | ~ $28–29/sale |
-| Step Obsidian | ~$56.50 | $109 | ~ $32–36/sale |
+| Step Walnut | ~$48.63 | $99 | ~ $30–32/sale |
+| Step Obsidian | ~$54.63 | $109 | ~ $34–38/sale |
 | Outdoor Block Stone | ~$53.30 | $119 | ~ $34/sale |
 | Outdoor Block Camo | ~$56.80 | $129 | ~ $39/sale |
 
-## Batch 1 projection
+## Watch-zone compatibility note
 
-- Mix: 3 Walnut + 3 Obsidian
-- Easy-connect parts add **~$50 total** versus the earlier 6-unit Step plan.
-- Projected profit after fees/processing/defect reserve: **~$180–195**
-- The watch TX coil estimate is already reflected in the Step build-cost / profit figures above; current sell prices remain unchanged pending final sourcing confirmation.
+The generic ~$3.50 watch coil does **not** support Apple Watch (Apple uses a proprietary protocol). Open decision:
+1. Add MFi module (+$8–11),
+2. Keep generic coil and clearly state "not compatible with Apple Watch", or
+3. Drop Zone 3 on Step.
+
+Do not show Apple Watch in Step watch-zone marketing unless option 1 is selected.
