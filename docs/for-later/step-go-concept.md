@@ -10,8 +10,8 @@ China-sourced electronics include 25% Section 301 tariff.
 |---|---:|
 | Certified 20,000 mAh PD bank | $22.50 |
 | Qi TX module | $5.63 |
-| Buds TX module | $2.50 |
-| USB-C trigger board | $2.25 |
+| Zone 2 Qi TX module (up-to-15W class) | $5.63 |
+| USB-C trigger board (15W class) | $1.50 |
 | NTC + polyfuse + wiring | $2.00 |
 | Controller + status LED | $2.50 |
 | PETG enclosure + feet/fasteners | $6.00 |

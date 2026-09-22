@@ -7,13 +7,13 @@
 - Closure hardware: M3 stainless screws ×8, cross-pattern torque sequence.
 - Porting: membrane pressure vent and IP67 panel-mount USB-C with tethered TPU cap.
 
-## Electronics BOM (Sept 2026, tariffed where applicable)
+## Electronics BOM (Sept 2026 planning estimates, tariffed where applicable)
 | Item | Unit cost |
 |---|---:|
 | Certified 20,000 mAh (74 Wh) PD battery module (China, +25% tariff) | $22.50 |
 | 20W magnetic phone TX module (China, +25% tariff) | $7.50 |
 | 5–10W buds TX module (China, +25% tariff) | $2.50 |
-| USB-C PD output path + interlock control hardware | $4.50 |
+| USB-C PD output path (20W) + interlock control hardware | $4.50 |
 | NTC on cell + NTC on phone coil + fused harness | $2.80 |
 | IP67 panel-mount USB-C + tethered cap (China, +25% tariff) | $4.00 |
 | Membrane vent | $1.00 |
@@ -29,18 +29,22 @@
 - LED behavior: fuel-gauge blink patterns plus low-battery cutoff indication.
 
 ## Power budget
-- Battery system: 74 Wh certified module (airline legal).
+- Battery system: 74 Wh certified module.
 - Phone zone: up to 20W magnetic TX.
 - Buds zone: 5–10W.
-- USB-C PD output active with enforced interlock to prevent over-allocation.
+- USB-C PD output: **20W**.
 
-## Assembly order
-1. Print ASA enclosure and TPU gasket.
-2. Install inserts, TX modules, battery module, fused harness, NTC sensors.
-3. Install interlock control path and verify kill/restore timing.
-4. Install pressure vent and panel-mount IP67 USB-C + cap.
-5. Close enclosure with gasket; torque screws in cross pattern.
-6. Run immersion and drop validation sequence.
+## Compliance + launch gating
+- Batch launch is gated by `docs/launch-plan.md` Phase 4.
+- Compliance floor target: **~$1,500–3,000** when using FCC-ID'd TX modules and verified UN38.3/UL battery component docs.
+- Full UL 2056 end-product listing (~$15,000–30,000) is a later distribution milestone, not required for legal direct sales.
+- Hard sourcing requirement: verify module FCC IDs and battery UN38.3/UL docs before ordering production lots.
+
+## Shipping constraints
+- Ground-only shipping.
+- UN3481 labeling.
+- Battery installed in equipment.
+- ≤100Wh per unit (74Wh module qualifies).
 
 ## QC checklist
 - [ ] All Step-model QC gates (charge compatibility, thermal soak, cutoff simulation, no-brownout, cosmetic, shake).

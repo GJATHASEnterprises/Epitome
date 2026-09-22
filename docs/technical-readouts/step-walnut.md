@@ -7,26 +7,31 @@
 - Single white status LED via 3 mm light pipe.
 - Wall thickness 2.4 mm; coil window ≤1.5 mm; M3 heat-set inserts ×4.
 
-## Electronics BOM (Sept 2026, tariffed where applicable)
+## Electronics BOM (Sept 2026 planning estimates; tariffed where applicable)
 | Item | Unit cost |
 |---|---:|
-| 15–20W Qi TX module (China, +25%) | $5.63 |
-| 5W buds TX module (China, +25%) | $2.50 |
-| Watch TX coil (estimate, pending sourcing) | $3.50 |
-| USB-C trigger/boost board (China, +25%) | $2.25 |
-| 65W GaN brick (China, +25%) | $13.75 |
-| USB-C cable, 1 m (China, +25%) | $3.00 |
+| Zone 1 Qi2 magnetic TX module (China, +25%) | $5.63 |
+| Zone 2 Qi TX module up-to-15W (same SKU class, China, +25%) | $5.63 |
+| Watch TX coil (generic estimate, pending sourcing) | $3.50 |
+| USB-C output trigger board (15W class, China, +25%) | $1.50 |
+| 65W GaN brick target (China, +25%) | $9.50 |
+| USB-C cables (1 input + 1 output) | $3.00 |
 | Digispark-style ATtiny85 USB board + easy-connect harnessing | $7.37 |
 | Enclosure + inserts/feet + oil finish | $9.50 |
 | Packaging (kraft box + insert) | $3.00 |
-| **Build cost** | **~$50.50** |
+| **Build cost** | **~$48.63** |
 
 ## Firmware behavior (Digispark ATtiny85)
 - Default: steady warm-white status LED during non-night hours.
 - Zone detect pulse: brief brightness pulse on newly detected device presence.
 - Night mode: timer-based overnight LED-off window (approximate, no RTC alignment).
+- Soft cap behavior: when all zones are active, Zone 2 shifts to low-power profile.
 
 ## Unit economics
 - Price: $99
 - Customer-paid shipping target: ~$10.50 label
-- Net per sale after fees/processing/defect reserve: **~$28–29**
+- Net per sale after fees/processing/defect reserve: **~$30–32**
+
+## Compatibility wording constraints
+- Zone 1 wording: "Qi2 magnetic charging — compatible with MagSafe-case iPhones and Qi2 Android phones."
+- Zone 3 generic watch coil does **not** support Apple Watch unless an MFi-certified module is used.

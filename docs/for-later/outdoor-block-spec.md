@@ -17,7 +17,7 @@ All China-sourced electronics use 25% Section 301 pricing. Reference: `docs/tech
 |---|---:|
 | Certified 20,000 mAh PD bank | $22.50 |
 | 20W magnetic phone TX | $7.50 |
-| Buds TX module | $2.50 |
+| Zone 2 Qi TX module (up-to-15W class) | $5.63 |
 | IP67 panel USB-C + cap | $4.00 |
 | Interlock + sensors + harness | $7.30 |
 | ASA/TPU enclosure + hardware | $8.00 |

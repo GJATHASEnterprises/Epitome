@@ -22,7 +22,7 @@ A three-tier "stepped" desktop wireless charging stand with dedicated zones for 
 | Vertical stack breakdown | 3 mm base + 22 mm riser + 15 mm + 15 mm + 15 mm |
 | Total height | 70 mm |
 | Step 1 / Zone 1 | Phone, Qi2 20W |
-| Step 2 / Zone 2 | Earbuds, Qi 5W |
+| Step 2 / Zone 2 | Buds or second phone, Qi up to 15W |
 | Step 3 / Zone 3 | Watch, 5W |
 | Step 3 setback | 20 mm in Y from the front edge of Steps 1–2 |
 | Corner radii | 6–8 mm (soft, premium) |
@@ -33,9 +33,9 @@ A three-tier "stepped" desktop wireless charging stand with dedicated zones for 
 1. **Wall thickness 2.4 mm** everywhere, EXCEPT directly above each charging coil: **1.2–1.5 mm max** (thicker kills charging).
 2. **Coil pockets:** cylindrical recesses under each pad surface, sized from the measured phone coil, earbuds coil, and watch coil modules + **0.3 mm clearance** all around. Each coil must sit flush against the underside of its charging surface.
 3. **4× M3 heat-set insert bosses** in the base shell (Ø7.2 mm hole for M3 insert, boss Ø10 mm, near corners); matching screw counterbores through the top shell from below — **no visible screws from top or sides**.
-4. **Rear USB-C recesses:** 3× rear USB-C ports total — USB-C PD **IN** at X=40, Port A at X=120, Port B at X=140. The **IN** port must be visually differentiated (deeper recess or engraved **IN** marking). Size the rear recess / strain channel around the USB-C input plug overmold and bend relief rather than a barrel plug.
+4. **Rear USB-C recesses:** 2× rear USB-C ports total — USB-C PD **IN** at X=40 and USB-C **OUT** at X=130 (15W class). The **IN** port must be visually differentiated (deeper recess or engraved **IN** marking). Size the rear recess / strain channel around the USB-C input plug overmold and bend relief rather than a barrel plug.
 5. **Thermistor channel:** 3 mm wide groove from the phone coil pocket to the main board bay.
-6. **Board standoffs:** 2 mm tall pins/clips for the PD input trigger board, both output trigger boards, and MCU board (dimensions after we measure — see §5).
+6. **Board standoffs:** 2 mm tall pins/clips for the PD input trigger board, the output trigger board, and MCU board (dimensions after we measure — see §5).
 7. **Walnut only:** Ø3.2 mm light-pipe hole on the front face, centered, **14 mm above desk**, fully owned by the **top shell** so it sits clearly above the 8 mm split line.
 8. **Obsidian only:** recessed groove on each side face, 5 mm tall × 3 mm deep × ~140 mm long, positioned 6 mm above desk, to hold a press-fit diffuser bar over a **60 LED/m WS2812B strip**. Size the groove for **8 LEDs per side (16 total)** with ~**16.7 mm pitch**, about **116.7 mm first-to-last LED center span**, and about **133 mm end-to-end strip cut length per side**, plus wire relief; diffuser sits flush or up to 0.5 mm proud. Wire pass-through from each groove into the base cavity.
 9. **Hidden venting:** add concealed vent slots in the base shell for coil thermal relief, but keep them invisible from normal top/side views.

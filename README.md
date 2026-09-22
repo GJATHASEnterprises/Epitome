@@ -15,13 +15,15 @@
 | Outdoor Block Stone | $119 | Outdoor utility buyer | Sealed ASA body | Functional indicators only | Interlock controller |
 | Outdoor Block Camo | $129 | Outdoor tactical aesthetic buyer | Sealed ASA body + camo finish | Functional indicators only | Interlock controller |
 
-Notes:
+Notes (Sept-2026 planning estimates):
 - Legacy material/process options were removed from the lineup.
 - Customer pays shipping on all models.
-- Step models include a 65W GaN brick, one 1 m USB-C input cable, and two USB-C output-device cables in-box.
+- Step models include a 65W GaN brick, one 1 m USB-C input cable, and one USB-C output-device cable in-box.
+- Step power configuration: 20W magnetic phone + up-to-15W second-device zone + 5W watch zone + 15W USB-C output (up to 60W total system claim).
 
 ## Source of truth docs
 
+- `docs/launch-plan.md`
 - `docs/technical-readouts/step-walnut.md`
 - `docs/technical-readouts/step-obsidian.md`
 - `docs/technical-readouts/outdoor-block-stone.md`
